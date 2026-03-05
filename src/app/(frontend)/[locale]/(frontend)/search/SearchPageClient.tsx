@@ -372,10 +372,36 @@ export function SearchPageClient({ popularTags }: SearchPageClientProps) {
   const meilisearchHost = process.env.NEXT_PUBLIC_MEILISEARCH_HOST || 'http://localhost:7700'
   const meilisearchKey = process.env.NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY || ''
 
-  const { searchClient } = useMemo(
-    () => instantMeiliSearch(meilisearchHost, meilisearchKey),
-    [meilisearchHost, meilisearchKey],
-  )
+  // Wrap Meilisearch client in a proxy that catches connection errors gracefully.
+  // Without this, a missing Meilisearch instance throws a noisy console error.
+  const { searchClient } = useMemo(() => {
+    const { searchClient: rawClient } = instantMeiliSearch(meilisearchHost, meilisearchKey)
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const resilientClient = {
+      ...rawClient,
+      search: async (requests: any) => {
+        try {
+          return await (rawClient as any).search(requests)
+        } catch {
+          // Meilisearch unavailable — return empty results instead of throwing
+          return { results: (requests as Array<{ indexName: string }>).map((req) => ({
+            hits: [],
+            nbHits: 0,
+            page: 0,
+            nbPages: 0,
+            hitsPerPage: 20,
+            exhaustiveNbHits: true,
+            query: '',
+            params: '',
+            processingTimeMs: 0,
+            index: req.indexName,
+          })) }
+        }
+      },
+    }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+    return { searchClient: resilientClient }
+  }, [meilisearchHost, meilisearchKey])
 
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') || ''

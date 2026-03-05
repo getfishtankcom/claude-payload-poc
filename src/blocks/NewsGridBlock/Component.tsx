@@ -12,6 +12,7 @@
  * @dependencies
  * - Container from ui components
  * - Button for "View All" link
+ * - getLatestNews from payload-helpers
  *
  * @notes
  * - This is an async server component (like Payload template's ArchiveBlock)
@@ -21,6 +22,7 @@
 import React from 'react'
 
 import { Container, Button } from '@/components/ui'
+import { getLatestNews } from '@/lib/payload-helpers'
 
 type NewsGridBlockProps = {
   heading?: string | null
@@ -31,16 +33,33 @@ type NewsGridBlockProps = {
   blockType: 'newsGrid'
 }
 
-export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = ({
+export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = async ({
   heading,
   news_count = 3,
   show_view_all,
   populateBy = 'collection',
   selectedNews,
 }) => {
-  // For 'collection' mode, data is fetched and passed via the page route
-  // For 'selection' mode, selectedNews is populated via Payload's relationship field
-  const newsItems = populateBy === 'selection' && selectedNews ? selectedNews : []
+  // For 'collection' mode, fetch latest news from CMS
+  // For 'selection' mode, use the manually curated selectedNews
+  let newsItems: Array<{ id: string; title: string; slug: string; publishedDate?: string; board?: { abbreviation?: string } }> = []
+
+  if (populateBy === 'collection') {
+    const news = await getLatestNews(news_count || 3)
+    newsItems = news.map((n) => {
+      const item = n as unknown as Record<string, unknown>
+      const board = item.board as Record<string, unknown> | undefined
+      return {
+        id: String(item.id),
+        title: String(item.title || ''),
+        slug: String(item.slug || ''),
+        publishedDate: item.publishedDate as string | undefined,
+        board: board ? { abbreviation: String(board.abbreviation || '') } : undefined,
+      }
+    })
+  } else if (selectedNews) {
+    newsItems = selectedNews
+  }
 
   return (
     <div data-testid="block-news-grid">

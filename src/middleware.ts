@@ -20,10 +20,15 @@ import { routing } from './i18n/routing'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
-// Routes that require authentication
+// Routes that require authentication (member-only forms, not the login page itself)
 const isProtectedRoute = createRouteMatcher([
-  '/:locale/my-account(.*)',
+  '/:locale/my-account/dashboard(.*)',
+  '/:locale/my-account/profile(.*)',
+  '/:locale/my-account/preferences(.*)',
 ])
+
+// Public auth pages — login, register, forgot-password render Clerk components inline
+// These are NOT protected so the page can render before auth redirects
 
 export default clerkMiddleware(async (auth, req) => {
   // Protect member-only routes
