@@ -1170,7 +1170,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ### CMS Integration (5.1–5.6)
 
 ### 5.1 Create block schemas, hero system, and reusable fields
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/fields/link.ts` exports `link()` factory function (internal/external toggle, label, newTab, optional appearance select)
   2. `src/fields/linkGroup.ts` exports `linkGroup()` wrapping `link()` in an array field
@@ -1193,7 +1193,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All blocks, hero, and reusable fields compile; directory structure matches Payload website template.
 
 ### 5.2 Create `<RenderBlocks />` + update Pages collection + Homepage global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/blocks/RenderBlocks.tsx` has slug → Component mapping, iterates blocks array, spreads props, returns null for unknown types
   2. `src/collections/Pages.ts` updated with tabs: Hero tab (using `hero` field), Content tab (with `layout` blocks field), SEO tab (existing meta)
@@ -1215,7 +1215,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** RenderBlocks renders mixed blocks; Pages + Homepage both use hero + blocks layout; types generated.
 
 ### 5.3 Create typed CMS fetch helpers
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/lib/payload-helpers.ts` exists with 7 typed helper functions
   2. `getHomepage()` returns typed homepage global (with hero + layout)
@@ -1235,7 +1235,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All 7 helpers compile with correct return types.
 
 ### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Root layout fetches `navigation` global via `getNavigation()` and passes data as props
   2. `<SiteHeader />` accepts navigation data props (no internal CMS fetching)
@@ -1251,7 +1251,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Header/nav driven entirely by CMS data; zero hardcoded nav items.
 
 ### 5.5 Wire SiteFooter to `footer` global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Root layout fetches `footer` global via `getFooter()` and passes data as props
   2. `<SiteFooter />` accepts footer data props (no internal CMS fetching)
@@ -1267,7 +1267,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Footer driven entirely by CMS data; zero hardcoded content.
 
 ### 5.6 Wire homepage route to CMS data
-- [ ] **Status:** Not Started
+- [x] **Status:** Not Started
 - **Acceptance Criteria:**
   1. `src/app/(frontend)/page.tsx` fetches homepage global via `getHomepage()`
   2. Uses `<RenderHero {...homepage.hero} />` for hero section
@@ -1288,7 +1288,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ### Search (5.7–5.11)
 
 ### 5.7 Set up Meilisearch infrastructure
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Docker Compose includes Meilisearch v1.x service on port 7700
   2. `payload-meilisearch` plugin configured in `payload.config.ts` with collections list
@@ -1305,7 +1305,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Meilisearch running, auto-syncing with Payload, filterable attributes configured.
 
 ### 5.8 Build `<SearchModal />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Full-screen overlay opens when search input is clicked (header or hero)
   2. Large search input with placeholder "Projects, meetings, documents, and more."
@@ -1321,7 +1321,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Modal opens/closes correctly, submits search query to results page, keyboard accessible.
 
 ### 5.9 Build `<FilterSidebar />` + `<SearchResultCard />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Five collapsible accordion sections: Board, Standard, Files & Media, Content Type, Date
   2. Board section: 4 checkboxes (CSSB, AcSB, PSAB, AASB)
@@ -1341,7 +1341,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All 5 filter sections functional; search result cards render correctly with type-appropriate CTAs.
 
 ### 5.10 Build Search Results page
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/search/page.tsx` exists
   2. Search bar pre-filled with `?q=` query param; recent tags visible below
@@ -1357,7 +1357,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Search page returns filtered, sorted, paginated results from Meilisearch.
 
 ### 5.11 Build document extraction pipeline
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `pdf-parse` and `mammoth` installed as dependencies
   2. `afterChange` hook on `resources` collection extracts text from PDF and DOCX uploads

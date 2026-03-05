@@ -1,27 +1,43 @@
 /**
  * @description
- * Pages collection for generic FRAS Canada content pages.
- * Supports configurable sidebar types and SEO meta fields.
+ * Pages collection for FRAS Canada content pages with page builder architecture.
+ * Uses tabs: Hero tab + Content tab (blocks layout) + SEO tab.
  *
  * Key features:
- * - Rich text content body
+ * - Hero group field (none/highImpact/lowImpact variants)
+ * - Layout blocks field for page builder content
  * - Sidebar type selector (staff contact, section nav, or none)
  * - SEO meta group with title, description, and OG image
+ * - publishedAt date field in sidebar
  *
  * @dependencies
- * - Media collection (upload for og_image)
+ * - hero field from @/heros/config
+ * - blocks array from @/blocks/index
+ * - Media collection (upload for og_image and hero media)
  *
  * @notes
- * - This is the catch-all page type for content that doesn't fit specialized collections
- * - sidebar_type drives which sidebar component renders on the frontend
+ * - Follows official Payload website template Pages pattern (tabs)
+ * - Hero is a group field, NOT a block — lives above the blocks layout
+ * - Blocks are registered via imported blocks array
+ * - admin.initCollapsed on layout for compact admin UX
  */
 import type { CollectionConfig } from 'payload'
+
+import { hero } from '@/heros/config'
+import { blocks } from '@/blocks'
+import { syncToMeilisearch } from '@/search/meilisearch-sync'
+
+const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'sidebar_type'],
+    defaultColumns: ['title', 'slug', 'sidebar_type', 'publishedAt'],
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {
@@ -41,9 +57,15 @@ export const Pages: CollectionConfig = {
       },
     },
     {
-      name: 'content',
-      type: 'richText',
-      label: 'Page Content',
+      name: 'publishedAt',
+      type: 'date',
+      label: 'Published At',
+      admin: {
+        position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
     },
     {
       name: 'sidebar_type',
@@ -55,27 +77,61 @@ export const Pages: CollectionConfig = {
         { label: 'Section Navigation', value: 'section_nav' },
         { label: 'None', value: 'none' },
       ],
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
-      name: 'meta',
-      type: 'group',
-      label: 'SEO Meta',
-      fields: [
+      type: 'tabs',
+      tabs: [
+        // Hero tab
         {
-          name: 'meta_title',
-          type: 'text',
-          label: 'Meta Title',
+          label: 'Hero',
+          fields: [hero],
         },
+        // Content tab — page builder blocks
         {
-          name: 'meta_description',
-          type: 'textarea',
-          label: 'Meta Description',
+          label: 'Content',
+          fields: [
+            {
+              name: 'layout',
+              type: 'blocks',
+              blocks,
+              label: 'Layout',
+              admin: {
+                initCollapsed: true,
+              },
+            },
+          ],
         },
+        // SEO tab
         {
-          name: 'og_image',
-          type: 'upload',
-          relationTo: 'media',
-          label: 'Open Graph Image',
+          label: 'SEO',
+          fields: [
+            {
+              name: 'meta',
+              type: 'group',
+              label: false,
+              fields: [
+                {
+                  name: 'meta_title',
+                  type: 'text',
+                  label: 'Meta Title',
+                },
+                {
+                  name: 'meta_description',
+                  type: 'textarea',
+                  label: 'Meta Description',
+                },
+                {
+                  name: 'og_image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  label: 'Open Graph Image',
+                },
+              ],
+            },
+          ],
         },
       ],
     },

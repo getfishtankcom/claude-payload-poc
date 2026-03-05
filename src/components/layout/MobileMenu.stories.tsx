@@ -1,11 +1,12 @@
 /**
  * @description
  * Storybook stories for MobileMenu component.
- * Shows open state with accordion navigation sections.
+ * Shows open state with CMS-driven navigation sections.
  */
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { MobileMenu } from './MobileMenu'
+import { mockNavigationData } from '@/__mocks__/cms-data'
 
 const meta = {
   title: 'Layout/MobileMenu',
@@ -24,6 +25,7 @@ export const Default: Story = {
   args: {
     isOpen: true,
     onClose: () => {},
+    navigation: mockNavigationData(),
   },
 }
 
@@ -31,6 +33,7 @@ export const Interactive: Story = {
   args: {
     isOpen: false,
     onClose: () => {},
+    navigation: mockNavigationData(),
   },
   render: function InteractiveMobileMenu() {
     const [isOpen, setIsOpen] = useState(false)
@@ -43,15 +46,20 @@ export const Interactive: Story = {
         >
           Open Mobile Menu
         </button>
-        <MobileMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <MobileMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          navigation={mockNavigationData()}
+        />
       </div>
     )
   },
 }
 
-export const Closed: Story = {
+export const EmptyNavigation: Story = {
   args: {
-    isOpen: false,
+    isOpen: true,
     onClose: () => {},
+    navigation: null,
   },
 }

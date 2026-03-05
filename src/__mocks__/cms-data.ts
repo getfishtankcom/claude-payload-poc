@@ -356,3 +356,129 @@ export function mockDocumentForCommentList(count = 3): DocumentForComment[] {
     mockDocumentForComment(doc),
   )
 }
+
+// ── Navigation & Footer Mock Data ────────────────────────────────────────────
+
+import type { Navigation, Footer } from '@/payload-types'
+
+export function mockNavigationData(): Navigation {
+  return {
+    utility_links: [
+      { label: 'About Us', url: '/about', has_dropdown: true, id: 'u1' },
+      { label: 'Boards', url: '/boards', has_dropdown: true, id: 'u2' },
+      { label: 'Contact', url: '/contact', has_dropdown: false, id: 'u3' },
+      { label: 'Newsletter', url: '/newsletter', has_dropdown: false, id: 'u4' },
+      { label: 'Volunteer', url: '/volunteer', has_dropdown: false, id: 'u5' },
+      { label: 'FR', url: '/fr', has_dropdown: false, id: 'u6' },
+      { label: 'Sign In', url: '/login', has_dropdown: false, id: 'u7' },
+    ],
+    primary_nav: [
+      { label: 'Active Projects', url: '/active-projects', has_dropdown: true, id: 'p1' },
+      { label: 'Open Consultations', url: '/consultations', has_dropdown: false, id: 'p2' },
+      { label: 'News', url: '/news', has_dropdown: false, id: 'p3' },
+    ],
+    mega_menu: [
+      {
+        trigger_label: 'About Us',
+        id: 'm1',
+        columns: [
+          {
+            links: [
+              { label: 'About FRAS Canada', url: '/about', id: 'al1' },
+              { label: 'Oversight Council', url: '/about/oversight-council', id: 'al2' },
+              { label: 'Research Program', url: '/about/research', id: 'al3' },
+              { label: 'Jobs', url: '/about/jobs', id: 'al4' },
+            ],
+            id: 'ac1',
+          },
+        ],
+      },
+      {
+        trigger_label: 'Boards',
+        id: 'm2',
+        columns: [
+          {
+            heading: 'CSSB',
+            id: 'bc1',
+            links: [
+              { label: 'Overview', url: '/boards/cssb', id: 'bl1' },
+              { label: 'Projects', url: '/boards/cssb/projects', id: 'bl2' },
+            ],
+          },
+          {
+            heading: 'AcSB',
+            id: 'bc2',
+            links: [
+              { label: 'Overview', url: '/boards/acsb', id: 'bl3' },
+              { label: 'Projects', url: '/boards/acsb/projects', id: 'bl4' },
+            ],
+          },
+          {
+            heading: 'PSAB',
+            id: 'bc3',
+            links: [
+              { label: 'Overview', url: '/boards/psab', id: 'bl5' },
+              { label: 'Projects', url: '/boards/psab/projects', id: 'bl6' },
+            ],
+          },
+          {
+            heading: 'AASB',
+            id: 'bc4',
+            links: [
+              { label: 'Overview', url: '/boards/aasb', id: 'bl7' },
+              { label: 'Projects', url: '/boards/aasb/projects', id: 'bl8' },
+            ],
+          },
+        ],
+      },
+      {
+        trigger_label: 'Active Projects',
+        id: 'm3',
+        columns: [
+          {
+            id: 'apc1',
+            links: [
+              { label: 'Canadian Sustainability Standards Board', url: '/boards/cssb/projects', id: 'apl1' },
+              { label: 'Accounting Standards Board', url: '/boards/acsb/projects', id: 'apl2' },
+              { label: 'Public Sector Accounting Board', url: '/boards/psab/projects', id: 'apl3' },
+              { label: 'Auditing and Assurance Standards Board', url: '/boards/aasb/projects', id: 'apl4' },
+            ],
+          },
+        ],
+      },
+    ],
+  }
+}
+
+export function mockFooterData(): Footer {
+  return {
+    columns: [
+      {
+        heading: 'FRAS Canada',
+        id: 'fc1',
+        links: [
+          { label: 'About Us', url: '/about', id: 'fl1' },
+          { label: 'LinkedIn', url: 'https://www.linkedin.com/company/fras-canada', id: 'fl2' },
+        ],
+      },
+    ],
+    boards_links: [
+      { label: 'Canadian Sustainability Standards Board', url: '/boards/cssb', id: 'fb1' },
+      { label: 'Accounting Standards Board', url: '/boards/acsb', id: 'fb2' },
+      { label: 'Public Sector Accounting Board', url: '/boards/psab', id: 'fb3' },
+      { label: 'Auditing and Assurance Standards Board', url: '/boards/aasb', id: 'fb4' },
+      { label: 'Regulatory and Accounting Standards Oversight Council', url: '/about/oversight-council', id: 'fb5' },
+    ],
+    quick_links: [
+      { label: 'About Us', url: '/about', id: 'fq1' },
+      { label: 'Research Program', url: '/about/research', id: 'fq2' },
+      { label: 'News', url: '/news', id: 'fq3' },
+      { label: 'Jobs', url: '/about/jobs', id: 'fq4' },
+      { label: 'Volunteer', url: '/volunteer', id: 'fq5' },
+      { label: 'Contact', url: '/contact', id: 'fq6' },
+      { label: 'Newsletter', url: '/newsletter', id: 'fq7' },
+    ],
+    newsletter_heading: 'Stay informed with our weekly updates',
+    newsletter_description: 'Get critical updates on regulatory changes and new standard releases.',
+  }
+}

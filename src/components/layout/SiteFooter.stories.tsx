@@ -1,10 +1,11 @@
 /**
  * @description
  * Storybook stories for SiteFooter component.
- * Shows desktop and mobile viewport variants.
+ * Shows desktop and mobile variants with CMS footer data.
  */
 import type { Meta, StoryObj } from '@storybook/react'
 import { SiteFooter } from './SiteFooter'
+import { mockFooterData } from '@/__mocks__/cms-data'
 
 const meta = {
   title: 'Layout/SiteFooter',
@@ -18,22 +19,23 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
-
-export const Desktop: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'responsive' },
+export const Default: Story = {
+  args: {
+    footer: mockFooterData(),
   },
 }
 
 export const Mobile: Story = {
+  args: {
+    footer: mockFooterData(),
+  },
   parameters: {
     viewport: { defaultViewport: 'mobile1' },
   },
 }
 
-export const Tablet: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'tablet' },
+export const EmptyFooter: Story = {
+  args: {
+    footer: null,
   },
 }
