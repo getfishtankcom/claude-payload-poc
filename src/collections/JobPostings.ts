@@ -4,26 +4,45 @@
  * Supports draft/published/closed lifecycle with external application URLs.
  *
  * Key features:
- * - Status enum for lifecycle management (draft → published → closed)
+ * - Status enum for lifecycle management (draft -> published -> closed)
  * - Posted and closing dates for display
  * - External URL for application systems
  * - Rich text description for full job details
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
- * - None
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - Job postings are typically few in number
  * - Template 17 displays these with an empty state fallback
  * - externalUrl links to external job application portals
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
+
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
 export const JobPostings: CollectionConfig = {
   slug: 'job-postings',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'department', 'status', 'closingDate'],
+    defaultColumns: ['title', 'department', 'workflowState', 'status', 'closingDate'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
+  },
+  hooks: {
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('job-postings')],
   },
   fields: [
     {
@@ -99,5 +118,7 @@ export const JobPostings: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

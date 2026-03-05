@@ -8,32 +8,48 @@
  * - Type enum for document classification
  * - File upload via media collection
  * - Relationships to boards, standards, and projects
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Media collection (upload for file)
  * - Boards collection (relationship)
  * - Standards collection (relationship)
  * - Projects collection (relationship)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - This is NOT the canonical "resources" collection (Phase 2) — that has broader scope
  * - PDFs dominate the document library (from Sitecore dump analysis)
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
 import { syncToMeilisearch } from '@/search/meilisearch-sync'
 import { extractDocumentText } from '@/search/document-extraction'
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'documents' })
+const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'documents' })
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'board'],
+    defaultColumns: ['title', 'type', 'workflowState', 'board'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
   },
   hooks: {
-    afterChange: [afterChange, extractDocumentText],
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('documents'), meilisearchAfterChange, extractDocumentText],
     afterDelete: [afterDelete],
   },
   fields: [
@@ -98,5 +114,7 @@ export const Documents: CollectionConfig = {
       relationTo: 'projects',
       label: 'Related Project',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

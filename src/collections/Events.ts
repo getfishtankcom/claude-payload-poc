@@ -10,29 +10,45 @@
  * - Rich text content for full event/meeting details
  * - Excerpt for listing card display
  * - Query support: upcoming (date >= today, sort asc) and past (date < today, sort desc)
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Boards collection (relationship)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - Start Time display is webinar-only (conditional on frontend, not stored separately)
  * - publishedDate is for sort flexibility, distinct from the event date
  * - Phase 2 additions: expanded type enum (decision-summary), status field, content, excerpt
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
 import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'events' })
+const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'events' })
 
 export const Events: CollectionConfig = {
   slug: 'events',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'date', 'type', 'status', 'board'],
+    defaultColumns: ['title', 'date', 'type', 'workflowState', 'status', 'board'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
   },
   hooks: {
-    afterChange: [afterChange],
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('events'), meilisearchAfterChange],
     afterDelete: [afterDelete],
   },
   fields: [
@@ -127,5 +143,7 @@ export const Events: CollectionConfig = {
       relationTo: 'boards',
       label: 'Board',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

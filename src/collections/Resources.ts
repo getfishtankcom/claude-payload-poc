@@ -8,24 +8,44 @@
  * - Supports both file upload and external URL
  * - Rich text content for webpage-type resources
  * - Board and optional standard relationships
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Boards collection (relationship)
  * - Standards collection (relationship, optional)
  * - Media collection (upload for file)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - This is separate from the Phase 1 "documents" collection (which handles exposure drafts etc.)
  * - resourceType determines display treatment (PDF icon, video embed, external link icon)
  * - category is for content classification, resourceType is for format
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
+
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
 export const Resources: CollectionConfig = {
   slug: 'resources',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'resourceType', 'board', 'date'],
+    defaultColumns: ['title', 'category', 'workflowState', 'resourceType', 'board', 'date'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
+  },
+  hooks: {
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('resources')],
   },
   fields: [
     {
@@ -143,5 +163,7 @@ export const Resources: CollectionConfig = {
         description: 'Optional — link to a specific standard',
       },
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

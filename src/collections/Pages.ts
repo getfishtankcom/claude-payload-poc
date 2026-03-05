@@ -16,6 +16,9 @@
  * - T17 fields: listingHeading, emptyStateMessage, layout variant
  * - SEO meta group with title, description, and OG image
  * - publishedAt date field in sidebar
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - Locking: lockedBy, lockedAt for concurrent edit prevention
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - hero field from @/heros/config
@@ -23,6 +26,10 @@
  * - Media collection (upload for og_image and hero media)
  * - Boards collection (relationship)
  * - Contacts collection (relationship)
+ * - Users collection (createdBy, lockedBy relationships)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - Follows official Payload website template Pages pattern (tabs)
@@ -30,23 +37,34 @@
  * - Blocks are registered via imported blocks array
  * - admin.initCollapsed on layout for compact admin UX
  * - Phase 2 extensions: sidebar content, CTA block, T15/T17 fields
+ * - Epic 22: workflow, locking, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
 import { hero } from '@/heros/config'
 import { blocks } from '@/blocks'
 import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
+const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'sidebar_type', 'publishedAt'],
+    defaultColumns: ['title', 'slug', 'workflowState', 'publishedAt'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
   },
   hooks: {
-    afterChange: [afterChange],
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('pages'), meilisearchAfterChange],
     afterDelete: [afterDelete],
   },
   fields: [
@@ -114,6 +132,33 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Associated board for board-scoped pages',
+      },
+    },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
+    // --- Locking fields (Epic 22 — task 22.5) ---
+    {
+      name: 'lockedBy',
+      type: 'relationship',
+      relationTo: 'users',
+      label: 'Locked By',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'User currently editing this item',
+      },
+    },
+    {
+      name: 'lockedAt',
+      type: 'date',
+      label: 'Locked At',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'When the lock was acquired',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
       },
     },
     {

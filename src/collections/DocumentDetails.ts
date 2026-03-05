@@ -8,24 +8,44 @@
  * - Comment questions array with numbered questions
  * - howToReply group with contact info and CTA
  * - Support materials array for downloadable files
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Standards collection (relationship)
  * - Boards collection (relationship)
  * - Contacts collection (relationship, hasMany for staff contacts)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - This is the full page content; documents-for-comment has the listing data
  * - Comment questions are numbered and displayed as an ordered list
  * - howToReply group contains all the "How to Reply" sidebar/section content
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
+
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
 export const DocumentDetails: CollectionConfig = {
   slug: 'document-details',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'board', 'replyDeadline'],
+    defaultColumns: ['title', 'workflowState', 'board', 'replyDeadline'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
+  },
+  hooks: {
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('document-details')],
   },
   fields: [
     {
@@ -203,5 +223,7 @@ export const DocumentDetails: CollectionConfig = {
       hasMany: true,
       label: 'Staff Contacts',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }
