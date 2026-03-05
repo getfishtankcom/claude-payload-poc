@@ -33,18 +33,21 @@ export const AuthConfig: GlobalConfig = {
       type: 'text',
       label: 'Username Label',
       defaultValue: 'Username',
+      localized: true,
     },
     {
       name: 'passwordLabel',
       type: 'text',
       label: 'Password Label',
       defaultValue: 'Password',
+      localized: true,
     },
     {
       name: 'buttonLabel',
       type: 'text',
       label: 'Login Button Label',
       defaultValue: 'Log In',
+      localized: true,
     },
     // Forgot links
     {
@@ -52,6 +55,7 @@ export const AuthConfig: GlobalConfig = {
       type: 'text',
       label: 'Forgot Username Label',
       defaultValue: 'Forgot Username?',
+      localized: true,
     },
     {
       name: 'forgotUsernameUrl',
@@ -63,6 +67,7 @@ export const AuthConfig: GlobalConfig = {
       type: 'text',
       label: 'Forgot Password Label',
       defaultValue: 'Forgot Password?',
+      localized: true,
     },
     {
       name: 'forgotPasswordUrl',
@@ -75,12 +80,14 @@ export const AuthConfig: GlobalConfig = {
       type: 'text',
       label: 'Register Prompt',
       defaultValue: "Don't have an account?",
+      localized: true,
     },
     {
       name: 'registerLinkLabel',
       type: 'text',
       label: 'Register Link Label',
       defaultValue: 'Register',
+      localized: true,
     },
     {
       name: 'registerUrl',
@@ -92,6 +99,7 @@ export const AuthConfig: GlobalConfig = {
       name: 'cpaExplanation',
       type: 'richText',
       label: 'CPA Canada Explanation',
+      localized: true,
       admin: {
         description: 'Explanation text about CPA Canada login integration',
       },
@@ -107,6 +115,7 @@ export const AuthConfig: GlobalConfig = {
       type: 'text',
       label: 'Support Heading',
       defaultValue: 'Need Help?',
+      localized: true,
     },
     {
       name: 'supportEmail',

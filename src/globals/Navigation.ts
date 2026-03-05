@@ -34,6 +34,7 @@ export const Navigation: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Label',
+          localized: true,
         },
         {
           name: 'url',
@@ -62,6 +63,7 @@ export const Navigation: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Label',
+          localized: true,
         },
         {
           name: 'url',
@@ -90,6 +92,7 @@ export const Navigation: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Trigger Label',
+          localized: true,
           admin: {
             description: 'Must match a utility_links or primary_nav label with has_dropdown=true',
           },
@@ -103,6 +106,7 @@ export const Navigation: GlobalConfig = {
               name: 'heading',
               type: 'text',
               label: 'Column Heading',
+              localized: true,
             },
             {
               name: 'links',
@@ -114,6 +118,7 @@ export const Navigation: GlobalConfig = {
                   type: 'text',
                   required: true,
                   label: 'Label',
+                  localized: true,
                 },
                 {
                   name: 'url',

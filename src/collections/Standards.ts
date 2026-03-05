@@ -29,6 +29,7 @@ export const Standards: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Standard Name',
     },
     {
@@ -65,6 +66,7 @@ export const Standards: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Part Label',
         },
         {

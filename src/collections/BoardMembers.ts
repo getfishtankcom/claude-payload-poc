@@ -32,11 +32,13 @@ export const BoardMembers: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Full Name',
     },
     {
       name: 'credentials',
       type: 'text',
+      localized: true,
       label: 'Credentials',
       admin: {
         description: 'Professional designations (e.g., "CPA, CA, MBA")',
@@ -66,6 +68,7 @@ export const BoardMembers: CollectionConfig = {
     {
       name: 'roleLabel',
       type: 'text',
+      localized: true,
       label: 'Role Label',
       admin: {
         description: 'Custom display label (e.g., "Ex-officio Member"). Falls back to role enum if empty.',

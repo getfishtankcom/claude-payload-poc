@@ -41,6 +41,7 @@ export const Consultations: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Consultation Title',
     },
     {
@@ -92,6 +93,7 @@ export const Consultations: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       label: 'Description',
     },
     {
@@ -106,6 +108,7 @@ export const Consultations: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Label',
         },
         {

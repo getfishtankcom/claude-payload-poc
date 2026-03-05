@@ -30,6 +30,7 @@ export const Boards: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Board Name',
     },
     {
@@ -54,6 +55,7 @@ export const Boards: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description',
     },
     {
@@ -68,6 +70,7 @@ export const Boards: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Tab Label',
         },
         {
@@ -79,6 +82,7 @@ export const Boards: CollectionConfig = {
         {
           name: 'content',
           type: 'richText',
+          localized: true,
           label: 'Tab Content',
         },
       ],
@@ -95,6 +99,7 @@ export const Boards: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Label',
         },
         {

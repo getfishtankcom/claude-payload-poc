@@ -40,6 +40,7 @@ export const Events: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Event Title',
     },
     {
@@ -97,6 +98,7 @@ export const Events: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      localized: true,
       label: 'Excerpt',
       admin: {
         description: 'Brief summary for listing cards',
@@ -105,6 +107,7 @@ export const Events: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
+      localized: true,
       label: 'Content',
       admin: {
         description: 'Full event/meeting details',

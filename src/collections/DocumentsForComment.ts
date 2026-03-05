@@ -31,6 +31,7 @@ export const DocumentsForComment: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {

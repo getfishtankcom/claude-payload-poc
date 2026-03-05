@@ -30,6 +30,7 @@ export const EffectiveDates: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
       admin: {
         description: 'Display title (e.g., "IFRS Effective Dates")',
@@ -45,6 +46,7 @@ export const EffectiveDates: CollectionConfig = {
     {
       name: 'introText',
       type: 'richText',
+      localized: true,
       label: 'Introductory Text',
       admin: {
         description: 'Text displayed above the effective dates table (may contain links)',
@@ -63,6 +65,7 @@ export const EffectiveDates: CollectionConfig = {
           name: 'headerLabel',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Header Label',
           admin: {
             description: 'Section heading (e.g., "New Standards")',
@@ -92,6 +95,7 @@ export const EffectiveDates: CollectionConfig = {
               name: 'application',
               type: 'richText',
               required: true,
+              localized: true,
               label: 'Application',
               admin: {
                 description: 'Application text — may include italic standard names, bullet lists, footnote refs',
@@ -100,6 +104,7 @@ export const EffectiveDates: CollectionConfig = {
             {
               name: 'pronouncement',
               type: 'text',
+              localized: true,
               label: 'Pronouncement',
             },
             {
@@ -132,6 +137,7 @@ export const EffectiveDates: CollectionConfig = {
           name: 'text',
           type: 'richText',
           required: true,
+          localized: true,
           label: 'Footnote Text',
         },
       ],

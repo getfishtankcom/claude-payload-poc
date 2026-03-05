@@ -41,6 +41,7 @@ export const Documents: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Document Title',
     },
     {
@@ -76,6 +77,7 @@ export const Documents: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       label: 'Description',
     },
     {

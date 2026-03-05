@@ -30,26 +30,31 @@ export const JobPostings: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Job Title',
     },
     {
       name: 'department',
       type: 'text',
+      localized: true,
       label: 'Department',
     },
     {
       name: 'location',
       type: 'text',
+      localized: true,
       label: 'Location',
     },
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       label: 'Full Description',
     },
     {
       name: 'summary',
       type: 'textarea',
+      localized: true,
       label: 'Summary',
       admin: {
         description: 'Brief summary for listing cards',

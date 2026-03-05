@@ -32,6 +32,7 @@ export const Resources: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {
@@ -82,11 +83,13 @@ export const Resources: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      localized: true,
       label: 'Excerpt',
     },
     {
       name: 'content',
       type: 'richText',
+      localized: true,
       label: 'Content',
       admin: {
         description: 'Full content for webpage-type resources',

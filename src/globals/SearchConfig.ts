@@ -33,6 +33,7 @@ export const SearchConfig: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Tag Label',
+          localized: true,
         },
         {
           name: 'query',

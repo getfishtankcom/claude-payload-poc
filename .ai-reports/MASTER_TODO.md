@@ -2589,7 +2589,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** EN/FR URL routing functional, default locale redirects work, middleware detects locale
 
 ### 18.2 Add locale support to Payload CMS content model
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Payload config includes `localization` config with `locales: ['en', 'fr']`, `defaultLocale: 'en'`
   - All text/richText fields across collections support locale variants

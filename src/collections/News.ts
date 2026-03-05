@@ -41,6 +41,7 @@ export const News: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {
@@ -74,11 +75,13 @@ export const News: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      localized: true,
       label: 'Excerpt',
     },
     {
       name: 'body',
       type: 'richText',
+      localized: true,
       label: 'Body',
     },
     {
