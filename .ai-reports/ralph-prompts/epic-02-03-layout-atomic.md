@@ -22,7 +22,7 @@ Build in `src/components/layout/`:
 - Row 2: Logo + persistent search input
 - Row 3: Primary nav (Active Projects ▾, Open Consultations, News)
 - Mobile: collapse to logo + search icon + hamburger
-- Wire to `navigation` global via Payload API
+- **Accept `navigation` data as props. Do NOT fetch inside this component — data comes from root layout (wired in Epic 5.4)**
 - Use Headless UI for dropdown menus
 
 ### 2.2 `<SiteFooter />`
@@ -30,7 +30,7 @@ Build in `src/components/layout/`:
 - Newsletter CTA row: heading + email input + Subscribe button
 - Copyright bar with policy links + LinkedIn icon
 - Mobile: stack to single column
-- Wire to `footer` global
+- **Accept `footer` data as props from root layout (wired in Epic 5.5). Do NOT fetch inside this component.**
 
 ### 2.3 `<MobileMenu />`
 - Full-screen overlay with close (X) button
@@ -56,6 +56,7 @@ Build in `src/components/layout/`:
 - Inter font loading via `next/font/google`
 - Default metadata
 - Import globals.css with theme
+- **Data fetching for nav + footer globals will be wired in Epic 5.4-5.5. For now, pass mock data as props to SiteHeader/SiteFooter**
 
 ## Epic 3: Atomic Components (tasks 3.1–3.6)
 
@@ -82,13 +83,14 @@ Build in `src/components/`:
 - Purple H1 using text-heading color
 
 ### 3.5 `<NewsletterCTA />`
-- "Trusted by 3,000+..." heading
+- **Accept content text (heading, description) as props. No default text values.**
 - Email input + Subscribe button
 - LinkedIn CTA link
 - Wire submit to HubSpot Forms API (or placeholder action for now)
 
 ### 3.6 `<NewsItem />`
 - Date + title + excerpt + "Read More →"
+- **Accept `news` object typed to match Payload `news` collection fields**
 - Props: `news` object `{ date, title, excerpt, slug }`
 
 ## Validation
@@ -116,6 +118,36 @@ Layout components specifically:
 
 ```
 <promise>EPICS 2 AND 3 COMPLETE</promise>
+```
+
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
+Example:
+```tsx
+// Page route (server component)
+import { getHomepage, getLatestNews } from '@/lib/payload-helpers'
+
+export default async function HomePage() {
+  const [homepage, news] = await Promise.all([getHomepage(), getLatestNews(3)])
+  return <HeroCTA heading={homepage.hero_heading} description={homepage.hero_subtitle} />
+}
+
+// Presentational component — NO default content values
+interface HeroCTAProps {
+  heading: string
+  description: string
+}
+export function HeroCTA({ heading, description }: HeroCTAProps) { ... }
 ```
 
 ## IMPORTANT

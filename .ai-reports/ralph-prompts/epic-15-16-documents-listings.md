@@ -11,11 +11,23 @@ Build document workflow pages (T8 listing, T9 detail) and listing templates (T11
 3. `.ai-reports/BUILD_PLAN-phase2.md` — full task details
 4. `.ai-reports/dogfood-frascanada/wireframe-specs-phase2.md` — wireframes for T8, T9, T11, T12, T13
 
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
 ## Epic 15: Document Workflow (8 tasks)
 - 15.1 `<TabPills />` — Open/Closed toggle, active filled, inactive outline
 - 15.2 `<GroupedTable />` — gray banner section headers, alternating rows
 - 15.3 `<DocumentRow />` — title link + Submit Comment / View Comments buttons
-- 15.4 Template 8: Documents for Comment listing — tabs + grouped table
+- 15.4 Template 8: Documents for Comment listing — tabs + grouped table — **fetch from `document-for-comment` collection (canonical name)**
 - 15.5 `<DarkPurpleCTA />` — dark purple bg, white text, "How to Reply" block
 - 15.6 `<BlockquoteQuestion />` — bordered box, question number + text
 - 15.7 `<SupportMaterialsList />` — chain-link icon + labeled doc links
@@ -25,10 +37,10 @@ Build document workflow pages (T8 listing, T9 detail) and listing templates (T11
 - 16.1 `<CategoryPills />` — horizontal filter pills, mobile: select dropdown
 - 16.2 `<SortFilterBar />` — sort, items per page, type filter, date range
 - 16.3 `<ListingItem />` — date + badges + title link + excerpt
-- 16.4 Template 11: Resources listing — category pills + sort bar + items + pagination
+- 16.4 Template 11: Resources listing — category pills + sort bar + items + pagination — **fetch from `resources` collection (canonical name, NOT 'documents')**
 - 16.5 Template 12: News listing — category pills + sort bar + items (also volunteer variant)
 - 16.6 `<TabToggle />` — Upcoming/Past two-state toggle
-- 16.7 Template 13: Meetings & events listing — tab toggle + items per page + pagination
+- 16.7 Template 13: Meetings & events listing — tab toggle + items per page + pagination — **fetch from `events` collection (canonical name, NOT 'meetings')**
 
 ## Validation
 

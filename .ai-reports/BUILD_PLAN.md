@@ -265,48 +265,57 @@
 
 ---
 
-## Epic 5: Search Experience (Meilisearch)
+## Epic 5: CMS Data Integration & Search (11 tasks)
 
-### 5.1 Build `<SearchModal />`
-- [ ] Full-screen overlay triggered by search input click
-- [ ] Large search input with placeholder "Projects, meetings, documents, and more."
-- [ ] Recent tags section (pill chips)
-- [ ] Popular tags section (pill chips)
-- [ ] Search + Cancel buttons
-- [ ] Mobile: same layout, stacked tags
+> **Note:** Epics 1-4 must be complete. Epic 5 retroactively wires their output to CMS data and introduces block schemas for the page builder architecture (Epics 25-26).
 
-### 5.2 Build `<FilterSidebar />`
-- [ ] 5 filter categories as collapsible accordion sections
-- [ ] By Board: checkboxes (CSSB, AcSB, PSAB, AASB)
-- [ ] By Standard: grouped checkboxes under Sustainability, Accounting, Public Sector, Assurance
-- [ ] Files & Media: checkboxes (All, PDF, Word, Video)
-- [ ] Content Type: checkboxes (Project, News, Doc for Comment, Resource, Guidance, Articles, Roundtable, Decision Summaries, Webinar)
-- [ ] Date: radio buttons (Last 30d, Last 3mo, Last yr, All time)
-- [ ] Active filter count badges per section
-- [ ] "Clear All" link
-- [ ] Desktop: sidebar | Mobile: collapsible accordion above results
+### CMS Integration (5.1–5.6)
 
-### 5.3 Build `<SearchResultCard />`
-- [ ] Content type badge + board name + date
-- [ ] Title (linked heading)
-- [ ] Description (truncated)
-- [ ] File info (e.g., "PDF • 2.4 MB") when applicable
-- [ ] CTA link (View Document / Read More / Watch Recording / Read Summary / Download Guide)
+### 5.1 Create Payload block schemas
+- [ ] Create `src/blocks/` with: HeroBlock, CTABlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock, ContentBlock
+- [ ] Each block uses `Block` type from `payload/types`
+- [ ] Export blocks array from `src/blocks/index.ts`
+- **Output:** 6+ block schema files, typed and exportable
 
-### 5.4 Build Search Results page
-- [ ] Route: `app/(frontend)/search/page.tsx`
-- [ ] Search bar pre-filled with query + recent tags
-- [ ] 2-column layout: FilterSidebar + results list
-- [ ] Wire to Meilisearch via React InstantSearch (`react-instantsearch` + `@meilisearch/instant-meilisearch`)
-- [ ] `<InstantSearch>` wrapper with `<SearchBox>`, `<RefinementList>`, `<Hits>`, `<Pagination>`, `<Stats>`
-- [ ] Sort by dropdown (Relevance, Date)
-- [ ] Results count via `<Stats>` widget
-- **Dependencies:** 5.1, 5.2, 5.3, 3.3 Pagination, 5.5 Meilisearch setup
+### 5.2 Create `<BlockRenderer />` component
+- [ ] Block type → React component registry in `src/components/blocks/block-registry.ts`
+- [ ] `<BlockRenderer blocks={blocks} />` iterates and renders
+- [ ] Handles unknown block types gracefully (logs warning, renders nothing)
+- [ ] Co-located `.stories.tsx` with mixed block types
+- **Output:** Reusable block renderer for page builder
 
-### 5.5 Set up Meilisearch infrastructure
+### 5.3 Create typed CMS fetch helpers
+- [ ] File: `src/lib/payload-helpers.ts`
+- [ ] Helpers: `getHomepage()`, `getNavigation()`, `getFooter()`, `getLatestNews(limit)`, `getUpcomingEvents(limit)`, `getStandardsByCategory()`
+- [ ] All helpers return typed results from `payload-types.ts`
+- [ ] Update `homepage` global to include `blocks` array field
+- **Output:** Typed data access layer for all page routes
+
+### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
+- [ ] Root layout fetches `navigation` via `getNavigation()`, passes as props
+- [ ] Remove ALL hardcoded nav items from SiteHeader/MegaMenu/MobileMenu
+- [ ] Handle missing/empty nav data with sensible empty state
+- **Output:** Header/nav driven entirely by CMS data
+
+### 5.5 Wire SiteFooter to `footer` global
+- [ ] Root layout fetches `footer` via `getFooter()`, passes as props
+- [ ] Remove ALL hardcoded footer links, board lists, text content
+- [ ] Handle missing/empty footer data with sensible empty state
+- **Output:** Footer driven entirely by CMS data
+
+### 5.6 Wire homepage route to CMS data
+- [ ] `page.tsx` fetches homepage global + news + events + standards via helpers
+- [ ] Pass data as props to all homepage section components
+- [ ] Remove ALL hardcoded content strings from Epic 4 components
+- [ ] Add empty state handling for all sections
+- **Output:** Homepage renders CMS data, zero hardcoded user-facing text
+
+### Search (5.7–5.11)
+
+### 5.7 Set up Meilisearch infrastructure
 - [ ] Docker Compose config for Meilisearch instance (v1.x)
 - [ ] Install `payload-meilisearch` plugin — configure in `payload.config.ts`
-- [ ] Define searchable collections: projects, news, consultations, documents, events, pages
+- [ ] Define searchable collections: projects, news, document-for-comment, resources, events, pages
 - [ ] Configure `afterChange` hooks via plugin for auto-sync to Meilisearch indexes
 - [ ] Create bilingual indexes: `{collection}_en`, `{collection}_fr`
 - [ ] Configure filterable attributes: board, standard, content_type, file_type, date
@@ -314,10 +323,36 @@
 - [ ] Configure ranking rules and typo tolerance
 - **Output:** Meilisearch running locally, syncing with Payload CMS collections
 
-### 5.6 Build document extraction pipeline
+### 5.8 Build `<SearchModal />`
+- [ ] Full-screen overlay triggered by search input click
+- [ ] Large search input with placeholder "Projects, meetings, documents, and more."
+- [ ] Recent tags section (pill chips)
+- [ ] Popular tags section (pill chips from `search-config` global)
+- [ ] Search + Cancel buttons
+- [ ] Mobile: same layout, stacked tags
+
+### 5.9 Build `<FilterSidebar />` + `<SearchResultCard />`
+- [ ] FilterSidebar: 5 collapsible accordion sections (Board, Standard, Files & Media, Content Type, Date)
+- [ ] Active filter count badges per section, "Clear All" link
+- [ ] Desktop: sidebar | Mobile: collapsible accordion above results
+- [ ] Wire to Meilisearch `<RefinementList>` widgets
+- [ ] SearchResultCard: content type badge + board name + date + title + description + CTA
+- [ ] CTA link varies by content type (View Document / Read More / Watch Recording / Read Summary / Download Guide)
+
+### 5.10 Build Search Results page
+- [ ] Route: `app/(frontend)/search/page.tsx`
+- [ ] Search bar pre-filled with query + recent tags
+- [ ] 2-column layout: FilterSidebar + results list
+- [ ] Wire to Meilisearch via React InstantSearch (`react-instantsearch` + `@meilisearch/instant-meilisearch`)
+- [ ] `<InstantSearch>` wrapper with `<SearchBox>`, `<RefinementList>`, `<Hits>`, `<Pagination>`, `<Stats>`
+- [ ] Sort by dropdown (Relevance, Date)
+- [ ] Results count via `<Stats>` widget
+- **Dependencies:** 5.7, 5.8, 5.9, 3.3 Pagination
+
+### 5.11 Build document extraction pipeline
 - [ ] Install `pdf-parse` for PDF text extraction
 - [ ] Install `mammoth` for Word (.docx) text extraction
-- [ ] Create `afterChange` hook for `documents` collection: extract text → index in Meilisearch
+- [ ] Create `afterChange` hook for `resources` collection: extract text → index in Meilisearch
 - [ ] Store extracted text as searchable field in Meilisearch index (not in Payload DB)
 - [ ] Handle extraction errors gracefully (skip unreadable files, log warnings)
 - **Output:** PDF and Word documents searchable via Meilisearch
@@ -474,10 +509,10 @@ Epic 1 (CMS Collections)
   ↓
 Epic 2 (Layout) ←→ Epic 3 (Atomic Components) ← Epic 0.2.2 (Primitives)
   ↓
-Epic 4 (Homepage) ← Epic 5 (Search) [search modal on homepage]
+Epic 4 (Homepage) — builds UI with mock/inline CMS data
   ↓
-Epic 5 (Search + Meilisearch)
-  ↓
+Epic 5 (CMS Data Integration + Search) ← retroactively wires Epics 2-4 to CMS data
+  ↓   [5.1-5.6: CMS wiring] → [5.7-5.11: Search/Meilisearch]
 Epic 6 (Board Detail)
   ↓
 Epic 7 (Project Detail) ← reuses Epic 6 sidebar components
@@ -486,7 +521,7 @@ Epic 8 (Active Projects) ← builds `<ProjectCard />` (8.2) for the Active Proje
   ↓
 Epic 9 (Open Consultations)
   ↓
-Epic 10 (Integration & Polish + HubSpot)
+Epic 10 (Integration & Polish + HubSpot) — seed data + verify CMS rendering
 ```
 
 ---
@@ -499,11 +534,11 @@ Epic 10 (Integration & Polish + HubSpot)
 | 1. CMS Collections | 11 | Epic 0 |
 | 2. Layout Components | 6 | Epics 0 |
 | 3. Atomic Components | 6 | Epic 0.2.2 |
-| 4. Homepage | 5 | Epics 1, 2, 3, 5 |
-| 5. Search (Meilisearch) | 6 | Epics 0, 1 |
+| 4. Homepage | 5 | Epics 1, 2, 3 |
+| 5. CMS Data Integration & Search | 11 | Epics 1, 2, 3, 4 |
 | 6. Board Detail | 6 | Epics 1, 2, 3 |
 | 7. Project Detail | 2 | Epic 6 |
 | 8. Active Projects | 3 | Epics 1, 6 |
 | 9. Open Consultations | 2 | Epic 1 |
 | 10. Integration + HubSpot | 6 | All |
-| **Total** | **58 tasks** | |
+| **Total** | **63 tasks** | |

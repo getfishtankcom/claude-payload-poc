@@ -40,6 +40,14 @@ Add full EN/FR bilingual support: Next.js locale routing, Payload CMS localizati
 - Locale in OpenGraph/Twitter metadata
 - Sitemap with hreflang entries
 
+## Locale-Aware CMS Fetching (MANDATORY)
+
+- **ALL `payload.find()` and `payload.findGlobal()` calls must include the `locale` parameter**
+- Update `src/lib/payload-helpers.ts` to accept a `locale` param on every helper function
+- Pattern: `getHomepage(locale: string)`, `getLatestNews(limit: number, locale: string)`, etc.
+- The `locale` value comes from the `[locale]` route segment param
+- Ensure generated types reflect locale-aware fields
+
 ## IMPORTANT
 - This is an APPROVAL GATE epic — locale routing affects ALL pages
 - Use `next-intl` or similar i18n library (check Context7 for Next.js 15 patterns)

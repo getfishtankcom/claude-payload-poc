@@ -12,27 +12,39 @@ Build Phase 2 content page templates (T3A, T3B, T17), people/organization pages 
 4. `.ai-reports/dogfood-frascanada/wireframe-specs-phase2.md` — ASCII wireframes for T3, T4, T5, T10, T14, T17
 5. `.ai-reports/dogfood-frascanada/design-tokens.md` — visual tokens
 
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
 ## Epic 12: Content Page Templates (6 tasks)
 - 12.1 `<StaffContactCard />` — purple heading, contact info with tel/mailto links
 - 12.2 `<SectionNavSidebar />` — vertical link list, active state bold+underline
 - 12.3 `<SectionTabs />` — horizontal tabs, active bottom border, mobile: horizontal scroll
-- 12.4 Template 3A: Content + Staff Contact sidebar (70/30 split)
-- 12.5 Template 3B: Content + Section Nav sidebar
+- 12.4 Template 3A: Content + Staff Contact sidebar (70/30 split) — **page route fetches from Payload, passes to components as props**
+- 12.5 Template 3B: Content + Section Nav sidebar — **page route fetches from Payload, passes to components as props**
 - 12.6 Template 17: Simple content / empty state (jobs page)
 
 ## Epic 13: People & Organization (4 tasks)
 - 13.1 `<MemberCard />` — 205x205 photo, name link, credentials, role label, dates
-- 13.2 Template 4: People listing (members) — 2-column grid, section groups
+- 13.2 Template 4: People listing (members) — 2-column grid, section groups — **fetch from `board-members` collection**
 - 13.3 `<AnchorNav />` — scroll-spy sidebar, "On this page", Intersection Observer
-- 13.4 Template 14: Committee index/directory — anchor nav sidebar
+- 13.4 Template 14: Committee index/directory — anchor nav sidebar — **fetch from `committees` collection**
 
 ## Epic 14: Standards Section (6 tasks)
 - 14.1 `<BoardLogoHero />` — board crest, name, brand-color bg
 - 14.2 `<ActiveProjectsTable />` — 2-column table, mobile: stacked cards
 - 14.3 `<FeatureCTABlock />` — 1-2 CTA cards, light/dark-purple variants
-- 14.4 Template 5: Standards overview (tabbed) — hero + tabs + projects table + CTAs + news
+- 14.4 Template 5: Standards overview (tabbed) — hero + tabs + projects table + CTAs + news — **fetch from `standards` collection**
 - 14.5 `<EffectiveDatesTable />` — purple section headers, alternating rows, footnotes, print-friendly
-- 14.6 Template 10: Effective dates page
+- 14.6 Template 10: Effective dates page — **fetch from `effective-dates` collection**
 
 ## Validation
 

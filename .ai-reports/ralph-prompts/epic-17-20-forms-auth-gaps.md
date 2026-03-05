@@ -16,11 +16,11 @@ Build forms (contact, login), auth (Aptify integration), ReCaptcha, and all gap 
 - 17.1 `<ContactForm />` — vertical stacked form, validation, server action
 - 17.2 `<ReCaptcha />` — invisible v3, `react-google-recaptcha-v3`, server verification
 - 17.3 `<MediaInquiriesBlock />` — heading + contact info
-- 17.4 Template 15: Contact page — form + ReCaptcha + media inquiries
+- 17.4 Template 15: Contact page — form + ReCaptcha + media inquiries — **page content text comes from CMS; form field labels are UI chrome — OK to hardcode**
 - 17.5 `<LoginForm />` — username + password, forgot links, "Log in" button
 - 17.6 `<AuthLayout />` — centered card wrapper (~480px)
 - 17.7 `<SupportContactBlock />` + `<CpaExplanationBlock />`
-- 17.8 Template 16: Auth page — login + register link + CPA explanation + support
+- 17.8 Template 16: Auth page — login + register link + CPA explanation + support — **page content text comes from CMS; form field labels are UI chrome — OK to hardcode**
   - **Auth: Aptify DB API** (NOT NextAuth/OAuth)
   - Simple member boolean (True/False)
   - HTTP-only JWT cookie session
@@ -30,13 +30,27 @@ Build forms (contact, login), auth (Aptify integration), ReCaptcha, and all gap 
 - 20.1 Annual Report page — T3B pattern
 - 20.2 Error pages (404/500) — branded, with header/footer
 - 20.3 RSS feed endpoint — `/api/rss` and `/api/rss/[board]`
-- 20.4 Decision Summaries listing — reuse T13 pattern
+- 20.4 Decision Summaries listing — reuse T13 pattern — **fetch from `decision-summaries` collection**
 - 20.5 Registration form — AuthLayout, Aptify API account creation
 - 20.6 Forgot Username — AuthLayout, Aptify recovery
 - 20.7 Forgot Password — AuthLayout, Aptify reset
 - 20.8 Member-Only Form Template — auth gate, 3 form variants (doc comment, event reg, volunteer)
 - 20.9 `<EventSummaryTable />` — tabular meeting summary
 - 20.10 `<MeetingTopicsTable />` — agenda topics table
+
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
+**Note for this epic:** Form field labels ("Name", "Email", "Password"), button text ("Log In", "Submit"), and validation messages are UI chrome — OK to hardcode. **Page content text** (headings, descriptions, support blocks) comes from CMS.
 
 ## IMPORTANT Auth Notes
 - Auth is Aptify DB API, NOT OAuth/SSO

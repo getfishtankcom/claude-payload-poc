@@ -2,7 +2,7 @@
 
 ## Your Mission
 
-Seed CMS with sample data, run responsive/accessibility/performance testing, set up SEO, integrate HubSpot newsletter. This is the Phase 1 capstone.
+CMS data wiring was completed in Epic 5. This epic focuses on seeding real content, verifying CMS-driven rendering, running responsive/accessibility/performance testing, setting up SEO, and integrating HubSpot newsletter. This is the Phase 1 capstone.
 
 ## Context Files (READ THESE FIRST)
 
@@ -15,6 +15,7 @@ Seed CMS with sample data, run responsive/accessibility/performance testing, set
 
 ### 10.1 Seed CMS with sample data
 - Create seed script: `src/seed/index.ts`
+- **After seeding, verify ALL pages render real CMS data (not hardcoded text). Visit homepage and confirm hero heading matches `homepage` global. Visit `/boards/acsb` and confirm nav/footer content comes from globals.**
 - 4 boards (AcSB, PSAB, AASB, CSSB) + RASOC
 - 11 standards mapped to boards
 - 8+ projects with timeline data

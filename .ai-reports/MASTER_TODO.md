@@ -1,6 +1,6 @@
 # FRAS Canada — Master TODO
 
-> **Total Tasks:** 131 (58 Phase 1 + 73 Phase 2)
+> **Total Tasks:** 136 (63 Phase 1 + 73 Phase 2)
 > **Stack:** Next.js 15 (App Router) + Payload CMS 3.x + PostgreSQL + Tailwind CSS v4 + Meilisearch
 > **Last Updated:** 2026-03-05
 
@@ -1163,9 +1163,131 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 
 ---
 
-## Epic 5: Search Experience (Meilisearch)
+## Epic 5: CMS Data Integration & Search (11 tasks)
 
-### 5.1 Build `<SearchModal />`
+> Epic 5 retroactively wires Epics 2-4 to CMS data and introduces block schemas for page builder architecture (Epics 25-26). CMS Integration tasks (5.1-5.6) run first, then Search tasks (5.7-5.11).
+
+### CMS Integration (5.1–5.6)
+
+### 5.1 Create Payload block schemas
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. `src/blocks/` directory exists with 6+ block schema files: HeroBlock, CTABlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock, ContentBlock
+  2. Each block uses `Block` type from `payload/types` with proper field definitions
+  3. `src/blocks/index.ts` exports a `blocks` array containing all block schemas
+  4. All blocks have `slug`, `labels`, and typed `fields` defined
+  5. `npx tsc --noEmit` passes with zero errors
+- **Validation:**
+  ```bash
+  ls src/blocks/*.ts | wc -l  # ≥ 7 (6 blocks + index)
+  npx tsc --noEmit
+  ```
+- **Ralph Stop:** All 6 block schemas compile, exported from index.ts.
+
+### 5.2 Create `<BlockRenderer />` component
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. `src/components/blocks/BlockRenderer.tsx` accepts `blocks` array prop and renders each block
+  2. `src/components/blocks/block-registry.ts` maps `blockType` → React component
+  3. Unknown block types log a warning and render nothing (no crash)
+  4. Co-located `.stories.tsx` file renders mixed block types
+  5. `npx storybook build --quiet` exits 0
+- **Validation:**
+  ```bash
+  npx tsc --noEmit
+  npx storybook build --quiet
+  ```
+- **Ralph Stop:** BlockRenderer story renders mixed blocks without errors.
+
+### 5.3 Create typed CMS fetch helpers
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. `src/lib/payload-helpers.ts` exists with 6 typed helper functions
+  2. `getHomepage()` returns typed homepage global data
+  3. `getNavigation()` returns typed navigation global data
+  4. `getFooter()` returns typed footer global data
+  5. `getLatestNews(limit)` returns news collection sorted by date desc
+  6. `getUpcomingEvents(limit)` returns events filtered by future dates, sorted
+  7. `getStandardsByCategory()` returns standards grouped by category enum
+  8. `homepage` global updated with `blocks` array field
+  9. All return types match generated `payload-types.ts`
+- **Validation:**
+  ```bash
+  npx tsc --noEmit  # All helpers compile with correct return types
+  grep -c "export.*async.*function" src/lib/payload-helpers.ts  # ≥ 6
+  ```
+- **Ralph Stop:** All 6 helpers compile, homepage global has blocks field.
+
+### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. Root layout fetches `navigation` global via `getNavigation()` and passes data as props
+  2. `<SiteHeader />` accepts navigation data props (no internal CMS fetching)
+  3. `<MegaMenu />` and `<MobileMenu />` receive navigation data from SiteHeader props
+  4. ALL hardcoded nav items removed — navigation structure comes entirely from CMS
+  5. Empty state renders sensibly when no navigation data exists
+- **Validation:**
+  ```bash
+  grep -rn "hardcoded\|TODO" src/components/layout/SiteHeader* src/components/layout/MegaMenu* src/components/layout/MobileMenu*  # returns 0
+  npx tsc --noEmit
+  # Change nav data in /admin → frontend reflects change on refresh
+  ```
+- **Ralph Stop:** Header/nav driven entirely by CMS data; zero hardcoded nav items.
+
+### 5.5 Wire SiteFooter to `footer` global
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. Root layout fetches `footer` global via `getFooter()` and passes data as props
+  2. `<SiteFooter />` accepts footer data props (no internal CMS fetching)
+  3. ALL hardcoded footer links, board lists, and text content removed
+  4. Footer columns, boards links, quick links, newsletter config from CMS
+  5. Empty state renders sensibly when no footer data exists
+- **Validation:**
+  ```bash
+  grep -rn "hardcoded\|TODO" src/components/layout/SiteFooter*  # returns 0
+  npx tsc --noEmit
+  # Change footer data in /admin → frontend reflects change on refresh
+  ```
+- **Ralph Stop:** Footer driven entirely by CMS data; zero hardcoded content.
+
+### 5.6 Wire homepage route to CMS data
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. `src/app/(frontend)/page.tsx` fetches homepage global + news + events + standards via helpers
+  2. All data passed as props to section components (no CMS fetching inside components)
+  3. Hero heading comes from `homepage.hero_heading` (not hardcoded "Canada's Official Hub...")
+  4. "New to FRAS?" section content from `homepage.cta_block` (not hardcoded)
+  5. News, events, standards data from collection queries
+  6. Empty state handling for all sections when CMS has no data
+  7. Zero hardcoded user-facing content strings in homepage components (outside seed data)
+- **Validation:**
+  ```bash
+  grep -rn "New to FRAS\|Canada's Official Hub" src/app/ src/components/  # 0 outside seed data
+  npx tsc --noEmit
+  npm run dev  # Homepage renders with CMS data or empty states
+  ```
+- **Ralph Stop:** Homepage renders CMS data; zero hardcoded user-facing text.
+
+### Search (5.7–5.11)
+
+### 5.7 Set up Meilisearch infrastructure
+- [ ] **Status:** Not Started
+- **Acceptance Criteria:**
+  1. Docker Compose includes Meilisearch v1.x service on port 7700
+  2. `payload-meilisearch` plugin configured in `payload.config.ts` with collections list
+  3. Searchable collections: projects, news, document-for-comment, resources, events, pages
+  4. `afterChange` hooks auto-sync documents to Meilisearch indexes
+  5. Filterable attributes configured: board, standard, content_type, file_type, date
+  6. Bilingual indexes created: `{collection}_en`, `{collection}_fr`
+  7. `MEILISEARCH_HOST` and `MEILISEARCH_API_KEY` added to `.env.example`
+- **Validation:**
+  - `docker compose ps | grep meilisearch` — service running
+  - `curl -s localhost:7700/health` — returns `{"status":"available"}`
+  - Create a news item in Payload admin → `curl localhost:7700/indexes/news_en/search?q=...` returns it
+  - `curl localhost:7700/indexes/news_en/settings/filterable-attributes` — returns configured attributes
+- **Ralph Stop:** Meilisearch running, auto-syncing with Payload, filterable attributes configured.
+
+### 5.8 Build `<SearchModal />`
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
   1. Full-screen overlay opens when search input is clicked (header or hero)
@@ -1181,7 +1303,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Press Escape → modal closes, focus returns to trigger element
 - **Ralph Stop:** Modal opens/closes correctly, submits search query to results page, keyboard accessible.
 
-### 5.2 Build `<FilterSidebar />`
+### 5.9 Build `<FilterSidebar />` + `<SearchResultCard />`
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
   1. Five collapsible accordion sections: Board, Standard, Files & Media, Content Type, Date
@@ -1190,30 +1312,18 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Active filter count badge displays on each section header
   5. "Clear All" link resets all filters and updates search results
   6. Mobile (< 1024px): renders as collapsible accordion above results instead of sidebar
-  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
+  7. SearchResultCard displays: content type badge, board name, date, linked title, truncated description
+  8. File info row shows "PDF · 2.4 MB" when applicable (documents only)
+  9. CTA link text varies by content type (View Document / Read More / Watch Recording / Read Summary / Download Guide)
+  10. Co-located `.stories.tsx` files for both components
 - **Validation:**
   - Toggle Board checkbox → results update via Meilisearch refinement
   - `document.querySelectorAll('[data-filter-section]').length === 5` in DevTools console
   - Chrome DevTools screenshot at 768px shows accordion layout
-  - Click "Clear All" → all checkboxes unchecked, URL params cleared
-- **Ralph Stop:** All 5 filter sections functional; filters update results; mobile accordion works.
-
-### 5.3 Build `<SearchResultCard />`
-- [ ] **Status:** Not Started
-- **Acceptance Criteria:**
-  1. Displays content type badge, board name, and date in header row
-  2. Title renders as linked heading to detail page
-  3. Description text truncated to 2-3 lines with ellipsis
-  4. File info row shows "PDF · 2.4 MB" when applicable (documents only)
-  5. CTA link text varies by content type (View Document / Read More / Watch Recording / Read Summary / Download Guide)
-  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
-- **Validation:**
   - Search for known document → card shows file size and "View Document" CTA
-  - Search for known news item → card shows "Read More" CTA
-  - Truncation visible when description exceeds 3 lines
-- **Ralph Stop:** Card renders all fields correctly with type-appropriate CTA text.
+- **Ralph Stop:** All 5 filter sections functional; search result cards render correctly with type-appropriate CTAs.
 
-### 5.4 Build Search Results page
+### 5.10 Build Search Results page
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/search/page.tsx` exists
@@ -1229,27 +1339,11 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Pagination: click page 2 → next batch of results loads
 - **Ralph Stop:** Search page returns filtered, sorted, paginated results from Meilisearch.
 
-### 5.5 Set up Meilisearch infrastructure
-- [ ] **Status:** Not Started
-- **Acceptance Criteria:**
-  1. Docker Compose includes Meilisearch v1.x service on port 7700
-  2. `payload-meilisearch` plugin configured in `payload.config.ts` with collections list
-  3. Searchable collections: projects, news, consultations, documents, events, pages
-  4. `afterChange` hooks auto-sync documents to Meilisearch indexes
-  5. Filterable attributes configured: board, standard, content_type, file_type, date
-  6. Bilingual indexes created: `{collection}_en`, `{collection}_fr`
-- **Validation:**
-  - `docker compose ps | grep meilisearch` — service running
-  - `curl -s localhost:7700/health` — returns `{"status":"available"}`
-  - Create a news item in Payload admin → `curl localhost:7700/indexes/news_en/search?q=...` returns it
-  - `curl localhost:7700/indexes/news_en/settings/filterable-attributes` — returns configured attributes
-- **Ralph Stop:** Meilisearch running, auto-syncing with Payload, filterable attributes configured.
-
-### 5.6 Build document extraction pipeline
+### 5.11 Build document extraction pipeline
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
   1. `pdf-parse` and `mammoth` installed as dependencies
-  2. `afterChange` hook on `documents` collection extracts text from PDF and DOCX uploads
+  2. `afterChange` hook on `resources` collection extracts text from PDF and DOCX uploads
   3. Extracted text indexed in Meilisearch (not stored in PostgreSQL)
   4. Extraction errors logged as warnings without blocking document save
   5. Search for text inside a PDF returns the document in results

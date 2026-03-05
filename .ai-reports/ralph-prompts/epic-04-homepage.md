@@ -18,22 +18,23 @@ Build the FRAS Canada homepage — the main landing page at `/`.
 Route: `src/app/(frontend)/page.tsx`
 
 ### 4.1 Hero section
-- H1 "Canada's Official Hub for Financial Reporting Standards"
-- Subtitle text
+- **H1 renders text from `homepage.hero_heading` prop — do NOT hardcode "Canada's Official Hub..."**
+- Subtitle text from `homepage.hero_subtitle` prop
 - Search bar (opens SearchModal on click — wire to placeholder if Epic 5 not done)
 - Hero gradient background from design tokens
 - Mobile: responsive stacking
 
 ### 4.2 "New to FRAS?" CTA section
-- Intro text + "Get Started" button
-- Content from `homepage` global
+- **All text (heading, description, button label, URL) comes from props. NO hardcoded strings.**
+- Content from `homepage` global `cta_block` field
 
 ### 4.3 "Important News & Events" 3-column grid
 - Column 1: Top News (3 items via `<NewsItem />`) + "All News →" link
 - Column 2: Exposure Drafts with ED number, title, date
 - Column 3: Upcoming Events with date, title, type badge
 - Mobile: stack as 3 sections
-- Data from `news`, `events`, `documents` collections
+- **Data passed as props from server component. Components do NOT fetch directly.**
+- Data from `news`, `events`, `document-for-comment` collections (canonical names)
 
 ### 4.4 "Browse by Standard" section
 - 4-column card grid: Sustainability, Accounting, Public Sector, Assurance
@@ -42,6 +43,7 @@ Route: `src/app/(frontend)/page.tsx`
 - Data from `standards` collection
 
 ### 4.5 Wire homepage route
+- **Fetch from CMS using typed helpers. If Epic 5 helpers don't exist yet, use inline `payload.findGlobal()` / `payload.find()` calls**
 - Server component fetching `homepage` global + news + events + standards
 - Client interactive sections where needed (search bar click, expandable cards)
 
@@ -66,8 +68,39 @@ npm run dev
 <promise>EPIC 4 COMPLETE</promise>
 ```
 
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
+Example:
+```tsx
+// Page route (server component)
+import { getHomepage, getLatestNews } from '@/lib/payload-helpers'
+
+export default async function HomePage() {
+  const [homepage, news] = await Promise.all([getHomepage(), getLatestNews(3)])
+  return <HeroCTA heading={homepage.hero_heading} description={homepage.hero_subtitle} />
+}
+
+// Presentational component — NO default content values
+interface HeroCTAProps {
+  heading: string
+  description: string
+}
+export function HeroCTA({ heading, description }: HeroCTAProps) { ... }
+```
+
 ## IMPORTANT
 
+- **Components should render empty states, NOT hardcoded placeholder text**
 - Homepage is the most visually complex page — match wireframe closely
 - Use `<Container />` primitive for max-width wrapper
 - Use `<Stack />` for section spacing

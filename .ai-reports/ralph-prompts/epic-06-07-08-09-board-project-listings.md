@@ -18,10 +18,10 @@ Build the core content pages: Board Detail, Project Detail, Active Projects list
 
 Components in `src/components/board/`:
 - **6.1 `<SectionNav />`** — vertical nav sidebar, 7 items, active state, mobile: dropdown
-- **6.2 `<QuickActions />`** — vertical button list (CPA Handbook, Implementation Tools, Webinars)
-- **6.3 `<UpcomingEvents />`** — "View All" link + event items with date/title/badge
+- **6.2 `<QuickActions />`** — vertical button list; **data from `board.quick_actions[]` — do NOT hardcode action labels**
+- **6.3 `<UpcomingEvents />`** — "View All" link (URL derived from board slug, not hardcoded) + event items with date/title/badge
 - **6.4 `<ResourcesList />`** — document links with file type icons
-- **6.5 `<RecentNews />`** — "View All →" + news items via `<NewsItem />`
+- **6.5 `<RecentNews />`** — "View All →" link (URL derived from board slug, not hardcoded) + news items via `<NewsItem />`
 - **6.6 Board Detail route** — `app/(frontend)/boards/[board-slug]/page.tsx`
   - 3-column layout: SectionNav | Main (tabs, content) | Right sidebar (actions, events, resources)
   - Fetch board + projects + news + events from Payload
@@ -48,6 +48,7 @@ Components in `src/components/board/`:
 
 - **9.1 `<ConsultationCard />`** — title, badges, deadline badge, board/standard, description, "Comments due in X days"
 - **9.2 Route** — `app/(frontend)/open-consultations/page.tsx`
+  - **Fetch from `document-for-comment` collection (canonical name — NOT `consultations`)**
   - Filter bar: text search + board dropdown + standard dropdown
 
 ## Validation
@@ -71,6 +72,18 @@ When ALL tasks across Epics 6-9 are `[x]`: update AUDIT_LOG.md, output:
 ```
 <promise>EPICS 6 THROUGH 9 COMPLETE</promise>
 ```
+
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
 
 ## IMPORTANT
 
