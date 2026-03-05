@@ -176,3 +176,13 @@
     outline-offset: 2px;
   }
 }
+
+/* ── Print Styles ──────────────────────────────────────────────────────── */
+@media print {
+  [data-testid="effective-dates-table"] table {
+    break-inside: avoid;
+  }
+  [data-testid="effective-dates-table"] tr {
+    break-inside: avoid;
+  }
+}

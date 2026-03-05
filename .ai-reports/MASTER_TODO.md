@@ -1851,7 +1851,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 12: Content Page Templates (6 tasks)
 
 ### 12.1 Build `<StaffContactCard />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/StaffContactCard.tsx` with typed props: `contacts: Array<{ name: string; title: string; phone: string; email: string }>`
   - Purple H2 heading "Staff Contact(s)" using `color: rgb(96, 31, 91)`
@@ -1864,7 +1864,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Contact card renders with phone/email links functional, multiple contacts display with dividers
 
 ### 12.2 Build `<SectionNavSidebar />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/SectionNavSidebar.tsx` with props: `sectionLabel: string`, `links: Array<{ label: string; href: string; isActive: boolean }>`
   - Active link styled: bold text + underline, no color change
@@ -1877,7 +1877,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Section nav renders with active state distinction, mobile layout drops below content
 
 ### 12.3 Build `<SectionTabs />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/SectionTabs.tsx` with props: `tabs: Array<{ label: string; href: string; isActive: boolean }>`
   - Active tab has bottom border highlight (purple/brand) and bold text
@@ -1891,7 +1891,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Tabs render with active state, navigation works, horizontal scroll on mobile
 
 ### 12.4 Build Template 3A: Content Page + Staff Contact Sidebar
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[...slug]/page.tsx` handles dynamic catch-all with sidebar logic
   - Layout: ~70% main / ~30% right sidebar when `sidebarType === 'staff-contact'`
@@ -1905,7 +1905,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Content page with staff contact sidebar renders, sticky sidebar works on desktop, mobile stacks correctly
 
 ### 12.5 Build Template 3B: Content Page + Section Nav Sidebar
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Same catch-all route as 12.4, conditionally renders when `sidebarType === 'section-nav'`
   - Main: breadcrumbs, section tabs, H1, rich text body
@@ -1918,7 +1918,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Section nav sidebar renders with correct sibling links, active page highlighted
 
 ### 12.6 Build Template 17: Simple Content / Empty State
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/job-opportunities/page.tsx`
   - Full-width layout, no sidebar
@@ -1936,7 +1936,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 13: People & Organization (4 tasks)
 
 ### 13.1 Build `<MemberCard />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/MemberCard.tsx` with typed props: `member: { name: string; credentials: string; photo: string; role: string; roleLabel: string; appointedDate: string; termExpires: string; bioPageUrl: string }`
   - Photo renders at 205x205px square using `next/image`
@@ -1950,7 +1950,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Member card renders all fields with correct formatting, photo sizing, and role label display
 
 ### 13.2 Build Template 4: People Listing (Members)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[board]/about/members/page.tsx`
   - Layout: ~70% main (2-column card grid) + ~30% section nav sidebar
@@ -1966,7 +1966,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Board member listing pages render for all boards with correct grouping and sort order
 
 ### 13.3 Build `<AnchorNav />` component (scroll-spy sidebar)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/AnchorNav.tsx` with "On this page" heading
   - Vertical list of anchor links corresponding to H2 headings on the page
@@ -1981,7 +1981,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Scroll-spy sidebar tracks current section, anchor links scroll correctly, mobile accordion works
 
 ### 13.4 Build Template 14: Committee Index / Directory
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[board]/committees/page.tsx`
   - Layout: ~70% main + ~30% `<AnchorNav />` sidebar
@@ -2001,7 +2001,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 14: Standards Section (6 tasks)
 
 ### 14.1 Build `<BoardLogoHero />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/BoardLogoHero.tsx` with props: `logo: string` (image path), `boardName: string`, `backgroundColor?: string`
   - Board crest/wordmark centered, full board name below
@@ -2014,7 +2014,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Hero banner renders with logo, board name, and brand background color
 
 ### 14.2 Build `<ActiveProjectsTable />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/ActiveProjectsTable.tsx` with props: `projects: Array<{ name: string; href: string; description: string }>`
   - Two-column table: "Project Name" and "Description" headers
@@ -2027,7 +2027,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Projects table renders with linked names, mobile stacked card layout works
 
 ### 14.3 Build `<FeatureCTABlock />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/FeatureCTABlock.tsx` with props: `cards: Array<{ heading: string; description: string; buttonLabel: string; buttonHref: string; variant: 'light' | 'dark-purple' }>`
   - 1-2 CTA cards side by side
@@ -2041,7 +2041,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** CTA blocks render in both variants, hover animation works, mobile stacks vertically
 
 ### 14.4 Build Template 5: Standards Overview (Tabbed)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[standard]/page.tsx`
   - Full-width layout with `<SectionTabs />` navigation (5-6 tabs)
@@ -2056,7 +2056,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** 11 standards overview pages render with correct tab counts, projects table, CTA blocks, and news feed
 
 ### 14.5 Build `<EffectiveDatesTable />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/EffectiveDatesTable.tsx` with props: `sections: Array<{ headerLabel: string; headerDate: string; rows: Array<{ application: RichText; pronouncement: string }> }>`, `footnotes: Array<{ marker: string; text: RichText }>`, `introText: RichText`
   - Purple section header rows (purple bg, white text) spanning full width
@@ -2073,7 +2073,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Effective dates table renders all sections with purple headers, footnotes, alternating rows, and print styles
 
 ### 14.6 Build Template 10: Effective Dates page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[standard]/effective-dates/page.tsx`
   - Full-width tabbed layout matching T5/T8 page chrome (section tabs present)
