@@ -58,7 +58,7 @@ async function getFeedItems(boardSlug?: string): Promise<FeedItem[]> {
       depth: 1,
     })
     for (const item of news.docs) {
-      const doc = item as Record<string, unknown>
+      const doc = item as unknown as Record<string, unknown>
       items.push({
         title: (doc.title as string) || '',
         link: `${baseUrl}/news/${doc.slug}`,
@@ -79,7 +79,7 @@ async function getFeedItems(boardSlug?: string): Promise<FeedItem[]> {
       depth: 1,
     })
     for (const item of events.docs) {
-      const doc = item as Record<string, unknown>
+      const doc = item as unknown as Record<string, unknown>
       items.push({
         title: (doc.title as string) || '',
         link: `${baseUrl}/meetings-and-events/${doc.slug}`,
@@ -100,7 +100,7 @@ async function getFeedItems(boardSlug?: string): Promise<FeedItem[]> {
       depth: 1,
     })
     for (const item of docs.docs) {
-      const doc = item as Record<string, unknown>
+      const doc = item as unknown as Record<string, unknown>
       items.push({
         title: (doc.title as string) || '',
         link: `${baseUrl}/open-for-comment/${doc.slug}`,

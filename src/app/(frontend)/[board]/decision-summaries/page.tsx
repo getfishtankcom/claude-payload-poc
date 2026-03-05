@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { board: boardSlug } = await params
   const board = await getBoardBySlug(boardSlug)
   return {
-    title: `Decision Summaries — ${(board as Record<string, unknown>)?.name || boardSlug.toUpperCase()} — FRAS Canada`,
-    description: `Decision summaries from ${(board as Record<string, unknown>)?.name || boardSlug.toUpperCase()} meetings.`,
+    title: `Decision Summaries — ${board?.name || boardSlug.toUpperCase()} — FRAS Canada`,
+    description: `Decision summaries from ${board?.name || boardSlug.toUpperCase()} meetings.`,
   }
 }
 
@@ -67,7 +67,7 @@ export default async function DecisionSummariesPage({ params }: PageProps) {
     // Collection may not exist yet
   }
 
-  const boardName = (board as Record<string, unknown>).name as string
+  const boardName = board.name
 
   return (
     <Container as="section" className="py-8 md:py-12">

@@ -27,6 +27,7 @@ import type { Metadata } from 'next'
 import { Container } from '@/components/ui/Container'
 import { ContactFormWrapper } from '@/components/ContactFormWrapper'
 import { MediaInquiriesBlock } from '@/components/MediaInquiriesBlock'
+import { RichText } from '@/components/RichText'
 import { submitContactForm } from '@/app/(frontend)/actions/contact'
 import { getPageBySlug } from '@/lib/payload-helpers'
 
@@ -39,8 +40,8 @@ export default async function ContactUsPage() {
   // Fetch page content from CMS
   const page = await getPageBySlug('contact-us')
 
-  // Extract media inquiries data from page (group fields)
-  const mediaInquiries = (page as Record<string, unknown>)?.mediaInquiries as {
+  // Extract media inquiries data from page (group fields, may not exist on Page type yet)
+  const mediaInquiries = (page as unknown as Record<string, unknown>)?.mediaInquiries as {
     heading?: string
     contactName?: string
     contactTitle?: string
@@ -53,18 +54,13 @@ export default async function ContactUsPage() {
       <div data-testid="page-contact-us" className="flex flex-col gap-10">
         {/* Page Title */}
         <h1 className="text-3xl font-bold text-text-primary md:text-4xl">
-          {(page?.title as string) || 'Contact Us'}
+          {page?.title || 'Contact Us'}
         </h1>
 
         {/* Intro Text */}
-        {page?.content && (
+        {page?.hero?.richText && (
           <div className="prose max-w-none text-text-secondary">
-            {/* Rich text from CMS — rendered as blocks */}
-            <p>
-              Have a question about Canadian accounting, auditing, or sustainability standards?
-              We&apos;d love to hear from you. Fill out the form below and a member of our team
-              will get back to you shortly.
-            </p>
+            <RichText content={page.hero.richText as unknown as Record<string, unknown>} />
           </div>
         )}
 

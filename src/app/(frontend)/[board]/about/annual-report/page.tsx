@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { board: boardSlug } = await params
   const board = await getBoardBySlug(boardSlug)
   return {
-    title: `Annual Report — ${(board as Record<string, unknown>)?.name || boardSlug.toUpperCase()} — FRAS Canada`,
-    description: `Annual report for ${(board as Record<string, unknown>)?.name || boardSlug.toUpperCase()}.`,
+    title: `Annual Report — ${board?.name || boardSlug.toUpperCase()} — FRAS Canada`,
+    description: `Annual report for ${board?.name || boardSlug.toUpperCase()}.`,
   }
 }
 
@@ -53,7 +53,7 @@ export default async function AnnualReportPage({ params }: PageProps) {
     notFound()
   }
 
-  const boardName = (board as Record<string, unknown>).name as string
+  const boardName = board.name
 
   // Sidebar navigation items for About section
   const aboutNavItems = [
@@ -97,13 +97,13 @@ export default async function AnnualReportPage({ params }: PageProps) {
         {/* Main Content */}
         <main data-testid="main-content" className="flex flex-col gap-6">
           <h1 className="text-3xl font-bold text-text-primary">
-            {(page?.title as string) || 'Annual Report'}
+            {page?.title || 'Annual Report'}
           </h1>
 
-          {/* Rich text body */}
-          {page?.content ? (
+          {/* Rich text body from hero.richText */}
+          {page?.hero?.richText ? (
             <RichText
-              content={(page as Record<string, unknown>).content as Record<string, unknown>}
+              content={page.hero.richText as unknown as Record<string, unknown>}
               className="prose max-w-none"
             />
           ) : (
