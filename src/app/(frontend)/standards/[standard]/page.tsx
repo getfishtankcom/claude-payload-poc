@@ -21,6 +21,7 @@
  * - Active tab determined by matching current route
  * - News items fetched separately via board filter
  */
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getStandardsSectionBySlug,
@@ -35,6 +36,16 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 type PageProps = {
   params: Promise<{ standard: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { standard: standardSlug } = await params
+  const section = await getStandardsSectionBySlug(standardSlug)
+  const title = section ? (section.title as string) : standardSlug.toUpperCase()
+  return {
+    title: `${title} — FRAS Canada`,
+    description: `Overview of ${title} standards including active projects, effective dates, and resources.`,
+  }
 }
 
 export async function generateStaticParams() {

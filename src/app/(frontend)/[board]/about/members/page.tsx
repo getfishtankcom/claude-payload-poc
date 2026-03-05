@@ -20,6 +20,7 @@
  * - Server component — fetches from board-members collection
  * - Members sorted by role priority then sortOrder then name
  */
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getBoardMembersByBoardSlug,
@@ -49,6 +50,17 @@ const ROLE_LABELS: Record<string, string> = {
   'vice-chair': 'VICE-CHAIR',
   'voting-member': 'VOTING MEMBERS',
   'non-voting': 'NON-VOTING MEMBERS',
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { board: boardSlug } = await params
+  const board = await getBoardBySlug(boardSlug)
+  const boardData = board as unknown as Record<string, unknown> | null
+  const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
+  return {
+    title: `${boardAbbr} Members — FRAS Canada`,
+    description: `Current board members of the ${boardAbbr}. View chairs, vice-chairs, and voting members.`,
+  }
 }
 
 export async function generateStaticParams() {

@@ -2705,7 +2705,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Phase 2 pages meet Core Web Vitals targets, bundle sizes reasonable, no render jank
 
 ### 21.5 Phase 2 SEO setup
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Metadata (title, description, og:image) set for all Phase 2 page types
   - Structured data added: Person (members), Organization (committees), FAQPage (if applicable)
@@ -2719,7 +2719,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Phase 2 pages fully indexed with correct SEO metadata, structured data, and sitemap entries
 
 ### 21.6 End-to-end integration testing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Contact form flow: submit form, verify data in form-submissions collection, admin notification
   - Login flow: authenticate, verify session cookie set, access protected pages
