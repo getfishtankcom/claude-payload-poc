@@ -11,7 +11,7 @@
  * @notes
  * - Board slug from route params pre-filters the news listing
  * - Same UI as global news but scoped to one board
- * - Route uses [slug] param for board slug (shared dynamic segment)
+ * - Route uses [board] param for board slug (shared dynamic segment)
  */
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
@@ -19,7 +19,7 @@ import { getAllBoards } from '@/lib/payload-helpers'
 import { NewsListingClient } from '../../news-listings/NewsListingClient'
 
 type Props = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ board: string }>
 }
 
 export const metadata: Metadata = {
@@ -31,11 +31,11 @@ export const revalidate = 60
 
 export async function generateStaticParams() {
   const boards = await getAllBoards()
-  return boards.map((b) => ({ slug: b.slug }))
+  return boards.map((b) => ({ board: b.slug }))
 }
 
 export default async function BoardNewsListingPage({ params }: Props) {
-  const { slug: boardSlug } = await params
+  const { board: boardSlug } = await params
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-board-news-listing">
