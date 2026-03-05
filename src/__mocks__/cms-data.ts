@@ -109,12 +109,73 @@ export type Contact = {
 export type BoardMember = {
   id: string
   name: string
-  role: 'chair' | 'vice-chair' | 'member'
+  credentials?: string
+  role: 'chair' | 'vice-chair' | 'voting-member' | 'non-voting'
+  roleLabel?: string
   photo?: string
-  termStart: string
-  termEnd: string
+  appointedDate: string
+  termExpires: string
   board: Board
-  bio: string
+  bioPageUrl?: string
+  sortOrder?: number
+}
+
+export type Committee = {
+  id: string
+  name: string
+  slug: string
+  description: string
+  board: Board
+  sortOrder: number
+  status: 'active' | 'inactive' | 'archived'
+  detailPageUrl?: string
+  members?: Array<{ name: string; role?: string; organization?: string }>
+}
+
+export type StandardsSection = {
+  id: string
+  title: string
+  slug: string
+  boardLogo?: string
+  boardName: string
+  tabs: Array<{ label: string; href: string; isActive: boolean }>
+  featureCTAs: Array<{
+    heading: string
+    description: string
+    buttonLabel: string
+    buttonHref: string
+    variant: 'light' | 'dark-purple'
+  }>
+  board: Board
+  activeProjects: Project[]
+}
+
+export type EffectiveDatesData = {
+  id: string
+  title: string
+  introText?: string
+  sections: Array<{
+    headerLabel: string
+    headerDate?: string
+    rows: Array<{
+      application: string
+      pronouncement?: string
+      footnoteRef?: string
+    }>
+  }>
+  footnotes?: Array<{ marker: string; text: string }>
+}
+
+export type JobPosting = {
+  id: string
+  title: string
+  department?: string
+  location?: string
+  summary?: string
+  postedDate?: string
+  closingDate?: string
+  externalUrl?: string
+  status: 'draft' | 'published' | 'closed'
 }
 
 // ── Board Fixtures ──────────────────────────────────────────────────────────
@@ -285,13 +346,67 @@ export function mockBoardMember(overrides?: Partial<BoardMember>): BoardMember {
   return {
     id: nextId(),
     name: 'Linda Wei, FCPA, FCA',
+    credentials: 'FCPA, FCA',
     role: 'chair',
-    termStart: '2024-01-01T00:00:00.000Z',
-    termEnd: '2027-12-31T00:00:00.000Z',
+    roleLabel: 'CHAIR',
+    appointedDate: '2024-01-01T00:00:00.000Z',
+    termExpires: '2027-12-31T00:00:00.000Z',
     board: BOARDS.acsb,
-    bio: 'Linda Wei is the Chair of the Accounting Standards Board. She has over 25 years of experience in financial reporting.',
+    bioPageUrl: '/acsb/about/members/linda-wei',
+    sortOrder: 0,
     ...overrides,
   }
+}
+
+export function mockCommittee(overrides?: Partial<Committee>): Committee {
+  return {
+    id: nextId(),
+    name: 'Advisory Committee',
+    slug: 'advisory-committee',
+    description: 'The Advisory Committee assists the AcSB by providing input on technical accounting matters.',
+    board: BOARDS.acsb,
+    sortOrder: 0,
+    status: 'active',
+    ...overrides,
+  }
+}
+
+export function mockJobPosting(overrides?: Partial<JobPosting>): JobPosting {
+  return {
+    id: nextId(),
+    title: 'Senior Accounting Standards Analyst',
+    department: 'Accounting Standards',
+    location: 'Toronto, ON',
+    summary: 'We are looking for an experienced analyst to join our team.',
+    postedDate: '2026-01-15T00:00:00.000Z',
+    status: 'published',
+    ...overrides,
+  }
+}
+
+export function mockBoardMembersList(count = 8): BoardMember[] {
+  const members: Partial<BoardMember>[] = [
+    { name: 'Linda Wei, FCPA, FCA', credentials: 'FCPA, FCA', role: 'chair', roleLabel: 'CHAIR', sortOrder: 0 },
+    { name: 'Maria Garcia, CPA, CA', credentials: 'CPA, CA', role: 'vice-chair', sortOrder: 0 },
+    { name: 'Alice Chen, FCPA, FCA, CPA(MI)', credentials: 'FCPA, FCA, CPA(MI)', role: 'voting-member', sortOrder: 1 },
+    { name: 'Bob Williams, CPA', credentials: 'CPA', role: 'voting-member', sortOrder: 2 },
+    { name: 'David Park, CPA, CA', credentials: 'CPA, CA', role: 'voting-member', sortOrder: 3 },
+    { name: 'Emily Tremblay, FCPA, FCGA', credentials: 'FCPA, FCGA', role: 'voting-member', sortOrder: 4 },
+    { name: 'Frank Liu, CPA, CMA', credentials: 'CPA, CMA', role: 'voting-member', sortOrder: 5 },
+    { name: 'Grace Kim, FCPA, FCA', credentials: 'FCPA, FCA', role: 'voting-member', sortOrder: 6 },
+  ]
+  return members.slice(0, count).map((m) => mockBoardMember(m))
+}
+
+export function mockCommitteesList(count = 5): Committee[] {
+  const committees: Partial<Committee>[] = [
+    { name: 'Accounting Standards Advisory Forum', slug: 'asaf', sortOrder: 0, detailPageUrl: '/acsb/committees/asaf' },
+    { name: 'Advisory Committee', slug: 'advisory-committee', sortOrder: 1, detailPageUrl: '/acsb/committees/advisory-committee' },
+    { name: 'Agriculture Advisory Group', slug: 'agriculture', sortOrder: 2 },
+    { name: 'Due Process Oversight Committee', slug: 'due-process', sortOrder: 3 },
+    { name: 'Employee Future Benefits Task Force', slug: 'efb', sortOrder: 4 },
+  ]
+  return committees.slice(0, count).map((c) => mockCommittee(c))
 }
 
 // ── List Generators ─────────────────────────────────────────────────────────
