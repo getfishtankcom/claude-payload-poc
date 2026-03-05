@@ -148,7 +148,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
       if (e.key !== 'Tab' || !modalRef.current) return
 
       const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
-        'input, button, [tabindex]:not([tabindex="-1"])',
+        'input, button, a[href], [tabindex]:not([tabindex="-1"])',
       )
       if (focusableElements.length === 0) return
 

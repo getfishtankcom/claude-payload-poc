@@ -21,9 +21,15 @@
  * - JobListings component handles its own data fetching
  * - Empty state is the default/expected state
  */
+import type { Metadata } from 'next'
 import { getPageBySlug } from '@/lib/payload-helpers'
 import { JobListings } from '@/components/JobListings'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+
+export const metadata: Metadata = {
+  title: 'Job Opportunities — FRAS Canada',
+  description: 'Current job openings at FRAS Canada. Browse volunteer and employment opportunities with Canadian accounting standards boards.',
+}
 
 export default async function JobOpportunitiesPage() {
   const page = await getPageBySlug('job-opportunities')

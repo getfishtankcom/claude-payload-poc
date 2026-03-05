@@ -194,7 +194,7 @@ function AccordionSection({
                   className="h-4 w-4 border-gray-300 text-primary focus:ring-primary-bright"
                 />
               )}
-              <span>{option.label}</span>
+              <span className="min-w-0 break-words">{option.label}</span>
               {option.count !== undefined && (
                 <span className="text-text-muted">({option.count})</span>
               )}

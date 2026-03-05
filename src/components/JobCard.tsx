@@ -51,7 +51,7 @@ export function JobCard({ job }: JobCardProps) {
       data-testid="job-card"
       className="border-b border-gray-200 px-4 py-5 transition-colors hover:border-l-4 hover:border-l-primary hover:bg-gray-50"
     >
-      <h3 className="text-base font-bold text-text-primary">{job.title}</h3>
+      <h3 className="text-base font-bold text-text-primary break-words">{job.title}</h3>
 
       <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-muted">
         {(job.department || job.location) && (

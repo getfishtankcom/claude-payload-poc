@@ -42,6 +42,7 @@ export function CategoryPills({ options, onChange, className = '' }: CategoryPil
       {/* Desktop: pill row */}
       <nav
         aria-label="Category filter"
+        role="group"
         className="hidden flex-wrap gap-2 md:flex"
         data-testid="category-pills-desktop"
       >

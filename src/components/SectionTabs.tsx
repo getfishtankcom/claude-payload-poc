@@ -41,16 +41,18 @@ export function SectionTabs({ tabs }: SectionTabsProps) {
       aria-label="Section tabs"
       className="border-b border-gray-200"
     >
-      <div className="-mb-px flex overflow-x-auto">
+      <div className="-mb-px flex overflow-x-auto" role="tablist">
         {tabs.map((tab) => (
           <a
             key={tab.href}
             href={tab.href}
+            role="tab"
             className={`shrink-0 whitespace-nowrap border-b-2 px-4 py-3 text-sm transition-colors ${
               tab.isActive
                 ? 'border-primary font-bold text-primary'
                 : 'border-transparent text-text-muted hover:border-gray-300 hover:text-text-primary'
             }`}
+            aria-selected={tab.isActive}
             aria-current={tab.isActive ? 'page' : undefined}
             data-testid={`section-tab-${tab.label.toLowerCase().replace(/\s+/g, '-')}`}
           >

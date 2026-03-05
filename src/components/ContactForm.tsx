@@ -149,6 +149,13 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       className="flex flex-col gap-6"
       noValidate
     >
+      {/* Error announcement for screen readers */}
+      {Object.keys(errors).length > 0 && (
+        <div role="alert" className="sr-only">
+          Please correct {Object.keys(errors).length} error{Object.keys(errors).length > 1 ? 's' : ''} in the form.
+        </div>
+      )}
+
       <Input
         id="fullName"
         name="fullName"

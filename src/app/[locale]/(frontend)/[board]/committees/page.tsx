@@ -19,6 +19,7 @@
  * - Server component with client AnchorNav child
  * - Rich text descriptions rendered via dangerouslySetInnerHTML
  */
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getCommitteesByBoardSlug,
@@ -30,6 +31,17 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 type PageProps = {
   params: Promise<{ board: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { board: boardSlug } = await params
+  const board = await getBoardBySlug(boardSlug)
+  const boardData = board as unknown as Record<string, unknown> | null
+  const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
+  return {
+    title: `${boardAbbr} Committees — FRAS Canada`,
+    description: `Advisory and standing committees of the ${boardAbbr}. Browse committee mandates and members.`,
+  }
 }
 
 export async function generateStaticParams() {

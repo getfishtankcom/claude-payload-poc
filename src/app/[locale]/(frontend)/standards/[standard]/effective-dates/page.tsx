@@ -18,6 +18,7 @@
  * - Server component — fetches from effective-dates collection
  * - All sections render on single page (long scroll)
  */
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getEffectiveDatesByStandard,
@@ -30,6 +31,16 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 type PageProps = {
   params: Promise<{ standard: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { standard: standardSlug } = await params
+  const section = await getStandardsSectionBySlug(standardSlug)
+  const sectionTitle = section ? (section.title as string) : standardSlug.toUpperCase()
+  return {
+    title: `Effective Dates — ${sectionTitle} — FRAS Canada`,
+    description: `Effective dates for ${sectionTitle} standards, amendments, and interpretations.`,
+  }
 }
 
 export async function generateStaticParams() {

@@ -10,13 +10,14 @@
  *
  * @notes
  * - Next.js convention: app/sitemap.ts generates /sitemap.xml
- * - Dynamic routes: boards, projects (active only)
- * - Static routes: homepage, active-projects, open-consultations, search
+ * - Dynamic routes: boards, projects (active only), standards, effective-dates
+ * - Static routes: homepage, active-projects, open-consultations, search,
+ *   contact-us, job-opportunities, news-listings
  * - Excludes admin routes
  * - Each URL includes alternates for both EN and FR locales
  */
 import type { MetadataRoute } from 'next'
-import { getAllBoards, getAllActiveProjects } from '@/lib/payload-helpers'
+import { getAllBoards, getAllActiveProjects, getAllStandardsSections } from '@/lib/payload-helpers'
 import { locales } from '@/i18n/routing'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'
@@ -37,6 +38,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/active-projects', changeFrequency: 'weekly' as const, priority: 0.8 },
     { path: '/open-consultations', changeFrequency: 'weekly' as const, priority: 0.8 },
     { path: '/search', changeFrequency: 'monthly' as const, priority: 0.5 },
+    // Phase 2 static routes
+    { path: '/contact-us', changeFrequency: 'monthly' as const, priority: 0.5 },
+    { path: '/job-opportunities', changeFrequency: 'weekly' as const, priority: 0.5 },
+    { path: '/news-listings', changeFrequency: 'daily' as const, priority: 0.7 },
   ]
 
   const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap(({ path, changeFrequency, priority }) =>
@@ -51,18 +56,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Dynamic board pages (exclude RASOC — no board detail page)
   const boards = await getAllBoards()
-  const boardRoutes: MetadataRoute.Sitemap = boards
-    .filter((b) => b.slug !== 'rasoc')
-    .flatMap((board) => {
-      const path = `/boards/${board.slug}`
+  const nonOversightBoards = boards.filter((b) => b.slug !== 'rasoc')
+
+  const boardRoutes: MetadataRoute.Sitemap = nonOversightBoards.flatMap((board) => {
+    const path = `/boards/${board.slug}`
+    return locales.map((locale) => ({
+      url: `${BASE_URL}/${locale}${path}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+      alternates: { languages: buildAlternates(path) },
+    }))
+  })
+
+  // Phase 2: Board sub-pages (members, committees, meetings-and-events, etc.)
+  const boardSubPages = ['about/members', 'committees', 'meetings-and-events', 'news-listings', 'resources', 'documents']
+  const boardSubRoutes: MetadataRoute.Sitemap = nonOversightBoards.flatMap((board) =>
+    boardSubPages.flatMap((sub) => {
+      const path = `/${board.slug}/${sub}`
       return locales.map((locale) => ({
         url: `${BASE_URL}/${locale}${path}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,
-        priority: 0.7,
+        priority: 0.6,
         alternates: { languages: buildAlternates(path) },
       }))
-    })
+    }),
+  )
 
   // Dynamic project pages
   const projects = await getAllActiveProjects()
@@ -78,5 +98,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   })
 
-  return [...staticRoutes, ...boardRoutes, ...projectRoutes]
+  // Phase 2: Standards sections + effective dates
+  const standardsSections = await getAllStandardsSections()
+  const standardsRoutes: MetadataRoute.Sitemap = standardsSections.flatMap((section) => {
+    const slug = section.slug as string
+    const overviewPath = `/standards/${slug}`
+    const effectiveDatesPath = `/standards/${slug}/effective-dates`
+    return [
+      ...locales.map((locale) => ({
+        url: `${BASE_URL}/${locale}${overviewPath}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+        alternates: { languages: buildAlternates(overviewPath) },
+      })),
+      ...locales.map((locale) => ({
+        url: `${BASE_URL}/${locale}${effectiveDatesPath}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+        alternates: { languages: buildAlternates(effectiveDatesPath) },
+      })),
+    ]
+  })
+
+  return [
+    ...staticRoutes,
+    ...boardRoutes,
+    ...boardSubRoutes,
+    ...projectRoutes,
+    ...standardsRoutes,
+  ]
 }

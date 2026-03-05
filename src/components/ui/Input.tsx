@@ -55,6 +55,7 @@ export function Input({ label, error, id, className = '', ...props }: InputProps
           className={inputClasses}
           rows={4}
           aria-invalid={!!error}
+          aria-required={props.required || undefined}
           aria-describedby={error ? `${id}-error` : undefined}
           {...(props as Omit<InputAsTextarea, keyof InputBaseProps | 'type'>)}
         />
@@ -63,6 +64,7 @@ export function Input({ label, error, id, className = '', ...props }: InputProps
           id={id}
           className={inputClasses}
           aria-invalid={!!error}
+          aria-required={props.required || undefined}
           aria-describedby={error ? `${id}-error` : undefined}
           {...(props as Omit<InputAsInput, keyof InputBaseProps>)}
         />

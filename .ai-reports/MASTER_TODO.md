@@ -2645,7 +2645,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 21: Phase 2 Integration & Polish (6 tasks)
 
 ### 21.1 Seed CMS with Phase 2 sample data
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - 20+ board members across 4 boards with photos
   - 25+ committee entries across 4 boards
@@ -2662,7 +2662,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages render with realistic content, no empty states on seeded pages
 
 ### 21.2 Phase 2 responsive testing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - All 13 gap templates tested at 390px, 768px, 1024px, 1440px viewports
   - Mobile adaptations verified: sidebar stacks below content, grid becomes single column, pills collapse to dropdown, tables become stacked cards
@@ -2676,7 +2676,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages responsive and cross-browser compatible at all 4 breakpoints
 
 ### 21.3 Phase 2 accessibility audit
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - WCAG 2.1 AA compliance for all Phase 2 templates
   - Keyboard navigation works: forms (T15, T16), tab toggles (T8, T13), anchor nav (T14), scroll-spy
@@ -2690,7 +2690,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages meet WCAG 2.1 AA with zero automated violations
 
 ### 21.4 Phase 2 performance optimization
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Core Web Vitals passing on all Phase 2 pages (LCP < 2.5s, FID < 100ms, CLS < 0.1)
   - Member photos optimized (205x205px via next/image with proper sizing props)
@@ -2705,7 +2705,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Phase 2 pages meet Core Web Vitals targets, bundle sizes reasonable, no render jank
 
 ### 21.5 Phase 2 SEO setup
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Metadata (title, description, og:image) set for all Phase 2 page types
   - Structured data added: Person (members), Organization (committees), FAQPage (if applicable)
@@ -2719,7 +2719,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Phase 2 pages fully indexed with correct SEO metadata, structured data, and sitemap entries
 
 ### 21.6 End-to-end integration testing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Contact form flow: submit form, verify data in form-submissions collection, admin notification
   - Login flow: authenticate, verify session cookie set, access protected pages

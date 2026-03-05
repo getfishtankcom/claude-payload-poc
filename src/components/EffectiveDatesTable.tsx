@@ -66,13 +66,13 @@ export function EffectiveDatesTable({
       {/* Intro text */}
       {introText && (
         <div
-          className="mb-6 text-sm italic text-text-primary prose prose-sm prose-a:text-link"
+          className="mb-6 overflow-x-auto text-sm italic text-text-primary prose prose-sm prose-a:text-link"
           dangerouslySetInnerHTML={{ __html: introText }}
         />
       )}
 
       {/* Desktop table */}
-      <div className="hidden md:block">
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full border-collapse print:break-inside-avoid">
           <thead>
             <tr className="border-b-2 border-gray-200">
@@ -125,9 +125,10 @@ function DesktopSection({ section }: { section: EffectiveDateSection }) {
     <>
       {/* Purple header row */}
       <tr>
-        <td
+        <th
           colSpan={2}
-          className="py-3 px-4 text-sm font-bold text-white"
+          scope="colgroup"
+          className="py-3 px-4 text-left text-sm font-bold text-white"
           style={{ backgroundColor: 'rgb(96, 31, 91)' }}
         >
           {section.headerLabel}
@@ -140,7 +141,7 @@ function DesktopSection({ section }: { section: EffectiveDateSection }) {
               })}
             </span>
           )}
-        </td>
+        </th>
       </tr>
       {/* Data rows */}
       {section.rows.map((row, rowIndex) => (
@@ -200,7 +201,7 @@ function MobileSection({ section }: { section: EffectiveDateSection }) {
           } ${rowIndex < section.rows.length - 1 ? 'border-b border-dashed border-gray-300' : 'border-b border-gray-200'}`}
         >
           <div
-            className="mb-2 text-sm text-text-primary prose prose-sm prose-a:text-link"
+            className="mb-2 overflow-x-auto text-sm text-text-primary prose prose-sm prose-a:text-link"
             dangerouslySetInnerHTML={{ __html: row.application }}
           />
           {row.footnoteRef && (
