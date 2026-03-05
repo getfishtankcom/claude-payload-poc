@@ -40,7 +40,7 @@ export default async function SearchPage() {
           </div>
         }
       >
-        <SearchPageClient popularTags={searchConfig?.popular_tags} />
+        <SearchPageClient popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined} />
       </Suspense>
     </div>
   )

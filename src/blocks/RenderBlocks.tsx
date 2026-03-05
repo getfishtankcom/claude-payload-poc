@@ -19,7 +19,8 @@
  */
 import React from 'react'
 
-import type { LayoutBlock } from '@/payload-types'
+/** Generic block type — blockType discriminator + arbitrary block data */
+type LayoutBlock = { blockType: string; [key: string]: unknown }
 
 import { CTABlockComponent } from './CTABlock/Component'
 import { ContentBlockComponent } from './ContentBlock/Component'

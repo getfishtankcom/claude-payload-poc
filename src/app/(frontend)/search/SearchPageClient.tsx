@@ -40,6 +40,7 @@ import {
   useStats,
   Configure,
 } from 'react-instantsearch'
+import Link from 'next/link'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { FilterSidebar } from '@/components/FilterSidebar'
@@ -308,9 +309,9 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
     <Container>
       {/* Breadcrumb */}
       <nav className="py-4 text-sm text-text-muted" aria-label="Breadcrumb">
-        <a href="/" className="hover:text-primary">
+        <Link href="/" className="hover:text-primary">
           Home
-        </a>
+        </Link>
         <span className="mx-2" aria-hidden="true">
           /
         </span>

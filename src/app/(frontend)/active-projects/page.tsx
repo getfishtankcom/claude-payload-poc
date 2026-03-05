@@ -1,0 +1,111 @@
+/**
+ * @description
+ * Active Projects listing page. 2-column layout: BoardNav (left) + project cards (right).
+ * Projects are grouped under collapsible standard headers with text search and standards filter.
+ *
+ * Key features:
+ * - Fetches all active projects with populated relationships
+ * - Fetches all boards for nav sidebar (excluding RASOC)
+ * - Fetches all standards for filter dropdown
+ * - Page header with "Active Projects" title
+ * - Data transformed to client component prop shapes
+ *
+ * @dependencies
+ * - payload-helpers: getAllActiveProjects, getAllBoards, getAllStandards
+ * - PageHeader component
+ * - ActiveProjectsClient for interactive filtering
+ *
+ * @notes
+ * - RASOC excluded from board nav (oversight council, no active projects)
+ * - Projects without a standard go into "Other Projects" group
+ */
+import type { Metadata } from 'next'
+import { PageHeader } from '@/components/PageHeader'
+import { FolderOpenIcon } from '@heroicons/react/24/outline'
+import {
+  getAllActiveProjects,
+  getAllBoards,
+  getAllStandards,
+} from '@/lib/payload-helpers'
+import { ActiveProjectsClient } from './ActiveProjectsClient'
+
+export const metadata: Metadata = {
+  title: 'Active Projects — FRAS Canada',
+  description: 'Browse active standards-setting projects across all boards.',
+}
+
+export default async function ActiveProjectsPage() {
+  // Fetch data in parallel
+  const [projects, boards, standards] = await Promise.all([
+    getAllActiveProjects(),
+    getAllBoards(),
+    getAllStandards(),
+  ])
+
+  // Filter out RASOC from board nav
+  const navBoards = boards
+    .filter((b) => b.slug !== 'rasoc')
+    .map((b) => ({
+      id: String(b.id),
+      name: b.name,
+      slug: b.slug,
+      abbreviation: b.abbreviation,
+    }))
+
+  // Transform standards for filter dropdown
+  const standardOptions = standards.map((s) => ({
+    id: String(s.id),
+    name: s.name,
+    slug: s.slug,
+  }))
+
+  // Transform projects to client-side data shape
+  const projectCards = projects.map((p) => {
+    const board = typeof p.board !== 'number' ? p.board : null
+    const standard = typeof p.standard !== 'number' ? p.standard : null
+
+    // Get current stage name from timeline_stages
+    const currentStageName = p.timeline_stages?.find(
+      (s) => s.phase_number === p.current_stage
+    )?.title || null
+
+    // Collect CTAs from current stage
+    const currentStageCtas = p.timeline_stages?.find(
+      (s) => s.phase_number === p.current_stage
+    )?.ctas || []
+
+    return {
+      id: String(p.id),
+      title: p.title,
+      slug: p.slug,
+      description: null as string | null,
+      boardSlug: board?.slug || '',
+      badges: p.badges || null,
+      currentStage: p.current_stage || null,
+      currentStageName,
+      ctas: (currentStageCtas || []).map((c) => ({ label: c.label, url: c.url })),
+      standardName: standard?.name || null,
+      standardId: standard ? String(standard.id) : null,
+      boardSlugFilter: board?.slug || '',
+    }
+  })
+
+  return (
+    <>
+      <div className="border-b border-gray-200 bg-white">
+        <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
+          <PageHeader
+            icon={<FolderOpenIcon />}
+            title="Active Projects"
+            subtitle="Browse active standards-setting projects across all boards."
+          />
+        </div>
+      </div>
+      <ActiveProjectsClient
+        boards={navBoards}
+        projects={projectCards}
+        standards={standardOptions}
+      />
+    </>
+  )
+}

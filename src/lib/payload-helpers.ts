@@ -35,6 +35,9 @@ import type {
   News,
   Event,
   Standard,
+  Board,
+  Project,
+  Consultation,
 } from '@/payload-types'
 
 /**
@@ -185,5 +188,194 @@ export async function getSearchConfig(): Promise<SearchConfig | null> {
     return searchConfig as unknown as SearchConfig
   } catch {
     return null
+  }
+}
+
+// ── Board-specific helpers (Epic 6-9) ────────────────────────────────────
+
+/**
+ * Fetches a board by slug with all fields.
+ */
+export async function getBoardBySlug(slug: string): Promise<Board | null> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'boards',
+      where: { slug: { equals: slug } },
+      limit: 1,
+    })
+    return (result.docs[0] as unknown as Board) || null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Fetches all boards (for generateStaticParams and board nav).
+ */
+export async function getAllBoards(): Promise<Board[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'boards',
+      limit: 100,
+      sort: 'name',
+    })
+    return result.docs as unknown as Board[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches projects filtered by board, with populated relationships.
+ */
+export async function getProjectsByBoard(boardId: number, limit = 20): Promise<Project[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'projects',
+      where: { board: { equals: boardId } },
+      sort: 'title',
+      limit,
+      depth: 2,
+    })
+    return result.docs as unknown as Project[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches all active projects with populated board/standard relationships.
+ */
+export async function getAllActiveProjects(): Promise<Project[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'projects',
+      where: { status: { equals: 'Active' } },
+      sort: 'title',
+      limit: 200,
+      depth: 2,
+    })
+    return result.docs as unknown as Project[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches a project by board slug and project slug with full depth.
+ */
+export async function getProjectBySlug(projectSlug: string): Promise<Project | null> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'projects',
+      where: { slug: { equals: projectSlug } },
+      limit: 1,
+      depth: 3,
+    })
+    return (result.docs[0] as unknown as Project) || null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Fetches news items filtered by board, sorted newest first.
+ */
+export async function getNewsByBoard(boardId: number, limit = 4): Promise<News[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'news',
+      where: { board: { equals: boardId } },
+      sort: '-date',
+      limit,
+    })
+    return result.docs as unknown as News[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches upcoming events filtered by board, sorted by date ascending.
+ */
+export async function getEventsByBoard(boardId: number, limit = 3): Promise<Event[]> {
+  try {
+    const payload = await getPayload({ config })
+    const now = new Date().toISOString()
+    const result = await payload.find({
+      collection: 'events',
+      where: {
+        and: [
+          { board: { equals: boardId } },
+          { date: { greater_than: now } },
+        ],
+      },
+      sort: 'date',
+      limit,
+    })
+    return result.docs as unknown as Event[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches open consultations (deadline in the future), sorted by deadline ascending.
+ */
+export async function getOpenConsultations(): Promise<Consultation[]> {
+  try {
+    const payload = await getPayload({ config })
+    const now = new Date().toISOString()
+    const result = await payload.find({
+      collection: 'consultations',
+      where: { deadline_date: { greater_than: now } },
+      sort: 'deadline_date',
+      limit: 100,
+      depth: 2,
+    })
+    return result.docs as unknown as Consultation[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches all consultations (including closed), sorted by deadline.
+ */
+export async function getAllConsultations(): Promise<Consultation[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'consultations',
+      sort: 'deadline_date',
+      limit: 200,
+      depth: 2,
+    })
+    return result.docs as unknown as Consultation[]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Fetches all standards (for filter dropdowns).
+ */
+export async function getAllStandards(): Promise<Standard[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'standards',
+      limit: 100,
+      sort: 'name',
+    })
+    return result.docs as unknown as Standard[]
+  } catch {
+    return []
   }
 }

@@ -29,7 +29,7 @@ type CMSLinkProps = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    value: string | { slug?: string; id?: string }
+    value: string | number | { slug?: string; id?: string | number }
     relationTo: string
   } | null
   type?: 'custom' | 'reference' | null
@@ -52,7 +52,7 @@ export const CMSLink: React.FC<CMSLinkProps> = ({
   let href = ''
   if (type === 'reference' && reference?.value) {
     const refValue = reference.value
-    if (typeof refValue === 'string') {
+    if (typeof refValue === 'string' || typeof refValue === 'number') {
       href = `/${refValue}`
     } else if (refValue.slug) {
       href = `/${refValue.slug}`

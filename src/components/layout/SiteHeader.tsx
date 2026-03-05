@@ -30,11 +30,13 @@ import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
 import { MobileMenu } from './MobileMenu'
 import { SearchModal } from '@/components/SearchModal'
-import type { Navigation, SearchConfig } from '@/payload-types'
+import type { Navigation } from '@/payload-types'
+
+type PopularTag = { label: string; query: string; id?: string }
 
 type SiteHeaderProps = {
   navigation?: Navigation | null
-  popularTags?: SearchConfig['popular_tags']
+  popularTags?: PopularTag[] | null
 }
 
 /**
