@@ -1,20 +1,26 @@
 /**
  * @description
  * Root layout for the public-facing frontend.
- * Loads Inter font via next/font/google with all required weights
- * (300 Light, 400 Regular, 600 Semi-Bold, 700 Bold, 900 Black).
- * Renders SiteHeader + main content + SiteFooter on every page.
+ * Fetches navigation and footer globals from Payload CMS and passes
+ * them as props to SiteHeader and SiteFooter.
+ *
+ * Key features:
+ * - Inter font loaded via next/font/google with all required weights
+ * - Server component — fetches CMS data at request time
+ * - Passes navigation data to SiteHeader (client component)
+ * - Passes footer data to SiteFooter
  *
  * @dependencies
  * - next/font/google: Font loading and optimization
  * - globals.css: Design tokens + Tailwind base styles
- * - SiteHeader: Global header component
+ * - SiteHeader: Global header component (client component)
  * - SiteFooter: Global footer component
+ * - payload-helpers: CMS data fetching
  *
  * @notes
- * - Inter is the wireframe-specified font (replacing Roboto from live site)
- * - Metadata will be expanded with proper SEO fields in later epics
- * - SiteHeader and SiteFooter wrap all frontend pages
+ * - This is an async server component (fetches CMS data)
+ * - Navigation and footer fetch in parallel for performance
+ * - If CMS is unavailable, components render empty states
  */
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -22,6 +28,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
+import { getNavigation, getFooter } from '@/lib/payload-helpers'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -36,13 +43,16 @@ export const metadata: Metadata = {
     'The standard-setting body for all accountants across Canada. Home of AcSB, PSAB, AASB, and CSSB.',
 }
 
-export default function FrontendLayout({ children }: { children: React.ReactNode }) {
+export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
+  // Fetch navigation and footer data in parallel
+  const [navigation, footer] = await Promise.all([getNavigation(), getFooter()])
+
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
-        <SiteHeader />
+        <SiteHeader navigation={navigation} />
         <main data-testid="main-content">{children}</main>
-        <SiteFooter />
+        <SiteFooter footer={footer} />
       </body>
     </html>
   )

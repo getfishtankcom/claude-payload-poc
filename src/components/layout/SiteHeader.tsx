@@ -1,143 +1,139 @@
 /**
  * @description
  * Site header component with 3 rows:
- * - Row 1 (Utility bar): Secondary links — About Us, Boards, Contact, Newsletter, Volunteer, FR, Sign In
+ * - Row 1 (Utility bar): Secondary links from CMS navigation global
  * - Row 2 (Main bar): FRAS Canada logo + persistent search input
- * - Row 3 (Primary nav): Active Projects, Open Consultations, News
+ * - Row 3 (Primary nav): Primary navigation links from CMS
  *
  * Mobile: Collapses to logo + search icon + hamburger (below lg breakpoint).
  * Rows 1 and 3 hidden on mobile, replaced by MobileMenu.
  *
  * @dependencies
- * - @heroicons/react: MagnifyingGlassIcon, Bars3Icon, UserIcon
- * - MegaMenu: Dropdown menus for About Us, Boards, Active Projects
+ * - @heroicons/react: MagnifyingGlassIcon, Bars3Icon
+ * - MegaMenu: Dropdown menus for items with dropdowns
  * - MobileMenu: Full-screen mobile overlay
  * - Container: Layout container from ui/
  * - next/link: Client-side navigation
  *
  * @notes
  * - Client component due to mobile menu state management
- * - Navigation data is hardcoded for now; will be wired to `navigation` global
- * - Search input is visual only — will connect to SearchModal in later epic
- * - Sticky header not implemented yet (optional, configurable in later iteration)
+ * - Navigation data comes from CMS `navigation` global via props
+ * - Empty state renders a minimal header when no navigation data exists
  */
 'use client'
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { MagnifyingGlassIcon, Bars3Icon, UserIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { MegaMenu } from './MegaMenu'
+import type { MegaMenuItem } from './MegaMenu'
 import { MobileMenu } from './MobileMenu'
+import type { Navigation } from '@/payload-types'
 
-/** Navigation data — will be replaced by CMS global data */
-const ABOUT_US_ITEMS = [
-  { label: 'About FRAS Canada', href: '/about' },
-  { label: 'Oversight Council', href: '/about/oversight-council' },
-  { label: 'Research Program', href: '/about/research' },
-  { label: 'Jobs', href: '/about/jobs' },
-]
+type SiteHeaderProps = {
+  navigation?: Navigation | null
+}
 
-const BOARDS_ITEMS = [
-  {
-    label: 'CSSB',
-    href: '/boards/cssb',
-    children: [
-      { label: 'Overview', href: '/boards/cssb' },
-      { label: 'Consultations', href: '/boards/cssb/consultations' },
-      { label: 'Projects & Initiatives', href: '/boards/cssb/projects' },
-      { label: 'Resources', href: '/boards/cssb/resources' },
-      { label: 'Meetings & Decisions', href: '/boards/cssb/meetings' },
-      { label: 'Committees', href: '/boards/cssb/committees' },
-      { label: 'Volunteer', href: '/boards/cssb/volunteer' },
-    ],
-  },
-  {
-    label: 'AcSB',
-    href: '/boards/acsb',
-    children: [
-      { label: 'Overview', href: '/boards/acsb' },
-      { label: 'Consultations', href: '/boards/acsb/consultations' },
-      { label: 'Projects & Initiatives', href: '/boards/acsb/projects' },
-      { label: 'Resources', href: '/boards/acsb/resources' },
-      { label: 'Meetings & Decisions', href: '/boards/acsb/meetings' },
-      { label: 'Committees', href: '/boards/acsb/committees' },
-      { label: 'Volunteer', href: '/boards/acsb/volunteer' },
-    ],
-  },
-  {
-    label: 'PSAB',
-    href: '/boards/psab',
-    children: [
-      { label: 'Overview', href: '/boards/psab' },
-      { label: 'Consultations', href: '/boards/psab/consultations' },
-      { label: 'Projects & Initiatives', href: '/boards/psab/projects' },
-      { label: 'Resources', href: '/boards/psab/resources' },
-      { label: 'Meetings & Decisions', href: '/boards/psab/meetings' },
-      { label: 'Committees', href: '/boards/psab/committees' },
-      { label: 'Volunteer', href: '/boards/psab/volunteer' },
-    ],
-  },
-  {
-    label: 'AASB',
-    href: '/boards/aasb',
-    children: [
-      { label: 'Overview', href: '/boards/aasb' },
-      { label: 'Consultations', href: '/boards/aasb/consultations' },
-      { label: 'Projects & Initiatives', href: '/boards/aasb/projects' },
-      { label: 'Resources', href: '/boards/aasb/resources' },
-      { label: 'Meetings & Decisions', href: '/boards/aasb/meetings' },
-      { label: 'Committees', href: '/boards/aasb/committees' },
-      { label: 'Volunteer', href: '/boards/aasb/volunteer' },
-    ],
-  },
-]
+/**
+ * Builds MegaMenu items from a mega_menu entry's columns.
+ * Multi-column: each column becomes a top-level item with children from its links.
+ */
+function buildMegaMenuItems(
+  megaMenu: Navigation['mega_menu'],
+  triggerLabel: string,
+): MegaMenuItem[] {
+  if (!megaMenu) return []
+  const entry = megaMenu.find((m) => m.trigger_label === triggerLabel)
+  if (!entry?.columns) return []
 
-const ACTIVE_PROJECTS_ITEMS = [
-  { label: 'Canadian Sustainability Standards Board', href: '/boards/cssb/projects' },
-  { label: 'Accounting Standards Board', href: '/boards/acsb/projects' },
-  { label: 'Public Sector Accounting Board', href: '/boards/psab/projects' },
-  { label: 'Auditing and Assurance Standards Board', href: '/boards/aasb/projects' },
-]
+  return entry.columns.map((col) => ({
+    label: col.heading || '',
+    href: col.links?.[0]?.url || '#',
+    children: col.links?.map((link) => ({
+      label: link.label,
+      href: link.url,
+    })),
+  }))
+}
 
-export function SiteHeader() {
+/**
+ * Builds simple flat items from a mega_menu entry's all links.
+ */
+function buildFlatMenuItems(
+  megaMenu: Navigation['mega_menu'],
+  triggerLabel: string,
+): MegaMenuItem[] {
+  if (!megaMenu) return []
+  const entry = megaMenu.find((m) => m.trigger_label === triggerLabel)
+  if (!entry?.columns) return []
+
+  return entry.columns.flatMap((col) =>
+    (col.links || []).map((link) => ({
+      label: link.label,
+      href: link.url,
+    })),
+  )
+}
+
+export function SiteHeader({ navigation }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const utilityLinks = navigation?.utility_links || []
+  const primaryNav = navigation?.primary_nav || []
+  const megaMenu = navigation?.mega_menu || []
 
   return (
     <header className="w-full border-b border-gray-200 bg-white" data-testid="site-header">
       {/* Row 1: Utility bar — hidden on mobile */}
-      <div className="hidden lg:block border-b border-gray-200 bg-gray-50" data-testid="utility-bar">
-        <Container>
-          <div className="flex items-center justify-end gap-1 py-2 text-sm text-text-muted">
-            <MegaMenu trigger="About Us" items={ABOUT_US_ITEMS} variant="single-column" />
-            <span className="text-gray-300 px-1" aria-hidden="true">|</span>
-            <MegaMenu trigger="Boards" items={BOARDS_ITEMS} variant="multi-column" />
-            <span className="text-gray-300 px-1" aria-hidden="true">|</span>
-            <Link href="/contact" className="px-2 py-1 hover:text-primary">Contact</Link>
-            <span className="text-gray-300 px-1" aria-hidden="true">|</span>
-            <Link href="/newsletter" className="px-2 py-1 hover:text-primary">Newsletter</Link>
-            <span className="text-gray-300 px-1" aria-hidden="true">|</span>
-            <Link href="/volunteer" className="px-2 py-1 hover:text-primary">Volunteer</Link>
-            <span className="text-gray-300 px-2" aria-hidden="true">|</span>
-            <Link href="/fr" className="px-2 py-1 font-medium hover:text-primary">FR</Link>
-            <span className="text-gray-300 px-1" aria-hidden="true">|</span>
-            <Link href="/login" className="inline-flex items-center gap-1.5 px-2 py-1 hover:text-primary">
-              <UserIcon className="h-4 w-4" aria-hidden="true" />
-              Sign In
-            </Link>
-          </div>
-        </Container>
-      </div>
+      {utilityLinks.length > 0 && (
+        <div className="hidden lg:block border-b border-gray-200 bg-gray-50" data-testid="utility-bar">
+          <Container>
+            <div className="flex items-center justify-end gap-1 py-2 text-sm text-text-muted">
+              {utilityLinks.map((item, i) => {
+                const hasMegaMenu = megaMenu.some((m) => m.trigger_label === item.label)
+
+                if (item.has_dropdown && hasMegaMenu) {
+                  const entry = megaMenu.find((m) => m.trigger_label === item.label)
+                  const isMultiColumn = entry?.columns && entry.columns.length > 1 && entry.columns.some((c) => c.heading)
+
+                  const items = isMultiColumn
+                    ? buildMegaMenuItems(megaMenu, item.label)
+                    : buildFlatMenuItems(megaMenu, item.label)
+
+                  return (
+                    <React.Fragment key={item.id || i}>
+                      {i > 0 && <span className="text-gray-300 px-1" aria-hidden="true">|</span>}
+                      <MegaMenu
+                        trigger={item.label}
+                        items={items}
+                        variant={isMultiColumn ? 'multi-column' : 'single-column'}
+                      />
+                    </React.Fragment>
+                  )
+                }
+
+                return (
+                  <React.Fragment key={item.id || i}>
+                    {i > 0 && <span className="text-gray-300 px-1" aria-hidden="true">|</span>}
+                    <Link href={item.url} className="px-2 py-1 hover:text-primary">
+                      {item.label}
+                    </Link>
+                  </React.Fragment>
+                )
+              })}
+            </div>
+          </Container>
+        </div>
+      )}
 
       {/* Row 2: Logo + Search */}
       <Container>
         <div className="flex items-center justify-between gap-4 py-4">
-          {/* Logo */}
           <Link href="/" className="flex-shrink-0" data-testid="site-logo">
             <span className="text-xl font-bold text-primary">FRAS Canada</span>
           </Link>
 
-          {/* Search input — desktop only */}
           <div className="hidden lg:block flex-1 max-w-md ml-auto">
             <div className="relative">
               <MagnifyingGlassIcon
@@ -153,7 +149,6 @@ export function SiteHeader() {
             </div>
           </div>
 
-          {/* Mobile: search icon + hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
@@ -177,28 +172,46 @@ export function SiteHeader() {
       </Container>
 
       {/* Row 3: Primary navigation — hidden on mobile */}
-      <div className="hidden lg:block border-t border-gray-200" data-testid="primary-nav">
-        <Container>
-          <nav className="flex items-center gap-6 py-3" aria-label="Primary navigation">
-            <MegaMenu trigger="Active Projects" items={ACTIVE_PROJECTS_ITEMS} variant="single-column" />
-            <Link
-              href="/consultations"
-              className="text-sm font-medium text-text-primary hover:text-primary"
-            >
-              Open Consultations
-            </Link>
-            <Link
-              href="/news"
-              className="text-sm font-medium text-text-primary hover:text-primary"
-            >
-              News
-            </Link>
-          </nav>
-        </Container>
-      </div>
+      {primaryNav.length > 0 && (
+        <div className="hidden lg:block border-t border-gray-200" data-testid="primary-nav">
+          <Container>
+            <nav className="flex items-center gap-6 py-3" aria-label="Primary navigation">
+              {primaryNav.map((item, i) => {
+                const hasMegaMenu = megaMenu.some((m) => m.trigger_label === item.label)
+
+                if (item.has_dropdown && hasMegaMenu) {
+                  const items = buildFlatMenuItems(megaMenu, item.label)
+                  return (
+                    <MegaMenu
+                      key={item.id || i}
+                      trigger={item.label}
+                      items={items}
+                      variant="single-column"
+                    />
+                  )
+                }
+
+                return (
+                  <Link
+                    key={item.id || i}
+                    href={item.url}
+                    className="text-sm font-medium text-text-primary hover:text-primary"
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
+            </nav>
+          </Container>
+        </div>
+      )}
 
       {/* Mobile menu overlay */}
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        navigation={navigation}
+      />
     </header>
   )
 }

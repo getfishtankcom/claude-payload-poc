@@ -1,14 +1,14 @@
 /**
  * @description
- * Site footer component with 4-column layout, newsletter CTA, and copyright bar.
+ * Site footer component driven by CMS `footer` global data.
+ * Displays columns of links, board links, quick links, newsletter CTA, and copyright.
  *
  * Structure:
- * - Column 1: Org info (FRAS Canada description + LinkedIn icon)
- * - Column 2: Boards (links to each board page, full names)
- * - Column 3: Quick Links (About Us, Research, News, Jobs, Volunteer, Contact, Newsletter)
- * - Column 4: Account (Sign In, Français)
- * - Newsletter CTA row: heading + email input + Subscribe button
- * - Copyright bar: copyright text + Privacy Policy, Cookie Policy, Terms links
+ * - Dynamic columns from CMS (heading + links)
+ * - Board links from CMS (all 5 boards including RASOC)
+ * - Quick links from CMS
+ * - Newsletter CTA row (heading + description from CMS)
+ * - Copyright bar (static UI chrome)
  *
  * @dependencies
  * - NewsletterCTA: Newsletter subscription component
@@ -16,128 +16,134 @@
  * - next/link: Client-side navigation
  *
  * @notes
- * - Background uses bg-footer semantic token (light gray)
- * - Text color is dark (text-text-primary) since footer bg is light
- * - Mobile: 4 columns stack to single column
- * - Navigation data is hardcoded; will be wired to `footer` global
+ * - Footer data comes from CMS `footer` global via props
+ * - Empty state renders a minimal footer when no data exists
+ * - Copyright text is UI chrome (acceptable hardcoded string)
+ * - Policy links are UI chrome (hardcoded structural links)
  */
 import React from 'react'
 import Link from 'next/link'
 import { Container } from '@/components/ui'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
+import type { Footer } from '@/payload-types'
 
-/** Footer column data — will be replaced by CMS footer global */
-const BOARDS = [
-  { label: 'Canadian Sustainability Standards Board', href: '/boards/cssb' },
-  { label: 'Accounting Standards Board', href: '/boards/acsb' },
-  { label: 'Public Sector Accounting Board', href: '/boards/psab' },
-  { label: 'Auditing and Assurance Standards Board', href: '/boards/aasb' },
-  { label: 'Regulatory and Accounting Standards Oversight Council', href: '/about/oversight-council' },
-]
+type SiteFooterProps = {
+  footer?: Footer | null
+}
 
-const QUICK_LINKS = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Research Program', href: '/about/research' },
-  { label: 'News', href: '/news' },
-  { label: 'Jobs', href: '/about/jobs' },
-  { label: 'Volunteer', href: '/volunteer' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Newsletter', href: '/newsletter' },
-]
-
-const POLICY_LINKS = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Cookie Policy', href: '/cookies' },
-  { label: 'Terms of Use', href: '/terms' },
-]
-
-export function SiteFooter() {
+export function SiteFooter({ footer }: SiteFooterProps) {
   const currentYear = new Date().getFullYear()
+
+  const columns = footer?.columns || []
+  const boardsLinks = footer?.boards_links || []
+  const quickLinks = footer?.quick_links || []
+  const newsletterHeading = footer?.newsletter_heading
+  const newsletterDescription = footer?.newsletter_description
+
+  // Calculate grid columns based on available data
+  const hasBoards = boardsLinks.length > 0
+  const hasQuickLinks = quickLinks.length > 0
+  const hasColumns = columns.length > 0
+  const hasAnyContent = hasBoards || hasQuickLinks || hasColumns
 
   return (
     <footer className="bg-footer" data-testid="site-footer">
-      {/* Main footer columns */}
-      <Container>
-        <div className="grid grid-cols-1 gap-8 py-12 lg:grid-cols-4">
-          {/* Column 1: Org info */}
-          <div>
-            <p className="text-lg font-bold text-text-primary">FRAS Canada</p>
-            <p className="mt-2 text-sm text-text-muted">
-              Financial Reporting &amp; Assurance Standards Canada
-            </p>
-            {/* LinkedIn icon */}
-            <a
-              href="https://www.linkedin.com/company/fras-canada"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:text-primary-vivid"
-              aria-label="FRAS Canada on LinkedIn"
-            >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-              LinkedIn
-            </a>
-          </div>
-
-          {/* Column 2: Boards */}
-          <div>
-            <p className="text-sm font-bold text-text-primary uppercase tracking-wide">Boards</p>
-            <ul className="mt-3 space-y-2">
-              {BOARDS.map((board) => (
-                <li key={board.label}>
-                  <Link href={board.href} className="text-sm text-text-muted hover:text-primary hover:underline">
-                    {board.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Quick Links */}
-          <div>
-            <p className="text-sm font-bold text-text-primary uppercase tracking-wide">Quick Links</p>
-            <ul className="mt-3 space-y-2">
-              {QUICK_LINKS.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-text-muted hover:text-primary hover:underline">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Account */}
-          <div>
-            <p className="text-sm font-bold text-text-primary uppercase tracking-wide">Account</p>
-            <ul className="mt-3 space-y-2">
-              <li>
-                <Link href="/login" className="text-sm text-text-muted hover:text-primary hover:underline">
-                  Sign In
-                </Link>
-              </li>
-              <li>
-                <Link href="/fr" className="text-sm text-text-muted hover:text-primary hover:underline">
-                  Fran&ccedil;ais
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </Container>
-
-      {/* Newsletter CTA row */}
-      <div className="border-t border-gray-300" data-testid="footer-newsletter">
+      {/* Main footer content */}
+      {hasAnyContent && (
         <Container>
-          <div className="py-8">
-            <NewsletterCTA
-              heading="Stay informed with our weekly updates"
-              description="Get critical updates on regulatory changes and new standard releases."
-            />
+          <div className="grid grid-cols-1 gap-8 py-12 lg:grid-cols-4">
+            {/* CMS columns */}
+            {columns.map((col, i) => (
+              <div key={col.id || i}>
+                {col.heading && (
+                  <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
+                    {col.heading}
+                  </p>
+                )}
+                {col.links && col.links.length > 0 && (
+                  <ul className="mt-3 space-y-2">
+                    {col.links.map((link, j) => (
+                      <li key={link.id || j}>
+                        <Link
+                          href={link.url}
+                          className="text-sm text-text-muted hover:text-primary hover:underline"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+
+            {/* Boards column */}
+            {hasBoards && (
+              <div>
+                <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
+                  Boards
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {boardsLinks.map((board, i) => (
+                    <li key={board.id || i}>
+                      <Link
+                        href={board.url}
+                        className="text-sm text-text-muted hover:text-primary hover:underline"
+                      >
+                        {board.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Quick Links column */}
+            {hasQuickLinks && (
+              <div>
+                <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
+                  Quick Links
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {quickLinks.map((link, i) => (
+                    <li key={link.id || i}>
+                      <Link
+                        href={link.url}
+                        className="text-sm text-text-muted hover:text-primary hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </Container>
-      </div>
+      )}
+
+      {/* Empty state */}
+      {!hasAnyContent && (
+        <Container>
+          <div className="py-8 text-center text-sm text-text-muted">
+            Footer not configured.
+          </div>
+        </Container>
+      )}
+
+      {/* Newsletter CTA row */}
+      {(newsletterHeading || newsletterDescription) && (
+        <div className="border-t border-gray-300" data-testid="footer-newsletter">
+          <Container>
+            <div className="py-8">
+              <NewsletterCTA
+                heading={newsletterHeading || ''}
+                description={newsletterDescription || ''}
+              />
+            </div>
+          </Container>
+        </div>
+      )}
 
       {/* Copyright bar */}
       <div className="border-t border-gray-300 bg-gray-200" data-testid="footer-copyright">
@@ -147,15 +153,15 @@ export function SiteFooter() {
               &copy; {currentYear} Financial Reporting &amp; Assurance Standards Canada. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
-              {POLICY_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-xs text-text-muted hover:text-primary hover:underline"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <Link href="/privacy" className="text-xs text-text-muted hover:text-primary hover:underline">
+                Privacy Policy
+              </Link>
+              <Link href="/cookies" className="text-xs text-text-muted hover:text-primary hover:underline">
+                Cookie Policy
+              </Link>
+              <Link href="/terms" className="text-xs text-text-muted hover:text-primary hover:underline">
+                Terms of Use
+              </Link>
             </div>
           </div>
         </Container>

@@ -1235,7 +1235,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All 7 helpers compile with correct return types.
 
 ### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Root layout fetches `navigation` global via `getNavigation()` and passes data as props
   2. `<SiteHeader />` accepts navigation data props (no internal CMS fetching)
@@ -1251,7 +1251,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Header/nav driven entirely by CMS data; zero hardcoded nav items.
 
 ### 5.5 Wire SiteFooter to `footer` global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Root layout fetches `footer` global via `getFooter()` and passes data as props
   2. `<SiteFooter />` accepts footer data props (no internal CMS fetching)
