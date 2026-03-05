@@ -662,7 +662,7 @@ grep -c 'globals' src/payload.config.ts
 
 ### 2.1 Build `<SiteHeader />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/layout/SiteHeader.tsx`
@@ -702,7 +702,7 @@ grep 'lg:hidden\|hidden lg:' src/components/layout/SiteHeader.tsx
 
 ### 2.2 Build `<SiteFooter />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/layout/SiteFooter.tsx`
@@ -742,7 +742,7 @@ grep -i 'newsletter\|subscribe' src/components/layout/SiteFooter.tsx
 
 ### 2.3 Build `<MobileMenu />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/layout/MobileMenu.tsx`
@@ -779,7 +779,7 @@ grep 'onClose' src/components/layout/MobileMenu.tsx
 
 ### 2.4 Build `<MegaMenu />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/layout/MegaMenu.tsx`
@@ -812,7 +812,7 @@ grep 'grid\|columns\|col-' src/components/layout/MegaMenu.tsx
 
 ### 2.5 Build `<Breadcrumb />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/layout/Breadcrumb.tsx`
@@ -843,7 +843,7 @@ grep '<nav' src/components/layout/Breadcrumb.tsx
 
 ### 2.6 Build root layout
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - File at `src/app/(frontend)/layout.tsx` (or `src/app/layout.tsx` if no route group)
@@ -875,7 +875,7 @@ grep 'Inter' src/app/layout.tsx src/app/'(frontend)'/layout.tsx 2>/dev/null
 
 ### 3.1 Build `<ContentTypeBadge />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/ContentTypeBadge.tsx`
@@ -914,7 +914,7 @@ grep 'replace\|split\|charAt\|humanize\|label' src/components/ContentTypeBadge.t
 
 ### 3.2 Build `<TagChip />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/TagChip.tsx`
@@ -947,7 +947,7 @@ grep 'onClick' src/components/TagChip.tsx
 
 ### 3.3 Build `<Pagination />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/Pagination.tsx`
@@ -981,7 +981,7 @@ grep 'aria-label' src/components/Pagination.tsx
 
 ### 3.4 Build `<PageHeader />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/PageHeader.tsx`
@@ -1014,7 +1014,7 @@ grep 'icon\|title\|subtitle' src/components/PageHeader.tsx
 
 ### 3.5 Build `<NewsletterCTA />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/NewsletterCTA.tsx`
@@ -1051,7 +1051,7 @@ grep -i 'subscribe' src/components/NewsletterCTA.tsx
 
 ### 3.6 Build `<NewsItem />`
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Component file at `src/components/NewsItem.tsx`
@@ -1089,7 +1089,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 4: Homepage
 
 ### 4.1 Build hero section
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. H1 renders "Canada's Official Hub for Financial Reporting Standards" with gradient background
   2. Subtitle text renders below H1 from `homepage` global
@@ -1104,7 +1104,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Hero renders with gradient, heading, subtitle, and search bar triggers modal on click.
 
 ### 4.2 Build "New to FRAS?" CTA section
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Section displays intro paragraph from `homepage` global CTA block
   2. "Get Started" button renders with primary variant styling
@@ -1117,7 +1117,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** CTA section renders with editable text and functional button link.
 
 ### 4.3 Build "Important News & Events" 3-column grid
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Column 1 shows 3 latest news items with date, title, excerpt, "Read More →"
   2. Column 2 shows latest Exposure Drafts with ED number, title, date
@@ -1133,7 +1133,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Three columns render with live CMS data; mobile stacks correctly.
 
 ### 4.4 Build "Browse by Standard" section
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. 4-column card grid: Sustainability, Accounting, Public Sector, Assurance
   2. Each card displays category heading + list of standard/board links
@@ -1148,7 +1148,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Four category cards render with correct standard links that navigate to board pages.
 
 ### 4.5 Wire homepage route
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/page.tsx` exists as server component
   2. Fetches `homepage` global, latest news, events, standards in parallel
