@@ -26,6 +26,7 @@ import {
   getAllActiveProjects,
   getAllBoards,
   getAllStandards,
+  toPayloadLocale,
 } from '@/lib/payload-helpers'
 import { ActiveProjectsClient } from './ActiveProjectsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
@@ -46,9 +47,9 @@ export default async function ActiveProjectsPage({ params }: PageProps) {
   const { locale } = await params
   // Fetch data in parallel
   const [projects, boards, standards] = await Promise.all([
-    getAllActiveProjects(locale),
-    getAllBoards(locale),
-    getAllStandards(locale),
+    getAllActiveProjects(toPayloadLocale(locale)),
+    getAllBoards(toPayloadLocale(locale)),
+    getAllStandards(toPayloadLocale(locale)),
   ])
 
   // Filter out RASOC from board nav

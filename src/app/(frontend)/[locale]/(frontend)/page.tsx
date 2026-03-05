@@ -22,7 +22,7 @@
  * - If homepage global is not configured, renders empty state
  */
 import type { Metadata } from 'next'
-import { getHomepage } from '@/lib/payload-helpers'
+import { getHomepage, toPayloadLocale } from '@/lib/payload-helpers'
 import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { OrganizationSchema } from '@/components/StructuredData'
@@ -48,7 +48,7 @@ type PageProps = {
 
 export default async function HomePage({ params }: PageProps) {
   const { locale } = await params
-  const homepage = await getHomepage(locale)
+  const homepage = await getHomepage(toPayloadLocale(locale))
 
   // Empty state when homepage global is not configured
   if (!homepage) {

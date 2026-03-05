@@ -28,6 +28,7 @@ import {
   getProjectsByBoard,
   getNewsByBoard,
   getEventsByBoard,
+  toPayloadLocale,
 } from '@/lib/payload-helpers'
 import { BoardDetailClient } from './BoardDetailClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
@@ -48,7 +49,7 @@ export async function generateStaticParams() {
 /** Dynamic metadata from board data */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, 'board-slug': slug } = await params
-  const board = await getBoardBySlug(slug, locale)
+  const board = await getBoardBySlug(slug, toPayloadLocale(locale))
   if (!board) return { title: 'Board Not Found' }
 
   return {
@@ -62,15 +63,15 @@ export const revalidate = 60
 
 export default async function BoardDetailPage({ params }: PageProps) {
   const { locale, 'board-slug': slug } = await params
-  const board = await getBoardBySlug(slug, locale)
+  const board = await getBoardBySlug(slug, toPayloadLocale(locale))
 
   if (!board) notFound()
 
   // Fetch related data in parallel
   const [_projects, news, events] = await Promise.all([
-    getProjectsByBoard(board.id, 20, locale),
-    getNewsByBoard(board.id, 4, locale),
-    getEventsByBoard(board.id, 3, locale),
+    getProjectsByBoard(board.id, 20, toPayloadLocale(locale)),
+    getNewsByBoard(board.id, 4, toPayloadLocale(locale)),
+    getEventsByBoard(board.id, 3, toPayloadLocale(locale)),
   ])
 
   // Transform CMS data to component prop shapes

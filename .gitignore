@@ -34,3 +34,5 @@ storybook-static/
 .DS_Store
 Thumbs.db
 sitecore-dump.zip
+# clerk configuration (can include secrets)
+/.clerk/

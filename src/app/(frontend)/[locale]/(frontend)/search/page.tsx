@@ -20,7 +20,7 @@
  */
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { getSearchConfig } from '@/lib/payload-helpers'
+import { getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
 import { SearchPageClient } from './SearchPageClient'
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ type PageProps = {
 
 export default async function SearchPage({ params }: PageProps) {
   const { locale } = await params
-  const searchConfig = await getSearchConfig(locale)
+  const searchConfig = await getSearchConfig(toPayloadLocale(locale))
 
   return (
     <div data-testid="page-search" className="min-h-screen">

@@ -20,6 +20,16 @@ const nextConfig = {
   experimental: {
     reactCompiler: false,
   },
+  // Redirect root / to default locale /en (middleware can't intercept / with Payload)
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default withPayload(withNextIntl(nextConfig))

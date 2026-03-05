@@ -47,7 +47,13 @@ import type {
 } from '@/payload-types'
 
 /** Payload-compatible locale type matching the generated config */
-type PayloadLocale = 'en' | 'fr' | 'all'
+export type PayloadLocale = 'en' | 'fr' | 'all'
+
+/** Narrows a string locale to PayloadLocale, defaulting to 'en' */
+export function toPayloadLocale(locale: string | undefined): PayloadLocale {
+  if (locale === 'fr' || locale === 'all') return locale
+  return 'en'
+}
 
 /**
  * Fetches the homepage global (hero + layout blocks).

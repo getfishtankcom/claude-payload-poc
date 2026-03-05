@@ -35,6 +35,7 @@ import {
   getProjectBySlug,
   getAllActiveProjects,
   getEventsByBoard,
+  toPayloadLocale,
 } from '@/lib/payload-helpers'
 import type { Board as BoardType, Contact as ContactType, Event as EventType } from '@/payload-types'
 
@@ -54,7 +55,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, board: boardSlugParam, 'project-slug': slug } = await params
-  const project = await getProjectBySlug(slug, locale)
+  const project = await getProjectBySlug(slug, toPayloadLocale(locale))
   if (!project) return { title: 'Project Not Found' }
 
   return withLocaleMetadata(
@@ -69,7 +70,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { locale, board: boardSlug, 'project-slug': projectSlug } = await params
-  const project = await getProjectBySlug(projectSlug, locale)
+  const project = await getProjectBySlug(projectSlug, toPayloadLocale(locale))
 
   if (!project) notFound()
 
@@ -78,7 +79,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const boardName = board?.abbreviation || board?.name || boardSlug.toUpperCase()
 
   // Fetch related events
-  const events = board ? await getEventsByBoard(board.id, 3, locale) : []
+  const events = board ? await getEventsByBoard(board.id, 3, toPayloadLocale(locale)) : []
 
   // Build SectionNav items from board tabs (if board is populated)
   const navItems = board?.tabs

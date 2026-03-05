@@ -40,7 +40,7 @@ import { getMessages } from 'next-intl/server'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
-import { getNavigation, getFooter, getSearchConfig } from '@/lib/payload-helpers'
+import { getNavigation, getFooter, getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
 import { routing } from '@/i18n/routing'
 
 const inter = Inter({
@@ -70,9 +70,9 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
 
   // Fetch navigation, footer, search config, and messages in parallel
   const [navigation, footer, searchConfig, messages] = await Promise.all([
-    getNavigation(locale),
-    getFooter(locale),
-    getSearchConfig(locale),
+    getNavigation(toPayloadLocale(locale)),
+    getFooter(toPayloadLocale(locale)),
+    getSearchConfig(toPayloadLocale(locale)),
     getMessages(),
   ])
 

@@ -27,6 +27,7 @@ import {
   getOpenConsultations,
   getAllBoards,
   getAllStandards,
+  toPayloadLocale,
 } from '@/lib/payload-helpers'
 import { OpenConsultationsClient } from './OpenConsultationsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
@@ -46,9 +47,9 @@ type PageProps = {
 export default async function OpenConsultationsPage({ params }: PageProps) {
   const { locale } = await params
   const [consultations, boards, standards] = await Promise.all([
-    getOpenConsultations(locale),
-    getAllBoards(locale),
-    getAllStandards(locale),
+    getOpenConsultations(toPayloadLocale(locale)),
+    getAllBoards(toPayloadLocale(locale)),
+    getAllStandards(toPayloadLocale(locale)),
   ])
 
   // Filter RASOC from board filter

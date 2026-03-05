@@ -40,8 +40,6 @@ export const DocumentComment: Story = {
   args: {
     variant: 'document-comment',
     action: noopAction,
-    userName: 'Andrew White, CPA, CA',
-    userEmail: 'awhite@frascanada.ca',
   },
 }
 
@@ -50,8 +48,6 @@ export const EventRegistration: Story = {
   args: {
     variant: 'event-registration',
     action: noopAction,
-    userName: 'Andrew White, CPA, CA',
-    userEmail: 'awhite@frascanada.ca',
   },
 }
 
