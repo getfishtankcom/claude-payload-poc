@@ -125,9 +125,10 @@ function DesktopSection({ section }: { section: EffectiveDateSection }) {
     <>
       {/* Purple header row */}
       <tr>
-        <td
+        <th
           colSpan={2}
-          className="py-3 px-4 text-sm font-bold text-white"
+          scope="colgroup"
+          className="py-3 px-4 text-left text-sm font-bold text-white"
           style={{ backgroundColor: 'rgb(96, 31, 91)' }}
         >
           {section.headerLabel}
@@ -140,7 +141,7 @@ function DesktopSection({ section }: { section: EffectiveDateSection }) {
               })}
             </span>
           )}
-        </td>
+        </th>
       </tr>
       {/* Data rows */}
       {section.rows.map((row, rowIndex) => (

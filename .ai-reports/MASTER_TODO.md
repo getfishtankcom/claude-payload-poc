@@ -2676,7 +2676,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages responsive and cross-browser compatible at all 4 breakpoints
 
 ### 21.3 Phase 2 accessibility audit
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - WCAG 2.1 AA compliance for all Phase 2 templates
   - Keyboard navigation works: forms (T15, T16), tab toggles (T8, T13), anchor nav (T14), scroll-spy
