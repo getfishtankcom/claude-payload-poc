@@ -7,9 +7,11 @@
  * - Uses design token classes to verify Tailwind v4 integration
  * - Demonstrates Container component usage pattern
  */
+import Link from 'next/link'
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       {/* Hero placeholder — verifies gradient token */}
       <div className="hero-gradient py-16 px-6">
         <div className="mx-auto max-w-[1440px]">
@@ -25,10 +27,10 @@ export default function HomePage() {
         <h2 className="text-3xl font-black text-primary">Scaffold Complete</h2>
         <p className="mt-4 text-base leading-relaxed">
           Next.js 15 + Payload CMS 3.x + Tailwind CSS v4 foundation is ready.
-          Visit <a href="/admin" className="text-primary underline">/admin</a> to
+          Visit <Link href="/admin" className="text-primary underline">/admin</Link> to
           access the Payload CMS dashboard.
         </p>
       </div>
-    </main>
+    </div>
   )
 }
