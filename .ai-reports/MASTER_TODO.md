@@ -1267,7 +1267,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Footer driven entirely by CMS data; zero hardcoded content.
 
 ### 5.6 Wire homepage route to CMS data
-- [ ] **Status:** Not Started
+- [x] **Status:** Not Started
 - **Acceptance Criteria:**
   1. `src/app/(frontend)/page.tsx` fetches homepage global via `getHomepage()`
   2. Uses `<RenderHero {...homepage.hero} />` for hero section
