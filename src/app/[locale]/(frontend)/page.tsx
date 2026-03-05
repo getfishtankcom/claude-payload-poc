@@ -42,8 +42,13 @@ export const metadata: Metadata = {
 /** Revalidate every 60s — ISR for CMS-driven content */
 export const revalidate = 60
 
-export default async function HomePage() {
-  const homepage = await getHomepage()
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function HomePage({ params }: PageProps) {
+  const { locale } = await params
+  const homepage = await getHomepage(locale)
 
   // Empty state when homepage global is not configured
   if (!homepage) {

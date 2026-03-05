@@ -32,6 +32,7 @@ export const DocumentDetails: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {
@@ -48,6 +49,7 @@ export const DocumentDetails: CollectionConfig = {
     {
       name: 'highlights',
       type: 'richText',
+      localized: true,
       label: 'Highlights',
       admin: {
         description: 'Key points summary displayed at the top of the detail page',
@@ -56,6 +58,7 @@ export const DocumentDetails: CollectionConfig = {
     {
       name: 'bodyContent',
       type: 'richText',
+      localized: true,
       label: 'Body Content',
       admin: {
         description: 'Main body content of the document detail page',
@@ -79,6 +82,7 @@ export const DocumentDetails: CollectionConfig = {
           name: 'questionText',
           type: 'richText',
           required: true,
+          localized: true,
           label: 'Question Text',
         },
       ],
@@ -99,17 +103,20 @@ export const DocumentDetails: CollectionConfig = {
         {
           name: 'heading',
           type: 'text',
+          localized: true,
           label: 'Heading',
           defaultValue: 'How to Reply',
         },
         {
           name: 'body',
           type: 'richText',
+          localized: true,
           label: 'Body',
         },
         {
           name: 'ctaLabel',
           type: 'text',
+          localized: true,
           label: 'CTA Button Label',
         },
         {
@@ -120,16 +127,19 @@ export const DocumentDetails: CollectionConfig = {
         {
           name: 'contactName',
           type: 'text',
+          localized: true,
           label: 'Contact Name',
         },
         {
           name: 'contactTitle',
           type: 'text',
+          localized: true,
           label: 'Contact Title',
         },
         {
           name: 'contactAddress',
           type: 'richText',
+          localized: true,
           label: 'Contact Address',
         },
         {
@@ -151,6 +161,7 @@ export const DocumentDetails: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Label',
         },
         {

@@ -42,6 +42,7 @@ export const Projects: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Project Title',
     },
     {
@@ -57,11 +58,13 @@ export const Projects: CollectionConfig = {
     {
       name: 'summary',
       type: 'richText',
+      localized: true,
       label: 'Summary',
     },
     {
       name: 'key_proposals',
       type: 'richText',
+      localized: true,
       label: 'Key Proposals',
     },
     {
@@ -118,11 +121,13 @@ export const Projects: CollectionConfig = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Stage Title',
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
           label: 'Description',
         },
         {
@@ -134,6 +139,7 @@ export const Projects: CollectionConfig = {
               name: 'label',
               type: 'text',
               required: true,
+              localized: true,
               label: 'Label',
             },
             {

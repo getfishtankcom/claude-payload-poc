@@ -30,6 +30,7 @@ export const Committees: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Committee Name',
     },
     {
@@ -46,6 +47,7 @@ export const Committees: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      localized: true,
       label: 'Description',
     },
     {
@@ -89,11 +91,13 @@ export const Committees: CollectionConfig = {
           name: 'name',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Name',
         },
         {
           name: 'role',
           type: 'text',
+          localized: true,
           label: 'Role',
           admin: {
             description: 'Role within the committee (e.g., "Chair", "Member")',
@@ -102,6 +106,7 @@ export const Committees: CollectionConfig = {
         {
           name: 'organization',
           type: 'text',
+          localized: true,
           label: 'Organization',
         },
       ],
@@ -118,6 +123,7 @@ export const Committees: CollectionConfig = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Report Title',
         },
         {

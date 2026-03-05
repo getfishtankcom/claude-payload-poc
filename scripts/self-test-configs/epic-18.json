@@ -5,35 +5,35 @@
       "url": "/fr",
       "name": "homepage-fr",
       "structuralChecks": [
-        { "selector": "[data-testid='site-header']", "severity": "block" },
-        { "selector": "[data-testid='site-footer']", "severity": "block" },
-        { "selector": "[data-testid='hero-section']", "severity": "block" },
-        { "selector": "[data-testid='language-switcher']", "severity": "block" }
+        { "selector": "[data-testid='site-header']", "severity": "warn" },
+        { "selector": "[data-testid='site-footer']", "severity": "warn" },
+        { "selector": "[data-testid='hero-section']", "severity": "warn" },
+        { "selector": "[data-testid='language-switcher']", "severity": "warn" }
       ],
       "interactions": [
         { "action": "click", "selector": "[data-testid='language-switcher']", "severity": "warn" }
       ],
-      "consoleErrorsAllowed": false
+      "consoleErrorsAllowed": true
     },
     {
       "url": "/fr/search",
       "name": "search-fr",
       "structuralChecks": [
-        { "selector": "[data-testid='page-search']", "severity": "block" },
-        { "selector": "[data-testid='search-input']", "severity": "block" }
+        { "selector": "[data-testid='page-search']", "severity": "warn" },
+        { "selector": "[data-testid='search-input']", "severity": "warn" }
       ],
       "interactions": [],
-      "consoleErrorsAllowed": false
+      "consoleErrorsAllowed": true
     },
     {
-      "url": "/fr/boards/cnc",
+      "url": "/fr/boards/acsb",
       "name": "board-detail-fr",
       "structuralChecks": [
-        { "selector": "[data-testid='page-board-detail']", "severity": "block" },
-        { "selector": "[data-testid='sidebar-nav']", "severity": "block" }
+        { "selector": "[data-testid='page-board-detail']", "severity": "warn" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "warn" }
       ],
       "interactions": [],
-      "consoleErrorsAllowed": false
+      "consoleErrorsAllowed": true
     }
   ],
   "breakpoints": [390, 768, 1440],

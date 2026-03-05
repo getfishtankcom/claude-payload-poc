@@ -31,6 +31,7 @@ export const Footer: GlobalConfig = {
           name: 'heading',
           type: 'text',
           label: 'Column Heading',
+          localized: true,
         },
         {
           name: 'links',
@@ -42,6 +43,7 @@ export const Footer: GlobalConfig = {
               type: 'text',
               required: true,
               label: 'Label',
+              localized: true,
             },
             {
               name: 'url',
@@ -66,6 +68,7 @@ export const Footer: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Label',
+          localized: true,
         },
         {
           name: 'url',
@@ -85,6 +88,7 @@ export const Footer: GlobalConfig = {
           type: 'text',
           required: true,
           label: 'Label',
+          localized: true,
         },
         {
           name: 'url',
@@ -98,11 +102,13 @@ export const Footer: GlobalConfig = {
       name: 'newsletter_heading',
       type: 'text',
       label: 'Newsletter Heading',
+      localized: true,
     },
     {
       name: 'newsletter_description',
       type: 'textarea',
       label: 'Newsletter Description',
+      localized: true,
     },
   ],
 }

@@ -27,6 +27,7 @@ export const DecisionSummaries: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {
@@ -48,6 +49,7 @@ export const DecisionSummaries: CollectionConfig = {
     {
       name: 'body',
       type: 'richText',
+      localized: true,
       label: 'Decision Summary',
     },
     {

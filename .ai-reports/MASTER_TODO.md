@@ -2576,7 +2576,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 18: Bilingual i18n (5 tasks)
 
 ### 18.1 Configure Next.js i18n routing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Locale-based routing: `/en/...` and `/fr/...` paths both resolve
   - App Router `[locale]` segment configured in route structure
@@ -2589,7 +2589,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** EN/FR URL routing functional, default locale redirects work, middleware detects locale
 
 ### 18.2 Add locale support to Payload CMS content model
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Payload config includes `localization` config with `locales: ['en', 'fr']`, `defaultLocale: 'en'`
   - All text/richText fields across collections support locale variants
@@ -2602,7 +2602,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All CMS content supports EN/FR, admin locale switcher works, API returns locale-specific content
 
 ### 18.3 Build language switcher component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Displays current language name ("English" or "Francais")
   - Click toggles to alternate locale, preserving current page path
@@ -2616,7 +2616,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Language toggle switches locale in header/mobile menu, URL path preserved, edge cases handled
 
 ### 18.4 Create FR translation strings file
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Files: `messages/en.json` and `messages/fr.json`
   - Covers: navigation labels, filter labels, form labels, error messages, pagination text, CTA labels, empty state messages
@@ -2628,7 +2628,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Complete UI translation files for EN/FR with matching key sets and slug mappings
 
 ### 18.5 Implement hreflang and locale metadata
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - All pages include `<link rel="alternate" hreflang="en" href="..." />` and `<link rel="alternate" hreflang="fr" href="..." />`
   - `<html lang="...">` attribute set per locale

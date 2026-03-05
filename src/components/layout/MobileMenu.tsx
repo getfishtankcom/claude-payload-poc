@@ -26,6 +26,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import {
   Dialog,
   DialogPanel,
@@ -138,9 +139,7 @@ export function MobileMenu({ isOpen, onClose, navigation }: MobileMenuProps) {
 
           {/* Language toggle + Sign In */}
           <div className="flex items-center gap-4 px-6 py-3 border-b border-gray-200 text-sm">
-            <Link href="/fr" className="font-medium text-primary hover:underline" onClick={onClose}>
-              FR
-            </Link>
+            <LanguageSwitcher variant="inline" onSwitch={onClose} />
             <span className="text-gray-300" aria-hidden="true">|</span>
             <Link href="/login" className="font-medium text-primary hover:underline" onClick={onClose}>
               Sign In

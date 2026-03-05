@@ -21,7 +21,7 @@
 
 import React, { useState } from 'react'
 import { Button } from '@/components/ui'
-import { subscribeToNewsletter } from '@/app/(frontend)/actions/newsletter'
+import { subscribeToNewsletter } from '@/actions/newsletter'
 
 type NewsletterCTAProps = {
   /** Heading text */

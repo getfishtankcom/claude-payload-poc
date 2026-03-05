@@ -32,6 +32,7 @@ export const StandardsSections: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Title',
     },
     {
@@ -56,6 +57,7 @@ export const StandardsSections: CollectionConfig = {
     {
       name: 'boardName',
       type: 'text',
+      localized: true,
       label: 'Board Name',
       admin: {
         description: 'Full board name displayed below logo in hero banner',
@@ -75,6 +77,7 @@ export const StandardsSections: CollectionConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Tab Label',
         },
         {
@@ -107,16 +110,19 @@ export const StandardsSections: CollectionConfig = {
           name: 'heading',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Heading',
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
           label: 'Description',
         },
         {
           name: 'buttonLabel',
           type: 'text',
+          localized: true,
           label: 'Button Label',
         },
         {

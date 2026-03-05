@@ -29,6 +29,7 @@ export const Contacts: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Full Name',
       admin: {
         description: 'Include credentials (e.g., "Andrew White, CPA, CA")',
@@ -37,6 +38,7 @@ export const Contacts: CollectionConfig = {
     {
       name: 'credentials',
       type: 'text',
+      localized: true,
       label: 'Credentials',
       admin: {
         description: 'Professional credentials (e.g., "CPA, CA")',
@@ -45,6 +47,7 @@ export const Contacts: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       label: 'Job Title',
     },
     {

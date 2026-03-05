@@ -68,6 +68,16 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Bilingual support — EN/FR locales (Epic 18)
+  localization: {
+    locales: [
+      { label: 'English', code: 'en' },
+      { label: 'Francais', code: 'fr' },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
+
   // Admin panel configuration
   admin: {
     user: Users.slug,

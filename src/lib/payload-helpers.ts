@@ -5,13 +5,14 @@
  * Returns strongly typed results matching the generated payload-types.ts.
  *
  * Key features:
- * - getHomepage(): Fetches homepage global (hero + layout blocks)
- * - getNavigation(): Fetches navigation global (utility links, primary nav, mega menu)
- * - getFooter(): Fetches footer global (columns, board links, quick links, newsletter)
- * - getPageBySlug(slug): Fetches a page from pages collection by slug
- * - getLatestNews(limit): Fetches news sorted by date desc
- * - getUpcomingEvents(limit): Fetches future events sorted by date asc
- * - getStandardsByCategory(): Fetches standards grouped by category
+ * - Every helper accepts an optional `locale` param for bilingual content
+ * - getHomepage(locale): Fetches homepage global (hero + layout blocks)
+ * - getNavigation(locale): Fetches navigation global (utility links, primary nav, mega menu)
+ * - getFooter(locale): Fetches footer global (columns, board links, quick links, newsletter)
+ * - getPageBySlug(slug, locale): Fetches a page from pages collection by slug
+ * - getLatestNews(limit, locale): Fetches news sorted by date desc
+ * - getUpcomingEvents(limit, locale): Fetches future events sorted by date asc
+ * - getStandardsByCategory(locale): Fetches standards grouped by category
  *
  * @dependencies
  * - payload: getPayload function for local API access
@@ -22,6 +23,7 @@
  * - Use in server components and page routes only
  * - Wraps Payload local API calls with type-safe return values
  * - Errors are caught and return null/empty to prevent page crashes
+ * - locale defaults to 'en' if not provided
  */
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -45,11 +47,12 @@ import type {
  * Fetches the homepage global (hero + layout blocks).
  * Returns null if not configured yet.
  */
-export async function getHomepage(): Promise<Homepage | null> {
+export async function getHomepage(locale = 'en'): Promise<Homepage | null> {
   try {
     const payload = await getPayload({ config })
     const homepage = await payload.findGlobal({
       slug: 'homepage',
+      locale,
     })
     return homepage as unknown as Homepage
   } catch {
@@ -61,11 +64,12 @@ export async function getHomepage(): Promise<Homepage | null> {
  * Fetches the navigation global.
  * Returns null if not configured yet.
  */
-export async function getNavigation(): Promise<Navigation | null> {
+export async function getNavigation(locale = 'en'): Promise<Navigation | null> {
   try {
     const payload = await getPayload({ config })
     const navigation = await payload.findGlobal({
       slug: 'navigation',
+      locale,
     })
     return navigation as unknown as Navigation
   } catch {
@@ -77,11 +81,12 @@ export async function getNavigation(): Promise<Navigation | null> {
  * Fetches the footer global.
  * Returns null if not configured yet.
  */
-export async function getFooter(): Promise<Footer | null> {
+export async function getFooter(locale = 'en'): Promise<Footer | null> {
   try {
     const payload = await getPayload({ config })
     const footer = await payload.findGlobal({
       slug: 'footer',
+      locale,
     })
     return footer as unknown as Footer
   } catch {
@@ -93,7 +98,7 @@ export async function getFooter(): Promise<Footer | null> {
  * Fetches a page from the pages collection by slug.
  * Returns the page with hero + layout blocks, or null if not found.
  */
-export async function getPageBySlug(slug: string): Promise<Page | null> {
+export async function getPageBySlug(slug: string, locale = 'en'): Promise<Page | null> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -102,6 +107,7 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
         slug: { equals: slug },
       },
       limit: 1,
+      locale,
     })
     return (result.docs[0] as unknown as Page) || null
   } catch {
@@ -112,13 +118,14 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
 /**
  * Fetches the latest news items sorted by publishedDate descending.
  */
-export async function getLatestNews(limit = 3): Promise<News[]> {
+export async function getLatestNews(limit = 3, locale = 'en'): Promise<News[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
       collection: 'news',
       sort: '-publishedDate',
       limit,
+      locale,
     })
     return result.docs as unknown as News[]
   } catch {
@@ -129,7 +136,7 @@ export async function getLatestNews(limit = 3): Promise<News[]> {
 /**
  * Fetches upcoming events (future dates) sorted by date ascending.
  */
-export async function getUpcomingEvents(limit = 5): Promise<Event[]> {
+export async function getUpcomingEvents(limit = 5, locale = 'en'): Promise<Event[]> {
   try {
     const payload = await getPayload({ config })
     const now = new Date().toISOString()
@@ -140,6 +147,7 @@ export async function getUpcomingEvents(limit = 5): Promise<Event[]> {
       },
       sort: 'date',
       limit,
+      locale,
     })
     return result.docs as unknown as Event[]
   } catch {
@@ -151,13 +159,14 @@ export async function getUpcomingEvents(limit = 5): Promise<Event[]> {
  * Fetches all standards grouped by category.
  * Returns an object keyed by category with arrays of standards.
  */
-export async function getStandardsByCategory(): Promise<Record<string, Standard[]>> {
+export async function getStandardsByCategory(locale = 'en'): Promise<Record<string, Standard[]>> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
       collection: 'standards',
       limit: 100,
       sort: 'title',
+      locale,
     })
     const standards = result.docs as unknown as Standard[]
 
@@ -180,11 +189,12 @@ export async function getStandardsByCategory(): Promise<Record<string, Standard[
  * Fetches the search-config global (popular tags, default filters).
  * Returns null if not configured yet.
  */
-export async function getSearchConfig(): Promise<SearchConfig | null> {
+export async function getSearchConfig(locale = 'en'): Promise<SearchConfig | null> {
   try {
     const payload = await getPayload({ config })
     const searchConfig = await payload.findGlobal({
       slug: 'search-config',
+      locale,
     })
     return searchConfig as unknown as SearchConfig
   } catch {
@@ -197,13 +207,14 @@ export async function getSearchConfig(): Promise<SearchConfig | null> {
 /**
  * Fetches a board by slug with all fields.
  */
-export async function getBoardBySlug(slug: string): Promise<Board | null> {
+export async function getBoardBySlug(slug: string, locale = 'en'): Promise<Board | null> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
       collection: 'boards',
       where: { slug: { equals: slug } },
       limit: 1,
+      locale,
     })
     return (result.docs[0] as unknown as Board) || null
   } catch {
@@ -214,13 +225,14 @@ export async function getBoardBySlug(slug: string): Promise<Board | null> {
 /**
  * Fetches all boards (for generateStaticParams and board nav).
  */
-export async function getAllBoards(): Promise<Board[]> {
+export async function getAllBoards(locale = 'en'): Promise<Board[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
       collection: 'boards',
       limit: 100,
       sort: 'name',
+      locale,
     })
     return result.docs as unknown as Board[]
   } catch {
@@ -231,7 +243,7 @@ export async function getAllBoards(): Promise<Board[]> {
 /**
  * Fetches projects filtered by board, with populated relationships.
  */
-export async function getProjectsByBoard(boardId: number, limit = 20): Promise<Project[]> {
+export async function getProjectsByBoard(boardId: number, limit = 20, locale = 'en'): Promise<Project[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -240,6 +252,7 @@ export async function getProjectsByBoard(boardId: number, limit = 20): Promise<P
       sort: 'title',
       limit,
       depth: 2,
+      locale,
     })
     return result.docs as unknown as Project[]
   } catch {
@@ -250,7 +263,7 @@ export async function getProjectsByBoard(boardId: number, limit = 20): Promise<P
 /**
  * Fetches all active projects with populated board/standard relationships.
  */
-export async function getAllActiveProjects(): Promise<Project[]> {
+export async function getAllActiveProjects(locale = 'en'): Promise<Project[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -259,6 +272,7 @@ export async function getAllActiveProjects(): Promise<Project[]> {
       sort: 'title',
       limit: 200,
       depth: 2,
+      locale,
     })
     return result.docs as unknown as Project[]
   } catch {
@@ -269,7 +283,7 @@ export async function getAllActiveProjects(): Promise<Project[]> {
 /**
  * Fetches a project by board slug and project slug with full depth.
  */
-export async function getProjectBySlug(projectSlug: string): Promise<Project | null> {
+export async function getProjectBySlug(projectSlug: string, locale = 'en'): Promise<Project | null> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -277,6 +291,7 @@ export async function getProjectBySlug(projectSlug: string): Promise<Project | n
       where: { slug: { equals: projectSlug } },
       limit: 1,
       depth: 3,
+      locale,
     })
     return (result.docs[0] as unknown as Project) || null
   } catch {
@@ -287,7 +302,7 @@ export async function getProjectBySlug(projectSlug: string): Promise<Project | n
 /**
  * Fetches news items filtered by board, sorted newest first.
  */
-export async function getNewsByBoard(boardId: number, limit = 4): Promise<News[]> {
+export async function getNewsByBoard(boardId: number, limit = 4, locale = 'en'): Promise<News[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -295,6 +310,7 @@ export async function getNewsByBoard(boardId: number, limit = 4): Promise<News[]
       where: { board: { equals: boardId } },
       sort: '-date',
       limit,
+      locale,
     })
     return result.docs as unknown as News[]
   } catch {
@@ -305,7 +321,7 @@ export async function getNewsByBoard(boardId: number, limit = 4): Promise<News[]
 /**
  * Fetches upcoming events filtered by board, sorted by date ascending.
  */
-export async function getEventsByBoard(boardId: number, limit = 3): Promise<Event[]> {
+export async function getEventsByBoard(boardId: number, limit = 3, locale = 'en'): Promise<Event[]> {
   try {
     const payload = await getPayload({ config })
     const now = new Date().toISOString()
@@ -319,6 +335,7 @@ export async function getEventsByBoard(boardId: number, limit = 3): Promise<Even
       },
       sort: 'date',
       limit,
+      locale,
     })
     return result.docs as unknown as Event[]
   } catch {
@@ -329,7 +346,7 @@ export async function getEventsByBoard(boardId: number, limit = 3): Promise<Even
 /**
  * Fetches open consultations (deadline in the future), sorted by deadline ascending.
  */
-export async function getOpenConsultations(): Promise<Consultation[]> {
+export async function getOpenConsultations(locale = 'en'): Promise<Consultation[]> {
   try {
     const payload = await getPayload({ config })
     const now = new Date().toISOString()
@@ -339,6 +356,7 @@ export async function getOpenConsultations(): Promise<Consultation[]> {
       sort: 'deadline_date',
       limit: 100,
       depth: 2,
+      locale,
     })
     return result.docs as unknown as Consultation[]
   } catch {
@@ -349,7 +367,7 @@ export async function getOpenConsultations(): Promise<Consultation[]> {
 /**
  * Fetches all consultations (including closed), sorted by deadline.
  */
-export async function getAllConsultations(): Promise<Consultation[]> {
+export async function getAllConsultations(locale = 'en'): Promise<Consultation[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -357,6 +375,7 @@ export async function getAllConsultations(): Promise<Consultation[]> {
       sort: 'deadline_date',
       limit: 200,
       depth: 2,
+      locale,
     })
     return result.docs as unknown as Consultation[]
   } catch {
@@ -383,13 +402,14 @@ export async function getAuthConfig(): Promise<AuthConfig | null> {
 /**
  * Fetches all standards (for filter dropdowns).
  */
-export async function getAllStandards(): Promise<Standard[]> {
+export async function getAllStandards(locale = 'en'): Promise<Standard[]> {
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
       collection: 'standards',
       limit: 100,
       sort: 'name',
+      locale,
     })
     return result.docs as unknown as Standard[]
   } catch {

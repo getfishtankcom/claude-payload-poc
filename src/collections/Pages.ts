@@ -54,6 +54,7 @@ export const Pages: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
       label: 'Page Title',
     },
     {
@@ -166,6 +167,7 @@ export const Pages: CollectionConfig = {
                   name: 'label',
                   type: 'text',
                   required: true,
+                  localized: true,
                   label: 'Label',
                 },
                 {
@@ -199,16 +201,19 @@ export const Pages: CollectionConfig = {
                 {
                   name: 'heading',
                   type: 'text',
+                  localized: true,
                   label: 'Heading',
                 },
                 {
                   name: 'description',
                   type: 'textarea',
+                  localized: true,
                   label: 'Description',
                 },
                 {
                   name: 'buttonLabel',
                   type: 'text',
+                  localized: true,
                   label: 'Button Label',
                 },
                 {
@@ -270,17 +275,20 @@ export const Pages: CollectionConfig = {
                 {
                   name: 'heading',
                   type: 'text',
+                  localized: true,
                   label: 'Heading',
                   defaultValue: 'Media Inquiries',
                 },
                 {
                   name: 'contactName',
                   type: 'text',
+                  localized: true,
                   label: 'Contact Name',
                 },
                 {
                   name: 'contactTitle',
                   type: 'text',
+                  localized: true,
                   label: 'Contact Title',
                 },
                 {
@@ -304,6 +312,7 @@ export const Pages: CollectionConfig = {
             {
               name: 'listingHeading',
               type: 'text',
+              localized: true,
               label: 'Listing Heading',
               admin: {
                 description: 'T17 — Heading above the dynamic listing area (e.g., "Open Positions")',
@@ -312,6 +321,7 @@ export const Pages: CollectionConfig = {
             {
               name: 'emptyStateMessage',
               type: 'richText',
+              localized: true,
               label: 'Empty State Message',
               admin: {
                 description: 'Message shown when no items exist in the listing',
