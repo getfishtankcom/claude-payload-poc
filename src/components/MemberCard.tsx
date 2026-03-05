@@ -54,7 +54,7 @@ export function MemberCard({ member }: MemberCardProps) {
   return (
     <div data-testid="member-card" className="space-y-2">
       {/* Photo */}
-      <div className="relative h-[205px] w-[205px] overflow-hidden bg-gray-100">
+      <div className="relative h-[180px] w-[180px] overflow-hidden bg-gray-100 sm:h-[205px] sm:w-[205px]">
         {member.photo ? (
           <Image
             src={member.photo}

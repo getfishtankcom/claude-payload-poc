@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * @description
  * Tab pills component for toggling between views using URL query parameters.
@@ -8,6 +10,7 @@
  * - Inactive pill: outline/ghost styling, dark text
  * - Tab switching via query params (e.g., ?tab=closed-for-comment)
  * - Accessible with proper aria roles and labels
+ * - Responsive: pills on desktop (md+), select dropdown on mobile
  *
  * @dependencies
  * - next/link: For query param navigation without full page reload
@@ -15,6 +18,7 @@
  * @notes
  * - Server component — no client-side state
  * - Used on Documents for Comment listing (Template 8) for Open/Closed toggle
+ * - Mobile dropdown navigates via standard <a> redirect
  */
 import Link from 'next/link'
 
@@ -38,22 +42,25 @@ type TabPillsProps = {
 }
 
 export function TabPills({ options, paramName, basePath, className = '' }: TabPillsProps) {
-  return (
-    <nav
-      aria-label="Tab navigation"
-      className={`flex flex-wrap gap-2 ${className}`.trim()}
-      data-testid="tab-pills"
-      role="tablist"
-    >
-      {options.map((option) => {
-        const href = option.queryValue
-          ? `${basePath}?${paramName}=${option.queryValue}`
-          : basePath
+  // Build href for a given option
+  function buildHref(queryValue: string) {
+    return queryValue ? `${basePath}?${paramName}=${queryValue}` : basePath
+  }
 
-        return (
+  const activeOption = options.find((o) => o.isActive)
+
+  return (
+    <div className={className} data-testid="tab-pills">
+      {/* Desktop: pill row (hidden below md) */}
+      <nav
+        aria-label="Tab navigation"
+        className="hidden flex-wrap gap-2 md:flex"
+        role="tablist"
+      >
+        {options.map((option) => (
           <Link
             key={option.queryValue}
-            href={href}
+            href={buildHref(option.queryValue)}
             role="tab"
             aria-selected={option.isActive}
             className={`inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold transition-colors duration-150 ${
@@ -65,8 +72,33 @@ export function TabPills({ options, paramName, basePath, className = '' }: TabPi
           >
             {option.label}
           </Link>
-        )
-      })}
-    </nav>
+        ))}
+      </nav>
+
+      {/* Mobile: select dropdown (visible below md) */}
+      <div className="md:hidden">
+        <label htmlFor="tab-pills-mobile" className="sr-only">
+          Select tab
+        </label>
+        {/* Use a native select that redirects on change via JS */}
+        <select
+          id="tab-pills-mobile"
+          defaultValue={activeOption?.queryValue ?? ''}
+          onChange={(e) => {
+            // Navigate to the selected tab's URL
+            const href = buildHref(e.target.value)
+            window.location.href = href
+          }}
+          className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary"
+          data-testid="tab-pills-mobile"
+        >
+          {options.map((option) => (
+            <option key={option.queryValue} value={option.queryValue}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
   )
 }

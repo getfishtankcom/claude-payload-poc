@@ -2662,7 +2662,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages render with realistic content, no empty states on seeded pages
 
 ### 21.2 Phase 2 responsive testing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - All 13 gap templates tested at 390px, 768px, 1024px, 1440px viewports
   - Mobile adaptations verified: sidebar stacks below content, grid becomes single column, pills collapse to dropdown, tables become stacked cards
