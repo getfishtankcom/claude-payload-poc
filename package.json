@@ -29,6 +29,8 @@
     "storybook:build": "storybook build -o storybook-static"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@payloadcms/db-postgres": "^3.77.0",
     "@payloadcms/next": "^3.77.0",
     "@payloadcms/richtext-lexical": "^3.77.0",

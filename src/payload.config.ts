@@ -27,6 +27,20 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Boards } from './collections/Boards'
+import { Standards } from './collections/Standards'
+import { Projects } from './collections/Projects'
+import { Consultations } from './collections/Consultations'
+import { News } from './collections/News'
+import { Events } from './collections/Events'
+import { Documents } from './collections/Documents'
+import { DecisionSummaries } from './collections/DecisionSummaries'
+import { Contacts } from './collections/Contacts'
+import { Pages } from './collections/Pages'
+import { Navigation } from './globals/Navigation'
+import { Footer } from './globals/Footer'
+import { Homepage } from './globals/Homepage'
+import { SearchConfig } from './globals/SearchConfig'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -41,7 +55,23 @@ export default buildConfig({
   },
 
   // Collections define the data models
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Boards,
+    Standards,
+    Projects,
+    Consultations,
+    News,
+    Events,
+    Documents,
+    DecisionSummaries,
+    Contacts,
+    Pages,
+  ],
+
+  // Globals for site-wide settings
+  globals: [Navigation, Footer, Homepage, SearchConfig],
 
   // Rich text editor
   editor: lexicalEditor(),

@@ -105,7 +105,7 @@ grep -r 'Inter' src/app/layout.tsx
 
 ### 0.2.1 Install and configure Tailwind UI
 
-- [ ] **Status:** Pending (deferred — Headless UI + Heroicons will be installed when first needed in Epic 2/3)
+- [x] **Status:** Complete (2026-03-05) — installed with Epic 2 start
 
 **Acceptance Criteria:**
 - `@headlessui/react` installed and listed in `package.json` dependencies
@@ -248,7 +248,7 @@ npx tsc --noEmit
 
 ### 1.1 Create `boards` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Boards.ts`
@@ -290,7 +290,7 @@ grep -c "name:" src/collections/Boards.ts
 
 ### 1.2 Create `standards` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Standards.ts`
@@ -322,7 +322,7 @@ grep 'relationTo.*boards' src/collections/Standards.ts
 
 ### 1.3 Create `projects` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Projects.ts`
@@ -372,7 +372,7 @@ grep 'relationTo' src/collections/Projects.ts
 
 ### 1.4 Create `consultations` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Consultations.ts`
@@ -416,7 +416,7 @@ grep 'Exposure Draft\|Survey\|Re-exposure' src/collections/Consultations.ts
 
 ### 1.5 Create `news` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/News.ts`
@@ -452,7 +452,7 @@ grep "'date'" src/collections/News.ts
 
 ### 1.6 Create `events` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Events.ts`
@@ -484,7 +484,7 @@ grep 'Webinar\|Meeting\|Deadline' src/collections/Events.ts
 
 ### 1.7 Create `documents` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Documents.ts`
@@ -516,7 +516,7 @@ grep 'upload' src/collections/Documents.ts
 
 ### 1.8 Create `decision-summaries` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/DecisionSummaries.ts`
@@ -543,7 +543,7 @@ grep 'relationTo.*boards' src/collections/DecisionSummaries.ts
 
 ### 1.9 Create `contacts` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Contacts.ts`
@@ -573,7 +573,7 @@ grep 'upload\|photo' src/collections/Contacts.ts
 
 ### 1.10 Create `pages` collection
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - Collection file at `src/collections/Pages.ts`
@@ -605,7 +605,7 @@ grep 'meta_title\|meta_description\|og_image' src/collections/Pages.ts
 
 ### 1.11 Create Globals
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 
