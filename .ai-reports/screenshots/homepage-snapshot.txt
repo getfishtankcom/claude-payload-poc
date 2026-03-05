@@ -1,0 +1,437 @@
+uid=17_0 RootWebArea "About" url="https://www.frascanada.ca/en/about"
+  uid=17_1 ignored
+    uid=17_2 generic
+      uid=17_3 generic
+        uid=17_4 ignored
+        uid=17_5 ignored
+        uid=17_6 link "Skip to main content" url="https://www.frascanada.ca/en/about#main-content"
+          uid=17_7 StaticText "Skip to main content"
+        uid=17_8 sectionheader
+          uid=17_9 generic
+            uid=17_10 generic
+              uid=17_11 generic
+              uid=17_12 ignored
+                uid=17_13 ignored
+                  uid=17_14 generic
+                    uid=17_15 generic
+                      uid=17_16 generic
+                        uid=17_17 generic
+                          uid=17_18 navigation
+                            uid=17_19 list
+                              uid=17_20 listitem level="1"
+                                uid=17_21 link "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/"
+                                  uid=17_22 image "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-header-logo.png?h=34&iar=0&w=40&rev=b99f466a51e74ae59a315e5a7e3e28ed&hash=31AC94037696DF8BC543348A7289C532"
+                              uid=17_23 listitem level="1"
+                                uid=17_24 button "FRAS Canada" expandable
+                                  uid=17_25 StaticText "FRAS Canada"
+                                  uid=17_26 generic
+                              uid=17_27 listitem level="1"
+                                uid=17_28 button "Council" expandable
+                                  uid=17_29 StaticText "Council"
+                                  uid=17_30 generic
+                              uid=17_31 listitem level="1"
+                                uid=17_32 button "Boards" expandable
+                                  uid=17_33 StaticText "Boards"
+                                  uid=17_34 generic
+                              uid=17_35 listitem level="1"
+                                uid=17_36 button "Standards" expandable
+                                  uid=17_37 StaticText "Standards"
+                                  uid=17_38 generic
+                    uid=17_39 generic
+                      uid=17_40 generic
+                        uid=17_41 generic
+                          uid=17_42 button "Login"
+                            uid=17_43 StaticText "Login"
+                        uid=17_44 generic
+                          uid=17_45 generic
+                            uid=17_46 list
+                              uid=17_47 listitem level="1"
+                                uid=17_48 generic
+                                  uid=17_49 ignored
+                                    uid=17_50 ignored
+                                    uid=17_51 ignored
+                                  uid=17_52 button "English"
+                                    uid=17_53 StaticText "English"
+                        uid=17_54 ignored
+                          uid=17_55 ignored
+                            uid=17_56 LayoutTable
+                              uid=17_57 ignored
+                                uid=17_58 ignored
+                                  uid=17_59 ignored
+                                    uid=17_60 ignored
+                                      uid=17_61 ignored
+                                        uid=17_62 ignored
+                                          uid=17_63 ignored
+                                    uid=17_64 ignored
+                                    uid=17_65 ignored
+                              uid=17_66 ignored
+                                uid=17_67 ignored
+                                uid=17_68 ignored
+                                  uid=17_69 ignored
+                                    uid=17_70 ignored
+                                    uid=17_71 ignored
+                        uid=17_72 generic
+                          uid=17_73 button "Search"
+            uid=17_74 ignored
+              uid=17_75 ignored
+                uid=17_76 ignored
+                  uid=17_77 ignored
+                    uid=17_78 ignored
+                      uid=17_79 ignored
+                        uid=17_80 ignored
+                  uid=17_81 ignored
+                  uid=17_82 ignored
+            uid=17_83 ignored
+              uid=17_84 ignored
+              uid=17_85 ignored
+                uid=17_86 ignored
+                  uid=17_87 ignored
+                  uid=17_88 ignored
+            uid=17_89 generic
+              uid=17_90 generic
+                uid=17_91 image "Banner Background" url="https://www.frascanada.ca/assets/standardBuild/images/header/Dotted.png"
+              uid=17_92 ignored
+                uid=17_93 ignored
+                  uid=17_94 generic
+                    uid=17_95 generic
+                      uid=17_96 image "Financial Reporting & Assurance Standards Canada logo: one solid black dot, black maple leaf, four solid black dots arranged clockwise." url="https://www.frascanada.ca/-/media/frascanada/global-images/banners/fras-banner-en.png?h=75&iar=0&w=304&rev=79ec26686b774f74a7478f2a1dea3fef&hash=355C4A1417103B9E2368303FA13BDAC8"
+        uid=17_97 main
+          uid=17_98 generic
+            uid=17_99 ignored
+              uid=17_100 ignored
+                uid=17_101 generic
+                  uid=17_102 list
+                    uid=17_103 listitem level="1"
+                      uid=17_104 link "Home" url="https://www.frascanada.ca/en"
+                        uid=17_105 StaticText "Home"
+                    uid=17_106 listitem level="1"
+                      uid=17_107 link "About" url="https://www.frascanada.ca/en/about"
+                        uid=17_108 StaticText "About"
+                      uid=17_109 generic
+                        uid=17_110 StaticText "/"
+          uid=17_111 generic
+            uid=17_112 ignored
+              uid=17_113 ignored
+                uid=17_114 generic
+                  uid=17_115 paragraph
+                    uid=17_116 StaticText "FRASCanada"
+          uid=17_117 generic
+            uid=17_118 ignored
+              uid=17_119 ignored
+                uid=17_120 generic
+                  uid=17_121 generic
+                    uid=17_122 list
+                      uid=17_123 listitem level="1"
+                        uid=17_124 link "ABOUT" url="https://www.frascanada.ca/en/about"
+                          uid=17_125 StaticText "ABOUT"
+                          uid=17_126 generic
+                      uid=17_127 listitem level="1"
+                        uid=17_128 link "RESEARCH PROGRAM" url="https://www.frascanada.ca/en/research-program"
+                          uid=17_129 StaticText "RESEARCH PROGRAM"
+                      uid=17_130 listitem level="1"
+                        uid=17_131 link "NEWS LISTINGS" url="https://www.frascanada.ca/en/news-listings"
+                          uid=17_132 StaticText "NEWS LISTINGS"
+                      uid=17_133 listitem level="1"
+                        uid=17_134 link "CONTACT US" url="https://www.frascanada.ca/en/contact-us"
+                          uid=17_135 StaticText "CONTACT US"
+                      uid=17_136 listitem level="1"
+                        uid=17_137 link "JOB OPPORTUNITIES" url="https://www.frascanada.ca/en/job-opportunities"
+                          uid=17_138 StaticText "JOB OPPORTUNITIES"
+                      uid=17_139 listitem level="1"
+                        uid=17_140 link "VOLUNTEER OPPORTUNITIES" url="https://www.frascanada.ca/en/volunteer-opportunities"
+                          uid=17_141 StaticText "VOLUNTEER OPPORTUNITIES"
+                      uid=17_142 listitem level="1"
+                        uid=17_143 link "MY ACCOUNT" url="https://www.frascanada.ca/en/my-account"
+                          uid=17_144 StaticText "MY ACCOUNT"
+          uid=17_145 generic
+            uid=17_146 ignored
+              uid=17_147 ignored
+                uid=17_148 generic
+                  uid=17_149 heading "About" level="1"
+                    uid=17_150 StaticText "About"
+          uid=17_151 ignored
+            uid=17_152 ignored
+              uid=17_153 generic
+                uid=17_154 generic
+                uid=17_155 generic
+                  uid=17_156 heading "About Canada’s Standard-setting Boards and Oversight Council" level="2"
+                    uid=17_157 StaticText "About Canada’s Standard-setting Boards and Oversight Council"
+                  uid=17_158 paragraph
+                    uid=17_159 StaticText "Standards are critical to our understanding of the performance of organizations, ensuring fairness and transparency."
+                  uid=17_160 paragraph
+                    uid=17_161 StaticText "Accounting, auditing, and sustainability standards provide a common and essential measurement that lend credibility and trust to both financial and non-financial results of public and private companies, not-for-profit organizations, Crown corporations, governments, and auditing firms."
+                  uid=17_162 paragraph
+                    uid=17_163 StaticText "Canada’s standard-setting Boards and Oversight Council are the "
+                    uid=17_164 link "Accounting Standards Board" url="https://www.frascanada.ca/en/acsb"
+                      uid=17_165 StaticText "Accounting Standards Board"
+                    uid=17_166 StaticText " (AcSB), "
+                    uid=17_167 link "Public Sector Accounting Board" url="https://www.frascanada.ca/en/psab"
+                      uid=17_168 StaticText "Public Sector Accounting Board"
+                    uid=17_169 StaticText " (PSAB), "
+                    uid=17_170 link "Auditing and Assurance Standards Board" url="https://www.frascanada.ca/en/aasb"
+                      uid=17_171 StaticText "Auditing and Assurance Standards Board"
+                    uid=17_172 StaticText " (AASB), "
+                    uid=17_173 link "Canadian Sustainability Standards Board" url="https://www.frascanada.ca/en/cssb"
+                      uid=17_174 StaticText "Canadian Sustainability Standards Board"
+                    uid=17_175 StaticText " (CSSB), and the "
+                    uid=17_176 link "Reporting & Assurance Standards Oversight Council" url="https://www.frascanada.ca/en/rasoc"
+                      uid=17_177 StaticText "Reporting & Assurance Standards Oversight Council"
+                    uid=17_178 StaticText "."
+                  uid=17_179 paragraph
+                    uid=17_180 image "Read about Canada’s Standard-setting Boards and Oversight Councils for more on our governance structure, relationship with CPA Canada, and ongoing initiatives." url="https://www.frascanada.ca/-/media/frascanada/fras/fras-about-infographic.png?rev=7fafbed6e86f4a48a887d623b9a569df&hash=197E65B36D45E7794B37EA5BA9E80F90"
+                  uid=17_181 paragraph
+                    uid=17_182 StaticText "Our Boards establish and maintain standards on accounting, auditing, and sustainability disclosures to serve the public interest. Our Oversight Council appoints Board members and provide input into the Boards’ activities, ensuring that standard setting functions as it should."
+                  uid=17_183 paragraph
+                    uid=17_184 StaticText "Board and Council members are volunteers. They are individuals with varied backgrounds, from the private and public sectors, such as financial-statement preparers and users, auditors, academics, regulators, and sustainability professionals."
+                  uid=17_185 heading "Our Relationship with CPA Canada" level="2"
+                    uid=17_186 StaticText "Our Relationship with CPA Canada"
+                  uid=17_187 paragraph
+                    uid=17_188 StaticText "Chartered Professional Accountants of Canada's ("
+                    uid=17_189 link "CPA Canada" url="https://www.cpacanada.ca/"
+                      uid=17_190 StaticText "CPA Canada"
+                    uid=17_191 StaticText ") role in standard setting is one of stewardship, supporting the integrity of Canada’s independent standard-setting process."
+                  uid=17_192 paragraph
+                    uid=17_193 StaticText "Specifically, CPA Canada supports independent standard setting – delivered through the Boards and Oversight Council – by providing resources and funding. The standard-setting Boards and Oversight Council operate at arm’s length from CPA Canada."
+                  uid=17_194 heading "The CPA Canada Handbook" level="2"
+                    uid=17_195 StaticText "The CPA Canada Handbook"
+                  uid=17_196 paragraph
+                    uid=17_197 StaticText "CPA Canada publishes the CPA Canada Handbook in English and French. It contains the accounting, sustainability disclosures, and assurance standards and guidance developed and/or adopted by the Boards."
+                  uid=17_198 paragraph
+                    uid=17_199 StaticText "Access the Handbook via "
+                    uid=17_200 link "www.knotia.ca" url="https://www.knotia.ca/"
+                      uid=17_201 StaticText "www.knotia.ca"
+                    uid=17_202 StaticText "."
+              uid=17_203 generic
+                uid=17_204 generic
+                  uid=17_205 list
+                    uid=17_206 listitem level="1"
+                      uid=17_207 strong
+                        uid=17_208 link "About" url="https://www.frascanada.ca/en/about"
+                          uid=17_209 StaticText "About"
+                    uid=17_210 listitem level="1"
+                      uid=17_211 link "Due Process" url="https://www.frascanada.ca/en/due-process"
+                        uid=17_212 StaticText "Due Process"
+                    uid=17_213 listitem level="1"
+                      uid=17_214 link "International Activities" url="https://www.frascanada.ca/en/international-activities"
+                        uid=17_215 StaticText "International Activities"
+                    uid=17_216 listitem level="1"
+                      uid=17_217 link "IRCSS Recommendations" url="https://www.frascanada.ca/en/about/ircss-final-recommendations"
+                        uid=17_218 StaticText "IRCSS Recommendations"
+          uid=17_219 ignored
+            uid=17_220 ignored
+              uid=17_221 ignored
+                uid=17_222 generic
+                  uid=17_223 generic
+                    uid=17_224 ignored
+                      uid=17_225 generic
+                        uid=17_226 heading "Stay Up to Date on the Progress of Standard-setting Initiatives" level="3"
+                          uid=17_227 StaticText "Stay Up to Date on the Progress of Standard-setting Initiatives"
+                        uid=17_228 paragraph
+                          uid=17_229 StaticText "Subscribe to "
+                          uid=17_230 emphasis
+                            uid=17_231 link "The Standard" url="https://www.frascanada.ca/en/my-account/mysubscriptions"
+                              uid=17_232 StaticText "The Standard"
+                          uid=17_233 StaticText ", the Boards and Oversight Council's enewsletter, which you can customize to topics that interest you."
+                        uid=17_234 generic
+                          uid=17_235 generic
+                            uid=17_236 link "Subscribe" url="https://www.frascanada.ca/en/my-account/mysubscriptions"
+                              uid=17_237 StaticText "Subscribe"
+                uid=17_238 generic
+                  uid=17_239 generic
+                    uid=17_240 ignored
+                      uid=17_241 generic
+                        uid=17_242 heading "Follow Us on Social Media:" level="3"
+                          uid=17_243 StaticText "Follow Us on Social Media:"
+                        uid=17_244 generic
+                          uid=17_245 generic
+                            uid=17_246 link "X" url="https://twitter.com/FRASCanada"
+                              uid=17_247 StaticText "X"
+                          uid=17_248 generic
+                            uid=17_249 link "LinkedIn" url="https://www.frascanada.ca/en/linkedin"
+                              uid=17_250 StaticText "LinkedIn"
+                          uid=17_251 generic
+                            uid=17_252 link "YouTube" url="https://www.youtube.com/channel/UCk5HwEnc8PfvYf4jaWGan2w"
+                              uid=17_253 StaticText "YouTube"
+        uid=17_254 sectionfooter
+          uid=17_255 ignored
+            uid=17_256 generic
+              uid=17_257 generic
+                uid=17_258 generic
+                  uid=17_259 image "Dotted Footer Background" url="https://www.frascanada.ca/assets/standardBuild/images/footer/Dotted%20BG.png"
+                uid=17_260 ignored
+                  uid=17_261 ignored
+                    uid=17_262 generic
+                      uid=17_263 generic
+                        uid=17_264 list
+                          uid=17_265 listitem level="1"
+                            uid=17_266 StaticText "Financial Reporting & Assurance Standards Canada"
+                          uid=17_267 listitem level="1"
+                            uid=17_268 link "About FRAS Canada" url="https://www.frascanada.ca/en/about"
+                              uid=17_269 StaticText "About FRAS Canada"
+                          uid=17_270 listitem level="1"
+                            uid=17_271 link "Research Program" url="https://www.frascanada.ca/en/research-program"
+                              uid=17_272 StaticText "Research Program"
+                          uid=17_273 listitem level="1"
+                            uid=17_274 link "News Listings" url="https://www.frascanada.ca/en/news-listings"
+                              uid=17_275 StaticText "News Listings"
+                          uid=17_276 listitem level="1"
+                            uid=17_277 link "Job Opportunities" url="https://www.frascanada.ca/en/job-opportunities"
+                              uid=17_278 StaticText "Job Opportunities"
+                          uid=17_279 listitem level="1"
+                            uid=17_280 link "Volunteer Opportunities" url="https://www.frascanada.ca/en/volunteer-opportunities"
+                              uid=17_281 StaticText "Volunteer Opportunities"
+                          uid=17_282 listitem level="1"
+                            uid=17_283 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=17_284 StaticText "Contact"
+                          uid=17_285 listitem level="1"
+                            uid=17_286 StaticText "Council"
+                          uid=17_287 listitem level="1"
+                            uid=17_288 link "Reporting and Assurance Standards Oversight Council" url="https://www.frascanada.ca/en/rasoc"
+                              uid=17_289 StaticText "Reporting and Assurance Standards Oversight Council"
+                          uid=17_290 listitem level="1"
+                            uid=17_291 StaticText "Boards"
+                          uid=17_292 listitem level="1"
+                            uid=17_293 link "Canadian Sustainability Standards Board" url="https://www.frascanada.ca/en/cssb"
+                              uid=17_294 StaticText "Canadian Sustainability Standards Board"
+                          uid=17_295 listitem level="1"
+                            uid=17_296 link "Accounting Standards Board" url="https://www.frascanada.ca/en/acsb"
+                              uid=17_297 StaticText "Accounting Standards Board"
+                          uid=17_298 listitem level="1"
+                            uid=17_299 link "Public Sector Accounting Board" url="https://www.frascanada.ca/en/psab"
+                              uid=17_300 StaticText "Public Sector Accounting Board"
+                          uid=17_301 listitem level="1"
+                            uid=17_302 link "Auditing and Assurance Standards Board" url="https://www.frascanada.ca/en/aasb"
+                              uid=17_303 StaticText "Auditing and Assurance Standards Board"
+                      uid=17_304 generic
+                        uid=17_305 list
+                          uid=17_306 listitem level="1"
+                            uid=17_307 StaticText "Standards"
+                          uid=17_308 listitem level="1"
+                            uid=17_309 StaticText "Sustainability"
+                          uid=17_310 listitem level="1"
+                            uid=17_311 link "Canadian Sustainability Disclosure Standards" url="https://www.frascanada.ca/en/sustainability"
+                              uid=17_312 StaticText "Canadian Sustainability Disclosure Standards"
+                          uid=17_313 listitem level="1"
+                            uid=17_314 StaticText "Accounting"
+                          uid=17_315 listitem level="1"
+                            uid=17_316 link "IFRS® Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards"
+                              uid=17_317 StaticText "IFRS"
+                              uid=17_318 superscript
+                                uid=17_319 StaticText "®"
+                              uid=17_320 StaticText " Accounting Standards"
+                          uid=17_321 listitem level="1"
+                            uid=17_322 link "Accounting Standards for Private Enterprises" url="https://www.frascanada.ca/en/aspe"
+                              uid=17_323 StaticText "Accounting Standards for Private Enterprises"
+                          uid=17_324 listitem level="1"
+                            uid=17_325 link "Accounting Standards for Private Sector Not-for-Profit Organizations" url="https://www.frascanada.ca/en/nfpos"
+                              uid=17_326 StaticText "Accounting Standards for Private Sector Not-for-Profit Organizations"
+                          uid=17_327 listitem level="1"
+                            uid=17_328 link "Accounting Standards for Pension Plans" url="https://www.frascanada.ca/en/pensions"
+                              uid=17_329 StaticText "Accounting Standards for Pension Plans"
+                          uid=17_330 listitem level="1"
+                            uid=17_331 StaticText "Public Sector"
+                          uid=17_332 listitem level="1"
+                            uid=17_333 link "Public Sector Accounting Standards" url="https://www.frascanada.ca/en/public-sector"
+                              uid=17_334 StaticText "Public Sector Accounting Standards"
+                          uid=17_335 listitem level="1"
+                            uid=17_336 link "International Public Sector Accounting Standards Activities" url="https://www.frascanada.ca/en/public-sector-international"
+                              uid=17_337 StaticText "International Public Sector Accounting Standards Activities"
+                          uid=17_338 listitem level="1"
+                            uid=17_339 StaticText "Assurance"
+                          uid=17_340 listitem level="1"
+                            uid=17_341 link "Canadian Standards on Quality Management" url="https://www.frascanada.ca/en/csqc"
+                              uid=17_342 StaticText "Canadian Standards on Quality Management"
+                          uid=17_343 listitem level="1"
+                            uid=17_344 link "Canadian Auditing Standards" url="https://www.frascanada.ca/en/cass"
+                              uid=17_345 StaticText "Canadian Auditing Standards"
+                          uid=17_346 listitem level="1"
+                            uid=17_347 link "Other Canadian Standards" url="https://www.frascanada.ca/en/other"
+                              uid=17_348 StaticText "Other Canadian Standards"
+                      uid=17_349 generic
+                        uid=17_350 generic
+                          uid=17_351 image "FRAS Canada logo" url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-footer-logo-en.png?h=116&iar=0&w=202&rev=3b53f3460f3f4d90b45941c9644f8919&hash=5D1A1EEB23939AB89424F60B6E78351A"
+              uid=17_352 ignored
+                uid=17_353 ignored
+                  uid=17_354 ignored
+                    uid=17_355 generic
+                      uid=17_356 generic
+                        uid=17_357 list
+                          uid=17_358 listitem level="1"
+                            uid=17_359 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=17_360 StaticText "Contact"
+                          uid=17_361 listitem level="1"
+                            uid=17_362 link "Receive Enewsletter" url="https://www.frascanada.ca/en/my-account/mysubscriptions"
+                              uid=17_363 StaticText "Receive Enewsletter"
+                          uid=17_364 listitem level="1"
+                            uid=17_365 link "Copyright" url="https://www.frascanada.ca/en/copyright"
+                              uid=17_366 StaticText "Copyright"
+                      uid=17_367 generic
+                        uid=17_368 list
+                          uid=17_369 listitem level="1"
+                            uid=17_370 link "LinkedIn (opens in a new tab)" url="https://www.frascanada.ca/en/linkedin"
+                              uid=17_371 image "LinkedIn" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/linkedin.png?h=48&w=49&rev=a61ff0846def478f9516066b9e31cb62&hash=0A04312D76CE3E86944417A215421CB6"
+                          uid=17_372 listitem level="1"
+                            uid=17_373 link "Twitter (opens in a new tab)" url="https://twitter.com/FRASCanada"
+                              uid=17_374 image "Twitter" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/twitter.png?h=48&w=48&rev=ab5dccf0a908436b850a7fa4520b4cfc&hash=3EB94B7A4971BB955B50F751022E52ED"
+                          uid=17_375 listitem level="1"
+                            uid=17_376 link "YouTube (opens in a new tab)" url="https://www.youtube.com/@financialreportingassuranc5812"
+                              uid=17_377 image "YouTube" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/youtube-logo.png?h=48&w=48&rev=e2365470507644aeb931b93e956c99e1&hash=C76CA686862BB422D9017466C950AEDB"
+                      uid=17_378 generic
+                        uid=17_379 list
+                          uid=17_380 listitem level="1"
+                            uid=17_381 link "Cookie Policy" url="https://www.frascanada.ca/en/cookie-policy"
+                              uid=17_382 StaticText "Cookie Policy"
+                          uid=17_383 listitem level="1"
+                            uid=17_384 link "Privacy" url="https://www.frascanada.ca/en/privacy-policy"
+                              uid=17_385 StaticText "Privacy"
+                          uid=17_386 listitem level="1"
+                            uid=17_387 link "Terms of Use" url="https://www.frascanada.ca/en/terms-of-use"
+                              uid=17_388 StaticText "Terms of Use"
+      uid=17_389 generic
+        uid=17_390 ignored
+          uid=17_391 ignored
+            uid=17_392 ignored
+            uid=17_393 ignored
+            uid=17_394 ignored
+              uid=17_395 ignored
+          uid=17_396 ignored
+            uid=17_397 ignored
+          uid=17_398 ignored
+            uid=17_399 ignored
+          uid=17_400 ignored
+            uid=17_401 ignored
+            uid=17_402 ignored
+              uid=17_403 ignored
+          uid=17_404 ignored
+            uid=17_405 ignored
+          uid=17_406 ignored
+            uid=17_407 ignored
+            uid=17_408 ignored
+              uid=17_409 ignored
+          uid=17_410 ignored
+            uid=17_411 ignored
+          uid=17_412 ignored
+            uid=17_413 ignored
+            uid=17_414 ignored
+              uid=17_415 ignored
+          uid=17_416 ignored
+          uid=17_417 ignored
+          uid=17_418 ignored
+            uid=17_419 ignored
+              uid=17_420 ignored
+          uid=17_421 ignored
+            uid=17_422 ignored
+              uid=17_423 ignored
+          uid=17_424 ignored
+            uid=17_425 ignored
+              uid=17_426 ignored
+          uid=17_427 ignored
+            uid=17_428 ignored
+              uid=17_429 ignored
+        uid=17_430 generic description="Manage cookie settings"
+          uid=17_431 generic
+            uid=17_432 button "Manage cookie preferences"
+          uid=17_433 generic
+            uid=17_434 button "Close Preferences"
+          uid=17_435 generic
+            uid=17_110 StaticText "Manage cookie settings"

@@ -1,0 +1,508 @@
+uid=25_0 RootWebArea "AcSB Exposure Draft – Amendments to the Fair Value Option for Investments in Associates and Joint Ventures" url="https://www.frascanada.ca/en/ifrsstandards/documents/acsb-ed-amendments-to-the-fair-value-option"
+  uid=25_1 ignored
+    uid=25_2 generic
+      uid=25_3 generic
+        uid=25_4 ignored
+        uid=25_5 ignored
+        uid=25_6 link "Skip to main content" url="https://www.frascanada.ca/en/ifrsstandards/documents/acsb-ed-amendments-to-the-fair-value-option#main-content"
+          uid=25_7 StaticText "Skip to main content"
+        uid=25_8 sectionheader
+          uid=25_9 generic
+            uid=25_10 generic
+              uid=25_11 generic
+              uid=25_12 ignored
+                uid=25_13 ignored
+                  uid=25_14 generic
+                    uid=25_15 generic
+                      uid=25_16 generic
+                        uid=25_17 generic
+                          uid=25_18 navigation
+                            uid=25_19 list
+                              uid=25_20 listitem level="1"
+                                uid=25_21 link "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/"
+                                  uid=25_22 image "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-header-logo.png?h=34&iar=0&w=40&rev=b99f466a51e74ae59a315e5a7e3e28ed&hash=31AC94037696DF8BC543348A7289C532"
+                              uid=25_23 listitem level="1"
+                                uid=25_24 button "FRAS Canada" expandable
+                                  uid=25_25 StaticText "FRAS Canada"
+                                  uid=25_26 generic
+                              uid=25_27 listitem level="1"
+                                uid=25_28 button "Council" expandable
+                                  uid=25_29 StaticText "Council"
+                                  uid=25_30 generic
+                              uid=25_31 listitem level="1"
+                                uid=25_32 button "Boards" expandable
+                                  uid=25_33 StaticText "Boards"
+                                  uid=25_34 generic
+                              uid=25_35 listitem level="1"
+                                uid=25_36 button "Standards" expandable
+                                  uid=25_37 StaticText "Standards"
+                                  uid=25_38 generic
+                    uid=25_39 generic
+                      uid=25_40 generic
+                        uid=25_41 generic
+                          uid=25_42 button "Login"
+                            uid=25_43 StaticText "Login"
+                        uid=25_44 generic
+                          uid=25_45 generic
+                            uid=25_46 list
+                              uid=25_47 listitem level="1"
+                                uid=25_48 generic
+                                  uid=25_49 ignored
+                                    uid=25_50 ignored
+                                    uid=25_51 ignored
+                                  uid=25_52 button "English"
+                                    uid=25_53 StaticText "English"
+                        uid=25_54 ignored
+                          uid=25_55 ignored
+                            uid=25_56 LayoutTable
+                              uid=25_57 ignored
+                                uid=25_58 ignored
+                                  uid=25_59 ignored
+                                    uid=25_60 ignored
+                                      uid=25_61 ignored
+                                        uid=25_62 ignored
+                                          uid=25_63 ignored
+                                    uid=25_64 ignored
+                                    uid=25_65 ignored
+                              uid=25_66 ignored
+                                uid=25_67 ignored
+                                uid=25_68 ignored
+                                  uid=25_69 ignored
+                                    uid=25_70 ignored
+                                    uid=25_71 ignored
+                        uid=25_72 generic
+                          uid=25_73 button "Search"
+            uid=25_74 ignored
+              uid=25_75 ignored
+                uid=25_76 ignored
+                  uid=25_77 ignored
+                    uid=25_78 ignored
+                      uid=25_79 ignored
+                        uid=25_80 ignored
+                  uid=25_81 ignored
+                  uid=25_82 ignored
+            uid=25_83 ignored
+              uid=25_84 ignored
+              uid=25_85 ignored
+                uid=25_86 ignored
+                  uid=25_87 ignored
+                  uid=25_88 ignored
+            uid=25_89 generic
+              uid=25_90 generic
+                uid=25_91 image "Banner Background" url="https://www.frascanada.ca/assets/standardBuild/images/header/Dotted.png"
+              uid=25_92 ignored
+                uid=25_93 ignored
+                  uid=25_94 generic
+                    uid=25_95 generic
+                      uid=25_96 image "Accounting Standards Board logo: solid white dot, white maple leaf, three solid white dots, empty dot arranged clockwise. " url="https://www.frascanada.ca/-/media/frascanada/global-images/banners/acsb-banner-en.png?h=75&iar=0&w=304&rev=92de554170e14320b80e6f6982b2885d&hash=FC84678F210F924E957A812F4CAC2F59"
+        uid=25_97 main
+          uid=25_98 generic
+            uid=25_99 ignored
+              uid=25_100 ignored
+                uid=25_101 generic
+                  uid=25_102 list
+                    uid=25_103 listitem level="1"
+                      uid=25_104 link "Home" url="https://www.frascanada.ca/en"
+                        uid=25_105 StaticText "Home"
+                    uid=25_106 listitem level="1"
+                      uid=25_107 link "IFRS® Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards"
+                        uid=25_108 StaticText "IFRS® Accounting Standards"
+                      uid=25_109 generic
+                        uid=25_110 StaticText "/"
+                    uid=25_111 listitem level="1"
+                      uid=25_112 link "Documents for Comment" url="https://www.frascanada.ca/en/ifrsstandards/documents"
+                        uid=25_113 StaticText "Documents for Comment"
+                      uid=25_114 generic
+                        uid=25_110 StaticText "/"
+                    uid=25_115 listitem level="1"
+                      uid=25_116 link "AcSB Exposure Draft – Amendments to the Fair Value Option for Investments in Associates and Joint Ventures" url="https://www.frascanada.ca/en/ifrsstandards/documents/acsb-ed-amendments-to-the-fair-value-option"
+                        uid=25_117 StaticText "AcSB Exposure Draft – Amendments to the Fair Value Option for Investments in Associates and Joint Ventures"
+                      uid=25_118 generic
+                        uid=25_110 StaticText "/"
+          uid=25_119 generic
+            uid=25_120 ignored
+              uid=25_121 ignored
+                uid=25_122 generic
+                  uid=25_123 paragraph
+                    uid=25_124 StaticText "IFRS® Accounting Standards"
+          uid=25_125 generic
+            uid=25_126 ignored
+              uid=25_127 ignored
+                uid=25_128 generic
+                  uid=25_129 generic
+                    uid=25_130 list
+                      uid=25_131 listitem level="1"
+                        uid=25_132 link "OVERVIEW" url="https://www.frascanada.ca/en/ifrsstandards"
+                          uid=25_133 StaticText "OVERVIEW"
+                      uid=25_134 listitem level="1"
+                        uid=25_135 link "PROJECT LISTING" url="https://www.frascanada.ca/en/ifrsstandards/projects"
+                          uid=25_136 StaticText "PROJECT LISTING"
+                      uid=25_137 listitem level="1"
+                        uid=25_138 link "DOCUMENTS FOR COMMENT" url="https://www.frascanada.ca/en/ifrsstandards/documents"
+                          uid=25_139 StaticText "DOCUMENTS FOR COMMENT"
+                          uid=25_140 generic
+                      uid=25_141 listitem level="1"
+                        uid=25_142 link "EFFECTIVE DATES" url="https://www.frascanada.ca/en/ifrsstandards/effective-dates"
+                          uid=25_143 StaticText "EFFECTIVE DATES"
+                      uid=25_144 listitem level="1"
+                        uid=25_145 link "RESOURCES" url="https://www.frascanada.ca/en/ifrsstandards/resources"
+                          uid=25_146 StaticText "RESOURCES"
+                      uid=25_147 listitem level="1"
+                        uid=25_148 link "IFRIC AGENDA DECISIONS" url="https://www.frascanada.ca/en/ifrsstandards/ifric-agenda-decisions"
+                          uid=25_149 StaticText "IFRIC AGENDA DECISIONS"
+          uid=25_150 generic
+            uid=25_151 ignored
+              uid=25_152 ignored
+                uid=25_153 generic
+                  uid=25_154 heading "AcSB Exposure Draft – Amendments to the Fair Value Option for Investments in Associates and Joint Ventures" level="1"
+                    uid=25_155 StaticText "AcSB Exposure Draft – Amendments to the Fair Value Option for Investments in Associates and Joint Ventures"
+          uid=25_156 ignored
+            uid=25_157 ignored
+              uid=25_158 ignored
+                uid=25_159 generic
+                  uid=25_160 generic
+                    uid=25_161 heading "Highlights" level="3"
+                      uid=25_162 StaticText "Highlights"
+                    uid=25_163 paragraph
+                      uid=25_164 StaticText "The Accounting Standards Board (AcSB) proposes, subject to comments received following exposure, to incorporate amendments to "
+                      uid=25_165 link "International Accounting Standard (IAS) 28" url="https://www.knotia.ca/Knowledge/Home.aspx?ProductID=1&FetchID=IAS%2028"
+                        uid=25_166 StaticText "International Accounting Standard (IAS) 28"
+                      uid=25_167 StaticText " Investments in Associates and Joint Ventures in Part I of the CPA Canada Handbook – Accounting."
+                    uid=25_168 paragraph
+                      uid=25_169 StaticText "This AcSB Exposure Draft reflects proposals made by the International Accounting Standards Board (IASB) that the AcSB intends to adopt, subject to deliberating comments received, as Canadian generally accepted accounting principles."
+                    uid=25_170 paragraph
+                      uid=25_171 StaticText "Comments are requested from individuals and organizations in Canada who agree with the Exposure Draft proposals as well as from those who do not. Comments are most helpful if they relate to a specific paragraph or group of paragraphs. Any comments that express disagreement with the proposals should clearly explain the problem and include a suggested alternative, supported by specific reasoning."
+                    uid=25_172 paragraph
+                      uid=25_173 StaticText "Comments received on the AcSB Exposure Draft will be available on the website shortly after the comment deadline unless confidentiality is requested. The request for confidentiality must be stated explicitly within the response."
+                    uid=25_174 heading "IASB® Exposure Draft" level="3"
+                      uid=25_175 StaticText "IASB"
+                      uid=25_176 superscript
+                        uid=25_177 StaticText "®"
+                      uid=25_178 StaticText " Exposure Draft"
+                    uid=25_179 paragraph
+                      uid=25_180 StaticText "The IASB recently issued the Exposure Draft, “"
+                      uid=25_181 link "Amendments to the Fair Value Option for Investments in Associates and Joint Ventures" url="https://www.ifrs.org/content/dam/ifrs/project/amendments-to-the-fair-value-option-ias-28/ed-iasb-2026-1-amendments-fvo-ias-28.pdf"
+                        uid=25_182 StaticText "Amendments to the Fair Value Option for Investments in Associates and Joint Ventures"
+                      uid=25_183 StaticText ",” which is available on the IASB website at www.ifrs.org."
+                    uid=25_184 paragraph
+                      uid=25_185 StaticText "The IASB’s "
+                      uid=25_186 link "Exposure Draft" url="https://www.ifrs.org/content/dam/ifrs/project/amendments-to-the-fair-value-option-ias-28/ed-iasb-2026-1-amendments-fvo-ias-28.pdf"
+                        uid=25_187 StaticText "Exposure Draft"
+                      uid=25_188 StaticText " proposes narrow-scope amendments aimed at broadening the scope of investments in an associate or joint venture that can be measured using the fair value option."
+                    uid=25_189 paragraph
+                      uid=25_190 StaticText "The proposed amendments would clarify that “entities that invest in assets as a main business activity” are in scope of paragraphs 18-19 of "
+                      uid=25_191 link "IAS 28" url="https://www.knotia.ca/Knowledge/Research.aspx?ProductID=137&FetchID=IAS%2028"
+                        uid=25_192 StaticText "IAS 28"
+                      uid=25_193 StaticText "."
+                    uid=25_194 paragraph
+                      uid=25_195 StaticText "The IASB’s "
+                      uid=25_196 link "Exposure Draft" url="https://www.ifrs.org/content/dam/ifrs/project/amendments-to-the-fair-value-option-ias-28/ed-iasb-2026-1-amendments-fvo-ias-28.pdf"
+                        uid=25_197 StaticText "Exposure Draft"
+                      uid=25_198 StaticText " includes a Basis for Conclusions that may provide information to interested and affected parties."
+                    uid=25_199 heading "Comments Requested" level="3"
+                      uid=25_200 StaticText "Comments Requested"
+                    uid=25_201 paragraph
+                      uid=25_202 StaticText "The AcSB encourages interested and affected parties in Canada to respond to the IASB on its "
+                      uid=25_203 link "Exposure Draft" url="https://www.ifrs.org/content/dam/ifrs/project/amendments-to-the-fair-value-option-ias-28/ed-iasb-2026-1-amendments-fvo-ias-28.pdf"
+                        uid=25_204 StaticText "Exposure Draft"
+                      uid=25_205 StaticText ". Specific questions on which the IASB would like input are provided in the Invitation to Comment in its Exposure Draft. The AcSB requests that comment letters be sent directly to the IASB with a copy to the AcSB."
+                    uid=25_206 paragraph
+                      uid=25_207 StaticText "The AcSB would like input from Canadian respondents on the following additional question regarding the proposed amendment:"
+                    uid=25_208 paragraph
+                      uid=25_209 StaticText "The IASB has developed the proposed amendments in accordance with its due process for application around the world. Assuming the "
+                      uid=25_210 link "Exposure Draft" url="https://www.ifrs.org/content/dam/ifrs/project/amendments-to-the-fair-value-option-ias-28/ed-iasb-2026-1-amendments-fvo-ias-28.pdf"
+                        uid=25_211 StaticText "Exposure Draft"
+                      uid=25_212 StaticText " proposals are finalized and approved by the IASB in accordance with its due process, do you think that the proposals are appropriate for application in Canada? If not, please specify which aspects of the proposals, and what circumstances, make the accounting requirements proposed in the Exposure Draft inappropriate."
+                    uid=25_213 paragraph
+                      uid=25_214 StaticText "Send responses to this additional question directly to the "
+                      uid=25_215 link "AcSB" url="mailto:kchristopoulos@acsbcanada.ca"
+                        uid=25_216 StaticText "AcSB"
+                      uid=25_217 StaticText "."
+                uid=25_218 generic
+                  uid=25_219 generic
+                    uid=25_220 ignored
+                      uid=25_221 heading "Staff Contact(s)" level="2"
+                        uid=25_222 StaticText "Staff Contact(s)"
+                      uid=25_223 ignored
+                        uid=25_224 StaticText "Katharine Christopoulos, CPA, CA"
+                        uid=25_225 generic
+                          uid=25_226 StaticText "Director, Accounting Standards Board"
+                        uid=25_227 LineBreak "
+"
+                        uid=25_228 LineBreak "
+"
+                        uid=25_229 ignored
+                          uid=25_230 generic
+                            uid=25_231 image "Phone number" url="https://www.frascanada.ca/assets/standardBuild/images/committee/Shape%20129.png"
+                            uid=25_232 StaticText "  "
+                            uid=25_233 link "+1 416 204 3270" url="tel:+1 416 204 3270"
+                              uid=25_234 StaticText "+1 416 204 3270"
+                          uid=25_235 generic
+                            uid=25_236 image "Email address" url="https://www.frascanada.ca/assets/standardBuild/images/committee/Shape%20130.png"
+                            uid=25_237 StaticText "  "
+                            uid=25_238 link "kchristopoulos@acsbcanada.ca" url="mailto:kchristopoulos@acsbcanada.ca"
+                              uid=25_239 StaticText "kchristopoulos@acsbcanada.ca"
+          uid=25_240 ignored
+            uid=25_241 ignored
+              uid=25_242 ignored
+                uid=25_243 generic
+                  uid=25_244 generic
+                    uid=25_245 heading "When to Reply" level="2"
+                      uid=25_246 StaticText "When to Reply"
+                    uid=25_247 paragraph
+                      uid=25_248 StaticText "We value your input and look forward to your feedback. Comments to the IASB are due by "
+                      uid=25_249 strong
+                        uid=25_250 StaticText "April 20, 2026"
+                      uid=25_251 StaticText "."
+                    uid=25_252 paragraph
+                      uid=25_253 StaticText "If you’d like the AcSB to consider your feedback prior to finalizing its comment letter to the IASB, please send your comments to the "
+                      uid=25_254 link "AcSB" url="mailto:kchristopoulos@acsbcanada.ca"
+                        uid=25_255 StaticText "AcSB"
+                      uid=25_256 StaticText " by "
+                      uid=25_257 strong
+                        uid=25_258 StaticText "March 27, 2026"
+                      uid=25_259 StaticText ". Responses to the AcSB on the additional question set out above are due on the same date. Following the deadline, your feedback to the AcSB is considered as part of our "
+                      uid=25_260 link "IFRS Accounting Standards endorsement process" url="https://www.frascanada.ca/en/acsb/about/due-process"
+                        uid=25_261 StaticText "IFRS Accounting Standards endorsement process"
+                      uid=25_262 StaticText ". We also share Canadian feedback with the IASB through our involvement in "
+                      uid=25_263 link "international activities" url="https://www.frascanada.ca/en/acsb/about/international-activities"
+                        uid=25_264 StaticText "international activities"
+                      uid=25_265 StaticText "."
+          uid=25_266 generic
+            uid=25_267 generic
+              uid=25_268 ignored
+                uid=25_269 ignored
+                  uid=25_270 generic
+                    uid=25_271 generic
+                      uid=25_272 heading "How to reply" level="3"
+                        uid=25_273 StaticText "How to reply"
+                      uid=25_274 generic
+                        uid=25_275 paragraph
+                          uid=25_276 StaticText "Respond to the Canadian-specific questions in this AcSB Exposure Draft, “Amendments to the Fair Value Option for Investments in Associates and Joint Ventures,” by submitting a comment letter (in a Word file). Please address your response to:"
+                        uid=25_277 paragraph
+                          uid=25_278 StaticText "Katharine Christopoulos, CPA, CA"
+                          uid=25_279 LineBreak "
+"
+                          uid=25_280 StaticText "Director, Accounting Standards"
+                          uid=25_281 LineBreak "
+"
+                          uid=25_282 StaticText "Accounting Standards Board"
+                          uid=25_283 LineBreak "
+"
+                          uid=25_284 StaticText "145 King Street West, Suite 500"
+                          uid=25_285 LineBreak "
+"
+                          uid=25_286 StaticText "Toronto, Ontario M5H 1J8"
+                          uid=25_287 LineBreak "
+"
+                          uid=25_288 link "kchristopoulos@acsbcanada.ca" url="mailto:kchristopoulos@acsbcanada.ca"
+                            uid=25_289 StaticText "kchristopoulos@acsbcanada.ca"
+                      uid=25_290 ignored
+                        uid=25_291 generic
+                          uid=25_292 link "Submit comment" url="https://www.frascanada.ca/en/acsb/submit-comment?docname=AcSB-ED-Amendments-to-the-Fair-Value-Option"
+                            uid=25_293 StaticText "Submit comment"
+            uid=25_294 ignored
+              uid=25_295 ignored
+                uid=25_296 ignored
+                  uid=25_297 generic
+                    uid=25_298 generic
+                      uid=25_299 heading "Support Materials" level="2"
+                        uid=25_300 StaticText "Support Materials"
+                      uid=25_301 generic
+                        uid=25_302 generic
+                          uid=25_303 link " Amendments to the Fair Value Option (IAS 28)" url="https://www.frascanada.ca/en/ifrsstandards/projects/amendments-to-the-fair-value-option-ias-28"
+                            uid=25_304 generic
+                              uid=25_110 StaticText ""
+                            uid=25_305 StaticText "Amendments to the Fair Value Option (IAS 28)"
+          uid=25_306 generic
+            uid=25_307 ignored
+              uid=25_308 ignored
+                uid=25_309 generic
+                  uid=25_310 generic
+                    uid=25_311 heading level="2"
+                    uid=25_312 paragraph
+                      uid=25_313 StaticText " "
+        uid=25_314 sectionfooter
+          uid=25_315 ignored
+            uid=25_316 generic
+              uid=25_317 generic
+                uid=25_318 generic
+                  uid=25_319 image "Dotted Footer Background" url="https://www.frascanada.ca/assets/standardBuild/images/footer/Dotted%20BG.png"
+                uid=25_320 ignored
+                  uid=25_321 ignored
+                    uid=25_322 generic
+                      uid=25_323 generic
+                        uid=25_324 list
+                          uid=25_325 listitem level="1"
+                            uid=25_326 StaticText "Financial Reporting & Assurance Standards Canada"
+                          uid=25_327 listitem level="1"
+                            uid=25_328 link "About FRAS Canada" url="https://www.frascanada.ca/en/about"
+                              uid=25_329 StaticText "About FRAS Canada"
+                          uid=25_330 listitem level="1"
+                            uid=25_331 link "Research Program" url="https://www.frascanada.ca/en/research-program"
+                              uid=25_332 StaticText "Research Program"
+                          uid=25_333 listitem level="1"
+                            uid=25_334 link "News Listings" url="https://www.frascanada.ca/en/news-listings"
+                              uid=25_335 StaticText "News Listings"
+                          uid=25_336 listitem level="1"
+                            uid=25_337 link "Job Opportunities" url="https://www.frascanada.ca/en/job-opportunities"
+                              uid=25_338 StaticText "Job Opportunities"
+                          uid=25_339 listitem level="1"
+                            uid=25_340 link "Volunteer Opportunities" url="https://www.frascanada.ca/en/volunteer-opportunities"
+                              uid=25_341 StaticText "Volunteer Opportunities"
+                          uid=25_342 listitem level="1"
+                            uid=25_343 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=25_344 StaticText "Contact"
+                          uid=25_345 listitem level="1"
+                            uid=25_346 StaticText "Council"
+                          uid=25_347 listitem level="1"
+                            uid=25_348 link "Reporting and Assurance Standards Oversight Council" url="https://www.frascanada.ca/en/rasoc"
+                              uid=25_349 StaticText "Reporting and Assurance Standards Oversight Council"
+                          uid=25_350 listitem level="1"
+                            uid=25_351 StaticText "Boards"
+                          uid=25_352 listitem level="1"
+                            uid=25_353 link "Canadian Sustainability Standards Board" url="https://www.frascanada.ca/en/cssb"
+                              uid=25_354 StaticText "Canadian Sustainability Standards Board"
+                          uid=25_355 listitem level="1"
+                            uid=25_356 link "Accounting Standards Board" url="https://www.frascanada.ca/en/acsb"
+                              uid=25_357 StaticText "Accounting Standards Board"
+                          uid=25_358 listitem level="1"
+                            uid=25_359 link "Public Sector Accounting Board" url="https://www.frascanada.ca/en/psab"
+                              uid=25_360 StaticText "Public Sector Accounting Board"
+                          uid=25_361 listitem level="1"
+                            uid=25_362 link "Auditing and Assurance Standards Board" url="https://www.frascanada.ca/en/aasb"
+                              uid=25_363 StaticText "Auditing and Assurance Standards Board"
+                      uid=25_364 generic
+                        uid=25_365 list
+                          uid=25_366 listitem level="1"
+                            uid=25_367 StaticText "Standards"
+                          uid=25_368 listitem level="1"
+                            uid=25_369 StaticText "Sustainability"
+                          uid=25_370 listitem level="1"
+                            uid=25_371 link "Canadian Sustainability Disclosure Standards" url="https://www.frascanada.ca/en/sustainability"
+                              uid=25_372 StaticText "Canadian Sustainability Disclosure Standards"
+                          uid=25_373 listitem level="1"
+                            uid=25_374 StaticText "Accounting"
+                          uid=25_375 listitem level="1"
+                            uid=25_376 link "IFRS® Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards"
+                              uid=25_377 StaticText "IFRS"
+                              uid=25_378 superscript
+                                uid=25_379 StaticText "®"
+                              uid=25_380 StaticText " Accounting Standards"
+                          uid=25_381 listitem level="1"
+                            uid=25_382 link "Accounting Standards for Private Enterprises" url="https://www.frascanada.ca/en/aspe"
+                              uid=25_383 StaticText "Accounting Standards for Private Enterprises"
+                          uid=25_384 listitem level="1"
+                            uid=25_385 link "Accounting Standards for Private Sector Not-for-Profit Organizations" url="https://www.frascanada.ca/en/nfpos"
+                              uid=25_386 StaticText "Accounting Standards for Private Sector Not-for-Profit Organizations"
+                          uid=25_387 listitem level="1"
+                            uid=25_388 link "Accounting Standards for Pension Plans" url="https://www.frascanada.ca/en/pensions"
+                              uid=25_389 StaticText "Accounting Standards for Pension Plans"
+                          uid=25_390 listitem level="1"
+                            uid=25_391 StaticText "Public Sector"
+                          uid=25_392 listitem level="1"
+                            uid=25_393 link "Public Sector Accounting Standards" url="https://www.frascanada.ca/en/public-sector"
+                              uid=25_394 StaticText "Public Sector Accounting Standards"
+                          uid=25_395 listitem level="1"
+                            uid=25_396 link "International Public Sector Accounting Standards Activities" url="https://www.frascanada.ca/en/public-sector-international"
+                              uid=25_397 StaticText "International Public Sector Accounting Standards Activities"
+                          uid=25_398 listitem level="1"
+                            uid=25_399 StaticText "Assurance"
+                          uid=25_400 listitem level="1"
+                            uid=25_401 link "Canadian Standards on Quality Management" url="https://www.frascanada.ca/en/csqc"
+                              uid=25_402 StaticText "Canadian Standards on Quality Management"
+                          uid=25_403 listitem level="1"
+                            uid=25_404 link "Canadian Auditing Standards" url="https://www.frascanada.ca/en/cass"
+                              uid=25_405 StaticText "Canadian Auditing Standards"
+                          uid=25_406 listitem level="1"
+                            uid=25_407 link "Other Canadian Standards" url="https://www.frascanada.ca/en/other"
+                              uid=25_408 StaticText "Other Canadian Standards"
+                      uid=25_409 generic
+                        uid=25_410 generic
+                          uid=25_411 image "FRAS Canada logo" url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-footer-logo-en.png?h=116&iar=0&w=202&rev=3b53f3460f3f4d90b45941c9644f8919&hash=5D1A1EEB23939AB89424F60B6E78351A"
+              uid=25_412 ignored
+                uid=25_413 ignored
+                  uid=25_414 ignored
+                    uid=25_415 generic
+                      uid=25_416 generic
+                        uid=25_417 list
+                          uid=25_418 listitem level="1"
+                            uid=25_419 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=25_420 StaticText "Contact"
+                          uid=25_421 listitem level="1"
+                            uid=25_422 link "Receive Enewsletter" url="https://www.frascanada.ca/en/my-account/mysubscriptions"
+                              uid=25_423 StaticText "Receive Enewsletter"
+                          uid=25_424 listitem level="1"
+                            uid=25_425 link "Copyright" url="https://www.frascanada.ca/en/copyright"
+                              uid=25_426 StaticText "Copyright"
+                      uid=25_427 generic
+                        uid=25_428 list
+                          uid=25_429 listitem level="1"
+                            uid=25_430 link "LinkedIn (opens in a new tab)" url="https://www.frascanada.ca/en/linkedin"
+                              uid=25_431 image "LinkedIn" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/linkedin.png?h=48&w=49&rev=a61ff0846def478f9516066b9e31cb62&hash=0A04312D76CE3E86944417A215421CB6"
+                          uid=25_432 listitem level="1"
+                            uid=25_433 link "Twitter (opens in a new tab)" url="https://twitter.com/FRASCanada"
+                              uid=25_434 image "Twitter" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/twitter.png?h=48&w=48&rev=ab5dccf0a908436b850a7fa4520b4cfc&hash=3EB94B7A4971BB955B50F751022E52ED"
+                          uid=25_435 listitem level="1"
+                            uid=25_436 link "YouTube (opens in a new tab)" url="https://www.youtube.com/@financialreportingassuranc5812"
+                              uid=25_437 image "YouTube" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/youtube-logo.png?h=48&w=48&rev=e2365470507644aeb931b93e956c99e1&hash=C76CA686862BB422D9017466C950AEDB"
+                      uid=25_438 generic
+                        uid=25_439 list
+                          uid=25_440 listitem level="1"
+                            uid=25_441 link "Cookie Policy" url="https://www.frascanada.ca/en/cookie-policy"
+                              uid=25_442 StaticText "Cookie Policy"
+                          uid=25_443 listitem level="1"
+                            uid=25_444 link "Privacy" url="https://www.frascanada.ca/en/privacy-policy"
+                              uid=25_445 StaticText "Privacy"
+                          uid=25_446 listitem level="1"
+                            uid=25_447 link "Terms of Use" url="https://www.frascanada.ca/en/terms-of-use"
+                              uid=25_448 StaticText "Terms of Use"
+      uid=25_449 generic
+        uid=25_450 ignored
+          uid=25_451 ignored
+            uid=25_452 ignored
+            uid=25_453 ignored
+            uid=25_454 ignored
+              uid=25_455 ignored
+          uid=25_456 ignored
+            uid=25_457 ignored
+          uid=25_458 ignored
+            uid=25_459 ignored
+          uid=25_460 ignored
+            uid=25_461 ignored
+            uid=25_462 ignored
+              uid=25_463 ignored
+          uid=25_464 ignored
+            uid=25_465 ignored
+          uid=25_466 ignored
+            uid=25_467 ignored
+            uid=25_468 ignored
+              uid=25_469 ignored
+          uid=25_470 ignored
+            uid=25_471 ignored
+          uid=25_472 ignored
+            uid=25_473 ignored
+            uid=25_474 ignored
+              uid=25_475 ignored
+          uid=25_476 ignored
+          uid=25_477 ignored
+          uid=25_478 ignored
+            uid=25_479 ignored
+              uid=25_480 ignored
+          uid=25_481 ignored
+            uid=25_482 ignored
+              uid=25_483 ignored
+          uid=25_484 ignored
+            uid=25_485 ignored
+              uid=25_486 ignored
+          uid=25_487 ignored
+            uid=25_488 ignored
+              uid=25_489 ignored
+        uid=25_490 generic description="Manage cookie settings"
+          uid=25_491 generic
+            uid=25_492 button "Manage cookie preferences"
+          uid=25_493 generic
+            uid=25_494 button "Close Preferences"
+          uid=25_495 generic
+            uid=25_110 StaticText "Manage cookie settings"
+              uid=25_110 InlineTextBox "Manage cookie settings"

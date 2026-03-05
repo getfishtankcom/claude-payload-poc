@@ -1,0 +1,1357 @@
+uid=23_0 RootWebArea "Effective Dates – IFRS Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards/effective-dates"
+  uid=23_1 ignored
+    uid=23_2 generic
+      uid=23_3 generic
+        uid=23_4 ignored
+        uid=23_5 ignored
+        uid=23_6 link "Skip to main content" url="https://www.frascanada.ca/en/ifrsstandards/effective-dates#main-content"
+          uid=23_7 StaticText "Skip to main content"
+        uid=23_8 sectionheader
+          uid=23_9 generic
+            uid=23_10 generic
+              uid=23_11 generic
+              uid=23_12 ignored
+                uid=23_13 ignored
+                  uid=23_14 generic
+                    uid=23_15 generic
+                      uid=23_16 generic
+                        uid=23_17 generic
+                          uid=23_18 navigation
+                            uid=23_19 list
+                              uid=23_20 listitem level="1"
+                                uid=23_21 link "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/"
+                                  uid=23_22 image "Financial Reporting & Assurance Standards Canada logo: one solid white dot, white maple leaf, four solid white dots arranged clockwise." url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-header-logo.png?h=34&iar=0&w=40&rev=b99f466a51e74ae59a315e5a7e3e28ed&hash=31AC94037696DF8BC543348A7289C532"
+                              uid=23_23 listitem level="1"
+                                uid=23_24 button "FRAS Canada" expandable
+                                  uid=23_25 StaticText "FRAS Canada"
+                                  uid=23_26 generic
+                              uid=23_27 listitem level="1"
+                                uid=23_28 button "Council" expandable
+                                  uid=23_29 StaticText "Council"
+                                  uid=23_30 generic
+                              uid=23_31 listitem level="1"
+                                uid=23_32 button "Boards" expandable
+                                  uid=23_33 StaticText "Boards"
+                                  uid=23_34 generic
+                              uid=23_35 listitem level="1"
+                                uid=23_36 button "Standards" expandable
+                                  uid=23_37 StaticText "Standards"
+                                  uid=23_38 generic
+                    uid=23_39 generic
+                      uid=23_40 generic
+                        uid=23_41 generic
+                          uid=23_42 button "Login"
+                            uid=23_43 StaticText "Login"
+                        uid=23_44 generic
+                          uid=23_45 generic
+                            uid=23_46 list
+                              uid=23_47 listitem level="1"
+                                uid=23_48 generic
+                                  uid=23_49 ignored
+                                    uid=23_50 ignored
+                                    uid=23_51 ignored
+                                  uid=23_52 button "English"
+                                    uid=23_53 StaticText "English"
+                        uid=23_54 ignored
+                          uid=23_55 ignored
+                            uid=23_56 LayoutTable
+                              uid=23_57 ignored
+                                uid=23_58 ignored
+                                  uid=23_59 ignored
+                                    uid=23_60 ignored
+                                      uid=23_61 ignored
+                                        uid=23_62 ignored
+                                          uid=23_63 ignored
+                                    uid=23_64 ignored
+                                    uid=23_65 ignored
+                              uid=23_66 ignored
+                                uid=23_67 ignored
+                                uid=23_68 ignored
+                                  uid=23_69 ignored
+                                    uid=23_70 ignored
+                                    uid=23_71 ignored
+                        uid=23_72 generic
+                          uid=23_73 button "Search"
+            uid=23_74 ignored
+              uid=23_75 ignored
+                uid=23_76 ignored
+                  uid=23_77 ignored
+                    uid=23_78 ignored
+                      uid=23_79 ignored
+                        uid=23_80 ignored
+                  uid=23_81 ignored
+                  uid=23_82 ignored
+            uid=23_83 ignored
+              uid=23_84 ignored
+              uid=23_85 ignored
+                uid=23_86 ignored
+                  uid=23_87 ignored
+                  uid=23_88 ignored
+            uid=23_89 generic
+              uid=23_90 generic
+                uid=23_91 image "Banner Background" url="https://www.frascanada.ca/assets/standardBuild/images/header/Dotted.png"
+              uid=23_92 ignored
+                uid=23_93 ignored
+                  uid=23_94 generic
+                    uid=23_95 generic
+                      uid=23_96 image "Accounting Standards Board logo: solid white dot, white maple leaf, three solid white dots, empty dot arranged clockwise. " url="https://www.frascanada.ca/-/media/frascanada/global-images/banners/acsb-banner-en.png?h=75&iar=0&w=304&rev=92de554170e14320b80e6f6982b2885d&hash=FC84678F210F924E957A812F4CAC2F59"
+        uid=23_97 main
+          uid=23_98 generic
+            uid=23_99 ignored
+              uid=23_100 ignored
+                uid=23_101 generic
+                  uid=23_102 list
+                    uid=23_103 listitem level="1"
+                      uid=23_104 link "Home" url="https://www.frascanada.ca/en"
+                        uid=23_105 StaticText "Home"
+                    uid=23_106 listitem level="1"
+                      uid=23_107 link "IFRS® Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards"
+                        uid=23_108 StaticText "IFRS® Accounting Standards"
+                      uid=23_109 generic
+                        uid=23_110 StaticText "/"
+                    uid=23_111 listitem level="1"
+                      uid=23_112 link "Effective Dates – IFRS Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards/effective-dates"
+                        uid=23_113 StaticText "Effective Dates – IFRS Accounting Standards"
+                      uid=23_114 generic
+                        uid=23_110 StaticText "/"
+          uid=23_115 generic
+            uid=23_116 ignored
+              uid=23_117 ignored
+                uid=23_118 generic
+                  uid=23_119 paragraph
+                    uid=23_120 StaticText "IFRS® Accounting Standards"
+          uid=23_121 generic
+            uid=23_122 ignored
+              uid=23_123 ignored
+                uid=23_124 generic
+                  uid=23_125 generic
+                    uid=23_126 list
+                      uid=23_127 listitem level="1"
+                        uid=23_128 link "OVERVIEW" url="https://www.frascanada.ca/en/ifrsstandards"
+                          uid=23_129 StaticText "OVERVIEW"
+                      uid=23_130 listitem level="1"
+                        uid=23_131 link "PROJECT LISTING" url="https://www.frascanada.ca/en/ifrsstandards/projects"
+                          uid=23_132 StaticText "PROJECT LISTING"
+                      uid=23_133 listitem level="1"
+                        uid=23_134 link "DOCUMENTS FOR COMMENT" url="https://www.frascanada.ca/en/ifrsstandards/documents"
+                          uid=23_135 StaticText "DOCUMENTS FOR COMMENT"
+                      uid=23_136 listitem level="1"
+                        uid=23_137 link "EFFECTIVE DATES" url="https://www.frascanada.ca/en/ifrsstandards/effective-dates"
+                          uid=23_138 StaticText "EFFECTIVE DATES"
+                          uid=23_139 generic
+                      uid=23_140 listitem level="1"
+                        uid=23_141 link "RESOURCES" url="https://www.frascanada.ca/en/ifrsstandards/resources"
+                          uid=23_142 StaticText "RESOURCES"
+                      uid=23_143 listitem level="1"
+                        uid=23_144 link "IFRIC AGENDA DECISIONS" url="https://www.frascanada.ca/en/ifrsstandards/ifric-agenda-decisions"
+                          uid=23_145 StaticText "IFRIC AGENDA DECISIONS"
+          uid=23_146 generic
+            uid=23_147 ignored
+              uid=23_148 ignored
+                uid=23_149 generic
+                  uid=23_150 heading "Effective Dates – IFRS Accounting Standards" level="1"
+                    uid=23_151 StaticText "Effective Dates – IFRS Accounting Standards"
+          uid=23_152 ignored
+            uid=23_153 ignored
+              uid=23_154 ignored
+                uid=23_155 generic
+                  uid=23_156 generic
+                    uid=23_157 paragraph
+                      uid=23_158 emphasis
+                        uid=23_159 StaticText "This summary is for informational purposes only."
+                    uid=23_160 paragraph
+                      uid=23_161 StaticText "This summary may not include consequential amendments resulting from the issuance of new standards or minor updates to existing standards. For comprehensive details, please refer to the "
+                      uid=23_162 link "CPA Canada Handbook – Accounting" url="https://www.casso.ca/Home.aspx?App=knotia.ca&ReturnTo=https%3a%2f%2fwww.knotia.ca%2fLogin%2fLogin.aspx%3fReturnUrl%3d%252f"
+                        uid=23_163 StaticText "CPA Canada Handbook – Accounting"
+                      uid=23_164 StaticText " on Knotia.ca."
+          uid=23_165 generic
+            uid=23_166 ignored
+              uid=23_167 ignored
+                uid=23_168 generic
+                  uid=23_169 ignored
+                    uid=23_170 generic
+                      uid=23_171 ignored
+                        uid=23_172 generic
+                          uid=23_173 StaticText "Application"
+                        uid=23_174 generic
+                          uid=23_175 StaticText "Pronouncement"
+                    uid=23_176 ignored
+                      uid=23_177 ignored
+                        uid=23_178 generic
+                          uid=23_179 StaticText "Effective date to be determined:"
+                      uid=23_180 ignored
+                        uid=23_181 ignored
+                          uid=23_182 ignored
+                            uid=23_183 paragraph
+                              uid=23_184 StaticText "Amendments to IFRS 10 "
+                              uid=23_185 emphasis
+                                uid=23_186 StaticText "Consolidated Financial Statements"
+                              uid=23_187 StaticText " and IAS 28 "
+                              uid=23_188 emphasis
+                                uid=23_189 StaticText "Investments in Associates and Joint Ventures"
+                              uid=23_190 StaticText " re:"
+                            uid=23_191 list
+                              uid=23_192 listitem level="1"
+                                uid=23_193 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_194 emphasis
+                                  uid=23_195 StaticText "Sale or Contribution of Assets between an Investor and its Associate or Joint Venture*"
+                            uid=23_196 LineBreak "
+"
+                            uid=23_197 paragraph
+                              uid=23_198 StaticText "* The effective date for the amendments to these standards are deferred indefinitely until the IASB’s research project on Equity Method of Accounting is completed."
+                        uid=23_199 ignored
+                          uid=23_200 generic
+                            uid=23_201 StaticText "Prospective"
+                      uid=23_202 ignored
+                        uid=23_203 generic
+                          uid=23_204 StaticText "Effective for annual periods beginning on or after January 1, 2027"
+                      uid=23_205 ignored
+                        uid=23_206 ignored
+                          uid=23_207 ignored
+                            uid=23_208 paragraph
+                              uid=23_209 StaticText "Amendments to IAS 21 "
+                              uid=23_210 emphasis
+                                uid=23_211 StaticText "The Effects of Changes in Foreign Exchange Rates"
+                            uid=23_212 list
+                              uid=23_213 listitem level="1"
+                                uid=23_214 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_215 emphasis
+                                  uid=23_216 StaticText "Translation to a Hyperinflationary Presentation Currency"
+                        uid=23_217 ignored
+                          uid=23_218 ignored
+                            uid=23_219 paragraph
+                              uid=23_220 StaticText "In accordance with specific requirements in IAS 21"
+                      uid=23_221 ignored
+                        uid=23_222 ignored
+                          uid=23_223 ignored
+                            uid=23_224 paragraph
+                              uid=23_225 StaticText "IFRS 18 "
+                              uid=23_226 emphasis
+                                uid=23_227 StaticText "Presentation and Disclosure in the Financial Statements"
+                            uid=23_228 paragraph
+                              uid=23_229 StaticText "(New in 2024; replaces IAS 1)"
+                            uid=23_230 paragraph
+                              uid=23_231 StaticText "IFRS 19 "
+                              uid=23_232 emphasis
+                                uid=23_233 StaticText "Subsidiaries without Public Accountability – Disclosures"
+                            uid=23_234 paragraph
+                              uid=23_235 StaticText "(New in 2024) "
+                        uid=23_236 ignored
+                          uid=23_237 ignored
+                            uid=23_238 paragraph
+                              uid=23_239 StaticText "In accordance with the specific requirements in IFRS 18"
+                            uid=23_240 paragraph
+                              uid=23_241 StaticText "In accordance with the specific requirements in IFRS 19"
+                      uid=23_242 ignored
+                        uid=23_243 ignored
+                          uid=23_244 ignored
+                            uid=23_245 paragraph
+                              uid=23_246 StaticText "Amendments to IFRS 19 "
+                              uid=23_247 emphasis
+                                uid=23_248 StaticText "Subsidiaries without Public Accountability – Disclosures re:"
+                            uid=23_249 list
+                              uid=23_250 listitem level="1"
+                                uid=23_251 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_252 StaticText "Updating "
+                                uid=23_253 emphasis
+                                  uid=23_254 StaticText "IFRS 19 Subsidiaries without Public Accountability: Disclosures"
+                        uid=23_255 ignored
+                          uid=23_256 ignored
+                            uid=23_257 paragraph
+                              uid=23_258 StaticText "In accordance with the specific requirements in IFRS 19"
+                      uid=23_259 ignored
+                        uid=23_260 generic
+                          uid=23_261 StaticText "Effective for annual periods beginning on or after January 1, 2026:"
+                      uid=23_262 ignored
+                        uid=23_263 ignored
+                          uid=23_264 ignored
+                            uid=23_265 paragraph
+                              uid=23_266 StaticText "Amendments to IFRS 9 "
+                              uid=23_267 emphasis
+                                uid=23_268 StaticText "Financial Instruments and IFRS 7 Financial Instruments: Disclosures"
+                              uid=23_269 StaticText " re:"
+                            uid=23_270 list
+                              uid=23_271 listitem level="1"
+                                uid=23_272 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_273 StaticText "Nature-dependent Electricity Contracts (Power Purchase Agreements)"
+                        uid=23_274 ignored
+                          uid=23_275 ignored
+                            uid=23_276 paragraph
+                              uid=23_277 StaticText "In accordance with specific requirements in IFRS 9 and IFRS 7"
+                      uid=23_278 ignored
+                        uid=23_279 ignored
+                          uid=23_280 ignored
+                            uid=23_281 paragraph
+                              uid=23_282 StaticText "Amendments to IFRS 9 "
+                              uid=23_283 emphasis
+                                uid=23_284 StaticText "Financial Instruments"
+                              uid=23_285 StaticText " and IFRS 7 "
+                              uid=23_286 emphasis
+                                uid=23_287 StaticText "Financial Instruments: Disclosures"
+                              uid=23_288 StaticText " re: "
+                            uid=23_289 list
+                              uid=23_290 listitem level="1"
+                                uid=23_291 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_292 emphasis
+                                  uid=23_293 StaticText "Classification and Measurement of Financial Instruments"
+                        uid=23_294 ignored
+                          uid=23_295 ignored
+                            uid=23_296 paragraph
+                              uid=23_297 StaticText "In accordance with specific requirements in IFRS 9 and IFRS 7"
+                      uid=23_298 ignored
+                        uid=23_299 ignored
+                          uid=23_300 ignored
+                            uid=23_301 paragraph
+                              uid=23_302 StaticText "Amendments to IFRS 1 "
+                              uid=23_303 emphasis
+                                uid=23_304 StaticText "First-time Adoption of International Financial Reporting Standards"
+                              uid=23_305 StaticText " re:"
+                            uid=23_306 list
+                              uid=23_307 listitem level="1"
+                                uid=23_308 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_309 emphasis
+                                  uid=23_310 StaticText "Hedge accounting by a first-time adopter"
+                        uid=23_311 ignored
+                          uid=23_312 ignored
+                            uid=23_313 paragraph
+                              uid=23_314 StaticText "In accordance with specific requirements in IFRS 1"
+                      uid=23_315 ignored
+                        uid=23_316 ignored
+                          uid=23_317 ignored
+                            uid=23_318 paragraph
+                              uid=23_319 StaticText "Amendments to IFRS 7 "
+                              uid=23_320 emphasis
+                                uid=23_321 StaticText "Financial Instruments: Disclosures"
+                              uid=23_322 StaticText " re:"
+                            uid=23_323 list
+                              uid=23_324 listitem level="1"
+                                uid=23_325 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_326 emphasis
+                                  uid=23_327 StaticText "Gain or loss on derecognition"
+                        uid=23_328 ignored
+                          uid=23_329 generic
+                            uid=23_330 StaticText "In accordance with specific requirements in IFRS 7"
+                      uid=23_331 ignored
+                        uid=23_332 ignored
+                          uid=23_333 ignored
+                            uid=23_334 paragraph
+                              uid=23_335 StaticText "Amendments to Guidance on "
+                              uid=23_336 emphasis
+                                uid=23_337 StaticText "implementing "
+                              uid=23_338 StaticText "IFRS 7"
+                            uid=23_339 list
+                              uid=23_340 listitem level="1"
+                                uid=23_341 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_342 emphasis
+                                  uid=23_343 StaticText "Introduction"
+                              uid=23_344 listitem level="1"
+                                uid=23_345 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_346 emphasis
+                                  uid=23_347 StaticText "Disclosure of deferred difference between fair value and transaction price"
+                              uid=23_348 listitem level="1"
+                                uid=23_349 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_350 emphasis
+                                  uid=23_351 StaticText "Credit risk disclosures"
+                        uid=23_352 ignored
+                          uid=23_353 ignored
+                            uid=23_354 paragraph
+                              uid=23_355 StaticText "In accordance with specific requirements in IFRS 7"
+                      uid=23_356 ignored
+                        uid=23_357 ignored
+                          uid=23_358 ignored
+                            uid=23_359 paragraph
+                              uid=23_360 StaticText "Amendments to IFRS 9 "
+                              uid=23_361 emphasis
+                                uid=23_362 StaticText "Financial Instruments"
+                              uid=23_363 StaticText " re:"
+                            uid=23_364 list
+                              uid=23_365 listitem level="1"
+                                uid=23_366 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_367 emphasis
+                                  uid=23_368 StaticText "Derecognition of lease liabilities"
+                              uid=23_369 listitem level="1"
+                                uid=23_370 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_371 emphasis
+                                  uid=23_372 StaticText "Transaction price"
+                        uid=23_373 ignored
+                          uid=23_374 ignored
+                            uid=23_375 paragraph
+                              uid=23_376 StaticText "In accordance with specific requirements in IFRS 9"
+                      uid=23_377 ignored
+                        uid=23_378 ignored
+                          uid=23_379 ignored
+                            uid=23_380 paragraph
+                              uid=23_381 StaticText "Amendments to IFRS 10 "
+                              uid=23_382 emphasis
+                                uid=23_383 StaticText "Consolidated Financial Statements"
+                              uid=23_384 StaticText " re:"
+                            uid=23_385 list
+                              uid=23_386 listitem level="1"
+                                uid=23_387 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_388 emphasis
+                                  uid=23_389 StaticText "Determination of a ‘de facto agent’"
+                        uid=23_390 ignored
+                          uid=23_391 ignored
+                            uid=23_392 paragraph
+                              uid=23_393 StaticText "In accordance with specific requirements in IFRS 10"
+                      uid=23_394 ignored
+                        uid=23_395 ignored
+                          uid=23_396 ignored
+                            uid=23_397 paragraph
+                              uid=23_398 StaticText "Amendments to IAS 7 "
+                              uid=23_399 emphasis
+                                uid=23_400 StaticText "Statement of Cash Flows"
+                              uid=23_401 StaticText " re:"
+                            uid=23_402 list
+                              uid=23_403 listitem level="1"
+                                uid=23_404 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_405 emphasis
+                                  uid=23_406 StaticText "Cost method"
+                        uid=23_407 ignored
+                          uid=23_408 ignored
+                            uid=23_409 paragraph
+                              uid=23_410 StaticText "In accordance with specific requirements in IAS 7"
+                      uid=23_411 ignored
+                        uid=23_412 generic
+                          uid=23_413 StaticText "Effective for annual periods beginning on or after January 1, 2025:"
+                      uid=23_414 ignored
+                        uid=23_415 ignored
+                          uid=23_416 ignored
+                            uid=23_417 paragraph
+                              uid=23_418 StaticText "Amendments to IAS 21 "
+                              uid=23_419 emphasis
+                                uid=23_420 StaticText "The Effects of Changes in Foreign Exchange Rates"
+                              uid=23_421 StaticText " re:"
+                            uid=23_422 list
+                              uid=23_423 listitem level="1"
+                                uid=23_424 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_425 emphasis
+                                  uid=23_426 StaticText "Lack of Exchangeability"
+                        uid=23_427 ignored
+                          uid=23_428 generic
+                            uid=23_429 StaticText "In accordance with specific requirements in IAS 21"
+                      uid=23_430 ignored
+                        uid=23_431 generic
+                          uid=23_432 StaticText "Effective for annual periods beginning on or after January 1, 2024:"
+                      uid=23_433 ignored
+                        uid=23_434 ignored
+                          uid=23_435 ignored
+                            uid=23_436 paragraph
+                              uid=23_437 StaticText "Amendments to IFRS 16 "
+                              uid=23_438 emphasis
+                                uid=23_439 StaticText "Leases"
+                              uid=23_440 StaticText " re:"
+                            uid=23_441 list
+                              uid=23_442 listitem level="1"
+                                uid=23_443 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_444 emphasis
+                                  uid=23_445 StaticText "Lease Liability in a Sale and Leaseback"
+                        uid=23_446 ignored
+                          uid=23_447 ignored
+                            uid=23_448 paragraph
+                              uid=23_449 StaticText "In accordance with specific requirements in IFRS 16"
+                      uid=23_450 ignored
+                        uid=23_451 ignored
+                          uid=23_452 ignored
+                            uid=23_453 paragraph
+                              uid=23_454 StaticText "Amendments to IAS 1 "
+                              uid=23_455 emphasis
+                                uid=23_456 StaticText "Presentation of Financial Statements "
+                              uid=23_457 StaticText "re:"
+                            uid=23_458 list
+                              uid=23_459 listitem level="1"
+                                uid=23_460 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_461 emphasis
+                                  uid=23_462 StaticText "Classification of Liabilities as Current or Non-Current"
+                              uid=23_463 listitem level="1"
+                                uid=23_464 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_465 emphasis
+                                  uid=23_466 StaticText "Non-Current Liabilities with Covenants"
+                        uid=23_467 ignored
+                          uid=23_468 ignored
+                            uid=23_469 paragraph
+                              uid=23_470 StaticText " "
+                            uid=23_471 paragraph
+                              uid=23_472 StaticText "Retrospective"
+                            uid=23_473 paragraph
+                              uid=23_474 StaticText "Retrospective"
+                      uid=23_475 ignored
+                        uid=23_476 ignored
+                          uid=23_477 ignored
+                            uid=23_478 paragraph
+                              uid=23_479 StaticText "Amendments to IAS 7 "
+                              uid=23_480 emphasis
+                                uid=23_481 StaticText "Statement of Cash Flows"
+                              uid=23_482 StaticText " and IFRS 7"
+                              uid=23_483 LineBreak "
+"
+                              uid=23_484 emphasis
+                                uid=23_485 StaticText "Financial Instruments: Disclosures"
+                              uid=23_486 StaticText " re:"
+                            uid=23_487 list
+                              uid=23_488 listitem level="1"
+                                uid=23_489 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_490 emphasis
+                                  uid=23_491 StaticText "Supplier Finance Arrangements"
+                        uid=23_492 ignored
+                          uid=23_493 ignored
+                            uid=23_494 paragraph
+                              uid=23_495 StaticText "In accordance with specific requirements in IAS 7"
+                      uid=23_496 ignored
+                        uid=23_497 generic
+                          uid=23_498 StaticText "Effective for annual periods beginning on or after January 1, 2023:"
+                      uid=23_499 ignored
+                        uid=23_500 ignored
+                          uid=23_501 ignored
+                            uid=23_502 paragraph
+                              uid=23_503 StaticText "Amendments to IFRS 1 "
+                              uid=23_504 emphasis
+                                uid=23_505 StaticText "First-time Adoption of International Financial Reporting Standards"
+                              uid=23_506 StaticText " and IAS 12 "
+                              uid=23_507 emphasis
+                                uid=23_508 StaticText "Income Taxes"
+                              uid=23_509 StaticText " re:"
+                            uid=23_510 list
+                              uid=23_511 listitem level="1"
+                                uid=23_512 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_513 emphasis
+                                  uid=23_514 StaticText "Deferred Tax related to Assets and Liabilities arising from a Single Transaction"
+                        uid=23_515 ignored
+                          uid=23_516 ignored
+                            uid=23_517 paragraph
+                              uid=23_518 StaticText "In accordance with specific requirements in IFRS 1 and IAS 12"
+                      uid=23_519 ignored
+                        uid=23_520 ignored
+                          uid=23_521 ignored
+                            uid=23_522 paragraph
+                              uid=23_523 StaticText "IFRS 17 Insurance Contracts [New in 2017; replaces IFRS 4; incorporates "
+                              uid=23_524 emphasis
+                                uid=23_525 StaticText "Amendments to IFRS 17"
+                              uid=23_526 StaticText " and "
+                              uid=23_527 emphasis
+                                uid=23_528 StaticText "Initial Application of IFRS 17 and IFRS 9—Comparative Information"
+                              uid=23_529 StaticText " (Amendment to IFRS 17)]"
+                        uid=23_530 ignored
+                          uid=23_531 ignored
+                            uid=23_532 paragraph
+                              uid=23_533 StaticText "In accordance with specific requirements in IFRS 17"
+                      uid=23_534 ignored
+                        uid=23_535 ignored
+                          uid=23_536 ignored
+                            uid=23_537 paragraph
+                              uid=23_538 StaticText "Amendments to IAS 1 "
+                              uid=23_539 emphasis
+                                uid=23_540 StaticText "Presentation of Financial Statements"
+                              uid=23_541 StaticText " re:"
+                            uid=23_542 list
+                              uid=23_543 listitem level="1"
+                                uid=23_544 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_545 emphasis
+                                  uid=23_546 StaticText "Disclosure of Accounting Policies"
+                        uid=23_547 ignored
+                          uid=23_548 generic
+                            uid=23_549 StaticText "Retrospective"
+                      uid=23_550 ignored
+                        uid=23_551 ignored
+                          uid=23_552 ignored
+                            uid=23_553 paragraph
+                              uid=23_554 StaticText "Amendments to IAS 8 "
+                              uid=23_555 emphasis
+                                uid=23_556 StaticText "Accounting Policies, Changes in Accounting Estimates and Errors"
+                              uid=23_557 StaticText " re:"
+                            uid=23_558 list
+                              uid=23_559 listitem level="1"
+                                uid=23_560 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_561 emphasis
+                                  uid=23_562 StaticText "Definition of Accounting Estimates"
+                        uid=23_563 ignored
+                          uid=23_564 ignored
+                            uid=23_565 paragraph
+                              uid=23_566 StaticText "In accordance with specific requirements in IAS 8"
+                      uid=23_567 ignored
+                        uid=23_568 ignored
+                          uid=23_569 ignored
+                            uid=23_570 paragraph
+                              uid=23_571 StaticText "Amendments to IAS 12 "
+                              uid=23_572 emphasis
+                                uid=23_573 StaticText "Income Taxes"
+                              uid=23_574 StaticText " re:"
+                            uid=23_575 list
+                              uid=23_576 listitem level="1"
+                                uid=23_577 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_578 emphasis
+                                  uid=23_579 StaticText "International Tax Reform – Pillar Two Model Rules"
+                        uid=23_580 ignored
+                          uid=23_581 ignored
+                            uid=23_582 paragraph
+                              uid=23_583 StaticText "In accordance with specific requirements in IAS 12"
+                            uid=23_584 LineBreak "
+"
+                      uid=23_585 ignored
+                        uid=23_586 generic
+                          uid=23_587 StaticText "Effective for annual periods beginning on or after January 1, 2022:"
+                      uid=23_588 ignored
+                        uid=23_589 ignored
+                          uid=23_590 ignored
+                            uid=23_591 paragraph
+                              uid=23_592 StaticText "Annual Improvements (2018-2020 Cycle) to:"
+                            uid=23_593 list
+                              uid=23_594 listitem level="1"
+                                uid=23_595 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_596 StaticText "IFRS 1 First-time Adoption of International Financial Reporting Standards"
+                              uid=23_597 listitem level="1"
+                                uid=23_598 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_599 StaticText "IFRS 9 Financial Instruments"
+                              uid=23_600 listitem level="1"
+                                uid=23_601 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_602 StaticText "IAS 41 Agriculture"
+                        uid=23_603 ignored
+                          uid=23_604 generic
+                            uid=23_605 StaticText "In accordance with specific requirements in the standard"
+                      uid=23_606 ignored
+                        uid=23_607 ignored
+                          uid=23_608 ignored
+                            uid=23_609 paragraph
+                              uid=23_610 StaticText "Amendments to IFRS 3 "
+                              uid=23_611 emphasis
+                                uid=23_612 StaticText "Business Combinations"
+                              uid=23_613 StaticText " re:"
+                            uid=23_614 list
+                              uid=23_615 listitem level="1"
+                                uid=23_616 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_617 emphasis
+                                  uid=23_618 StaticText "Reference to the Conceptual Framework"
+                        uid=23_619 ignored
+                          uid=23_620 generic
+                            uid=23_621 StaticText "In accordance with specific requirements in IFRS 3"
+                      uid=23_622 ignored
+                        uid=23_623 ignored
+                          uid=23_624 ignored
+                            uid=23_625 paragraph
+                              uid=23_626 StaticText "Amendments to IAS 16 "
+                              uid=23_627 emphasis
+                                uid=23_628 StaticText "Property, Plant and Equipment"
+                              uid=23_629 StaticText " re:"
+                            uid=23_630 list
+                              uid=23_631 listitem level="1"
+                                uid=23_632 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_633 emphasis
+                                  uid=23_634 StaticText "Property, Plant and Equipment—Proceeds before Intended Use"
+                        uid=23_635 ignored
+                          uid=23_636 generic
+                            uid=23_637 StaticText "In accordance with specific requirements in IAS 16"
+                      uid=23_638 ignored
+                        uid=23_639 ignored
+                          uid=23_640 ignored
+                            uid=23_641 paragraph
+                              uid=23_642 StaticText "Amendments to IAS 37 "
+                              uid=23_643 emphasis
+                                uid=23_644 StaticText "Provisions, Contingent Liabilities and Contingent Assets"
+                              uid=23_645 StaticText " re:"
+                            uid=23_646 list
+                              uid=23_647 listitem level="1"
+                                uid=23_648 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_649 emphasis
+                                  uid=23_650 StaticText "Onerous Contracts—Cost of Fulfilling a Contract"
+                        uid=23_651 ignored
+                          uid=23_652 generic
+                            uid=23_653 StaticText "In accordance with specific requirements in IAS 37"
+                      uid=23_654 ignored
+                        uid=23_655 generic
+                          uid=23_656 StaticText "Effective for annual periods beginning on or after April 1, 2021:"
+                      uid=23_657 ignored
+                        uid=23_658 ignored
+                          uid=23_659 ignored
+                            uid=23_660 paragraph
+                              uid=23_661 StaticText "Amendments to IFRS 16 "
+                              uid=23_662 emphasis
+                                uid=23_663 StaticText "Leases "
+                              uid=23_664 StaticText "re:"
+                            uid=23_665 list
+                              uid=23_666 listitem level="1"
+                                uid=23_667 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_668 emphasis
+                                  uid=23_669 StaticText "Covid-19-Related Rent Concessions beyond 30 June 2021"
+                        uid=23_670 ignored
+                          uid=23_671 ignored
+                            uid=23_672 paragraph
+                              uid=23_673 StaticText "Retrospective"
+                      uid=23_674 ignored
+                        uid=23_675 generic
+                          uid=23_676 StaticText "Effective for annual periods beginning on or after January 1, 2021:"
+                      uid=23_677 ignored
+                        uid=23_678 ignored
+                          uid=23_679 ignored
+                            uid=23_680 paragraph
+                              uid=23_681 StaticText "Amendments to IFRS 9 "
+                              uid=23_682 emphasis
+                                uid=23_683 StaticText "Financial Instruments"
+                              uid=23_684 StaticText ", IAS 39 "
+                              uid=23_685 emphasis
+                                uid=23_686 StaticText "Financial Instruments: Recognition and Measurement"
+                              uid=23_687 StaticText ", IFRS 7 "
+                              uid=23_688 emphasis
+                                uid=23_689 StaticText "Financial Instruments: Disclosures"
+                              uid=23_690 StaticText ", IFRS 4"
+                              uid=23_691 emphasis
+                                uid=23_692 StaticText " Insurance Contracts"
+                              uid=23_693 StaticText ", and IFRS 16 "
+                              uid=23_694 emphasis
+                                uid=23_695 StaticText "Leases "
+                              uid=23_696 StaticText "and re:"
+                            uid=23_697 list
+                              uid=23_698 listitem level="1"
+                                uid=23_699 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_700 emphasis
+                                  uid=23_701 StaticText "Interest Rate Benchmark Reform—Phase 2"
+                        uid=23_702 ignored
+                          uid=23_703 ignored
+                            uid=23_704 paragraph
+                              uid=23_705 StaticText "In accordance with specific requirements in the standards"
+                      uid=23_706 ignored
+                        uid=23_707 generic
+                          uid=23_708 StaticText "Effective for annual periods beginning on or after January 1, 2020:"
+                      uid=23_709 ignored
+                        uid=23_710 ignored
+                          uid=23_711 ignored
+                            uid=23_712 paragraph
+                              uid=23_713 emphasis
+                                uid=23_714 StaticText "The Conceptual Framework for Financial Reporting"
+                              uid=23_715 StaticText " (Revised in 2018)"
+                        uid=23_716 ignored
+                          uid=23_717 generic
+                            uid=23_718 StaticText "Prospective"
+                      uid=23_719 ignored
+                        uid=23_720 ignored
+                          uid=23_721 generic
+                            uid=23_722 emphasis
+                              uid=23_723 StaticText "Amendments to References to the Conceptual Framework in IFRS Standards"
+                        uid=23_724 ignored
+                          uid=23_725 generic
+                            uid=23_726 StaticText "Prospective"
+                      uid=23_727 ignored
+                        uid=23_728 ignored
+                          uid=23_729 ignored
+                            uid=23_730 paragraph
+                              uid=23_731 StaticText "Amendments to IFRS 3 "
+                              uid=23_732 emphasis
+                                uid=23_733 StaticText "Business Combinations"
+                              uid=23_734 StaticText " re:"
+                            uid=23_735 list
+                              uid=23_736 listitem level="1"
+                                uid=23_737 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_738 emphasis
+                                  uid=23_739 StaticText "Definition of a Business"
+                        uid=23_740 ignored
+                          uid=23_741 generic
+                            uid=23_742 StaticText "In accordance with specific requirements in IFRS 3"
+                      uid=23_743 ignored
+                        uid=23_744 ignored
+                          uid=23_745 ignored
+                            uid=23_746 paragraph
+                              uid=23_747 StaticText "Amendments to IFRS 4"
+                              uid=23_748 emphasis
+                                uid=23_749 StaticText " Insurance Contracts"
+                              uid=23_750 StaticText " re:"
+                            uid=23_751 list
+                              uid=23_752 listitem level="1"
+                                uid=23_753 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_754 emphasis
+                                  uid=23_755 StaticText "Extension of the Temporary Exemption from Applying IFRS 9"
+                        uid=23_756 ignored
+                          uid=23_757 ignored
+                            uid=23_758 paragraph
+                              uid=23_759 StaticText "In accordance with specific requirements of IFRS 4"
+                      uid=23_760 ignored
+                        uid=23_761 ignored
+                          uid=23_762 ignored
+                            uid=23_763 paragraph
+                              uid=23_764 StaticText "Amendments to IFRS 9 "
+                              uid=23_765 emphasis
+                                uid=23_766 StaticText "Financial Instruments"
+                              uid=23_767 StaticText ", IAS 39"
+                              uid=23_768 emphasis
+                                uid=23_769 StaticText " Financial Instruments"
+                              uid=23_770 StaticText ": "
+                              uid=23_771 emphasis
+                                uid=23_772 StaticText "Recognition and Measurement "
+                              uid=23_773 StaticText "and IFRS 7 "
+                              uid=23_774 emphasis
+                                uid=23_775 StaticText "Financial Instruments Disclosures"
+                              uid=23_776 StaticText " re:"
+                            uid=23_777 list
+                              uid=23_778 listitem level="1"
+                                uid=23_779 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_780 emphasis
+                                  uid=23_781 StaticText "Interest Rate Benchmark Reform"
+                        uid=23_782 ignored
+                          uid=23_783 ignored
+                            uid=23_784 paragraph
+                              uid=23_785 StaticText "In accordance with specific requirements in the standards"
+                      uid=23_786 ignored
+                        uid=23_787 ignored
+                          uid=23_788 ignored
+                            uid=23_789 paragraph
+                              uid=23_790 StaticText "Amendment to IFRS 16 "
+                              uid=23_791 emphasis
+                                uid=23_792 StaticText "Leases"
+                              uid=23_793 StaticText " re: "
+                            uid=23_794 list
+                              uid=23_795 listitem level="1"
+                                uid=23_796 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_797 StaticText "Covid-19-"
+                                uid=23_798 emphasis
+                                  uid=23_799 StaticText "Related Rent Concessions"
+                            uid=23_800 generic
+                              uid=23_801 StaticText " "
+                        uid=23_802 ignored
+                          uid=23_803 generic
+                            uid=23_804 StaticText "Retrospective"
+                      uid=23_805 ignored
+                        uid=23_806 ignored
+                          uid=23_807 ignored
+                            uid=23_808 paragraph
+                              uid=23_809 StaticText "Amendments to IAS 1 "
+                              uid=23_810 emphasis
+                                uid=23_811 StaticText "Presentation of Financial Statements"
+                              uid=23_812 StaticText " and IAS 8 "
+                              uid=23_813 emphasis
+                                uid=23_814 StaticText "Accounting Policies, Changes in Accounting Estimates and Errors"
+                              uid=23_815 StaticText " re: "
+                            uid=23_816 list
+                              uid=23_817 listitem level="1"
+                                uid=23_818 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_819 emphasis
+                                  uid=23_820 StaticText "Definition of Material"
+                        uid=23_821 ignored
+                          uid=23_822 generic
+                            uid=23_823 StaticText "Prospective"
+                      uid=23_824 ignored
+                        uid=23_825 generic
+                          uid=23_826 StaticText "Effective for annual periods beginning on or after January 1, 2018:"
+                      uid=23_827 ignored
+                        uid=23_828 ignored
+                          uid=23_829 ignored
+                            uid=23_830 paragraph
+                              uid=23_831 StaticText "Amendments to IFRS 2 "
+                              uid=23_832 emphasis
+                                uid=23_833 StaticText "Share-based Payment"
+                              uid=23_834 StaticText " re:"
+                            uid=23_835 list
+                              uid=23_836 listitem level="1"
+                                uid=23_837 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_838 emphasis
+                                  uid=23_839 StaticText "Classification and Measurement of Share-based Payment Transactions"
+                        uid=23_840 ignored
+                          uid=23_841 generic
+                            uid=23_842 StaticText "In accordance with specific requirements in IFRS 2"
+                      uid=23_843 ignored
+                        uid=23_844 ignored
+                          uid=23_845 ignored
+                            uid=23_846 paragraph
+                              uid=23_847 emphasis
+                              uid=23_848 emphasis
+                              uid=23_849 StaticText "Amendments to IFRS 4 "
+                              uid=23_850 emphasis
+                                uid=23_851 StaticText "Insurance Contracts"
+                              uid=23_852 StaticText " re:"
+                            uid=23_853 list
+                              uid=23_854 listitem level="1"
+                                uid=23_855 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_856 emphasis
+                                  uid=23_857 StaticText "Applying IFRS 9 "
+                                uid=23_858 StaticText "Financial Instruments"
+                                uid=23_859 emphasis
+                                  uid=23_860 StaticText " with IFRS 4 "
+                                uid=23_861 StaticText "Insurance Contracts"
+                                uid=23_862 emphasis
+                                  uid=23_863 StaticText "*"
+                            uid=23_864 paragraph
+                              uid=23_865 StaticText " "
+                            uid=23_866 paragraph
+                              uid=23_867 StaticText "* For qualifying entities that choose to apply the temporary exemption from IFRS 9. For other entities that do not qualify for the temporary exemption, or that choose the overlay approach instead, these amendments are effective for designated assets from the date at which IFRS 9 is applied for the first time."
+                        uid=23_868 ignored
+                          uid=23_869 ignored
+                            uid=23_870 paragraph
+                              uid=23_871 StaticText " "
+                            uid=23_872 paragraph
+                              uid=23_873 StaticText "In accordance with specific requirements in IFRS 4"
+                      uid=23_874 ignored
+                        uid=23_875 ignored
+                          uid=23_876 generic
+                            uid=23_877 StaticText "Amendments to IFRS 7 "
+                            uid=23_878 emphasis
+                              uid=23_879 StaticText "Financial Instruments: Disclosures"
+                        uid=23_880 ignored
+                          uid=23_881 generic
+                            uid=23_882 StaticText "Simultaneously with IFRS 9, in accordance with specific requirements in IFRS 7"
+                      uid=23_883 ignored
+                        uid=23_884 ignored
+                          uid=23_885 ignored
+                            uid=23_886 paragraph
+                              uid=23_887 StaticText "IFRS 9 "
+                              uid=23_888 emphasis
+                                uid=23_889 StaticText "Financial Instruments"
+                            uid=23_890 paragraph
+                              uid=23_891 StaticText "(New in 2014; replaces IAS 39, IFRIC 9 and earlier versions of IFRS 9);"
+                        uid=23_892 ignored
+                          uid=23_893 generic
+                            uid=23_894 StaticText "In accordance with specific requirements in IFRS 9"
+                      uid=23_895 ignored
+                        uid=23_896 ignored
+                          uid=23_897 ignored
+                            uid=23_898 paragraph
+                              uid=23_899 StaticText "IFRS 15 "
+                              uid=23_900 emphasis
+                                uid=23_901 StaticText "Revenue from Contracts with Customers"
+                            uid=23_902 paragraph
+                              uid=23_903 StaticText "(New in 2014; replaces IAS 11, IAS 18, IFRIC 13, IFRIC 15, IFRIC 18 and SIC-31); incorporates amendments re:"
+                            uid=23_904 list
+                              uid=23_905 listitem level="1"
+                                uid=23_906 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_907 emphasis
+                                  uid=23_908 StaticText "Effective Date of IFRS 15"
+                              uid=23_909 listitem level="1"
+                                uid=23_910 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_911 emphasis
+                                  uid=23_912 StaticText "Clarifications to IFRS 15 Revenue from Contracts with Customers"
+                        uid=23_913 ignored
+                          uid=23_914 generic
+                            uid=23_915 StaticText "In accordance with specific requirements in IFRS 15"
+                      uid=23_916 ignored
+                        uid=23_917 ignored
+                          uid=23_918 ignored
+                            uid=23_919 paragraph
+                              uid=23_920 StaticText "Amendments to IAS 40 "
+                              uid=23_921 emphasis
+                                uid=23_922 StaticText "Investment Property"
+                              uid=23_923 StaticText " re:"
+                            uid=23_924 list
+                              uid=23_925 listitem level="1"
+                                uid=23_926 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_927 emphasis
+                                  uid=23_928 StaticText "Transfers of Investment Property"
+                        uid=23_929 ignored
+                          uid=23_930 generic
+                            uid=23_931 StaticText "In accordance with specific requirements in IAS 40"
+                      uid=23_932 ignored
+                        uid=23_933 ignored
+                          uid=23_934 generic
+                            uid=23_935 StaticText "IFRIC 22 "
+                            uid=23_936 emphasis
+                              uid=23_937 StaticText "Foreign Currency Transactions and Advance Consideration "
+                            uid=23_938 StaticText "(New in 2016)"
+                        uid=23_939 ignored
+                          uid=23_940 generic
+                            uid=23_941 StaticText "In accordance with specific requirements in IFRIC 22"
+                      uid=23_942 ignored
+                        uid=23_943 ignored
+                          uid=23_944 ignored
+                            uid=23_945 paragraph
+                              uid=23_946 StaticText "Annual Improvements (2014-2016 Cycle) to:"
+                            uid=23_947 list
+                              uid=23_948 listitem level="1"
+                                uid=23_949 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_950 StaticText "IFRS 1 "
+                                uid=23_951 emphasis
+                                  uid=23_952 StaticText "First-time Adoption of International Financial Reporting Standards"
+                              uid=23_953 listitem level="1"
+                                uid=23_954 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_955 StaticText "IAS 28"
+                                uid=23_956 emphasis
+                                  uid=23_957 StaticText " Investments in Associates and Joint Ventures"
+                        uid=23_958 ignored
+                          uid=23_959 ignored
+                            uid=23_960 paragraph
+                              uid=23_961 StaticText "IFRS 1 – N/A – deletion of short-term exemptions for which the relief periods have passed"
+                            uid=23_962 paragraph
+                              uid=23_963 StaticText "IAS 28 – retrospective"
+                      uid=23_964 ignored
+                        uid=23_965 generic
+                          uid=23_966 StaticText "Effective for annual periods beginning on or after January 1, 2019:"
+                      uid=23_967 ignored
+                        uid=23_968 ignored
+                          uid=23_969 ignored
+                            uid=23_970 paragraph
+                              uid=23_971 StaticText "Annual Improvements (2015-2017 Cycle) to:"
+                            uid=23_972 list
+                              uid=23_973 listitem level="1"
+                                uid=23_974 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_975 StaticText "IFRS 3 "
+                                uid=23_976 emphasis
+                                  uid=23_977 StaticText "Business Combinations"
+                              uid=23_978 listitem level="1"
+                                uid=23_979 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_980 StaticText "IFRS 11 "
+                                uid=23_981 emphasis
+                                  uid=23_982 StaticText "Joint Arrangements"
+                              uid=23_983 listitem level="1"
+                                uid=23_984 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_985 StaticText "IAS 12"
+                                uid=23_986 emphasis
+                                  uid=23_987 StaticText " Income Taxes"
+                              uid=23_988 listitem level="1"
+                                uid=23_989 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_990 StaticText "IAS 23"
+                                uid=23_991 emphasis
+                                  uid=23_992 StaticText " Borrowing Costs"
+                        uid=23_993 ignored
+                          uid=23_994 ignored
+                            uid=23_995 paragraph
+                              uid=23_996 StaticText "In accordance with specific requirements in the standard"
+                      uid=23_997 ignored
+                        uid=23_998 ignored
+                          uid=23_999 ignored
+                            uid=23_1000 StaticText "Amendments to IFRS 9 "
+                            uid=23_1001 emphasis
+                              uid=23_1002 StaticText "Financial Instruments"
+                            uid=23_1003 StaticText " re:"
+                            uid=23_1004 list
+                              uid=23_1005 listitem level="1"
+                                uid=23_1006 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1007 emphasis
+                                  uid=23_1008 StaticText "Prepayment Features with Negative Compensation"
+                        uid=23_1009 ignored
+                          uid=23_1010 generic
+                            uid=23_1011 StaticText "In accordance with specific requirements in IFRS 9"
+                      uid=23_1012 ignored
+                        uid=23_1013 ignored
+                          uid=23_1014 ignored
+                            uid=23_1015 paragraph
+                              uid=23_1016 StaticText "IFRS 16"
+                              uid=23_1017 emphasis
+                                uid=23_1018 StaticText " Leases"
+                            uid=23_1019 paragraph
+                              uid=23_1020 StaticText "(New in 2016; replaces IAS 17, IFRIC 4, SIC-15 and SIC-27)"
+                        uid=23_1021 ignored
+                          uid=23_1022 generic
+                            uid=23_1023 StaticText "In accordance with specific requirements in IFRS 16"
+                      uid=23_1024 ignored
+                        uid=23_1025 ignored
+                          uid=23_1026 ignored
+                            uid=23_1027 paragraph
+                              uid=23_1028 StaticText "Amendments to IAS 19 "
+                              uid=23_1029 emphasis
+                                uid=23_1030 StaticText "Employee Benefits"
+                              uid=23_1031 StaticText " re:"
+                            uid=23_1032 list
+                              uid=23_1033 listitem level="1"
+                                uid=23_1034 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1035 emphasis
+                                  uid=23_1036 StaticText "Plan Amendment, Curtailment or Settlement"
+                        uid=23_1037 ignored
+                          uid=23_1038 generic
+                            uid=23_1039 StaticText "In accordance with specific requirements in IAS 19"
+                      uid=23_1040 ignored
+                        uid=23_1041 ignored
+                          uid=23_1042 ignored
+                            uid=23_1043 paragraph
+                              uid=23_1044 StaticText "Amendments to IAS 28 "
+                              uid=23_1045 emphasis
+                                uid=23_1046 StaticText "Investments in Associates and Joint Ventures"
+                              uid=23_1047 StaticText " re:"
+                            uid=23_1048 list
+                              uid=23_1049 listitem level="1"
+                                uid=23_1050 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1051 emphasis
+                                  uid=23_1052 StaticText "Long-term Interests in Associates and Joint Ventures"
+                        uid=23_1053 ignored
+                          uid=23_1054 generic
+                            uid=23_1055 StaticText "In accordance with specific requirements in IAS 28"
+                      uid=23_1056 ignored
+                        uid=23_1057 ignored
+                          uid=23_1058 generic
+                            uid=23_1059 StaticText "IFRIC 23 "
+                            uid=23_1060 emphasis
+                              uid=23_1061 StaticText "Uncertainty over Income Tax Treatments"
+                            uid=23_1062 StaticText " (New in 2017)"
+                        uid=23_1063 ignored
+                          uid=23_1064 generic
+                            uid=23_1065 StaticText "In accordance with specific requirements in IFRIC 23"
+                      uid=23_1066 ignored
+                        uid=23_1067 generic
+                          uid=23_1068 StaticText "Effective for annual periods beginning on or after January 1, 2017:"
+                      uid=23_1069 ignored
+                        uid=23_1070 ignored
+                          uid=23_1071 ignored
+                            uid=23_1072 paragraph
+                              uid=23_1073 StaticText "Amendments to IAS 7 "
+                              uid=23_1074 emphasis
+                                uid=23_1075 StaticText "Statement of Cash Flows"
+                              uid=23_1076 StaticText " re:"
+                            uid=23_1077 list
+                              uid=23_1078 listitem level="1"
+                                uid=23_1079 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1080 emphasis
+                                  uid=23_1081 StaticText "Disclosure Initiative   "
+                        uid=23_1082 ignored
+                          uid=23_1083 ignored
+                            uid=23_1084 paragraph
+                              uid=23_1085 StaticText "In accordance with specific requirements in IAS 7"
+                      uid=23_1086 ignored
+                        uid=23_1087 ignored
+                          uid=23_1088 ignored
+                            uid=23_1089 paragraph
+                              uid=23_1090 StaticText "Amendments to IAS 12"
+                              uid=23_1091 emphasis
+                                uid=23_1092 StaticText " Income Taxes"
+                              uid=23_1093 StaticText " re:"
+                            uid=23_1094 list
+                              uid=23_1095 listitem level="1"
+                                uid=23_1096 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1097 emphasis
+                                  uid=23_1098 StaticText "Recognition of Deferred Tax Assets for Unrealised Losses"
+                        uid=23_1099 ignored
+                          uid=23_1100 generic
+                            uid=23_1101 StaticText "In accordance with specific requirements in IAS 12"
+                      uid=23_1102 ignored
+                        uid=23_1103 ignored
+                          uid=23_1104 ignored
+                            uid=23_1105 paragraph
+                              uid=23_1106 StaticText "Annual Improvements (2014-2016 Cycle) to:"
+                            uid=23_1107 list
+                              uid=23_1108 listitem level="1"
+                                uid=23_1109 ListMarker "• "
+                                  uid=23_110 ignored
+                                uid=23_1110 StaticText "IFRS 12"
+                                uid=23_1111 emphasis
+                                  uid=23_1112 StaticText " Disclosure of Interests in Other Entities"
+                        uid=23_1113 ignored
+                          uid=23_1114 generic
+                            uid=23_1115 StaticText "Retrospective"
+        uid=23_1116 sectionfooter
+          uid=23_1117 ignored
+            uid=23_1118 generic
+              uid=23_1119 generic
+                uid=23_1120 generic
+                  uid=23_1121 image "Dotted Footer Background" url="https://www.frascanada.ca/assets/standardBuild/images/footer/Dotted%20BG.png"
+                uid=23_1122 ignored
+                  uid=23_1123 ignored
+                    uid=23_1124 generic
+                      uid=23_1125 generic
+                        uid=23_1126 list
+                          uid=23_1127 listitem level="1"
+                            uid=23_1128 StaticText "Financial Reporting & Assurance Standards Canada"
+                          uid=23_1129 listitem level="1"
+                            uid=23_1130 link "About FRAS Canada" url="https://www.frascanada.ca/en/about"
+                              uid=23_1131 StaticText "About FRAS Canada"
+                          uid=23_1132 listitem level="1"
+                            uid=23_1133 link "Research Program" url="https://www.frascanada.ca/en/research-program"
+                              uid=23_1134 StaticText "Research Program"
+                          uid=23_1135 listitem level="1"
+                            uid=23_1136 link "News Listings" url="https://www.frascanada.ca/en/news-listings"
+                              uid=23_1137 StaticText "News Listings"
+                          uid=23_1138 listitem level="1"
+                            uid=23_1139 link "Job Opportunities" url="https://www.frascanada.ca/en/job-opportunities"
+                              uid=23_1140 StaticText "Job Opportunities"
+                          uid=23_1141 listitem level="1"
+                            uid=23_1142 link "Volunteer Opportunities" url="https://www.frascanada.ca/en/volunteer-opportunities"
+                              uid=23_1143 StaticText "Volunteer Opportunities"
+                          uid=23_1144 listitem level="1"
+                            uid=23_1145 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=23_1146 StaticText "Contact"
+                          uid=23_1147 listitem level="1"
+                            uid=23_1148 StaticText "Council"
+                          uid=23_1149 listitem level="1"
+                            uid=23_1150 link "Reporting and Assurance Standards Oversight Council" url="https://www.frascanada.ca/en/rasoc"
+                              uid=23_1151 StaticText "Reporting and Assurance Standards Oversight Council"
+                          uid=23_1152 listitem level="1"
+                            uid=23_1153 StaticText "Boards"
+                          uid=23_1154 listitem level="1"
+                            uid=23_1155 link "Canadian Sustainability Standards Board" url="https://www.frascanada.ca/en/cssb"
+                              uid=23_1156 StaticText "Canadian Sustainability Standards Board"
+                          uid=23_1157 listitem level="1"
+                            uid=23_1158 link "Accounting Standards Board" url="https://www.frascanada.ca/en/acsb"
+                              uid=23_1159 StaticText "Accounting Standards Board"
+                          uid=23_1160 listitem level="1"
+                            uid=23_1161 link "Public Sector Accounting Board" url="https://www.frascanada.ca/en/psab"
+                              uid=23_1162 StaticText "Public Sector Accounting Board"
+                          uid=23_1163 listitem level="1"
+                            uid=23_1164 link "Auditing and Assurance Standards Board" url="https://www.frascanada.ca/en/aasb"
+                              uid=23_1165 StaticText "Auditing and Assurance Standards Board"
+                      uid=23_1166 generic
+                        uid=23_1167 list
+                          uid=23_1168 listitem level="1"
+                            uid=23_1169 StaticText "Standards"
+                          uid=23_1170 listitem level="1"
+                            uid=23_1171 StaticText "Sustainability"
+                          uid=23_1172 listitem level="1"
+                            uid=23_1173 link "Canadian Sustainability Disclosure Standards" url="https://www.frascanada.ca/en/sustainability"
+                              uid=23_1174 StaticText "Canadian Sustainability Disclosure Standards"
+                          uid=23_1175 listitem level="1"
+                            uid=23_1176 StaticText "Accounting"
+                          uid=23_1177 listitem level="1"
+                            uid=23_1178 link "IFRS® Accounting Standards" url="https://www.frascanada.ca/en/ifrsstandards"
+                              uid=23_1179 StaticText "IFRS"
+                              uid=23_1180 superscript
+                                uid=23_1181 StaticText "®"
+                              uid=23_1182 StaticText " Accounting Standards"
+                          uid=23_1183 listitem level="1"
+                            uid=23_1184 link "Accounting Standards for Private Enterprises" url="https://www.frascanada.ca/en/aspe"
+                              uid=23_1185 StaticText "Accounting Standards for Private Enterprises"
+                          uid=23_1186 listitem level="1"
+                            uid=23_1187 link "Accounting Standards for Private Sector Not-for-Profit Organizations" url="https://www.frascanada.ca/en/nfpos"
+                              uid=23_1188 StaticText "Accounting Standards for Private Sector Not-for-Profit Organizations"
+                          uid=23_1189 listitem level="1"
+                            uid=23_1190 link "Accounting Standards for Pension Plans" url="https://www.frascanada.ca/en/pensions"
+                              uid=23_1191 StaticText "Accounting Standards for Pension Plans"
+                          uid=23_1192 listitem level="1"
+                            uid=23_1193 StaticText "Public Sector"
+                          uid=23_1194 listitem level="1"
+                            uid=23_1195 link "Public Sector Accounting Standards" url="https://www.frascanada.ca/en/public-sector"
+                              uid=23_1196 StaticText "Public Sector Accounting Standards"
+                          uid=23_1197 listitem level="1"
+                            uid=23_1198 link "International Public Sector Accounting Standards Activities" url="https://www.frascanada.ca/en/public-sector-international"
+                              uid=23_1199 StaticText "International Public Sector Accounting Standards Activities"
+                          uid=23_1200 listitem level="1"
+                            uid=23_1201 StaticText "Assurance"
+                          uid=23_1202 listitem level="1"
+                            uid=23_1203 link "Canadian Standards on Quality Management" url="https://www.frascanada.ca/en/csqc"
+                              uid=23_1204 StaticText "Canadian Standards on Quality Management"
+                          uid=23_1205 listitem level="1"
+                            uid=23_1206 link "Canadian Auditing Standards" url="https://www.frascanada.ca/en/cass"
+                              uid=23_1207 StaticText "Canadian Auditing Standards"
+                          uid=23_1208 listitem level="1"
+                            uid=23_1209 link "Other Canadian Standards" url="https://www.frascanada.ca/en/other"
+                              uid=23_1210 StaticText "Other Canadian Standards"
+                      uid=23_1211 generic
+                        uid=23_1212 generic
+                          uid=23_1213 image "FRAS Canada logo" url="https://www.frascanada.ca/-/media/frascanada/global-images/logos/fras-footer-logo-en.png?h=116&iar=0&w=202&rev=3b53f3460f3f4d90b45941c9644f8919&hash=5D1A1EEB23939AB89424F60B6E78351A"
+              uid=23_1214 ignored
+                uid=23_1215 ignored
+                  uid=23_1216 ignored
+                    uid=23_1217 generic
+                      uid=23_1218 generic
+                        uid=23_1219 list
+                          uid=23_1220 listitem level="1"
+                            uid=23_1221 link "Contact" url="https://www.frascanada.ca/en/contact-us"
+                              uid=23_1222 StaticText "Contact"
+                          uid=23_1223 listitem level="1"
+                            uid=23_1224 link "Receive Enewsletter" url="https://www.frascanada.ca/en/my-account/mysubscriptions"
+                              uid=23_1225 StaticText "Receive Enewsletter"
+                          uid=23_1226 listitem level="1"
+                            uid=23_1227 link "Copyright" url="https://www.frascanada.ca/en/copyright"
+                              uid=23_1228 StaticText "Copyright"
+                      uid=23_1229 generic
+                        uid=23_1230 list
+                          uid=23_1231 listitem level="1"
+                            uid=23_1232 link "LinkedIn (opens in a new tab)" url="https://www.frascanada.ca/en/linkedin"
+                              uid=23_1233 image "LinkedIn" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/linkedin.png?h=48&w=49&rev=a61ff0846def478f9516066b9e31cb62&hash=0A04312D76CE3E86944417A215421CB6"
+                          uid=23_1234 listitem level="1"
+                            uid=23_1235 link "Twitter (opens in a new tab)" url="https://twitter.com/FRASCanada"
+                              uid=23_1236 image "Twitter" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/twitter.png?h=48&w=48&rev=ab5dccf0a908436b850a7fa4520b4cfc&hash=3EB94B7A4971BB955B50F751022E52ED"
+                          uid=23_1237 listitem level="1"
+                            uid=23_1238 link "YouTube (opens in a new tab)" url="https://www.youtube.com/@financialreportingassuranc5812"
+                              uid=23_1239 image "YouTube" url="https://www.frascanada.ca/-/media/frascanada/global-images/social-icons/youtube-logo.png?h=48&w=48&rev=e2365470507644aeb931b93e956c99e1&hash=C76CA686862BB422D9017466C950AEDB"
+                      uid=23_1240 generic
+                        uid=23_1241 list
+                          uid=23_1242 listitem level="1"
+                            uid=23_1243 link "Cookie Policy" url="https://www.frascanada.ca/en/cookie-policy"
+                              uid=23_1244 StaticText "Cookie Policy"
+                          uid=23_1245 listitem level="1"
+                            uid=23_1246 link "Privacy" url="https://www.frascanada.ca/en/privacy-policy"
+                              uid=23_1247 StaticText "Privacy"
+                          uid=23_1248 listitem level="1"
+                            uid=23_1249 link "Terms of Use" url="https://www.frascanada.ca/en/terms-of-use"
+                              uid=23_1250 StaticText "Terms of Use"
+      uid=23_1251 generic
+        uid=23_1252 ignored
+          uid=23_1253 ignored
+            uid=23_1254 ignored
+            uid=23_1255 ignored
+            uid=23_1256 ignored
+              uid=23_1257 ignored
+          uid=23_1258 ignored
+            uid=23_1259 ignored
+          uid=23_1260 ignored
+            uid=23_1261 ignored
+          uid=23_1262 ignored
+            uid=23_1263 ignored
+            uid=23_1264 ignored
+              uid=23_1265 ignored
+          uid=23_1266 ignored
+            uid=23_1267 ignored
+          uid=23_1268 ignored
+            uid=23_1269 ignored
+            uid=23_1270 ignored
+              uid=23_1271 ignored
+          uid=23_1272 ignored
+            uid=23_1273 ignored
+          uid=23_1274 ignored
+            uid=23_1275 ignored
+            uid=23_1276 ignored
+              uid=23_1277 ignored
+          uid=23_1278 ignored
+          uid=23_1279 ignored
+          uid=23_1280 ignored
+            uid=23_1281 ignored
+              uid=23_1282 ignored
+          uid=23_1283 ignored
+            uid=23_1284 ignored
+              uid=23_1285 ignored
+          uid=23_1286 ignored
+            uid=23_1287 ignored
+              uid=23_1288 ignored
+          uid=23_1289 ignored
+            uid=23_1290 ignored
+              uid=23_1291 ignored
+        uid=23_1292 generic description="Manage cookie settings"
+          uid=23_1293 generic
+            uid=23_1294 button "Manage cookie preferences"
+          uid=23_1295 generic
+            uid=23_1296 button "Close Preferences"
+          uid=23_1297 generic
+            uid=23_110 StaticText "Manage cookie settings"
+              uid=23_110 InlineTextBox "Manage cookie settings"
