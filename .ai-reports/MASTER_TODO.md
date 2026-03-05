@@ -1215,7 +1215,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** RenderBlocks renders mixed blocks; Pages + Homepage both use hero + blocks layout; types generated.
 
 ### 5.3 Create typed CMS fetch helpers
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/lib/payload-helpers.ts` exists with 7 typed helper functions
   2. `getHomepage()` returns typed homepage global (with hero + layout)
