@@ -1,19 +1,29 @@
 /**
  * @description
  * Homepage global for FRAS Canada homepage content configuration.
- * Manages hero section, CTA block, newsletter text, and browse-by-standard links.
+ * Uses tabs: Hero tab + Content tab (blocks layout).
+ * Migrated from flat fields to hero group + blocks layout architecture.
  *
  * Key features:
- * - Hero heading and subtitle for the main banner
- * - CTA block with heading, body, button label/URL
- * - Newsletter promotional text
- * - Browse by Standard section with categorized link groups
+ * - Hero group field (highImpact for gradient hero with search bar)
+ * - Layout blocks field for page body content (CTA, news grid, browse by standard, etc.)
+ * - Newsletter text remains as standalone field (lives in footer global, referenced here)
+ *
+ * @dependencies
+ * - hero field from @/heros/config
+ * - blocks array from @/blocks/index
  *
  * @notes
- * - Hero search is project-only (scoped, not sitewide)
- * - Browse by Standard maps to the 4 standard categories
+ * - This is a GLOBAL (singleton — only one homepage)
+ * - Hero replaces old flat hero_heading + hero_subtitle fields
+ * - CTA content migrated to CTABlock in layout
+ * - Browse by Standard migrated to BrowseByStandardBlock in layout
+ * - Hero search is project-only scope (per component architecture rules)
  */
 import type { GlobalConfig } from 'payload'
+
+import { hero } from '@/heros/config'
+import { blocks } from '@/blocks'
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
@@ -23,71 +33,25 @@ export const Homepage: GlobalConfig = {
   },
   fields: [
     {
-      name: 'hero_heading',
-      type: 'text',
-      required: true,
-      label: 'Hero Heading',
-    },
-    {
-      name: 'hero_subtitle',
-      type: 'textarea',
-      label: 'Hero Subtitle',
-    },
-    {
-      name: 'cta_heading',
-      type: 'text',
-      label: 'CTA Heading',
-    },
-    {
-      name: 'cta_body',
-      type: 'textarea',
-      label: 'CTA Body',
-    },
-    {
-      name: 'cta_button_label',
-      type: 'text',
-      label: 'CTA Button Label',
-    },
-    {
-      name: 'cta_button_url',
-      type: 'text',
-      label: 'CTA Button URL',
-    },
-    {
-      name: 'newsletter_text',
-      type: 'textarea',
-      label: 'Newsletter Text',
-    },
-    {
-      name: 'browse_by_standard',
-      type: 'array',
-      label: 'Browse by Standard',
-      admin: {
-        description: 'Standard categories with sub-links for the homepage browse section',
-      },
-      fields: [
+      type: 'tabs',
+      tabs: [
+        // Hero tab
         {
-          name: 'category',
-          type: 'text',
-          required: true,
-          label: 'Category Name',
+          label: 'Hero',
+          fields: [hero],
         },
+        // Content tab — page builder blocks
         {
-          name: 'links',
-          type: 'array',
-          label: 'Standard Links',
+          label: 'Content',
           fields: [
             {
-              name: 'label',
-              type: 'text',
-              required: true,
-              label: 'Label',
-            },
-            {
-              name: 'url',
-              type: 'text',
-              required: true,
-              label: 'URL',
+              name: 'layout',
+              type: 'blocks',
+              blocks,
+              label: 'Layout',
+              admin: {
+                initCollapsed: true,
+              },
             },
           ],
         },

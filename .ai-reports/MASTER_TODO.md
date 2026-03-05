@@ -1193,7 +1193,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All blocks, hero, and reusable fields compile; directory structure matches Payload website template.
 
 ### 5.2 Create `<RenderBlocks />` + update Pages collection + Homepage global
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/blocks/RenderBlocks.tsx` has slug → Component mapping, iterates blocks array, spreads props, returns null for unknown types
   2. `src/collections/Pages.ts` updated with tabs: Hero tab (using `hero` field), Content tab (with `layout` blocks field), SEO tab (existing meta)
