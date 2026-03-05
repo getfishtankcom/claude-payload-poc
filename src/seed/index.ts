@@ -116,7 +116,7 @@ function daysAgo(days: number): string {
 // Main seed function
 // ---------------------------------------------------------------------------
 
-export async function seed() {
+export async function seed(_payload?: unknown) {
   console.log('🌱 Starting FRAS Canada seed...')
 
   const payload = await getPayload({ config })
@@ -639,7 +639,7 @@ export async function seed() {
 
   for (const event of eventsData) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await payload.create({ collection: 'events', data: event as any })
+    await payload.create({ collection: 'events', data: event } as any)
   }
   console.log(`    ✓ Created ${eventsData.length} events`)
 
@@ -932,7 +932,7 @@ export async function seed() {
 
 // Auto-run when executed directly (npx tsx src/seed/index.ts)
 // When imported by payload.config.ts onInit, the function is called without this wrapper
-const isDirectRun = process.argv[1]?.includes('seed')
+const isDirectRun = typeof process !== 'undefined' && process.argv[1]?.includes('seed')
 if (isDirectRun) {
   seed()
     .then(() => process.exit(0))

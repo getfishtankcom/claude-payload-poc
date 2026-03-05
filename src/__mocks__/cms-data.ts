@@ -79,11 +79,16 @@ export type DocumentForComment = {
   slug: string
   board: Board
   status: 'open' | 'closed'
+  group: 'exposure-draft' | 'consultation-paper' | 're-exposure-draft' | 'discussion-paper'
   commentPeriodStart: string
   commentPeriodEnd: string
   summary: string
   frasIdNumber: string
   publishedDate: string
+  documentUrl?: string
+  commentSubmitUrl?: string
+  commentsPdfUrl?: string
+  standard?: { id: string; slug: string; name: string }
 }
 
 export type Resource = {
@@ -308,13 +313,111 @@ export function mockDocumentForComment(overrides?: Partial<DocumentForComment>):
     slug: 'ed-revenue-recognition-nfpos',
     board: BOARDS.acsb,
     status: 'open',
+    group: 'exposure-draft',
     commentPeriodStart: '2026-01-15T00:00:00.000Z',
     commentPeriodEnd: '2026-04-15T00:00:00.000Z',
     summary: 'This exposure draft proposes amendments to the revenue recognition standard for not-for-profit organizations.',
     frasIdNumber: 'DOC-2026-005',
     publishedDate: '2026-01-15T00:00:00.000Z',
+    commentSubmitUrl: '/submit-comment',
     ...overrides,
   }
+}
+
+export type DocumentDetail = {
+  id: string
+  title: string
+  slug: string
+  highlights: null
+  bodyContent: null
+  commentQuestions: Array<{ questionNumber: number; questionText: null }>
+  replyDeadline: string
+  howToReply: {
+    heading: string
+    body: null
+    ctaLabel: string
+    ctaHref: string
+    contactName: string
+    contactTitle: string
+    contactAddress: null
+    contactEmail: string
+  }
+  supportMaterials: Array<{ label: string; url: string; fileType: string }>
+  standard?: { id: string; slug: string; name: string }
+  board: Board
+  staffContacts: Contact[]
+}
+
+export function mockDocumentDetail(overrides?: Partial<DocumentDetail>): DocumentDetail {
+  return {
+    id: nextId(),
+    title: 'Exposure Draft: Revenue Recognition for NFPOs',
+    slug: 'ed-revenue-recognition-nfpos',
+    highlights: null,
+    bodyContent: null,
+    commentQuestions: [
+      { questionNumber: 1, questionText: null },
+      { questionNumber: 2, questionText: null },
+      { questionNumber: 3, questionText: null },
+    ],
+    replyDeadline: '2026-04-15T00:00:00.000Z',
+    howToReply: {
+      heading: 'How to Reply',
+      body: null,
+      ctaLabel: 'Submit comment',
+      ctaHref: '/submit-comment',
+      contactName: 'Andrew White, CPA, CA',
+      contactTitle: 'Director, Accounting Standards',
+      contactAddress: null,
+      contactEmail: 'awhite@frascanada.ca',
+    },
+    supportMaterials: [
+      { label: 'Complete Exposure Draft', url: '/files/ed-revenue.pdf', fileType: 'pdf' },
+      { label: 'Basis for Conclusions', url: '/files/basis-conclusions.pdf', fileType: 'pdf' },
+    ],
+    board: BOARDS.acsb,
+    staffContacts: [mockContact()],
+    ...overrides,
+  }
+}
+
+export type ListingItemData = {
+  id: string
+  date: string
+  categories: string[]
+  title: string
+  href: string
+  excerpt: string
+  isExternal?: boolean
+}
+
+export function mockListingItem(overrides?: Partial<ListingItemData>): ListingItemData {
+  return {
+    id: nextId(),
+    date: '2026-02-15T00:00:00.000Z',
+    categories: ['Article'],
+    title: 'Guide to Applying ASPE Section 3856',
+    href: '/resources/guide-aspe-section-3856',
+    excerpt: 'A practical guide to help preparers apply the financial instruments standard under Part II of the CPA Canada Handbook.',
+    ...overrides,
+  }
+}
+
+export function mockListingItemList(count = 5): ListingItemData[] {
+  const items: Partial<ListingItemData>[] = [
+    { title: 'Guide to Applying ASPE Section 3856', categories: ['Guidance'], date: '2026-02-15T00:00:00.000Z' },
+    { title: 'AcSB In Brief: Revenue Recognition Changes', categories: ['In Brief'], date: '2026-02-10T00:00:00.000Z' },
+    { title: 'Webinar: Understanding the New Standard', categories: ['Webinar'], date: '2026-02-05T00:00:00.000Z', isExternal: true },
+    { title: 'Climate-related Disclosures Framework', categories: ['Article'], date: '2026-01-28T00:00:00.000Z' },
+    { title: 'PSAB Guidance on Asset Retirement', categories: ['Guidance'], date: '2026-01-20T00:00:00.000Z' },
+  ]
+  return items.slice(0, count).map((item) =>
+    mockListingItem({
+      ...item,
+      href: `/resources/${(item.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+      excerpt: `Summary text for ${item.title}. This resource provides detailed information for practitioners.`,
+    }),
+  )
 }
 
 export function mockResource(overrides?: Partial<Resource>): Resource {
@@ -461,11 +564,14 @@ export function mockProjectsList(count = 5): Project[] {
   )
 }
 
-export function mockDocumentForCommentList(count = 3): DocumentForComment[] {
+export function mockDocumentForCommentList(count = 6): DocumentForComment[] {
   const docs: Partial<DocumentForComment>[] = [
-    { title: 'ED: Revenue Recognition for NFPOs', board: BOARDS.acsb, status: 'open' },
-    { title: 'ED: Asset Retirement Obligations', board: BOARDS.psab, status: 'open' },
-    { title: 'ED: Group Audits', board: BOARDS.aasb, status: 'closed' },
+    { title: 'ED: Revenue Recognition for NFPOs', board: BOARDS.acsb, status: 'open', group: 'exposure-draft', commentSubmitUrl: '/submit' },
+    { title: 'ED: Proposed Amendments to Section 3856', board: BOARDS.acsb, status: 'open', group: 'exposure-draft', commentSubmitUrl: '/submit' },
+    { title: 'Consultation Paper: Climate-related Disclosures', board: BOARDS.cssb, status: 'open', group: 'consultation-paper', commentSubmitUrl: '/submit' },
+    { title: 'ED: Asset Retirement Obligations', board: BOARDS.psab, status: 'closed', group: 'exposure-draft', commentsPdfUrl: '/files/comments-aro.pdf' },
+    { title: 'ED: Group Audits', board: BOARDS.aasb, status: 'closed', group: 'exposure-draft', commentsPdfUrl: '/files/comments-group-audits.pdf' },
+    { title: 'Re-exposure Draft: Financial Instruments', board: BOARDS.acsb, status: 'closed', group: 're-exposure-draft', commentsPdfUrl: '/files/comments-fi.pdf' },
   ]
   return docs.slice(0, count).map((doc) =>
     mockDocumentForComment(doc),
