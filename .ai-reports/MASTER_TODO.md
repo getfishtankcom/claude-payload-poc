@@ -2741,7 +2741,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 22: Admin Panel Foundation (8 tasks)
 
 ### 22.1 Custom sidebar navigation
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom Nav component replaces Payload default sidebar
   - Sections: Dashboard, Content Tree, Workbox (with badge count), Collections, Tools, System
@@ -2755,7 +2755,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Custom nav renders on all admin pages with role-based visibility
 
 ### 22.2 Custom dashboard (/admin)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom dashboard replaces Payload default at `/admin`
   - 4 widgets in 2x2 grid: Workflow Queue, Quick Actions, My Recent Items, Publishing Schedule
@@ -2788,7 +2788,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Workflow state persists, transitions validated server-side, history logged
 
 ### 22.4 Workflow action bar component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom component shown at bottom of edit view for workflow-enabled collections
   - Buttons change based on current state + user role per PRD Section 5.4
@@ -2806,7 +2806,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Action bar renders per state+role, rejection modal requires comment
 
 ### 22.5 Item locking system
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - `lockedBy` (relationship to users) and `lockedAt` (date) fields on Pages
   - Auto-lock on edit open via admin component useEffect
@@ -2819,7 +2819,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Locking prevents concurrent edits, auto-expires
 
 ### 22.6 Language switcher component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Dropdown in edit view toolbar showing EN/FR
   - Switches Payload locale context for localized fields
@@ -2831,7 +2831,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Language switcher works, fields swap per locale, banner shows
 
 ### 22.7 Scheduled publishing cron
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Payload job or custom endpoint runs on 5-min interval
   - Queries items where workflowState=approved AND publishOn <= now, transitions to published

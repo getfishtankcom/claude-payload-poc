@@ -47,6 +47,7 @@ import { syncToMeilisearch } from '@/search/meilisearch-sync'
 import { workflowFields } from '@/fields/workflow'
 import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
 import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
+import { clearExpiredLock } from '@/admin/hooks/locking-hooks'
 
 const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
 
@@ -55,6 +56,15 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'workflowState', 'publishedAt'],
+    components: {
+      edit: {
+        beforeDocumentControls: [
+          '/admin/components/LanguageSwitcher',
+          '/admin/components/LockIndicator',
+          '/admin/components/WorkflowActionBarField',
+        ],
+      },
+    },
   },
   access: {
     read: contentRead,
@@ -63,7 +73,7 @@ export const Pages: CollectionConfig = {
     delete: contentDelete,
   },
   hooks: {
-    beforeChange: [validateWorkflowTransition],
+    beforeChange: [clearExpiredLock, validateWorkflowTransition],
     afterChange: [createLogWorkflowTransition('pages'), meilisearchAfterChange],
     afterDelete: [afterDelete],
   },
