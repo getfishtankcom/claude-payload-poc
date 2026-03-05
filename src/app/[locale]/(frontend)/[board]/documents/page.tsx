@@ -30,7 +30,7 @@ import { DocumentRow } from '@/components/DocumentRow'
 import { getDocumentsForComment, getAllStandardsSlugs } from '@/lib/payload-helpers'
 
 type Props = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ board: string }>
   searchParams: Promise<{ tab?: string }>
 }
 
@@ -51,11 +51,11 @@ const GROUP_LABELS: Record<string, string> = {
 
 export async function generateStaticParams() {
   const slugs = await getAllStandardsSlugs()
-  return slugs.map((s) => ({ slug: s }))
+  return slugs.map((s) => ({ board: s }))
 }
 
 export default async function DocumentsForCommentPage({ params, searchParams }: Props) {
-  const { slug: standardSlug } = await params
+  const { board: standardSlug } = await params
   const { tab } = await searchParams
 
   // Determine active tab status

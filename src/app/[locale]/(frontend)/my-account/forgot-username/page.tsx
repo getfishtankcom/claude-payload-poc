@@ -20,7 +20,7 @@ import Link from 'next/link'
 
 import { AuthLayout } from '@/components/AuthLayout'
 import { ForgotUsernameFormClient } from './ForgotUsernameFormClient'
-import { recoverUsernameAction } from '@/app/(frontend)/actions/auth'
+import { recoverUsernameAction } from '@/actions/auth'
 
 export const metadata: Metadata = {
   title: 'Forgot Username — FRAS Canada',

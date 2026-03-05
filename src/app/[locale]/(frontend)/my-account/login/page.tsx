@@ -33,7 +33,7 @@ import { AuthLayout } from '@/components/AuthLayout'
 import { LoginForm } from '@/components/LoginForm'
 import { CpaExplanationBlock } from '@/components/CpaExplanationBlock'
 import { SupportContactBlock } from '@/components/SupportContactBlock'
-import { loginAction } from '@/app/(frontend)/actions/auth'
+import { loginAction } from '@/actions/auth'
 import { getAuthConfig } from '@/lib/payload-helpers'
 import { RichText } from '@/components/RichText'
 

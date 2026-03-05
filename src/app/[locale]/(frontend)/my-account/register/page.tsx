@@ -25,7 +25,7 @@ import Link from 'next/link'
 
 import { AuthLayout } from '@/components/AuthLayout'
 import { RegisterFormClient } from './RegisterFormClient'
-import { registerAction } from '@/app/(frontend)/actions/auth'
+import { registerAction } from '@/actions/auth'
 import { getAuthConfig } from '@/lib/payload-helpers'
 
 export const metadata: Metadata = {

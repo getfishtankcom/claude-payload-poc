@@ -24,7 +24,7 @@ import { getAllStandardsSlugs } from '@/lib/payload-helpers'
 import { ResourcesListingClient } from './ResourcesListingClient'
 
 type Props = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ board: string }>
 }
 
 export const metadata: Metadata = {
@@ -36,11 +36,11 @@ export const revalidate = 60
 
 export async function generateStaticParams() {
   const slugs = await getAllStandardsSlugs()
-  return slugs.map((s) => ({ slug: s }))
+  return slugs.map((s) => ({ board: s }))
 }
 
 export default async function ResourcesListingPage({ params }: Props) {
-  const { slug: standardSlug } = await params
+  const { board: standardSlug } = await params
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-resources-listing">

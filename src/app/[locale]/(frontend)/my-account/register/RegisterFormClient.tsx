@@ -16,6 +16,7 @@
 'use client'
 
 import React, { useActionState } from 'react'
+import Link from 'next/link'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 
@@ -37,9 +38,9 @@ export function RegisterFormClient({ action }: RegisterFormClientProps) {
     return (
       <div className="rounded-md bg-green-50 border border-green-200 p-6 text-center" role="status">
         <p className="text-lg font-semibold text-green-800">{state.message}</p>
-        <a href="/my-account/login" className="mt-4 inline-block text-primary underline">
+        <Link href="/my-account/login" className="mt-4 inline-block text-primary underline">
           Go to Login
-        </a>
+        </Link>
       </div>
     )
   }

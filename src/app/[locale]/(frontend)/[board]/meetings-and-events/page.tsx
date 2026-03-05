@@ -28,7 +28,7 @@ import { getAllBoards } from '@/lib/payload-helpers'
 import { MeetingsListingClient } from './MeetingsListingClient'
 
 type Props = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ board: string }>
 }
 
 export const metadata: Metadata = {
@@ -40,11 +40,11 @@ export const revalidate = 60
 
 export async function generateStaticParams() {
   const boards = await getAllBoards()
-  return boards.map((b) => ({ slug: b.slug }))
+  return boards.map((b) => ({ board: b.slug }))
 }
 
 export default async function MeetingsAndEventsPage({ params }: Props) {
-  const { slug: boardSlug } = await params
+  const { board: boardSlug } = await params
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-meetings-listing">

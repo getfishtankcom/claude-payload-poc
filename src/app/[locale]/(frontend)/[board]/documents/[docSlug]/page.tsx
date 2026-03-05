@@ -33,7 +33,7 @@ import { SupportMaterialsList } from '@/components/SupportMaterialsList'
 import { getDocumentDetailBySlug } from '@/lib/payload-helpers'
 
 type Props = {
-  params: Promise<{ slug: string; docSlug: string }>
+  params: Promise<{ board: string; docSlug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

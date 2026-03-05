@@ -88,7 +88,6 @@ export default async function MembersPage({ params }: PageProps) {
   }
 
   const boardData = board as unknown as Record<string, unknown>
-  const boardName = boardData.name as string
   const boardAbbr = boardData.abbreviation as string
 
   // Sort members by role priority, then sortOrder, then name

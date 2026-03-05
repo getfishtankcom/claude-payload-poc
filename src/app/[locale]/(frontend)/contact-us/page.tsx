@@ -28,7 +28,7 @@ import { Container } from '@/components/ui/Container'
 import { ContactFormWrapper } from '@/components/ContactFormWrapper'
 import { MediaInquiriesBlock } from '@/components/MediaInquiriesBlock'
 import { RichText } from '@/components/RichText'
-import { submitContactForm } from '@/app/(frontend)/actions/contact'
+import { submitContactForm } from '@/actions/contact'
 import { getPageBySlug } from '@/lib/payload-helpers'
 
 export const metadata: Metadata = {
