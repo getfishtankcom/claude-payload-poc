@@ -2645,7 +2645,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 21: Phase 2 Integration & Polish (6 tasks)
 
 ### 21.1 Seed CMS with Phase 2 sample data
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - 20+ board members across 4 boards with photos
   - 25+ committee entries across 4 boards
