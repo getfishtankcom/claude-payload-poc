@@ -35,6 +35,9 @@ export const metadata: Metadata = {
   description: 'Browse active standards-setting projects across all boards.',
 }
 
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
+
 export default async function ActiveProjectsPage() {
   // Fetch data in parallel
   const [projects, boards, standards] = await Promise.all([

@@ -122,6 +122,7 @@ export function ActiveProjectsClient({
           <select
             value={selectedStandard}
             onChange={(e) => setSelectedStandard(e.target.value)}
+            aria-label="Filter by standard"
             className="rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary"
             data-testid="standard-filter"
           >

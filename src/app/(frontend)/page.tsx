@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   },
 }
 
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
+
 export default async function HomePage() {
   const homepage = await getHomepage()
 

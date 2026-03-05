@@ -15,7 +15,7 @@ import { RichText as PayloadRichText } from '@payloadcms/richtext-lexical/react'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 type RichTextProps = {
-  content: SerializedEditorState | null | undefined
+  content: SerializedEditorState | Record<string, unknown> | null | undefined
   className?: string
 }
 
@@ -24,7 +24,7 @@ export function RichText({ content, className }: RichTextProps) {
 
   return (
     <div className={className}>
-      <PayloadRichText data={content} />
+      <PayloadRichText data={content as SerializedEditorState} />
     </div>
   )
 }

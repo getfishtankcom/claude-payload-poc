@@ -36,6 +36,9 @@ export const metadata: Metadata = {
   description: 'Review and comment on open consultations from all boards.',
 }
 
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
+
 export default async function OpenConsultationsPage() {
   const [consultations, boards, standards] = await Promise.all([
     getOpenConsultations(),

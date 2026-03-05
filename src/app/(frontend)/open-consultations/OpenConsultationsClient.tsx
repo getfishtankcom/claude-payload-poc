@@ -84,6 +84,7 @@ export function OpenConsultationsClient({
           onChange={(e) => setSelectedBoard(e.target.value)}
           className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary md:w-auto md:max-w-[220px]"
           data-testid="board-filter"
+          aria-label="Filter by board"
         >
           <option value="">All Boards</option>
           {boards.map((b) => (
@@ -97,6 +98,7 @@ export function OpenConsultationsClient({
           onChange={(e) => setSelectedStandard(e.target.value)}
           className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary md:w-auto md:max-w-[220px]"
           data-testid="standard-filter"
+          aria-label="Filter by standard"
         >
           <option value="">All Standards</option>
           {standards.map((s) => (

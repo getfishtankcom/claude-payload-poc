@@ -57,6 +57,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
+
 export default async function BoardDetailPage({ params }: PageProps) {
   const { 'board-slug': slug } = await params
   const board = await getBoardBySlug(slug)

@@ -1634,7 +1634,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All pages render correctly at all 4 breakpoints with no overflow or undersized touch targets.
 
 ### 10.3 Accessibility audit
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. WCAG 2.1 AA compliance: no critical or serious axe violations
   2. Full keyboard navigation: all interactive elements reachable via Tab/Enter/Escape
@@ -1648,7 +1648,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Zero critical a11y violations; keyboard nav complete; screen reader announces modal/menu state.
 
 ### 10.4 Performance optimization
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Lighthouse performance score ≥ 90 on homepage
   2. LCP < 2.5s, FID < 100ms, CLS < 0.1

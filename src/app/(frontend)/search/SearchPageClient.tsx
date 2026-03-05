@@ -309,7 +309,7 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
     <Container>
       {/* Breadcrumb */}
       <nav className="py-4 text-sm text-text-muted" aria-label="Breadcrumb">
-        <Link href="/" className="hover:text-primary">
+        <Link href="/" className="underline decoration-1 underline-offset-2 hover:text-primary">
           Home
         </Link>
         <span className="mx-2" aria-hidden="true">
