@@ -39,11 +39,16 @@ export const metadata: Metadata = {
 /** Revalidate every 60s — ISR for CMS-driven content */
 export const revalidate = 60
 
-export default async function OpenConsultationsPage() {
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function OpenConsultationsPage({ params }: PageProps) {
+  const { locale } = await params
   const [consultations, boards, standards] = await Promise.all([
-    getOpenConsultations(),
-    getAllBoards(),
-    getAllStandards(),
+    getOpenConsultations(locale),
+    getAllBoards(locale),
+    getAllStandards(locale),
   ])
 
   // Filter RASOC from board filter

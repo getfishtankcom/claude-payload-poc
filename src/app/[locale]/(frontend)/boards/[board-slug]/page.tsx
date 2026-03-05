@@ -34,7 +34,7 @@ import { BreadcrumbSchema } from '@/components/StructuredData'
 import type { Event as EventType, News as NewsType } from '@/payload-types'
 
 type PageProps = {
-  params: Promise<{ 'board-slug': string }>
+  params: Promise<{ locale: string; 'board-slug': string }>
 }
 
 /** Pre-generate pages for 4 boards (excluding RASOC) */
@@ -47,8 +47,8 @@ export async function generateStaticParams() {
 
 /** Dynamic metadata from board data */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { 'board-slug': slug } = await params
-  const board = await getBoardBySlug(slug)
+  const { locale, 'board-slug': slug } = await params
+  const board = await getBoardBySlug(slug, locale)
   if (!board) return { title: 'Board Not Found' }
 
   return {
@@ -61,16 +61,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export const revalidate = 60
 
 export default async function BoardDetailPage({ params }: PageProps) {
-  const { 'board-slug': slug } = await params
-  const board = await getBoardBySlug(slug)
+  const { locale, 'board-slug': slug } = await params
+  const board = await getBoardBySlug(slug, locale)
 
   if (!board) notFound()
 
   // Fetch related data in parallel
   const [_projects, news, events] = await Promise.all([
-    getProjectsByBoard(board.id),
-    getNewsByBoard(board.id),
-    getEventsByBoard(board.id),
+    getProjectsByBoard(board.id, 20, locale),
+    getNewsByBoard(board.id, 4, locale),
+    getEventsByBoard(board.id, 3, locale),
   ])
 
   // Transform CMS data to component prop shapes

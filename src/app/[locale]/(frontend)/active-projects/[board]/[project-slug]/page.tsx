@@ -38,7 +38,7 @@ import {
 import type { Board as BoardType, Contact as ContactType, Event as EventType } from '@/payload-types'
 
 type PageProps = {
-  params: Promise<{ board: string; 'project-slug': string }>
+  params: Promise<{ locale: string; board: string; 'project-slug': string }>
 }
 
 export async function generateStaticParams() {
@@ -52,8 +52,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { 'project-slug': slug } = await params
-  const project = await getProjectBySlug(slug)
+  const { locale, 'project-slug': slug } = await params
+  const project = await getProjectBySlug(slug, locale)
   if (!project) return { title: 'Project Not Found' }
 
   return {
@@ -63,8 +63,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
-  const { board: boardSlug, 'project-slug': projectSlug } = await params
-  const project = await getProjectBySlug(projectSlug)
+  const { locale, board: boardSlug, 'project-slug': projectSlug } = await params
+  const project = await getProjectBySlug(projectSlug, locale)
 
   if (!project) notFound()
 
@@ -73,7 +73,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const boardName = board?.abbreviation || board?.name || boardSlug.toUpperCase()
 
   // Fetch related events
-  const events = board ? await getEventsByBoard(board.id) : []
+  const events = board ? await getEventsByBoard(board.id, 3, locale) : []
 
   // Build SectionNav items from board tabs (if board is populated)
   const navItems = board?.tabs

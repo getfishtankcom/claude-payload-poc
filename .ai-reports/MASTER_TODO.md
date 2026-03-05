@@ -2576,7 +2576,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 18: Bilingual i18n (5 tasks)
 
 ### 18.1 Configure Next.js i18n routing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Locale-based routing: `/en/...` and `/fr/...` paths both resolve
   - App Router `[locale]` segment configured in route structure

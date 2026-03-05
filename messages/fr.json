@@ -1,0 +1,10 @@
+{
+  "common": {
+    "siteName": "NIFC Canada",
+    "siteDescription": "Normes d'information financiere et de certification",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "notFound": "Page non trouvee",
+    "backToHome": "Retour a l'accueil"
+  }
+}

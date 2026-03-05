@@ -28,8 +28,13 @@ export const metadata: Metadata = {
   description: 'Search across standards, projects, news, documents, and more.',
 }
 
-export default async function SearchPage() {
-  const searchConfig = await getSearchConfig()
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function SearchPage({ params }: PageProps) {
+  const { locale } = await params
+  const searchConfig = await getSearchConfig(locale)
 
   return (
     <div data-testid="page-search" className="min-h-screen">

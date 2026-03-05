@@ -38,12 +38,17 @@ export const metadata: Metadata = {
 /** Revalidate every 60s — ISR for CMS-driven content */
 export const revalidate = 60
 
-export default async function ActiveProjectsPage() {
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function ActiveProjectsPage({ params }: PageProps) {
+  const { locale } = await params
   // Fetch data in parallel
   const [projects, boards, standards] = await Promise.all([
-    getAllActiveProjects(),
-    getAllBoards(),
-    getAllStandards(),
+    getAllActiveProjects(locale),
+    getAllBoards(locale),
+    getAllStandards(locale),
   ])
 
   // Filter out RASOC from board nav

@@ -1,13 +1,18 @@
 /**
  * @description
- * Next.js configuration wrapped with Payload CMS plugin.
+ * Next.js configuration wrapped with Payload CMS and next-intl plugins.
  * The withPayload wrapper ensures compatibility with Payload's
  * server-side dependencies (drizzle-kit, sharp, etc.).
+ * createNextIntlPlugin handles message file bundling for i18n.
  *
  * @dependencies
  * - @payloadcms/next: Provides withPayload wrapper
+ * - next-intl/plugin: Provides createNextIntlPlugin for message bundling
  */
 import { withPayload } from '@payloadcms/next/withPayload'
+import createNextIntlPlugin from 'next-intl/plugin'
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,4 +22,4 @@ const nextConfig = {
   },
 }
 
-export default withPayload(nextConfig)
+export default withPayload(withNextIntl(nextConfig))
