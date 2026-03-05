@@ -2,17 +2,19 @@
  * @description
  * Root layout for the public-facing frontend under the [locale] segment.
  * Validates the locale, loads messages, and wraps children with
- * NextIntlClientProvider for bilingual support.
+ * NextIntlClientProvider and ClerkProvider for bilingual + auth support.
  *
  * Key features:
  * - Inter font loaded via next/font/google with all required weights
  * - Server component — fetches CMS data at request time
  * - Validates locale from [locale] route param
- * - Wraps children with NextIntlClientProvider for client-side translations
+ * - ClerkProvider wraps everything for auth state
+ * - NextIntlClientProvider for client-side translations
  * - html lang attribute set dynamically from locale
  *
  * @dependencies
  * - next/font/google: Font loading and optimization
+ * - @clerk/nextjs: ClerkProvider
  * - next-intl: NextIntlClientProvider, hasLocale
  * - next-intl/server: getMessages
  * - globals.css: Design tokens + Tailwind base styles
@@ -26,10 +28,12 @@
  * - Navigation and footer fetch in parallel for performance
  * - If CMS is unavailable, components render empty states
  * - Invalid locales trigger Next.js 404 via notFound()
+ * - Clerk uses keyless mode — no env vars needed for dev
  */
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
+import { ClerkProvider } from '@clerk/nextjs'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 
@@ -75,14 +79,16 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
   return (
     <html lang={locale} className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
-        <NextIntlClientProvider messages={messages}>
-          <SiteHeader
-            navigation={navigation}
-            popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined}
-          />
-          <main data-testid="main-content">{children}</main>
-          <SiteFooter footer={footer} />
-        </NextIntlClientProvider>
+        <ClerkProvider>
+          <NextIntlClientProvider messages={messages}>
+            <SiteHeader
+              navigation={navigation}
+              popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined}
+            />
+            <main data-testid="main-content">{children}</main>
+            <SiteFooter footer={footer} />
+          </NextIntlClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   )

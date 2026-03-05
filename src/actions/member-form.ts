@@ -1,16 +1,16 @@
 /**
  * @description
  * Server action for member-only form submissions.
- * Validates Aptify session, then sends email with optional attachment.
+ * Validates Clerk auth session, then sends email with optional attachment.
  * No database storage — email only.
  *
  * Key features:
- * - Session verification before processing
+ * - Clerk auth verification before processing
  * - Email sending with attachments via SMTP
  * - 3 form variants: document-comment, event-registration, volunteer-registration
  *
  * @dependencies
- * - src/lib/session.ts: Session verification
+ * - @clerk/nextjs/server: auth
  *
  * @notes
  * - No data storage in CMS (per spec: "No logs or info or storage is required")
@@ -19,16 +19,16 @@
  */
 'use server'
 
-import { getSession } from '@/lib/session'
+import { auth } from '@clerk/nextjs/server'
 import type { MemberFormState } from '@/components/MemberOnlyForm'
 
 export async function submitMemberForm(
   _prevState: MemberFormState,
   formData: FormData,
 ): Promise<MemberFormState> {
-  // Verify session
-  const session = await getSession()
-  if (!session) {
+  // Verify Clerk session
+  const { userId } = await auth()
+  if (!userId) {
     return { success: false, message: 'You must be logged in to submit this form.' }
   }
 
@@ -61,7 +61,6 @@ export async function submitMemberForm(
   }
 
   // Production email sending would go here
-  // Using nodemailer or similar SMTP client
   try {
     console.log('[MemberForm] Would send email:', { variant, name, email, organization })
     return {

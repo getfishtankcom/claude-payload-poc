@@ -8,10 +8,12 @@
  * Key features:
  * - Common fields: Name, Email, Organization
  * - Variant-specific fields (textarea, file upload, event selection)
- * - Auth gate: requires authenticated Aptify session
- * - Server action: validates session, sends email with attachments
+ * - Auth gate: requires Clerk authentication (enforced by middleware)
+ * - Server action: validates Clerk session, sends email with attachments
+ * - Auto-fills name/email from Clerk user profile
  *
  * @dependencies
+ * - @clerk/nextjs: useUser
  * - Input, Button: UI components
  *
  * @notes
@@ -22,6 +24,7 @@
 'use client'
 
 import React, { useActionState } from 'react'
+import { useUser } from '@clerk/nextjs'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 
@@ -35,10 +38,6 @@ export type MemberFormState = {
 type MemberOnlyFormProps = {
   variant: MemberFormVariant
   action: (prevState: MemberFormState, formData: FormData) => Promise<MemberFormState>
-  /** Pre-filled email from session */
-  userEmail?: string
-  /** Pre-filled name from session */
-  userName?: string
   'data-testid'?: string
 }
 
@@ -85,12 +84,15 @@ const initialState: MemberFormState = { success: false, message: '' }
 export function MemberOnlyForm({
   variant,
   action,
-  userEmail = '',
-  userName = '',
   ...props
 }: MemberOnlyFormProps) {
+  const { user } = useUser()
   const [state, formAction, isPending] = useActionState(action, initialState)
   const config = variantConfig[variant]
+
+  // Pre-fill from Clerk user profile
+  const userName = user?.fullName || ''
+  const userEmail = user?.primaryEmailAddress?.emailAddress || ''
 
   if (state.success) {
     return (

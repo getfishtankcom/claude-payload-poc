@@ -1,24 +1,39 @@
 /**
  * @description
- * Next.js middleware for locale detection and routing.
- * Uses next-intl's createMiddleware to handle:
- * - Redirecting bare URLs (/) to default locale (/en/)
- * - Detecting user's preferred locale from Accept-Language header
- * - Setting NEXT_LOCALE cookie for preference persistence
+ * Combined middleware: Clerk auth + next-intl locale routing.
+ * Clerk's clerkMiddleware() wraps the next-intl locale handler,
+ * ensuring auth state is available on all frontend routes.
  *
  * @dependencies
+ * - @clerk/nextjs/server: clerkMiddleware, createRouteMatcher
  * - next-intl/middleware: createMiddleware
- * - ./i18n/routing: routing configuration
+ * - ./i18n/routing: locale routing config
  *
  * @notes
- * - Excludes /admin, /api, /_next, /_vercel, and static files
- * - Payload CMS admin routes are NOT locale-prefixed
- * - Matcher pattern ensures middleware only runs on frontend routes
+ * - Payload CMS admin routes (/admin, /api) are excluded from both middlewares
+ * - Clerk runs first, then next-intl handles locale detection/redirect
+ * - Protected routes (my-account/*) require sign-in via Clerk
  */
-import createMiddleware from 'next-intl/middleware'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 
-export default createMiddleware(routing)
+const intlMiddleware = createIntlMiddleware(routing)
+
+// Routes that require authentication
+const isProtectedRoute = createRouteMatcher([
+  '/:locale/my-account(.*)',
+])
+
+export default clerkMiddleware(async (auth, req) => {
+  // Protect member-only routes
+  if (isProtectedRoute(req)) {
+    await auth.protect()
+  }
+
+  // Run next-intl middleware for locale handling
+  return intlMiddleware(req)
+})
 
 export const config = {
   // Match all frontend pathnames, exclude:
