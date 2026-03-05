@@ -1606,7 +1606,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All collections populated; all pages render with realistic sample content.
 
 ### 10.1.1 Integrate HubSpot newsletter subscription
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Newsletter form submits email to HubSpot Forms API endpoint
   2. Success state: confirmation message displayed to user
