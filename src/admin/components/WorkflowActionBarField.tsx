@@ -11,7 +11,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useDocumentInfo, useAuth } from '@payloadcms/ui'
+import { useDocumentInfo } from '@payloadcms/ui'
 import { WorkflowActionBar } from './WorkflowActionBar'
 
 type WorkflowState = 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished'
@@ -26,7 +26,6 @@ interface WorkflowHistoryEntry {
 
 export const WorkflowActionBarField: React.FC = () => {
   const { id, collectionSlug } = useDocumentInfo()
-  const { user } = useAuth()
   const [workflowState, setWorkflowState] = useState<WorkflowState>('draft')
   const [workflowHistory, setWorkflowHistory] = useState<WorkflowHistoryEntry[]>([])
 

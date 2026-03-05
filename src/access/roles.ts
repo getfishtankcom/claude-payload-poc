@@ -17,37 +17,46 @@
  * - Access functions return boolean or Payload Where query for row-level filtering
  */
 import type { Access, FieldAccess, Where } from 'payload'
+import type { User } from '@/payload-types'
 
 // --- Role Helpers ---
 
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  [key: string]: unknown
+type Role = 'admin' | 'editor' | 'author'
+
+function getUserRole(user: User | null | undefined): Role | undefined {
+  if (!user) return undefined
+  return (user as User & { role?: Role }).role
 }
 
-export const isAdmin = (user: UserWithRole | null | undefined): boolean => {
-  return user?.role === 'admin'
+function getUserId(user: User | null | undefined): number | undefined {
+  if (!user) return undefined
+  return user.id
 }
 
-export const isEditorOrAbove = (user: UserWithRole | null | undefined): boolean => {
-  return user?.role === 'admin' || user?.role === 'editor'
+export const isAdmin = (user: User | null | undefined): boolean => {
+  return getUserRole(user) === 'admin'
 }
 
-export const isAuthorOrAbove = (user: UserWithRole | null | undefined): boolean => {
-  return user?.role === 'admin' || user?.role === 'editor' || user?.role === 'author'
+export const isEditorOrAbove = (user: User | null | undefined): boolean => {
+  const role = getUserRole(user)
+  return role === 'admin' || role === 'editor'
+}
+
+export const isAuthorOrAbove = (user: User | null | undefined): boolean => {
+  const role = getUserRole(user)
+  return role === 'admin' || role === 'editor' || role === 'author'
 }
 
 // --- Collection-Level Access ---
 
 /** Admin-only access (manage users, system settings) */
 export const adminOnly: Access = ({ req: { user } }) => {
-  return isAdmin(user as UserWithRole)
+  return isAdmin(user as User)
 }
 
 /** Editor or Admin access (approve, publish, schedule, delete drafts) */
 export const editorOrAbove: Access = ({ req: { user } }) => {
-  return isEditorOrAbove(user as UserWithRole)
+  return isEditorOrAbove(user as User)
 }
 
 /**
@@ -75,12 +84,11 @@ export const contentCreate: Access = ({ req: { user } }) => {
  */
 export const contentUpdate: Access = ({ req: { user } }) => {
   if (!user) return false
-  const u = user as UserWithRole
-  if (isEditorOrAbove(u)) return true
+  if (isEditorOrAbove(user as User)) return true
   // Authors can edit own items that are draft or needs_revision
   const where: Where = {
     and: [
-      { createdBy: { equals: u.id } },
+      { createdBy: { equals: getUserId(user as User) } },
       { workflowState: { in: ['draft', 'needs_revision'] } },
     ],
   }
@@ -95,16 +103,15 @@ export const contentUpdate: Access = ({ req: { user } }) => {
  */
 export const contentDelete: Access = ({ req: { user } }) => {
   if (!user) return false
-  const u = user as UserWithRole
-  if (isAdmin(u)) return true
-  if (u.role === 'editor') {
+  if (isAdmin(user as User)) return true
+  if (getUserRole(user as User) === 'editor') {
     const where: Where = { workflowState: { equals: 'draft' } }
     return where
   }
   // Authors: own drafts only
   const where: Where = {
     and: [
-      { createdBy: { equals: u.id } },
+      { createdBy: { equals: getUserId(user as User) } },
       { workflowState: { equals: 'draft' } },
     ],
   }
@@ -115,36 +122,36 @@ export const contentDelete: Access = ({ req: { user } }) => {
 
 /** Only admins can read/update this field */
 export const adminOnlyField: FieldAccess = ({ req: { user } }) => {
-  return isAdmin(user as UserWithRole)
+  return isAdmin(user as User)
 }
 
 /** Editors and admins can update this field */
 export const editorOrAboveField: FieldAccess = ({ req: { user } }) => {
-  return isEditorOrAbove(user as UserWithRole)
+  return isEditorOrAbove(user as User)
 }
 
 // --- Users Collection Access ---
 
 /** Users collection: only admins can create/delete users */
 export const usersCreate: Access = ({ req: { user } }) => {
-  return isAdmin(user as UserWithRole)
+  return isAdmin(user as User)
 }
 
 /** Users collection: users can read their own profile, admins can read all */
 export const usersRead: Access = ({ req: { user } }) => {
   if (!user) return false
-  if (isAdmin(user as UserWithRole)) return true
-  return { id: { equals: (user as UserWithRole).id } }
+  if (isAdmin(user as User)) return true
+  return { id: { equals: getUserId(user as User) } }
 }
 
 /** Users collection: users can update own profile, admins can update all */
 export const usersUpdate: Access = ({ req: { user }, id }) => {
   if (!user) return false
-  if (isAdmin(user as UserWithRole)) return true
-  return (user as UserWithRole).id === id
+  if (isAdmin(user as User)) return true
+  return getUserId(user as User) === id
 }
 
 /** Users collection: only admins can delete users */
 export const usersDelete: Access = ({ req: { user } }) => {
-  return isAdmin(user as UserWithRole)
+  return isAdmin(user as User)
 }

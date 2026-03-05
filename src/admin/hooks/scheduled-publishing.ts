@@ -65,15 +65,17 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
       })
 
       for (const doc of toPublish.docs) {
-        const docWithHistory = doc as { id: string; workflowHistory?: unknown[] }
+        const docId = (doc as unknown as { id: number }).id
+        const existingHistory = (doc as unknown as { workflowHistory?: Record<string, unknown>[] }).workflowHistory || []
         try {
-          await payload.update({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (payload.update as any)({
             collection,
-            id: docWithHistory.id,
+            id: docId,
             data: {
               workflowState: 'published',
               workflowHistory: [
-                ...(docWithHistory.workflowHistory || []),
+                ...existingHistory,
                 {
                   from: 'approved',
                   to: 'published',
@@ -88,9 +90,9 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
               skipWorkflowLogging: true,
             },
           })
-          payload.logger.info(`Auto-published ${collection}/${docWithHistory.id}`)
+          payload.logger.info(`Auto-published ${collection}/${docId}`)
         } catch (err) {
-          payload.logger.error(`Failed to auto-publish ${collection}/${docWithHistory.id}: ${err}`)
+          payload.logger.error(`Failed to auto-publish ${collection}/${docId}: ${err}`)
         }
       }
 
@@ -107,15 +109,17 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
       })
 
       for (const doc of toUnpublish.docs) {
-        const docWithHistory = doc as { id: string; workflowHistory?: unknown[] }
+        const docId = (doc as unknown as { id: number }).id
+        const existingHistory = (doc as unknown as { workflowHistory?: Record<string, unknown>[] }).workflowHistory || []
         try {
-          await payload.update({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (payload.update as any)({
             collection,
-            id: docWithHistory.id,
+            id: docId,
             data: {
               workflowState: 'unpublished',
               workflowHistory: [
-                ...(docWithHistory.workflowHistory || []),
+                ...existingHistory,
                 {
                   from: 'published',
                   to: 'unpublished',
@@ -130,9 +134,9 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
               skipWorkflowLogging: true,
             },
           })
-          payload.logger.info(`Auto-unpublished ${collection}/${docWithHistory.id}`)
+          payload.logger.info(`Auto-unpublished ${collection}/${docId}`)
         } catch (err) {
-          payload.logger.error(`Failed to auto-unpublish ${collection}/${docWithHistory.id}: ${err}`)
+          payload.logger.error(`Failed to auto-unpublish ${collection}/${docId}: ${err}`)
         }
       }
     } catch (err) {

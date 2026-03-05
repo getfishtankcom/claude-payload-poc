@@ -37,7 +37,6 @@ export const CustomNav: React.FC = () => {
   const { user } = useAuth()
   const typedUser = user as UserWithRole | null
   const isAdmin = typedUser?.role === 'admin'
-  const isEditorOrAdmin = typedUser?.role === 'admin' || typedUser?.role === 'editor'
   const [workboxCount, setWorkboxCount] = useState(0)
 
   // Fetch workbox count on mount and on focus

@@ -24,14 +24,9 @@ import type {
 } from 'payload'
 
 import { isAdmin, isEditorOrAbove } from '@/access/roles'
+import type { User } from '@/payload-types'
 
 type WorkflowState = 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished'
-
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  [key: string]: unknown
-}
 
 /**
  * Valid workflow transitions mapped by from -> to states.
@@ -64,7 +59,7 @@ const VALID_TRANSITIONS: Record<WorkflowState, Partial<Record<WorkflowState, 'au
 
 function canPerformTransition(
   requiredRole: 'author' | 'editor' | 'admin',
-  user: UserWithRole,
+  user: User,
 ): boolean {
   switch (requiredRole) {
     case 'author':
@@ -122,7 +117,7 @@ export const validateWorkflowTransition: CollectionBeforeChangeHook = ({
   }
 
   // Check user has permission for this transition
-  const user = req.user as UserWithRole | null
+  const user = req.user as User | null
   if (!user) {
     throw new Error('Authentication required for workflow transitions')
   }

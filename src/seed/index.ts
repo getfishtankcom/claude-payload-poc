@@ -525,7 +525,7 @@ export async function seed(_payload?: unknown) {
 
   const projects: Record<string, number> = {}
   for (const project of projectsData) {
-    const created = await payload.create({ collection: 'projects', data: project })
+    const created = await payload.create({ collection: 'projects', data: project, draft: true })
     projects[project.slug] = created.id as number
   }
   console.log(`    ✓ Created ${Object.keys(projects).length} projects`)
@@ -618,7 +618,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const consultation of consultationsData) {
-    await payload.create({ collection: 'consultations', data: consultation })
+    await payload.create({ collection: 'consultations', data: consultation, draft: true })
   }
   console.log(`    ✓ Created ${consultationsData.length} consultations`)
 
@@ -643,7 +643,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const news of newsData) {
-    await payload.create({ collection: 'news', data: news })
+    await payload.create({ collection: 'news', data: news, draft: true })
   }
   console.log(`    ✓ Created ${newsData.length} news items`)
 
@@ -1036,7 +1036,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const member of boardMembersData) {
-    await payload.create({ collection: 'board-members', data: member })
+    await payload.create({ collection: 'board-members', data: member, draft: true })
   }
   console.log(`    ✓ Created ${boardMembersData.length} board members`)
 
@@ -1080,7 +1080,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const committee of committeesData) {
-    await payload.create({ collection: 'committees', data: committee })
+    await payload.create({ collection: 'committees', data: committee, draft: true })
   }
   console.log(`    ✓ Created ${committeesData.length} committees`)
 
@@ -1129,7 +1129,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const resource of resourcesData) {
-    await payload.create({ collection: 'resources', data: resource })
+    await payload.create({ collection: 'resources', data: resource, draft: true })
   }
   console.log(`    ✓ Created ${resourcesData.length} resources`)
 
@@ -1308,7 +1308,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const doc of documentsForCommentData) {
-    await payload.create({ collection: 'documents-for-comment', data: doc })
+    await payload.create({ collection: 'documents-for-comment', data: doc, draft: true })
   }
   console.log(`    ✓ Created ${documentsForCommentData.length} documents for comment`)
 
@@ -1498,7 +1498,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const detail of documentDetailsData) {
-    await payload.create({ collection: 'document-details', data: detail })
+    await payload.create({ collection: 'document-details', data: detail, draft: true })
   }
   console.log(`    ✓ Created ${documentDetailsData.length} document details`)
 
@@ -1551,7 +1551,7 @@ export async function seed(_payload?: unknown) {
   ]
 
   for (const job of jobPostingsData) {
-    await payload.create({ collection: 'job-postings', data: job })
+    await payload.create({ collection: 'job-postings', data: job, draft: true })
   }
   console.log(`    ✓ Created ${jobPostingsData.length} job postings`)
 
