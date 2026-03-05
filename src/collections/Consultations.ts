@@ -22,11 +22,19 @@
  */
 import type { CollectionConfig } from 'payload'
 
+import { syncToMeilisearch } from '@/search/meilisearch-sync'
+
+const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'consultations' })
+
 export const Consultations: CollectionConfig = {
   slug: 'consultations',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'deadline_date', 'board'],
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {

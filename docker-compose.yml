@@ -1,7 +1,7 @@
 ##
 # FRAS Canada — Local Development Services
 #
-# Starts PostgreSQL for local dev.
+# Starts PostgreSQL and Meilisearch for local dev.
 # The Next.js app runs on the host (not containerized) for fast HMR.
 #
 # Usage:
@@ -12,8 +12,6 @@
 # After starting, run `npm run dev` on the host.
 # Payload auto-pushes schema changes in dev mode (push: true).
 # For production, use `npx payload migrate` (see migration skill).
-#
-# Meilisearch will be added in Epic 5 (Search).
 ##
 
 services:
@@ -34,5 +32,22 @@ services:
       retries: 5
     restart: unless-stopped
 
+  meilisearch:
+    image: getmeili/meilisearch:v1.12
+    ports:
+      - '7700:7700'
+    environment:
+      MEILI_MASTER_KEY: fras-dev-master-key
+      MEILI_ENV: development
+    volumes:
+      - meilisearch_data:/meili_data
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:7700/health']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   postgres_data:
+  meilisearch_data:

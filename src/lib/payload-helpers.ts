@@ -30,6 +30,7 @@ import type {
   Homepage,
   Navigation,
   Footer,
+  SearchConfig,
   Page,
   News,
   Event,
@@ -168,5 +169,21 @@ export async function getStandardsByCategory(): Promise<Record<string, Standard[
     return grouped
   } catch {
     return {}
+  }
+}
+
+/**
+ * Fetches the search-config global (popular tags, default filters).
+ * Returns null if not configured yet.
+ */
+export async function getSearchConfig(): Promise<SearchConfig | null> {
+  try {
+    const payload = await getPayload({ config })
+    const searchConfig = await payload.findGlobal({
+      slug: 'search-config',
+    })
+    return searchConfig as unknown as SearchConfig
+  } catch {
+    return null
   }
 }

@@ -17,11 +17,19 @@
  */
 import type { CollectionConfig } from 'payload'
 
+import { syncToMeilisearch } from '@/search/meilisearch-sync'
+
+const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'events' })
+
 export const Events: CollectionConfig = {
   slug: 'events',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'type', 'board'],
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {

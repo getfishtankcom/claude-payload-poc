@@ -28,7 +28,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
-import { getNavigation, getFooter } from '@/lib/payload-helpers'
+import { getNavigation, getFooter, getSearchConfig } from '@/lib/payload-helpers'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -44,13 +44,17 @@ export const metadata: Metadata = {
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  // Fetch navigation and footer data in parallel
-  const [navigation, footer] = await Promise.all([getNavigation(), getFooter()])
+  // Fetch navigation, footer, and search config in parallel
+  const [navigation, footer, searchConfig] = await Promise.all([
+    getNavigation(),
+    getFooter(),
+    getSearchConfig(),
+  ])
 
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
-        <SiteHeader navigation={navigation} />
+        <SiteHeader navigation={navigation} popularTags={searchConfig?.popular_tags} />
         <main data-testid="main-content">{children}</main>
         <SiteFooter footer={footer} />
       </body>

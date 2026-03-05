@@ -29,10 +29,12 @@ import { Container } from '@/components/ui'
 import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
 import { MobileMenu } from './MobileMenu'
-import type { Navigation } from '@/payload-types'
+import { SearchModal } from '@/components/SearchModal'
+import type { Navigation, SearchConfig } from '@/payload-types'
 
 type SiteHeaderProps = {
   navigation?: Navigation | null
+  popularTags?: SearchConfig['popular_tags']
 }
 
 /**
@@ -76,8 +78,9 @@ function buildFlatMenuItems(
   )
 }
 
-export function SiteHeader({ navigation }: SiteHeaderProps) {
+export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
 
   const utilityLinks = navigation?.utility_links || []
   const primaryNav = navigation?.primary_nav || []
@@ -143,8 +146,11 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
               <input
                 type="search"
                 placeholder="Projects, standards, and more..."
-                className="w-full rounded-sm border border-gray-300 bg-white py-2 pl-10 pr-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30"
+                className="w-full rounded-sm border border-gray-300 bg-white py-2 pl-10 pr-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30 cursor-pointer"
                 data-testid="header-search"
+                readOnly
+                onClick={() => setSearchModalOpen(true)}
+                onFocus={() => setSearchModalOpen(true)}
               />
             </div>
           </div>
@@ -152,6 +158,7 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
+              onClick={() => setSearchModalOpen(true)}
               className="rounded-sm p-2 text-text-muted hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-bright cursor-pointer"
               aria-label="Search"
               data-testid="mobile-search-toggle"
@@ -211,6 +218,13 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         navigation={navigation}
+      />
+
+      {/* Search modal overlay */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+        popularTags={popularTags}
       />
     </header>
   )

@@ -1288,7 +1288,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ### Search (5.7–5.11)
 
 ### 5.7 Set up Meilisearch infrastructure
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Docker Compose includes Meilisearch v1.x service on port 7700
   2. `payload-meilisearch` plugin configured in `payload.config.ts` with collections list
@@ -1305,7 +1305,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Meilisearch running, auto-syncing with Payload, filterable attributes configured.
 
 ### 5.8 Build `<SearchModal />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Full-screen overlay opens when search input is clicked (header or hero)
   2. Large search input with placeholder "Projects, meetings, documents, and more."
@@ -1321,7 +1321,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Modal opens/closes correctly, submits search query to results page, keyboard accessible.
 
 ### 5.9 Build `<FilterSidebar />` + `<SearchResultCard />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Five collapsible accordion sections: Board, Standard, Files & Media, Content Type, Date
   2. Board section: 4 checkboxes (CSSB, AcSB, PSAB, AASB)
@@ -1341,7 +1341,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All 5 filter sections functional; search result cards render correctly with type-appropriate CTAs.
 
 ### 5.10 Build Search Results page
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/search/page.tsx` exists
   2. Search bar pre-filled with `?q=` query param; recent tags visible below
@@ -1357,7 +1357,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Search page returns filtered, sorted, paginated results from Meilisearch.
 
 ### 5.11 Build document extraction pipeline
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `pdf-parse` and `mammoth` installed as dependencies
   2. `afterChange` hook on `resources` collection extracts text from PDF and DOCX uploads

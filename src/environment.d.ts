@@ -19,6 +19,12 @@ declare global {
       PAYLOAD_SECRET: string
       NEXT_PUBLIC_SERVER_URL: string
 
+      // Meilisearch
+      MEILISEARCH_HOST: string
+      MEILISEARCH_API_KEY: string
+      NEXT_PUBLIC_MEILISEARCH_HOST: string
+      NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY: string
+
       // Node
       NODE_ENV: 'development' | 'production' | 'test'
     }

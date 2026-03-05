@@ -25,12 +25,19 @@ import type { CollectionConfig } from 'payload'
 
 import { hero } from '@/heros/config'
 import { blocks } from '@/blocks'
+import { syncToMeilisearch } from '@/search/meilisearch-sync'
+
+const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'sidebar_type', 'publishedAt'],
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {
