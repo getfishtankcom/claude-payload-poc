@@ -2616,7 +2616,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Language toggle switches locale in header/mobile menu, URL path preserved, edge cases handled
 
 ### 18.4 Create FR translation strings file
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Files: `messages/en.json` and `messages/fr.json`
   - Covers: navigation labels, filter labels, form labels, error messages, pagination text, CTA labels, empty state messages

@@ -5,6 +5,202 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "notFound": "Page not found",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "learnMore": "Learn more",
+    "viewAll": "View all",
+    "readMore": "Read more",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "previous": "Previous",
+    "next": "Next",
+    "of": "of",
+    "noResults": "No results found",
+    "clearAll": "Clear all",
+    "all": "All",
+    "home": "Home"
+  },
+  "nav": {
+    "menu": "Menu",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close menu",
+    "primaryNavLabel": "Primary navigation",
+    "mobileNavLabel": "Mobile navigation",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "aboutUs": "About Us",
+    "boards": "Boards",
+    "standards": "Standards",
+    "resources": "Resources",
+    "contactUs": "Contact Us",
+    "careers": "Careers"
+  },
+  "search": {
+    "title": "Search Results",
+    "placeholder": "Projects, standards, and more...",
+    "mobilePlaceholder": "Search projects, standards...",
+    "searchButton": "Search",
+    "recentSearches": "Recent searches",
+    "popularTags": "Popular tags",
+    "noResults": "No results found for \"{query}\"",
+    "tryDifferent": "Try different keywords or browse by category.",
+    "resultsCount": "{count} results",
+    "filterBy": "Filter by",
+    "clearFilters": "Clear all filters",
+    "ariaLabel": "Search",
+    "queryLabel": "Search query"
+  },
+  "filters": {
+    "board": "Board",
+    "standard": "Standard",
+    "type": "Type",
+    "status": "Status",
+    "date": "Date",
+    "category": "Category",
+    "allBoards": "All Boards",
+    "allStandards": "All Standards",
+    "allTypes": "All Types",
+    "searchPlaceholder": "Search...",
+    "noOptions": "No options available"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page}",
+    "ofPages": "of {total}",
+    "showingResults": "Showing {from}-{to} of {total} results"
+  },
+  "projects": {
+    "title": "Active Projects",
+    "subtitle": "Browse active standards-setting projects across all boards.",
+    "noProjects": "No active projects found.",
+    "currentStage": "Current Stage",
+    "timeline": "Project Timeline",
+    "summary": "Summary",
+    "keyProposals": "Key Proposals",
+    "contacts": "Contacts",
+    "relatedDocuments": "Related Documents"
+  },
+  "consultations": {
+    "title": "Open Consultations",
+    "subtitle": "Review and comment on open consultations from all boards.",
+    "noConsultations": "No open consultations found.",
+    "deadline": "Deadline",
+    "daysRemaining": "{days} days remaining",
+    "expired": "Closed",
+    "submitComment": "Submit Comment",
+    "viewDocument": "View Document"
+  },
+  "boards": {
+    "title": "Boards",
+    "overview": "Overview",
+    "boardDetail": "{board} — FRAS Canada",
+    "quickActions": "Quick Actions",
+    "upcomingEvents": "Upcoming Events",
+    "resources": "Resources",
+    "recentNews": "Recent News",
+    "viewAllNews": "View all news",
+    "viewAllEvents": "View all events"
+  },
+  "news": {
+    "title": "News",
+    "latestNews": "Latest News",
+    "noNews": "No news articles found.",
+    "publishedOn": "Published on {date}"
+  },
+  "events": {
+    "title": "Events",
+    "upcomingEvents": "Upcoming Events",
+    "noEvents": "No upcoming events.",
+    "meeting": "Meeting",
+    "webinar": "Webinar",
+    "deadline": "Deadline",
+    "decisionSummary": "Decision Summary"
+  },
+  "newsletter": {
+    "heading": "Stay Connected",
+    "description": "Subscribe to our newsletter for the latest updates on Canadian financial reporting standards.",
+    "placeholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "success": "Thank you for subscribing!",
+    "error": "Subscription failed. Please try again.",
+    "invalidEmail": "Please enter a valid email address."
+  },
+  "footer": {
+    "copyright": "\u00a9 {year} FRAS Canada. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "accessibility": "Accessibility",
+    "cookiePolicy": "Cookie Policy"
+  },
+  "forms": {
+    "required": "Required",
+    "email": "Email",
+    "name": "Name",
+    "message": "Message",
+    "phone": "Phone",
+    "organization": "Organization",
+    "submit": "Submit",
+    "sending": "Sending...",
+    "success": "Form submitted successfully.",
+    "error": "An error occurred. Please try again.",
+    "validationError": "Please fix the errors below."
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "activeProjects": "Active Projects",
+    "openConsultations": "Open Consultations",
+    "boards": "Boards",
+    "search": "Search"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "externalLink": "Opens in a new tab",
+    "expandSection": "Expand section",
+    "collapseSection": "Collapse section",
+    "switchLanguage": "Switch to {language}"
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "backHome": "Go to homepage"
+    },
+    "500": {
+      "title": "Server Error",
+      "description": "Something went wrong on our end. Please try again later.",
+      "retry": "Try again"
+    }
+  },
+  "slugs": {
+    "boards": {
+      "acsb": "acsb",
+      "psab": "psab",
+      "aasb": "aasb",
+      "cssb": "cssb",
+      "rasoc": "rasoc"
+    },
+    "paths": {
+      "active-projects": "active-projects",
+      "open-consultations": "open-consultations",
+      "boards": "boards",
+      "search": "search",
+      "about": "about",
+      "members": "members",
+      "committees": "committees",
+      "meetings-and-events": "meetings-and-events",
+      "news-listings": "news-listings",
+      "resources": "resources",
+      "contact-us": "contact-us",
+      "effective-dates": "effective-dates",
+      "projects": "projects",
+      "volunteer-opportunities": "volunteer-opportunities",
+      "governance": "governance"
+    }
   }
 }

@@ -5,6 +5,202 @@
     "loading": "Chargement...",
     "error": "Une erreur est survenue",
     "notFound": "Page non trouvee",
-    "backToHome": "Retour a l'accueil"
+    "backToHome": "Retour a l'accueil",
+    "learnMore": "En savoir plus",
+    "viewAll": "Voir tout",
+    "readMore": "Lire la suite",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "submit": "Soumettre",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "showMore": "Afficher plus",
+    "showLess": "Afficher moins",
+    "previous": "Precedent",
+    "next": "Suivant",
+    "of": "de",
+    "noResults": "Aucun resultat trouve",
+    "clearAll": "Tout effacer",
+    "all": "Tous",
+    "home": "Accueil"
+  },
+  "nav": {
+    "menu": "Menu",
+    "openMenu": "Ouvrir le menu de navigation",
+    "closeMenu": "Fermer le menu",
+    "primaryNavLabel": "Navigation principale",
+    "mobileNavLabel": "Navigation mobile",
+    "signIn": "Connexion",
+    "signOut": "Deconnexion",
+    "aboutUs": "A propos",
+    "boards": "Conseils",
+    "standards": "Normes",
+    "resources": "Ressources",
+    "contactUs": "Nous joindre",
+    "careers": "Carrieres"
+  },
+  "search": {
+    "title": "Resultats de recherche",
+    "placeholder": "Projets, normes et plus...",
+    "mobilePlaceholder": "Rechercher des projets, normes...",
+    "searchButton": "Rechercher",
+    "recentSearches": "Recherches recentes",
+    "popularTags": "Mots-cles populaires",
+    "noResults": "Aucun resultat pour \"{query}\"",
+    "tryDifferent": "Essayez d'autres mots-cles ou parcourez par categorie.",
+    "resultsCount": "{count} resultats",
+    "filterBy": "Filtrer par",
+    "clearFilters": "Effacer tous les filtres",
+    "ariaLabel": "Recherche",
+    "queryLabel": "Requete de recherche"
+  },
+  "filters": {
+    "board": "Conseil",
+    "standard": "Norme",
+    "type": "Type",
+    "status": "Statut",
+    "date": "Date",
+    "category": "Categorie",
+    "allBoards": "Tous les conseils",
+    "allStandards": "Toutes les normes",
+    "allTypes": "Tous les types",
+    "searchPlaceholder": "Rechercher...",
+    "noOptions": "Aucune option disponible"
+  },
+  "pagination": {
+    "previous": "Precedent",
+    "next": "Suivant",
+    "page": "Page {page}",
+    "ofPages": "de {total}",
+    "showingResults": "Affichage de {from}-{to} sur {total} resultats"
+  },
+  "projects": {
+    "title": "Projets actifs",
+    "subtitle": "Parcourez les projets de normalisation actifs de tous les conseils.",
+    "noProjects": "Aucun projet actif trouve.",
+    "currentStage": "Etape actuelle",
+    "timeline": "Calendrier du projet",
+    "summary": "Resume",
+    "keyProposals": "Propositions cles",
+    "contacts": "Personnes-ressources",
+    "relatedDocuments": "Documents connexes"
+  },
+  "consultations": {
+    "title": "Consultations ouvertes",
+    "subtitle": "Examinez et commentez les consultations ouvertes de tous les conseils.",
+    "noConsultations": "Aucune consultation ouverte trouvee.",
+    "deadline": "Date limite",
+    "daysRemaining": "{days} jours restants",
+    "expired": "Fermee",
+    "submitComment": "Soumettre un commentaire",
+    "viewDocument": "Voir le document"
+  },
+  "boards": {
+    "title": "Conseils",
+    "overview": "Apercu",
+    "boardDetail": "{board} — NIFC Canada",
+    "quickActions": "Actions rapides",
+    "upcomingEvents": "Evenements a venir",
+    "resources": "Ressources",
+    "recentNews": "Nouvelles recentes",
+    "viewAllNews": "Voir toutes les nouvelles",
+    "viewAllEvents": "Voir tous les evenements"
+  },
+  "news": {
+    "title": "Nouvelles",
+    "latestNews": "Dernieres nouvelles",
+    "noNews": "Aucun article de nouvelles trouve.",
+    "publishedOn": "Publie le {date}"
+  },
+  "events": {
+    "title": "Evenements",
+    "upcomingEvents": "Evenements a venir",
+    "noEvents": "Aucun evenement a venir.",
+    "meeting": "Reunion",
+    "webinar": "Webinaire",
+    "deadline": "Date limite",
+    "decisionSummary": "Resume des decisions"
+  },
+  "newsletter": {
+    "heading": "Restez connecte",
+    "description": "Abonnez-vous a notre bulletin pour les dernieres mises a jour sur les normes canadiennes d'information financiere.",
+    "placeholder": "Entrez votre courriel",
+    "subscribe": "S'abonner",
+    "success": "Merci de votre abonnement!",
+    "error": "L'abonnement a echoue. Veuillez reessayer.",
+    "invalidEmail": "Veuillez entrer une adresse courriel valide."
+  },
+  "footer": {
+    "copyright": "\u00a9 {year} NIFC Canada. Tous droits reserves.",
+    "privacyPolicy": "Politique de confidentialite",
+    "termsOfUse": "Conditions d'utilisation",
+    "accessibility": "Accessibilite",
+    "cookiePolicy": "Politique relative aux temoins"
+  },
+  "forms": {
+    "required": "Obligatoire",
+    "email": "Courriel",
+    "name": "Nom",
+    "message": "Message",
+    "phone": "Telephone",
+    "organization": "Organisme",
+    "submit": "Soumettre",
+    "sending": "Envoi en cours...",
+    "success": "Formulaire soumis avec succes.",
+    "error": "Une erreur est survenue. Veuillez reessayer.",
+    "validationError": "Veuillez corriger les erreurs ci-dessous."
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "activeProjects": "Projets actifs",
+    "openConsultations": "Consultations ouvertes",
+    "boards": "Conseils",
+    "search": "Recherche"
+  },
+  "a11y": {
+    "skipToContent": "Passer au contenu principal",
+    "externalLink": "S'ouvre dans un nouvel onglet",
+    "expandSection": "Developper la section",
+    "collapseSection": "Reduire la section",
+    "switchLanguage": "Passer a {language}"
+  },
+  "errors": {
+    "404": {
+      "title": "Page non trouvee",
+      "description": "La page que vous recherchez n'existe pas ou a ete deplacee.",
+      "backHome": "Aller a l'accueil"
+    },
+    "500": {
+      "title": "Erreur du serveur",
+      "description": "Un probleme est survenu de notre cote. Veuillez reessayer plus tard.",
+      "retry": "Reessayer"
+    }
+  },
+  "slugs": {
+    "boards": {
+      "acsb": "cnc",
+      "psab": "ccsp",
+      "aasb": "cnac",
+      "cssb": "ccnid",
+      "rasoc": "csnic"
+    },
+    "paths": {
+      "active-projects": "projets-actifs",
+      "open-consultations": "consultations-ouvertes",
+      "boards": "conseils",
+      "search": "recherche",
+      "about": "a-propos",
+      "members": "membres",
+      "committees": "comites",
+      "meetings-and-events": "reunions-evenements",
+      "news-listings": "nouvelles",
+      "resources": "ressources",
+      "contact-us": "nous-joindre",
+      "effective-dates": "dates-entree-vigueur",
+      "projects": "projets",
+      "volunteer-opportunities": "benevoles-recherches",
+      "governance": "gouvernance"
+    }
   }
 }
