@@ -1685,7 +1685,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 11: Phase 2 CMS Collections (13 tasks)
 
 ### 11.1 Create `board-members` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Collection file exists at `src/collections/BoardMembers.ts` and is registered in `payload.config.ts`
   - Fields include `name` (text), `credentials` (text), `photo` (upload, 205x205), `role` (select: chair | vice-chair | voting-member | non-voting), `roleLabel` (text), `appointedDate` (date), `termExpires` (date), `bioPage` (relationship to pages), `sortOrder` (number)
@@ -1699,7 +1699,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Collection CRUD works in admin, seed data visible, photo upload functional
 
 ### 11.2 Create `committees` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Collection file at `src/collections/Committees.ts` with fields: `name`, `slug` (auto), `description` (richText), `sortOrder` (number), `detailPageUrl` (text), `status` (select: active | inactive | archived)
   - `members` field is an array with sub-fields: `name` (text), `role` (text), `organization` (text)
@@ -1711,7 +1711,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Committee entries render in admin with board relationships and member arrays populated
 
 ### 11.3 Create `resources` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title`, `slug` (auto), `date` (date), `category` (select: Article | Guidance | In Brief | Other | Webinar), `resourceType` (select: Audio | External Link | PDF | Video | Webpage | Plain Language), `excerpt` (textarea), `content` (richText)
   - Fields: `externalUrl` (text), `file` (upload), `status` (select: draft | published | archived)
@@ -1723,7 +1723,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Resources CRUD works, file upload and external URL both function, seed data spans multiple categories
 
 ### 11.4 Create `effective-dates` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `standard` (relationship to standards), `introText` (richText)
   - `sections` array with sub-fields: `headerLabel` (text), `headerDate` (date), `sortOrder` (number), `rows` (array)
@@ -1736,7 +1736,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Admin can create effective dates with nested sections, rows render in correct hierarchy
 
 ### 11.5 Create `documents-for-comment` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title`, `slug` (auto), `group` (select: exposure-draft | consultation-paper | re-exposure-draft | discussion-paper), `status` (select: open | closed), `documentUrl` (text), `commentSubmitUrl` (text), `commentsPdfUrl` (text), `sortOrder` (number), `publishedDate` (date)
   - Relationships: `standard` (belongsTo standards), `board` (belongsTo boards)
@@ -1747,7 +1747,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Documents grouped by type visible in admin, open/closed status filtering works
 
 ### 11.6 Create `document-details` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title`, `slug` (auto), `highlights` (richText), `bodyContent` (richText blocks)
   - `commentQuestions` array: `questionNumber` (number), `questionText` (richText)
@@ -1761,7 +1761,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Full document detail entries editable in admin with all nested groups/arrays populated
 
 ### 11.7 Create `form-submissions` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `fullName` (text, required), `title` (text), `organization` (text), `email` (email, required), `businessPhone` (text), `comments` (textarea, required), `submittedAt` (date, auto), `status` (select: new | read | replied)
   - Admin panel list view shows status column with filter support
@@ -1772,7 +1772,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Form submissions viewable in admin with status tracking functional
 
 ### 11.8 Create `job-postings` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title` (text, required), `department` (text), `location` (text), `description` (richText), `summary` (textarea), `postedDate` (date), `closingDate` (date), `externalUrl` (text), `status` (select: draft | published | closed)
   - Seed: 2 sample postings (1 published, 1 closed)
@@ -1783,7 +1783,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Job postings CRUD works with published/draft/closed lifecycle visible in admin
 
 ### 11.9 Extend `pages` collection for Phase 2
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - New fields added: `sidebarType` (select: staff-contact | section-nav | none), `staffContacts` (array or relationship to contacts), `sectionNavLinks` (array: label, href, isActive)
   - New fields: `ctaBlock` group (heading, description, buttonLabel, buttonHref, variant: light | dark-purple), `newsSection` (checkbox), `board` (relationship to boards)
@@ -1795,7 +1795,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Pages collection supports T3A, T3B, T15, T17 layout variants, all new fields editable in admin
 
 ### 11.10 Extend `news` collection for Phase 2
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - New field: `externalUrl` (text) for external link items
   - New field: `isVolunteerOpportunity` (checkbox) for volunteer listings
@@ -1807,7 +1807,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** News collection supports T12 category filtering and volunteer opportunity variant
 
 ### 11.11 Create `standards-sections` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title`, `slug`, `boardLogo` (upload), `boardName` (text)
   - `tabs` array: `label` (text), `href` (text), `isActive` (checkbox) — supports 5-6 tabs
@@ -1820,7 +1820,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Standards overview config fully editable in admin with tab arrays and CTA blocks
 
 ### 11.12 Create `auth-config` global
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Global (not collection) at `src/globals/AuthConfig.ts` registered in payload config
   - Fields: `usernameLabel`, `passwordLabel`, `buttonLabel`, `forgotUsernameLabel`, `forgotUsernameUrl`, `forgotPasswordLabel`, `forgotPasswordUrl`
@@ -1834,7 +1834,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Auth page content fully CMS-editable via global config
 
 ### 11.13 Extend `events` / create `meetings` collection
-- [ ] **Status:** Not started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   - Fields: `title`, `slug` (auto), `date` (date), `excerpt` (textarea), `content` (richText)
   - Fields: `type` (select: meeting | event | webinar | decision-summary), `status` (select: draft | published | archived)
