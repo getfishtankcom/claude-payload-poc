@@ -2092,7 +2092,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 15: Document Workflow (8 tasks)
 
 ### 15.1 Build `<TabPills />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/TabPills.tsx` with props: `options: Array<{ label: string; queryValue: string; isActive: boolean }>`, `paramName: string`
   - Active pill: filled dark background, white text
@@ -2105,7 +2105,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Pill toggle switches between states via URL query params, styling correct for both states
 
 ### 15.2 Build `<GroupedTable />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/GroupedTable.tsx` with props: `groups: Array<{ heading: string; rows: any[] }>`, `renderRow: (row: any) => ReactNode`
   - Gray banner section headers (full-width, `#f0f0f0` bg, bold text)
@@ -2119,7 +2119,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Grouped table renders section headers and rows with correct styling, empty groups omitted
 
 ### 15.3 Build `<DocumentRow />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/DocumentRow.tsx` with props: `document: { title: string; href: string; commentSubmitUrl?: string; commentsPdfUrl?: string; status: 'open' | 'closed' }`
   - Title as purple link to document detail page
@@ -2133,7 +2133,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Document rows render with correct action buttons per status
 
 ### 15.4 Build Template 8: Documents for Comment Listing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[standard]/documents/page.tsx`
   - Full-width tabbed layout with `<SectionTabs />`
@@ -2148,7 +2148,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Documents for comment listing renders with tab switching, grouped display, and correct per-status actions
 
 ### 15.5 Build `<DarkPurpleCTA />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/DarkPurpleCTA.tsx` with props: `heading`, `body`, `ctaLabel`, `ctaHref`, `contactName`, `contactTitle`, `contactAddress`, `contactEmail`
   - Dark purple/near-black background (~rgb(50, 20, 50)) with white text
@@ -2162,7 +2162,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Dark CTA block renders with all contact fields, mailto link, and submit button
 
 ### 15.6 Build `<BlockquoteQuestion />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/BlockquoteQuestion.tsx` with props: `questionNumber: number`, `questionText: RichText`
   - Bordered box with light background
@@ -2176,7 +2176,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Question blockquote renders with bordered styling, question number, and rich text content
 
 ### 15.7 Build `<SupportMaterialsList />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/SupportMaterialsList.tsx` with props: `materials: Array<{ label: string; url: string; fileType: string }>`
   - Chain-link icon prefix before each labeled document link
@@ -2188,7 +2188,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Support materials list renders with icons and functional new-tab links
 
 ### 15.8 Build Template 9: Document Detail (Exposure Draft)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[standard]/documents/[slug]/page.tsx`
   - Layout: ~70% main + ~30% `<StaffContactCard />` sidebar (sticky on desktop)
@@ -2208,7 +2208,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 16: Listings (7 tasks)
 
 ### 16.1 Build `<CategoryPills />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/CategoryPills.tsx` with props: `options: Array<{ label: string; value: string; isActive: boolean }>`, `onChange: (value: string) => void`
   - "All Items" as first option (default active), resets filter
@@ -2222,7 +2222,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Category pills render with active state, "All Items" default, mobile collapses to dropdown
 
 ### 16.2 Build `<SortFilterBar />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/SortFilterBar.tsx` with props: `sortOptions`, `itemsPerPageOptions`, `typeFilterOptions?`, `showDateRange?`
   - Sort By dropdown (Publication date: Newest / Oldest)
@@ -2237,7 +2237,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Sort/filter bar renders all control variants, date range picker functional when enabled
 
 ### 16.3 Build `<ListingItem />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/ListingItem.tsx` with props: `item: { date: string; categories: string[]; title: string; href: string; excerpt: string; isExternal?: boolean }`
   - Date formatted "Month DD, YYYY" above title
@@ -2252,7 +2252,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Listing item renders all fields with correct formatting, external icon shows for external links
 
 ### 16.4 Build Template 11: Resources Listing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[standard]/resources/page.tsx`
   - Full-width tabbed layout with section tabs
@@ -2267,7 +2267,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Resources listing renders with all filters functional, pagination works, API returns filtered/paginated results
 
 ### 16.5 Build Template 12: Filtered News/Event Listing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Routes: `app/(frontend)/news-listings/page.tsx` and `app/(frontend)/[board]/news-listings/page.tsx`
   - Sections: breadcrumbs, H1 "News", `<CategoryPills />` (All Items, Document for Comment, International Activity, Meeting Summary, News, Resource), `<SortFilterBar />` (items per page + sort + date range, NO type filter), `<ListingItem />` list, `<Pagination />`
@@ -2281,7 +2281,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** News listings render (global + per-board + volunteer), filtering and pagination functional
 
 ### 16.6 Build `<TabToggle />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/TabToggle.tsx` with props: `options: Array<{ label: string; value: string; isActive: boolean }>`, `onChange: (value: string) => void`
   - Two-state toggle: active has filled/dark background with white text, inactive has outline/ghost
@@ -2293,7 +2293,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Tab toggle renders correctly at all breakpoints, does not collapse on mobile
 
 ### 16.7 Build Template 13: Meetings & Events Listing
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[board]/meetings-and-events/page.tsx`
   - Sections: breadcrumbs, H1 "Meetings & Events", `<TabToggle />` (Upcoming/Past), Items Per Page dropdown (10 default), meeting items list, `<Pagination />`
