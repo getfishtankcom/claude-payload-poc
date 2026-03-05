@@ -1590,7 +1590,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 10: Integration & Polish + HubSpot
 
 ### 10.1 Seed CMS with sample data
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. 4 boards (CSSB, AcSB, PSAB, AASB) + RASOC created with full field data
   2. 11 standards created and linked to correct boards

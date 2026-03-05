@@ -20,6 +20,7 @@ import React from 'react'
 
 import { Container } from '@/components/ui'
 import { CMSLink } from '@/components/CMSLink'
+import { RichText } from '@/components/RichText'
 
 type CTABlockProps = {
   richText?: Record<string, unknown> | null
@@ -47,7 +48,7 @@ export const CTABlockComponent: React.FC<CTABlockProps> = ({
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
           {richText && (
             <div className="flex-1 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-bold [&_p]:mt-2 [&_p]:opacity-80">
-              <RichTextRenderer content={richText} />
+              <RichText content={richText} />
             </div>
           )}
 
@@ -64,10 +65,3 @@ export const CTABlockComponent: React.FC<CTABlockProps> = ({
   )
 }
 
-function RichTextRenderer({ content }: { content: Record<string, unknown> | null | undefined }) {
-  if (!content) return null
-  if (typeof content === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content }} />
-  }
-  return null
-}

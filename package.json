@@ -25,6 +25,7 @@
     "inventory": "bash scripts/run-inventory.sh",
     "registry": "node scripts/build-url-registry.mjs",
     "self-test": "node scripts/self-test.mjs",
+    "seed": "cross-env NODE_OPTIONS='--no-warnings' tsx --tsconfig tsconfig.json src/seed/index.ts",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build -o storybook-static"
   },
@@ -69,6 +70,7 @@
     "prettier": "^3.5.3",
     "storybook": "^8.6.17",
     "tailwindcss": "^4.1.4",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.3",
     "vite": "^6.4.1"
   }

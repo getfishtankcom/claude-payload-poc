@@ -15,6 +15,7 @@
 import React from 'react'
 
 import { Container } from '@/components/ui'
+import { RichText } from '@/components/RichText'
 
 type RichTextBlockProps = {
   richText?: Record<string, unknown> | null
@@ -28,17 +29,10 @@ export const RichTextBlockComponent: React.FC<RichTextBlockProps> = ({ richText 
     <div data-testid="block-rich-text">
       <Container>
         <div className="mx-auto max-w-3xl prose [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-semibold [&_p]:text-text-muted [&_p]:leading-relaxed">
-          <RichTextRenderer content={richText} />
+          <RichText content={richText} />
         </div>
       </Container>
     </div>
   )
 }
 
-function RichTextRenderer({ content }: { content: Record<string, unknown> | null | undefined }) {
-  if (!content) return null
-  if (typeof content === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content }} />
-  }
-  return null
-}
