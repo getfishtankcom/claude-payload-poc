@@ -26,6 +26,9 @@ data/batches/
 # Screenshots from dogfooding
 .ai-reports/dogfood-frascanada/screenshots/
 
+# Storybook
+storybook-static/
+
 # OS
 .DS_Store
 Thumbs.db

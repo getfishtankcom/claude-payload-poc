@@ -221,6 +221,29 @@ npm run build 2>&1 | tail -5
 
 ---
 
+### 0.5 Set up Storybook
+
+- [x] **Status:** Complete
+
+**Acceptance Criteria:**
+- `storybook`, `@storybook/react-vite`, `@storybook/addon-essentials`, `@storybook/addon-a11y`, `@storybook/addon-interactions`, `@storybook/blocks` in `devDependencies`
+- `.storybook/main.ts`, `.storybook/preview.ts`, `.storybook/vite.config.ts`, `.storybook/preview-head.html` exist
+- `npm run storybook` starts on port 6006 without errors
+- `npm run storybook:build` exits 0 (static build succeeds)
+- 6 primitive stories exist: Button, Badge, Input, Card, Container, Stack
+- All primitive stories render with correct Tailwind CSS v4 styling
+- Mock data factory exists at `src/__mocks__/cms-data.ts`
+
+**Validation:**
+```bash
+npm run storybook:build
+npx tsc --noEmit
+```
+
+**Ralph Stop:** Storybook builds cleanly, all 6 primitive stories render.
+
+---
+
 ## Epic 1: CMS Collections & Globals (11 tasks)
 
 ### 1.1 Create `boards` collection
@@ -661,6 +684,7 @@ grep -c 'globals' src/payload.config.ts
   - Hamburger triggers `MobileMenu`
 - Wired to `navigation` global data (fetched server-side or passed as props)
 - Sticky header on scroll (optional, configurable)
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -700,6 +724,7 @@ grep 'lg:hidden\|hidden lg:' src/components/layout/SiteHeader.tsx
 - Background: `bg-footer` semantic token (dark)
 - Text color: white/light gray
 - Wired to `footer` global data
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -736,6 +761,7 @@ grep -i 'newsletter\|subscribe' src/components/layout/SiteFooter.tsx
 - Focus trapped inside when open
 - Escape key closes menu
 - Body scroll locked when open
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -768,6 +794,7 @@ grep 'onClose' src/components/layout/MobileMenu.tsx
   - Closes on: mouse leave, click outside, Escape key, click on a link
 - Uses Headless UI `Menu` or `Popover` for accessibility
 - Renders absolutely positioned below trigger element
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -798,6 +825,7 @@ grep 'grid\|columns\|col-' src/components/layout/MegaMenu.tsx
 - First item always "Home" linking to `/`
 - Renders as `<nav aria-label="Breadcrumb">` with `<ol>` for semantic markup
 - Responsive: wraps naturally, no horizontal scroll
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -868,6 +896,7 @@ grep 'Inter' src/app/layout.tsx src/app/'(frontend)'/layout.tsx 2>/dev/null
   - `public-comment` → distinct color
 - Renders as `<span>` with `inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold`
 - Default label: `'exposure-draft'` → `'Exposure Draft'`, `'meeting-summary'` → `'Meeting Summary'`
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -900,6 +929,7 @@ grep 'replace\|split\|charAt\|humanize\|label' src/components/ContentTypeBadge.t
 - Cursor: `cursor-pointer` when `onClick` provided
 - Renders as `<button>` when `onClick` provided, `<span>` otherwise
 - Used in SearchModal for recent/popular tags
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -933,6 +963,7 @@ grep 'onClick' src/components/TagChip.tsx
 - Truncation with ellipsis (`...`) when total pages > 7
 - `prev` disabled on page 1, `next` disabled on last page
 - Buttons are `<button>` elements with `aria-label` for accessibility
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -965,6 +996,7 @@ grep 'aria-label' src/components/Pagination.tsx
 - Icon sized at `w-8 h-8` or `w-10 h-10`, colored `text-primary`
 - Responsive: icon + title stack vertically on small screens if needed
 - Used on Active Projects listing, Open Consultations listing, Board Detail pages
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -1001,6 +1033,7 @@ grep 'icon\|title\|subtitle' src/components/PageHeader.tsx
   - Calls HubSpot API endpoint (or placeholder function)
   - Shows success/error state after submission
 - Responsive: input and button stack vertically on mobile, inline on desktop
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -1033,6 +1066,7 @@ grep -i 'subscribe' src/components/NewsletterCTA.tsx
   - "Read More →" link in `text-primary font-medium` (ghost button style)
 - Link destination: `/news/{slug}` or `/boards/{board}/news/{slug}`
 - Used in: Board Detail sidebar, Homepage news section, Search Results
+- Co-located `.stories.tsx` file with Default, variant, and edge case stories
 
 **Validation:**
 ```bash
@@ -1062,6 +1096,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Search bar click opens SearchModal overlay (Epic 5.1)
   4. Hero section stacks vertically on viewports < 768px
   5. Gradient matches design token `--gradient-hero`
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep -r "hero" src/app/ --include="*.tsx" -l` — hero section file exists
   - `curl -s localhost:3000 | grep -i "official hub"` — H1 text renders in HTML
@@ -1075,6 +1110,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   2. "Get Started" button renders with primary variant styling
   3. Button links to configured URL from global
   4. Content is editable via Payload admin panel
+  5. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `curl -s localhost:3000 | grep -i "get started"` — CTA button present
   - Payload admin → Homepage global → edit CTA text → verify frontend updates
@@ -1089,6 +1125,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Each column has a "View All →" link to its respective listing
   5. Mobile (< 768px): columns stack vertically as 3 separate sections
   6. Data fetched server-side from news, documents, events collections
+  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `curl -s localhost:3000 | grep -c "Read More"` — returns 3+ matches
   - Chrome DevTools screenshot at 1440px shows 3-column layout
@@ -1103,6 +1140,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Links navigate to correct board detail pages
   4. Mobile: cards stack or render as expandable accordion list
   5. Data sourced from `standards` collection grouped by category
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `curl -s localhost:3000 | grep -i "sustainability"` — category present
   - Click each standard link → navigates to `/boards/[slug]`
@@ -1136,6 +1174,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Popular tags section renders pill chips from `search-config` global
   5. "Search" button navigates to `/search?q={query}`; "Cancel" closes modal
   6. Escape key closes modal; focus trapped inside modal when open
+  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Click search input → modal overlay appears with `role="dialog"`
   - Type query + click Search → URL is `/search?q=...`
@@ -1151,6 +1190,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Active filter count badge displays on each section header
   5. "Clear All" link resets all filters and updates search results
   6. Mobile (< 1024px): renders as collapsible accordion above results instead of sidebar
+  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Toggle Board checkbox → results update via Meilisearch refinement
   - `document.querySelectorAll('[data-filter-section]').length === 5` in DevTools console
@@ -1166,6 +1206,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Description text truncated to 2-3 lines with ellipsis
   4. File info row shows "PDF · 2.4 MB" when applicable (documents only)
   5. CTA link text varies by content type (View Document / Read More / Watch Recording / Read Summary / Download Guide)
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Search for known document → card shows file size and "View Document" CTA
   - Search for known news item → card shows "Read More" CTA
@@ -1230,6 +1271,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Click navigates to corresponding section/tab on the page
   4. Mobile (< 1024px): renders as dropdown `<select>` or collapsible menu
   5. Sticky positioning on desktop scroll
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `document.querySelectorAll('[data-section-nav] a').length >= 7` in DevTools
   - Click nav item → page scrolls or tab switches to correct section
@@ -1243,6 +1285,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   2. Each button displays label and optional icon
   3. Buttons link to configured URLs (external links open in new tab)
   4. Minimum 3 actions: CPA Canada Handbook, View Implementation Tools, Explore Webinars
+  5. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `document.querySelectorAll('[data-quick-actions] a').length >= 3`
   - Click each action → navigates to correct URL
@@ -1257,6 +1300,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Events sorted by date ascending (soonest first)
   4. Displays max 3-5 events
   5. Empty state handled gracefully (message or section hidden)
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Events render in ascending date order
   - Badge colors match type: Webinar=teal, Meeting=gray, Deadline=red/orange
@@ -1270,6 +1314,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   2. Each resource shows file type icon (PDF, DOC, link), title, and type label
   3. File downloads trigger on click for uploadable resources
   4. External URLs open in new tab
+  5. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - PDF resource click → file downloads or opens in new tab
   - External link resource → opens in new tab
@@ -1284,6 +1329,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. News sorted by date descending (newest first)
   4. Displays max 3-5 news items
   5. Reuses or extends `<NewsItem />` component (3.6)
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - News items sorted newest first
   - "Read More →" links navigate to individual news pages
@@ -1319,6 +1365,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Inline CTA buttons render per stage from `ctas` array data
   5. Mobile: vertical layout with dates aligned left
   6. `current_stage` field determines which stage is active
+  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Timeline renders 5 stages with correct visual states
   - CTA buttons within stages are clickable and navigate correctly
@@ -1354,6 +1401,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. "All Boards" option available to show all projects
   4. Mobile (< 1024px): renders as dropdown selector
   5. Active board synced with URL param or route
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Click "AcSB" → only AcSB projects displayed
   - Click "All Boards" → all projects displayed
@@ -1368,6 +1416,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   3. Description text displayed (truncated if needed)
   4. Stage indicator shows "Stage N: [Stage Name]" with visual marker
   5. Action buttons row renders CTAs from project data
+  6. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Card title link navigates to `/active-projects/[board]/[project-slug]`
   - Badges render with correct colors per type
@@ -1403,6 +1452,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   4. Description paragraph rendered (truncated if needed)
   5. Countdown text: "Comments due in X days" computed from `deadline_date`
   6. Action buttons row with document links (Submit Comment, View Draft, etc.)
+  7. Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - Countdown shows correct days remaining from today to deadline
   - Past-deadline consultations show "Closed" or "Comments closed" state
@@ -1696,6 +1746,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Purple H2 heading "Staff Contact(s)" using `color: rgb(96, 31, 91)`
   - Each contact renders: bold name, title/role, phone as `tel:` link with icon, email as `mailto:` link with icon
   - Multiple contacts separated by visual divider (HR or border)
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "rgb(96, 31, 91)" src/components/StaffContactCard.tsx` confirms purple heading color
   - Component renders correctly at 390px and 1440px viewport widths
@@ -1708,6 +1759,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Active link styled: bold text + underline, no color change
   - Non-active links show underline on hover
   - Mobile (< 768px): drops below main content as vertical link list
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "isActive" src/components/SectionNavSidebar.tsx` confirms active state handling
   - Renders correctly in both desktop sidebar and mobile stacked layout
@@ -1721,6 +1773,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Each tab is an `<a>` navigating to its own route (not client-side switch)
   - Mobile: horizontal scroll with `overflow-x: auto`
   - Supports up to 7 tabs
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "overflow" src/components/SectionTabs.tsx` confirms mobile scroll handling
   - Tab navigation performs full page navigation to href
@@ -1779,6 +1832,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Name is purple link navigating to `bioPageUrl`
   - Role label (CHAIR, VICE-CHAIR) rendered as uppercase bold for officers only
   - Appointment dates formatted: "Appointed: January 1, 2023" / "Term Expires: December 31, 2025"
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "205" src/components/MemberCard.tsx` confirms image sizing
   - Card renders with purple linked name, role badge, and formatted dates
@@ -1808,6 +1862,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Active state highlights current section using Intersection Observer scroll-spy
   - Sticky positioning on desktop, follows viewport on scroll
   - Mobile: collapses as expandable "On this page" accordion
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "IntersectionObserver" src/components/AnchorNav.tsx` confirms scroll-spy implementation
   - Clicking anchor link scrolls to correct H2 section
@@ -1841,6 +1896,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Board crest/wordmark centered, full board name below
   - Brand-color background
   - Non-interactive, purely decorative/branding
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "BoardLogoHero" src/components/BoardLogoHero.tsx` confirms component export
   - Renders centered logo with board name at both mobile and desktop widths
@@ -1853,6 +1909,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Two-column table: "Project Name" and "Description" headers
   - Project name renders as purple link
   - Mobile: 2-column table becomes stacked cards (name above description)
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "Project Name" src/components/ActiveProjectsTable.tsx` confirms table headers
   - Table renders with purple linked names, responsive at 390px
@@ -1866,6 +1923,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Light variant: gray background. Dark-purple variant: purple background with white text
   - Hover: subtle lift/shadow effect
   - Mobile: CTAs stack vertically
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "dark-purple" src/components/FeatureCTABlock.tsx` confirms variant handling
   - Both variants render correctly with hover effects
@@ -1896,6 +1954,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Footnotes at bottom with superscript markers
   - Mobile: single column stacked (Application first, then labeled Pronouncement)
   - Print-friendly: `@media print` styles prevent row breaks across pages
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "@media print" src/components/EffectiveDatesTable.tsx` confirms print styles
   - Purple section headers render, alternating row backgrounds visible
@@ -1928,6 +1987,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Active pill: filled dark background, white text
   - Inactive pill: outline/ghost styling, dark text
   - Tab switching uses query param (e.g., `?tab=closed-for-comment`) via full page navigation
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "queryValue" src/components/TabPills.tsx` confirms query param integration
   - Clicking pill navigates with updated query param in URL
@@ -1941,6 +2001,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Alternating white/light gray data row backgrounds
   - Dashed border between rows within same group
   - Empty groups are not rendered
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "#f0f0f0" src/components/GroupedTable.tsx` confirms header background color
   - Component renders with grouped sections, empty groups hidden
@@ -1954,6 +2015,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - "Submit comment" button (dark purple fill, white text) shown only for open documents
   - "View Comments" PDF link shown only for closed documents (when commentsPdfUrl exists)
   - Mobile: button stacks below title
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "commentSubmitUrl" src/components/DocumentRow.tsx` confirms conditional button rendering
   - Open document shows submit button, closed document shows view comments link
@@ -1982,6 +2044,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - H3 heading, instruction paragraph, full mailing address, email as mailto link
   - "Submit comment" button (white text on contrasting button)
   - Full width on both desktop and mobile
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "mailto" src/components/DarkPurpleCTA.tsx` confirms email link
   - Component renders with dark background and white text
@@ -1995,6 +2058,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - "Question N" heading (e.g., "Question 1")
   - Static display — no expand/collapse, no form input
   - Full width on mobile with reduced horizontal padding
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "questionNumber" src/components/BlockquoteQuestion.tsx` confirms props
   - Renders bordered question box with number heading and rich text body
@@ -2006,6 +2070,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Component at `src/components/SupportMaterialsList.tsx` with props: `materials: Array<{ label: string; url: string; fileType: string }>`
   - Chain-link icon prefix before each labeled document link
   - Links open PDF/external resource in new tab (`target="_blank"`)
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "target.*_blank" src/components/SupportMaterialsList.tsx` confirms new tab behavior
   - Links render with icon prefix and correct href
@@ -2039,6 +2104,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Active pill: filled/dark background, white text
   - Inactive pill: outline/ghost, dark text
   - Mobile (< 768px): collapses to `<select>` dropdown
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "select" src/components/CategoryPills.tsx` confirms mobile dropdown fallback
   - Desktop shows horizontal pill row, mobile shows dropdown
@@ -2053,6 +2119,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Optional Type filter dropdown
   - Optional Date range inputs (start/end with calendar picker, mm/dd/yyyy format)
   - Mobile: all fields stack vertically
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "itemsPerPageOptions" src/components/SortFilterBar.tsx` confirms prop
   - Desktop shows inline controls, mobile stacks vertically
@@ -2067,6 +2134,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Title as purple linked text
   - External link icon when `isExternal` is true
   - 2-3 sentence excerpt, text only
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "isExternal" src/components/ListingItem.tsx` confirms external link handling
   - Item renders date, badges, purple title link, and excerpt
@@ -2107,6 +2175,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Component at `src/components/TabToggle.tsx` with props: `options: Array<{ label: string; value: string; isActive: boolean }>`, `onChange: (value: string) => void`
   - Two-state toggle: active has filled/dark background with white text, inactive has outline/ghost
   - Stays as two side-by-side tabs on mobile (does NOT collapse to dropdown)
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "TabToggle" src/components/TabToggle.tsx` confirms component export
   - Toggle renders as two side-by-side buttons at all viewport widths
@@ -2143,6 +2212,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Inline error messages below each invalid field
   - Tab order: Full Name, Title, Organization, Email, Phone, Comments, CAPTCHA, Submit
   - Submit handler: server action POST, success shows confirmation, failure scrolls to first error
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "required" src/components/ContactForm.tsx` confirms required field validation
   - Form prevents submission with empty required fields, shows inline errors
@@ -2158,6 +2228,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Server-side verification: POST token to `https://www.google.com/recaptcha/api/siteverify`
   - `RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY` added to `.env.example`
   - Fallback: honeypot field if reCAPTCHA fails to load
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "RECAPTCHA_SITE_KEY" .env.example` confirms env vars documented
   - `grep "react-google-recaptcha-v3" package.json` confirms package installed
@@ -2170,6 +2241,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - "Media Inquiries" heading
   - Contact card: name + credentials, title, email (mailto link), phone (tel link)
   - Wired to `pages.mediaInquiries` group fields
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "mailto" src/components/MediaInquiriesBlock.tsx` confirms email link
   - Block renders with all contact fields and functional links
@@ -2201,6 +2273,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - "Log in" button (TWO WORDS, full-width purple)
   - Error display: "Invalid user name or password. Please try again." (generic, never field-specific)
   - No CAPTCHA, no "Remember me" checkbox
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "Log in" src/components/LoginForm.tsx` confirms two-word button label
   - `grep "forgot-username" src/components/LoginForm.tsx` confirms forgot link
@@ -2213,6 +2286,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Component at `src/components/AuthLayout.tsx` with props: `children: ReactNode`
   - Centered card/container wrapper with ~480px max-width
   - Used by login, register, forgot-password pages
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "480" src/components/AuthLayout.tsx` confirms max-width constraint
   - Layout centers content horizontally with constrained width
@@ -2224,6 +2298,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - `<SupportContactBlock />` at `src/components/SupportContactBlock.tsx`: "Support" heading, email (mailto), toll-free phone (tel link), international phone (tel link)
   - `<CpaExplanationBlock />` at `src/components/CpaExplanationBlock.tsx`: rich text explaining CPA Canada shared auth, link to `cpacanada.ca/en/login` (opens new tab)
   - Both wired to `auth-config` global
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `ls src/components/SupportContactBlock.tsx src/components/CpaExplanationBlock.tsx` confirms both files exist
   - Support block renders with functional mailto and tel links
@@ -2367,6 +2442,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Component at `src/components/EventSummaryTable.tsx` with props: `rows: Array<{ date: string; topic: string; decision: string }>`
   - Three columns: Date, Topic/Item, Decision/Action
   - Responsive: table becomes stacked cards on mobile
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "EventSummaryTable" src/components/EventSummaryTable.tsx` confirms export
   - Table renders with 3 columns on desktop, stacked cards on mobile
@@ -2378,6 +2454,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Component at `src/components/MeetingTopicsTable.tsx` with props: `topics: Array<{ topic: string; description: string; status: string }>`
   - Three columns: Topic, Description, Status/Outcome
   - Responsive: table becomes stacked cards on mobile
+  - Co-located `.stories.tsx` file with Default, variant, and edge case stories
 - **Validation:**
   - `grep "MeetingTopicsTable" src/components/MeetingTopicsTable.tsx` confirms export
   - Table renders with 3 columns on desktop, stacked cards on mobile

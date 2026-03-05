@@ -47,6 +47,15 @@
 - [ ] `<Stack />` — vertical spacing utility component
 - **Output:** 6 primitive components with Tailwind CSS v4 classes, exported from `src/components/ui/`
 
+### 0.5 Set up Storybook
+- [x] Install Storybook (react-vite) with addons: essentials, a11y, interactions
+- [x] Configure `.storybook/main.ts`, `preview.ts`, `vite.config.ts`, `preview-head.html`
+- [x] Add `storybook` and `storybook:build` scripts to package.json
+- [x] Write co-located stories for all 6 design primitives (Button, Badge, Input, Card, Container, Stack)
+- [x] Create mock data factory at `src/__mocks__/cms-data.ts`
+- [x] Verify `npm run storybook:build` exits 0
+- **Output:** Storybook running on port 6006, 6 primitives with ~33 stories, all passing
+
 ### 0.3 Set up deployment pipeline
 - [ ] Vercel project configuration
 - [ ] Database provisioning (Neon/Supabase/Railway)
@@ -137,6 +146,8 @@
 ---
 
 ## Epic 2: Shared Layout Components
+
+> **Note:** Every component task in Epics 2-10 (and Phase 2 UI epics) must include a co-located `.stories.tsx` file as part of its deliverable.
 
 ### 2.1 Build `<SiteHeader />`
 - [ ] Row 1: Utility bar (About Us ▾, Boards ▾, Contact, Newsletter, Volunteer, FR, Sign In)
