@@ -192,7 +192,7 @@ Per task:
 - Layout JSON schema must be stable — changing it later breaks existing pages
 - Props drawer fields should reuse Payload's field components where possible (Lexical editor, relationship picker, etc.)
 - Page-level drafts: editing in the builder creates a draft version. Published version stays live until the draft is approved + published via the workflow.
-- Reference Payload 3.x Live Preview docs via Context7 MCP for iframe communication patterns
+- **Payload docs priority:** `payload-super` skill reference (`ADVANCED.md` for Live Preview, `FIELDS.md` for blocks/arrays, `HOOKS.md` for save hooks) > Context7 MCP > web search
 - 3 additional components (Standards List, Effective Dates Table, Image Grid) were identified from Sitecore dump analysis — these are common renderings on the live site with no equivalent in the original 28-component spec
 
 ### Data Test IDs

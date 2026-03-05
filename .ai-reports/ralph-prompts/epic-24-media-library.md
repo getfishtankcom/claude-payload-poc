@@ -138,7 +138,7 @@ Per task:
 - Payload handles image resizing, focal point, and format conversion — use its built-in capabilities
 - Media picker modal must be a reusable component importable by page builder and field editor
 - Thumbnails: use Payload's auto-generated sizes (add a `thumbnail` size: 200x200 if not already defined)
-- Reference Payload 3.x upload collection docs via Context7 MCP
+- **Payload docs priority:** `payload-super` skill reference (`COLLECTIONS.md` for upload config, `FIELDS.md` for localized fields) > Context7 MCP > web search
 - Media items share a single file across locales but alt text, title, and description must be per-locale (Payload's localization on fields)
 
 ### Data Test IDs

@@ -128,7 +128,7 @@ Per task:
 - All tree mutations go through Payload's REST API (PATCH for moves, POST for inserts, DELETE for deletes)
 - Board relationship auto-update on move: derive board from tree ancestry, update the `board` field on the item
 - Tree is an admin-only view — no frontend rendering needed
-- Reference Payload 3.x custom views documentation via Context7 MCP
+- **Payload docs priority:** `payload-super` skill reference (`ADVANCED.md` for custom views, `ENDPOINTS.md` for custom API routes) > Context7 MCP > web search
 
 ### Data Test IDs
 

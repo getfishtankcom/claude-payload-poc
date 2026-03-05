@@ -82,6 +82,36 @@ Most traffic comes from **direct links** (social media, newsletters) — not org
 - **Claude in Chrome** — Browser automation (preferred for verification tasks)
 - **Context7** — Documentation lookups (use before web search)
 
+## Payload CMS Skills (Installed)
+
+Four Payload-specific skills are installed and auto-trigger on Payload work. **Use these instead of guessing patterns.**
+
+| Skill | When It Triggers | What It Provides |
+|-------|-----------------|------------------|
+| `payload-super` | Collections, fields, hooks, access control, queries, endpoints, plugins | Full reference library: FIELDS.md, COLLECTIONS.md, HOOKS.md, ACCESS-CONTROL.md, QUERIES.md, ENDPOINTS.md, ADAPTERS.md, ADVANCED.md, PLUGIN-DEVELOPMENT.md. Includes Decision Framework + Quality Checks. |
+| `payload` | Same triggers as payload-super (official Payload skill) | Subset of payload-super. Both load automatically — payload-super is preferred. |
+| `payload-migrate` | Database migrations, schema changes | Creating, running, rolling back Payload + PostgreSQL migrations |
+| `generate-translations` | Adding translation keys to Payload packages | **For Payload repo contributions only** — NOT for our EN/FR content. Ignore for FRAS project work. |
+
+### Key Payload Patterns to Follow (from payload-super)
+- **Local API:** Always use `overrideAccess: false` when operating on behalf of a user
+- **Hooks:** Always pass `req` to nested operations for transaction integrity
+- **Recursive hooks:** Use `context` flags to prevent infinite loops
+- **Types:** Import from `payload-types.ts`, use `Access` type for access control functions
+- **Collections:** Set meaningful `admin.useAsTitle` on every collection
+- **Localization:** Use `localized: true` on text fields that need EN/FR (our i18n approach)
+
+### Ralph Loop Skill Usage
+During Ralph loops, the payload-super skill auto-triggers when building collections, hooks, access control, or custom admin views. The skill's reference docs (`~/.claude/skills/payload-super/reference/`) contain authoritative patterns for:
+- Collection definitions with drafts/versions (`COLLECTIONS.md`)
+- All field types including blocks, arrays, joins (`FIELDS.md`)
+- Hook lifecycle patterns with context guards (`HOOKS.md`)
+- Row-level access control and RBAC (`ACCESS-CONTROL.md`, `ACCESS-CONTROL-ADVANCED.md`)
+- Custom endpoints and API routes (`ENDPOINTS.md`)
+- Plugin architecture for reusable extensions (`PLUGIN-DEVELOPMENT.md`)
+
+**Priority order for Payload docs:** payload-super skill reference > Context7 MCP > payloadcms.com/llms-full.txt
+
 ## Conventions
 - All AI-generated reports, analysis, and documentation go in `.ai-reports/`
 - Never modify `.env` files — only `.env.example`

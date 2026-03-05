@@ -137,7 +137,11 @@ Per task:
 ## IMPORTANT
 
 - This is a Payload CMS admin customization — use Payload's extension APIs, not raw React routing
-- Reference Payload 3.x docs via Context7 MCP for admin customization patterns
+- The `payload-super` skill auto-triggers and provides authoritative reference docs. **Doc priority:** payload-super reference > Context7 MCP > web search
+- Consult `~/.claude/skills/payload-super/reference/ADVANCED.md` for custom admin views, components, and endpoint patterns
+- Consult `~/.claude/skills/payload-super/reference/HOOKS.md` for workflow transition hooks with context guards
+- Consult `~/.claude/skills/payload-super/reference/ACCESS-CONTROL-ADVANCED.md` for RBAC, context-aware, and role-based patterns
+- For DB migrations after schema changes, the `payload-migrate` skill provides migration workflow guidance
 - All custom views go in `src/admin/views/`, components in `src/admin/components/`, hooks in `src/admin/hooks/`
 - Use Payload's built-in auth system — do NOT build custom auth
 - Use Payload's built-in localization — do NOT build custom i18n for admin

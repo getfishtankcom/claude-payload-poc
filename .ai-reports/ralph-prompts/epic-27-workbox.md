@@ -121,6 +121,7 @@ Per task:
 - Rejection comment is MANDATORY — the modal's submit button should be disabled until comment has content
 - Sidebar nav badge count (from Epic 22.1) should reflect the same counts as Workbox tabs
 - All workflow transitions must go through the same Payload hooks defined in Epic 22.3 — don't bypass validation
+- **Payload docs priority:** `payload-super` skill reference (`QUERIES.md` for filtering, `HOOKS.md` for hook reuse) > Context7 MCP > web search
 - Author role filter: use `where[createdBy][equals]=currentUserId` for author-scoped queries
 
 ### Data Test IDs

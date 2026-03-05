@@ -27,6 +27,18 @@ npm run dev
 # Test entry creation for each — all fields render, save works
 ```
 
+## Payload CMS Skills
+
+The `payload-super` skill auto-triggers for this epic. Use its reference docs as the primary source for Payload patterns:
+- `COLLECTIONS.md` — collection config patterns (auth, upload, drafts, live preview)
+- `FIELDS.md` — all field types (text, richText, relationship, array, blocks, join, virtual)
+- `HOOKS.md` — lifecycle hooks with context guards
+- `ACCESS-CONTROL.md` — RBAC and row-level security
+
+**Doc priority:** payload-super skill reference > Context7 MCP > web search
+
+Follow payload-super Quality Checks: `useAsTitle` on every collection, typed `Access` functions, `overrideAccess: false` with user context.
+
 ## Stop Condition
 
 When ALL 13 tasks `[x]`: update AUDIT_LOG.md, output:

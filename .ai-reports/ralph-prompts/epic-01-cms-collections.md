@@ -71,7 +71,11 @@ npx tsc --noEmit  # Clean TypeScript
 ## IMPORTANT
 
 - This is an APPROVAL GATE epic — user reviews data model before building UI
-- Use Payload CMS 3.x patterns (not v2) — check Context7 MCP for docs if unsure
+- Use Payload CMS 3.x patterns (not v2) — the `payload-super` skill auto-triggers and provides authoritative reference docs
+- **Doc priority:** payload-super skill reference > Context7 MCP > web search
+- Consult `~/.claude/skills/payload-super/reference/COLLECTIONS.md` for collection config patterns (auth, upload, drafts, live preview)
+- Consult `~/.claude/skills/payload-super/reference/FIELDS.md` for all field types (text, richText, relationship, array, blocks, join, point, virtual)
+- Follow the Quality Checks from payload-super: `useAsTitle` on every collection, typed access control, `overrideAccess: false` with user context
 - Every field must have a `label` and appropriate validation
 - Use `relationship` type for foreign keys, not embedded objects
 - Enable localization fields where text content needs EN/FR support (prepare for Epic 18)

@@ -57,6 +57,7 @@ All page content MUST come from Payload CMS. Follow this pattern:
 - Members are simple True/False boolean
 - Member-only forms submit → email with attachments, NO database storage
 - Aptify API calls happen in Next.js server actions
+- **Payload docs priority:** `payload-super` skill reference (`ACCESS-CONTROL.md` for auth patterns, `ENDPOINTS.md` for custom API routes) > Context7 MCP > web search
 
 ## Validation
 

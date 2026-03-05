@@ -51,6 +51,7 @@ Add full EN/FR bilingual support: Next.js locale routing, Payload CMS localizati
 ## IMPORTANT
 - This is an APPROVAL GATE epic — locale routing affects ALL pages
 - Use `next-intl` or similar i18n library (check Context7 for Next.js 15 patterns)
+- For Payload localization config, consult `payload-super` skill reference (`ADVANCED.md` localization section) before Context7
 - Don't translate CMS content — that's a content migration task
 - Only translate UI strings (chrome, labels, buttons)
 

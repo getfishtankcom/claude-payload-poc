@@ -151,6 +151,21 @@ Every prompt includes `_exit-protocol.md` which defines:
 | `README.md` | This file |
 | `../ralph-logs/` | Output logs from headless runs |
 
+## Payload CMS Skills
+
+Four Payload skills are installed globally and auto-trigger during Ralph loops:
+
+| Skill | Use For | Reference Docs |
+|-------|---------|----------------|
+| `payload-super` | Collections, fields, hooks, access control, queries, plugins | `~/.claude/skills/payload-super/reference/*.md` |
+| `payload` | Same (official, subset of payload-super) | `~/.agents/skills/payload/reference/*.md` |
+| `payload-migrate` | DB migrations, schema changes | Single SKILL.md |
+| `generate-translations` | **Payload repo only** — NOT for FRAS EN/FR | Ignore for this project |
+
+**Doc priority:** payload-super reference > Context7 MCP > payloadcms.com/llms-full.txt
+
+Epics that heavily use these skills: 1, 5, 11, 17, 18, 22-27.
+
 ## Permissions
 
 The allowlist in `.claude/settings.local.json` covers all Ralph loop operations:
