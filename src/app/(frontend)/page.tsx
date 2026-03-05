@@ -25,6 +25,7 @@ import type { Metadata } from 'next'
 import { getHomepage } from '@/lib/payload-helpers'
 import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { OrganizationSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
   title: "FRAS Canada — Canada's Official Hub for Financial Reporting Standards",
@@ -54,6 +55,7 @@ export default async function HomePage() {
 
   return (
     <main data-testid="page-homepage" className="min-h-screen">
+      <OrganizationSchema />
       <RenderHero {...homepage.hero} />
       <RenderBlocks blocks={homepage.layout} />
     </main>

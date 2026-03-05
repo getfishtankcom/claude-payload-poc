@@ -1661,7 +1661,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Core Web Vitals pass; Lighthouse ≥ 90; no oversized bundles.
 
 ### 10.5 SEO setup
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. All pages have unique `<title>` and `<meta name="description">` from CMS data
   2. Open Graph tags (og:title, og:description, og:image) set on all pages
