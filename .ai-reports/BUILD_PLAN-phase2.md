@@ -20,7 +20,8 @@
 
 ### 11.2 Create `committees` collection
 - [ ] Fields: name, slug (auto), description (rich text), sortOrder (number), detailPageUrl (URL)
-- [ ] Fields: members (array: name, role, organization), status (enum: active, inactive, archived)
+- [ ] Fields: members (array: name, credentials, role, photo), status (enum: active, inactive, archived)
+- [ ] Fields: meetingReports (array: title, date, file upload) — Sitecore has 180+ committee meeting report PDFs (IDG Extracts, PSADG reports)
 - [ ] Relationship: board (belongsTo → boards)
 - [ ] Seed data: 13 AcSB committees, 3+ PSAB committees, 3 AASB committees, 3+ CSSB committees
 - **Dependencies:** Epic 1 (boards collection)
@@ -45,9 +46,9 @@
 - **Output:** Effective dates tables with purple-header grouped sections
 
 ### 11.5 Create `documents-for-comment` collection
-- [ ] Fields: title, slug (auto), group (enum: exposure-draft, consultation-paper, re-exposure-draft, discussion-paper)
+- [ ] Fields: title, slug (auto), frasIdNumber (text — used in workflow email subjects), group (enum: exposure-draft, consultation-paper, re-exposure-draft, discussion-paper)
 - [ ] Fields: status (enum: open, closed), documentUrl (URL), commentSubmitUrl (URL), commentsPdfUrl (URL)
-- [ ] Fields: sortOrder (number), publishedDate (date)
+- [ ] Fields: sortOrder (number), publishedDate (date), commentPeriodStart (date), commentPeriodEnd (date)
 - [ ] Relationships: standard (belongsTo → standards), board (belongsTo → boards)
 - [ ] Seed data: 4+ open documents, 4+ closed documents across IFRS and ASPE
 - **Dependencies:** Epic 1 (boards, standards collections)
@@ -117,7 +118,7 @@
 - **Output:** Auth page content fully CMS-editable
 
 ### 11.13 Extend `events`/create `meetings` collection
-- [ ] Fields: title, slug (auto), date (date), excerpt (textarea), content (rich text)
+- [ ] Fields: title, slug (auto), date (date), publishedDate (date — when posted, separate from event date; survey feedback: users confused by occurrence-date-only sorting), excerpt (textarea), content (rich text)
 - [ ] Fields: type (enum: meeting, event, webinar, decision-summary), status (enum: draft, published, archived)
 - [ ] Relationship: board (belongsTo → boards)
 - [ ] Query support: upcoming (date >= today, sort asc) vs past (date < today, sort desc)

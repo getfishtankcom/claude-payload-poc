@@ -321,6 +321,8 @@ grep 'relationTo.*boards' src/collections/Standards.ts
       - `label` — type: `text`, required: true
       - `url` — type: `text`, required: true
   - `current_stage` — type: `number`, min: 1, max: 5
+  - `type` — type: `select`, options: `['Active', 'Completed']` — used for Active Projects listing filter
+  - `frasIdNumber` — type: `text` — Sitecore FRAS ID used in workflow email subjects ("For Review: {id} - {title}")
   - `board` — type: `relationship`, relationTo: `boards`, required: true
   - `standard` — type: `relationship`, relationTo: `standards`
   - `documents` — type: `relationship`, relationTo: `documents`, hasMany: true
@@ -333,11 +335,15 @@ grep 'relationTo.*boards' src/collections/Standards.ts
 ls src/collections/Projects.ts
 # Verify status enum
 grep -A3 'status' src/collections/Projects.ts | grep 'Active\|Completed\|Paused'
+# Verify type enum
+grep -A3 "'type'" src/collections/Projects.ts | grep 'Active\|Completed'
+# Verify frasIdNumber field
+grep 'frasIdNumber' src/collections/Projects.ts
 # Verify relationships
 grep 'relationTo' src/collections/Projects.ts
 ```
 
-**Ralph Stop:** Collection file exists with all 12 fields, 4 relationships configured, registered in config.
+**Ralph Stop:** Collection file exists with all 14 fields, 4 relationships configured, registered in config.
 
 ---
 
@@ -361,6 +367,9 @@ grep 'relationTo' src/collections/Projects.ts
   - `board` — type: `relationship`, relationTo: `boards`, required: true
   - `standard` — type: `relationship`, relationTo: `standards`
   - `project` — type: `relationship`, relationTo: `projects`
+  - `commentPeriodStart` — type: `date` — start of comment period window
+  - `commentPeriodEnd` — type: `date` — end of comment period, used for countdown timer and open/closed status
+  - `frasIdNumber` — type: `text` — Sitecore FRAS ID used in workflow email subjects ("For Review: {id} - {title}")
 - Virtual/computed field `days_remaining`: calculated from `deadline_date - today` (implemented as a hook or frontend utility)
 - Collection registered in `payload.config.ts`
 
@@ -370,11 +379,15 @@ grep 'relationTo' src/collections/Projects.ts
 ls src/collections/Consultations.ts
 # Verify deadline_date field
 grep 'deadline_date' src/collections/Consultations.ts
+# Verify comment period fields
+grep 'commentPeriodStart\|commentPeriodEnd' src/collections/Consultations.ts
+# Verify frasIdNumber field
+grep 'frasIdNumber' src/collections/Consultations.ts
 # Verify type enum
 grep 'Exposure Draft\|Survey\|Re-exposure' src/collections/Consultations.ts
 ```
 
-**Ralph Stop:** Collection file exists with all 9 fields + virtual field logic, registered in config.
+**Ralph Stop:** Collection file exists with all 12 fields + virtual field logic, registered in config.
 
 ---
 
@@ -393,6 +406,7 @@ grep 'Exposure Draft\|Survey\|Re-exposure' src/collections/Consultations.ts
   - `excerpt` — type: `textarea`
   - `body` — type: `richText`
   - `featured_image` — type: `upload`, relationTo: `media`
+  - `frasIdNumber` — type: `text` — Sitecore FRAS ID used in workflow email subjects ("For Review: {id} - {title}")
   - `board` — type: `relationship`, relationTo: `boards`
 - `media` collection exists (or is created) to support uploads
 - Collection registered in `payload.config.ts`
@@ -403,11 +417,13 @@ grep 'Exposure Draft\|Survey\|Re-exposure' src/collections/Consultations.ts
 ls src/collections/News.ts
 # Verify upload field
 grep 'upload' src/collections/News.ts
+# Verify frasIdNumber field
+grep 'frasIdNumber' src/collections/News.ts
 # Verify date field
 grep "'date'" src/collections/News.ts
 ```
 
-**Ralph Stop:** Collection file exists with all 8 fields, media upload configured, registered in config.
+**Ralph Stop:** Collection file exists with all 9 fields, media upload configured, registered in config.
 
 ---
 
@@ -422,6 +438,7 @@ grep "'date'" src/collections/News.ts
   - `title` — type: `text`, required: true
   - `slug` — type: `text`, required: true, unique: true
   - `date` — type: `date`, required: true
+  - `publishedDate` — type: `date` — when posted/published, distinct from event date for sort flexibility
   - `type` — type: `select`, required: true, options: `['Webinar', 'Meeting', 'Deadline']`
   - `description` — type: `textarea`
   - `registration_url` — type: `text`
@@ -432,11 +449,13 @@ grep "'date'" src/collections/News.ts
 ```bash
 # Verify collection file exists
 ls src/collections/Events.ts
+# Verify publishedDate field
+grep 'publishedDate' src/collections/Events.ts
 # Verify type enum
 grep 'Webinar\|Meeting\|Deadline' src/collections/Events.ts
 ```
 
-**Ralph Stop:** Collection file exists with all 7 fields, registered in config.
+**Ralph Stop:** Collection file exists with all 8 fields, registered in config.
 
 ---
 

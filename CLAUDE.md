@@ -155,6 +155,12 @@ Do NOT create `consultations`, `documents`, or `meetings` collections — use th
 
 ---
 
+## Security Rules
+
+**MANDATORY: Read and follow `SECURITY.md` before writing ANY code that touches auth, database, API routes, or environment variables.** This is non-negotiable. The full security template lives at the project root and covers: secret handling, RLS requirements, service role restrictions, function hardening, pre-merge checks, enforced architecture patterns, and incident response. Every PR must comply.
+
+---
+
 ## Ralph Wiggum Loop Workflow
 
 This project uses **Ralph Wiggum loops** for iterative, spec-driven development. Each loop feeds the same prompt repeatedly, with Claude seeing its own previous work in files and git history.

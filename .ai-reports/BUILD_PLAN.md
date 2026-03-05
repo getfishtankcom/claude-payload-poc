@@ -75,6 +75,8 @@
 ### 1.3 Create `projects` collection
 - [ ] Fields: title, slug, summary (rich text), key_proposals (rich text)
 - [ ] Fields: status (enum: Active, Completed, Paused)
+- [ ] Fields: type (enum: Active, Completed) — used for Active Projects listing filter
+- [ ] Fields: frasIdNumber (text) — Sitecore FRAS ID used in workflow email subjects
 - [ ] Fields: badges (array of enum: Exposure Draft, Public Comment, Survey, Research, etc.)
 - [ ] Fields: timeline_stages (array: phase_number, date, title, description, ctas array)
 - [ ] Fields: current_stage (number 1-5)
@@ -84,6 +86,8 @@
 ### 1.4 Create `consultations` collection
 - [ ] Fields: title, slug, type (enum: Exposure Draft, Survey, Re-exposure Draft)
 - [ ] Fields: deadline_date (date), description (rich text)
+- [ ] Fields: commentPeriodStart (date), commentPeriodEnd (date) — comment period window for countdown timer and open/closed status
+- [ ] Fields: frasIdNumber (text) — Sitecore FRAS ID used in workflow email subjects
 - [ ] Fields: action_documents (array: label, url, type)
 - [ ] Relationships: board, standard, project
 - [ ] Virtual field: days_remaining (computed from deadline_date)
@@ -92,11 +96,13 @@
 ### 1.5 Create `news` collection
 - [ ] Fields: title, slug, date, category (enum), excerpt, body (rich text)
 - [ ] Fields: featured_image (upload)
+- [ ] Fields: frasIdNumber (text) — Sitecore FRAS ID used in workflow email subjects
 - [ ] Relationship: board
 - **Output:** News articles collection
 
 ### 1.6 Create `events` collection
 - [ ] Fields: title, slug, date, type (enum: Webinar, Meeting, Deadline)
+- [ ] Fields: publishedDate (date) — when posted/published, distinct from event date for sort flexibility
 - [ ] Fields: description, registration_url
 - [ ] Relationship: board
 - **Output:** Events collection

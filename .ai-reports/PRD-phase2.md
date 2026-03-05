@@ -484,14 +484,14 @@ The following forms were identified in the Notion research and are missing from 
 |---|---|---|---|
 | `board-members` | T4 | name, credentials, photo (205x205), role (enum), roleLabel, appointedDate, termExpires, sortOrder | board, bioPage (pages) |
 | `standards-sections` | T5 | title, slug, boardLogo, boardName, tabs (array), featureCTAs (array with variant) | board, activeProjects (projects) |
-| `document-for-comment` | T8 | title, slug, group (enum), status (open/closed), documentUrl, commentSubmitUrl, commentsPdfUrl, sortOrder, publishedDate | standard, board |
+| `document-for-comment` | T8 | title, slug, frasIdNumber, group (enum), status (open/closed), documentUrl, commentSubmitUrl, commentsPdfUrl, sortOrder, publishedDate, commentPeriodStart (date), commentPeriodEnd (date) | standard, board |
 | `document-detail` | T9 | title, slug, highlights (richText), bodyContent (richText blocks), commentQuestions (array), replyDeadline, howToReply (object), supportMaterials (array) | standard, board, staffContacts (contacts) |
 | `effective-dates-table` | T10 | introText (richText), sections (array of {headerLabel, headerDate, sortOrder, rows[]}) | standard |
 | `effective-dates-footnote` | T10 | marker, text (richText) | table (effective-dates-table) |
 | `contacts` | T9, shared | name, title, phone, email, photo (optional) | — (standalone) |
 | `resources` | T11 | title, slug, date, category (multi-enum), resourceType (enum), excerpt, content, externalUrl, file, status | board, standard |
-| `meetings` | T13 | title, slug, date, excerpt, content, type (enum), status | board |
-| `committees` | T14 | name, slug, description (richText), sortOrder, detailPageUrl, members (array), status | board |
+| `meetings` | T13 | title, slug, date, publishedDate, excerpt, content, type (enum), status | board |
+| `committees` | T14 | name, slug, description (richText), sortOrder, detailPageUrl, members (array of {name, credentials, role, photo}), meetingReports (array of {title, date, file}), status | board |
 | `form-submissions` | T15 | fullName, title, organization, email, businessPhone, comments, submittedAt, status (new/read/replied) | — (standalone) |
 | `job-postings` | T17 | title, department, location, description, summary, postedDate, closingDate, externalUrl, status (draft/published/closed) | — (standalone) |
 
@@ -579,6 +579,24 @@ form-submissions (T15)
 job-postings (T17)
   (standalone — no relationships)
 ```
+
+### 4.6 Sitecore Dump Cross-Reference
+
+The following fields and patterns were confirmed by analyzing the Sitecore 10.2 package dump (see `.ai-reports/sitecore-dump/SYNTHESIS.md` for full analysis):
+
+| Our Collection | Sitecore Template | Confirmed Fields | Added Fields (from dump) |
+|---|---|---|---|
+| `document-for-comment` | Document for Comment | title, summary, board tags, status | `frasIdNumber` (used in workflow emails), `commentPeriodStart`, `commentPeriodEnd` |
+| `meetings` | Meeting Page | title, summary, date, board, location, attachments | `publishedDate` (survey: users confused by occurrence-date-only sorting) |
+| `committees` | Committee Members List | name, members, board | `meetingReports` array (Sitecore has 180+ committee meeting report PDFs) |
+| `board-members` | Member Details | name, title, bio, photo, board | Confirmed — matches spec |
+| `contacts` | Staff Contact (Data) | name, title, email, phone | Confirmed — matches spec |
+| `effective-dates-table` | Effective Dates Table | sections with rows | Confirmed — Sitecore uses Row-N child items, we flatten to array |
+| `resources` | (various document types) | title, date, category, file | Confirmed — matches spec |
+
+**Content volume from dump:** ~430 news, ~236 projects, ~200 meetings, ~133 documents for comment, ~95 board members, 64 staff contacts, ~52 volunteer opportunities, ~60 committee entries, ~80 resources. Total ~1,400+ items (excluding Page-Components children which inflate to ~2,700).
+
+**Media library:** ~1,112 media items (982 MB), organized by board. PDFs dominate. Images need per-locale alt text for EN/FR.
 
 ---
 

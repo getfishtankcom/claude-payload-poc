@@ -269,10 +269,10 @@ Payload CMS syncs collections to Meilisearch via the `payload-meilisearch` plugi
 | `pages` | title, slug, content (rich text), sidebar_type, meta | — |
 | `boards` | name, slug, abbreviation, description, tabs, quick_actions, resources | standards (hasMany) |
 | `standards` | name, slug, category (enum), parts | board (belongsTo) |
-| `projects` | title, slug, summary, key_proposals, timeline_stages, status, badges | board, standard, documents, contacts |
-| `consultations` | title, slug, type, deadline_date, description, action_documents | board, standard, project |
-| `news` | title, slug, date, category, excerpt, body, board | board |
-| `events` | title, slug, date, type (Webinar/Meeting/Deadline), description, registration_url | board |
+| `projects` | title, slug, summary, key_proposals, timeline_stages, status, badges, type (enum: Active/Completed), frasIdNumber | board, standard, documents, contacts |
+| `consultations` | title, slug, type, deadline_date, description, action_documents, commentPeriodStart (date), commentPeriodEnd (date), frasIdNumber | board, standard, project |
+| `news` | title, slug, date, category, excerpt, body, board, frasIdNumber | board |
+| `events` | title, slug, date, publishedDate, type (Webinar/Meeting/Deadline), description, registration_url | board |
 | `documents` | title, slug, type (ED/Guide/Paper), file, description | board, standard, project |
 | `decision-summaries` | title, slug, date, body | board | *(Phase 1 collection definition — listing page template deferred to Phase 2, Epic 20.4)* |
 | `contacts` | name, credentials, title, phone, email, photo | — |
@@ -397,3 +397,33 @@ These must be resolved before or during implementation:
 | CAPTCHA | ReCaptcha | Used on Contact Form and other form submissions. Not image CAPTCHA. |
 | Cookie Consent | OneTrust | Cookie consent manager, existing integration from current site. |
 | Analytics | GA4 (Google Analytics 4) | GA4 via `@next/third-parties` package. `next/script` with `afterInteractive` strategy. Event tracking for search, forms, downloads. GTM container optional for future tag management. |
+
+---
+
+## 11. Sitecore Dump Cross-Reference
+
+Source: `.ai-reports/sitecore-dump/SYNTHESIS.md` (full analysis of Sitecore 10.2 package exports)
+
+### Collection Field Validation
+
+| Our Collection | Sitecore Template | Status | Notes |
+|---|---|---|---|
+| `projects` | Project | Confirmed + enriched | Added `frasIdNumber`, `type` (active/completed). Sitecore `timeline_stages` uses child items — we flatten to array. |
+| `consultations` | Document for Comment | Confirmed + enriched | Added `frasIdNumber`, `commentPeriodStart`, `commentPeriodEnd`. |
+| `news` | Internal/External News Page | Confirmed + enriched | Added `frasIdNumber`. Sitecore has External News variant with URL instead of body. |
+| `events` | Meeting Page | Confirmed + enriched | Added `publishedDate` (separate from event date — survey feedback). |
+| `contacts` | Staff Contact (Data) | Confirmed | Exact field match. 64 items in Sitecore. |
+| `boards` | (tree structure) | Confirmed | 7 boards/councils in Sitecore tree. |
+| `standards` | (tree structure) | Confirmed | 9 standards sections in xlsx (we have 11 on live site — 2 additions post-xlsx). |
+
+### Content Volume (from 1GB dump)
+
+~430 news, ~236 projects, ~200 meetings, ~133 documents for comment, ~95 board members, 64 staff contacts, ~52 volunteer opportunities. Total ~1,400+ items excluding Page-Components children.
+
+### Key Sitecore Patterns to Preserve
+
+1. **Single editable zone** — Sitecore's `mainContent` is the only author-editable placeholder (11 allowed controls). Aligns with our template-first page builder.
+2. **Board-scoped content** — Content lives under board tree nodes. Board ownership = tree position.
+3. **Workflow emails** — Transitions send to `communications@frascanada.ca` + `webtranslation@cpacanada.ca`. Replicate in Epic 22.
+4. **Two-layer content** — Pages combine parent item fields + Page-Components child items. Migration must merge these.
+5. **Per-locale media** — Single blob, separate alt text per language. Replicate in Payload media collection.

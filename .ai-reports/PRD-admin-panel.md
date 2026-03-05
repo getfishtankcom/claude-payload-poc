@@ -370,6 +370,7 @@ Categorized component palette. Drag from toolbox into editable placeholder zones
 | **Table** | Data table | Rows/columns, header row toggle, striped toggle |
 | **Blockquote** | Styled quotation | Quote text, attribution, style variant |
 | **Divider** | Visual separator | Style (line, dots, space), spacing |
+| **Image Grid** | Multi-image display grid for logos, partner badges, or photo galleries. | Images (media picker, multi-select), columns (2-6), gap size, image fit (cover/contain), link per image (optional), caption per image (optional) |
 
 #### Layout Components
 | Component | Description | Configurable Props |
@@ -392,6 +393,8 @@ Categorized component palette. Drag from toolbox into editable placeholder zones
 | **Contact Card** | Staff contact display | Contact (relationship picker), layout (card/inline) |
 | **Board Members Grid** | Board member listing | Board (relationship), show bio toggle, columns |
 | **Consultation Countdown** | Active consultation with timer | Consultation (relationship picker), show description toggle |
+| **Standards List** | Grouped list of standards with section headers and links. Renders hierarchical standards sections (e.g., IFRS, ASPE) with clickable items. | Board filter, grouping (by section/by type), show descriptions toggle, collapse/expand default |
+| **Effective Dates Table** | Structured date table with colored section headers, multi-column rows, and footnotes. Used for standards effective date tracking. | Board filter, section header color (board-specific), columns (standard, effective date, early adoption, notes), footnotes (rich text), sort order |
 
 #### Interactive Elements
 | Component | Description | Configurable Props |
@@ -622,6 +625,34 @@ Every state transition logged:
 | **Admin override** | Admins can force-unlock any item |
 | **Concurrent edit prevention** | If locked by another user, field editor opens in read-only mode with "Request Unlock" button |
 
+### 7.7 Email Notifications
+
+Workflow transitions trigger configurable email notifications. Based on the existing Sitecore Fras Workflow, the following default notifications are required:
+
+| Transition | Recipient | Subject Template | Notes |
+|------------|-----------|-----------------|-------|
+| **Submit for Review** | Editors / communications team | "For Review: {frasIdNumber} - {title}" | Default `to`: configurable (Sitecore used `communications@frascanada.ca`) |
+| **Submit for Review (CC)** | Translation team | "FYI - Content submitted: {frasIdNumber} - {title}" | Default `to`: configurable (Sitecore used `webtranslation@cpacanada.ca`) |
+| **Reject** | Original author | "Revision Required: {frasIdNumber} - {title}" | Body includes the mandatory rejection comment from Section 7.3 |
+| **Publish** | Translation team | "Published: {frasIdNumber} - {title}" | Notification that content is live; translation team can schedule FR update |
+
+#### Email Template Configuration
+
+Each notification is a configurable **Email Template** record in Payload admin settings (`/admin/settings/email-templates`):
+
+| Field | Type | Description |
+|-------|------|-------------|
+| **name** | text | Internal label (e.g., "Submit for Review - Editors") |
+| **trigger** | select | Workflow transition that fires this email (`submit`, `reject`, `approve`, `publish`) |
+| **from** | email | Sender address (default: `noreply@frascanada.ca`) |
+| **to** | email[] | Recipient addresses -- configurable per template, not hardcoded |
+| **cc** | email[] | Optional CC addresses |
+| **subject** | text | Subject line template. Supports `{title}`, `{frasIdNumber}`, `{author}`, `{board}` tokens. |
+| **body** | rich text | Body template. Same tokens plus `{rejectionComment}`, `{pageUrl}`, `{adminUrl}`. |
+| **enabled** | boolean | Toggle to disable without deleting |
+
+> **Implementation note:** Email addresses MUST be configurable in Payload admin settings -- never hardcoded. The Sitecore addresses above are defaults only. Use Payload's email adapter (Nodemailer) for delivery.
+
 ---
 
 ## 8. Workbox (`/admin/workbox`)
@@ -720,6 +751,20 @@ Folder-based media browser with Sitecore-style organization.
 | **Image editing** | Basic crop and resize within the admin (Payload's built-in image manipulation) |
 | **Bulk operations** | Multi-select with checkboxes. Bulk move, bulk delete, bulk download. |
 | **Accepted types** | Images: jpg, png, webp, svg, gif. Docs: pdf, docx, xlsx, pptx. Video: mp4, webm. |
+
+#### Per-Locale Metadata (WCAG 2.1 AA)
+
+Media items store a **single file blob** but support **per-locale text fields** for bilingual compliance. This matches the Sitecore media library pattern (separate alt text per language, shared binary).
+
+| Field | Localized? | Description |
+|-------|-----------|-------------|
+| **alt** | Yes (EN/FR) | Alt text for screen readers. Required for images (WCAG 2.1 AA 1.1.1). |
+| **title** | Yes (EN/FR) | Display title / tooltip text. |
+| **description** | Yes (EN/FR) | Extended description for media detail panel and search indexing. |
+| **filename** | No | Original uploaded filename. Shared across locales. |
+| **mimeType** | No | Auto-detected file type. |
+
+> **Implementation note:** Leverage Payload's built-in field-level localization (`localized: true`) on the `alt`, `title`, and `description` fields of the `media` collection. The language switcher in the media detail panel toggles between EN/FR metadata while displaying the same file preview.
 
 ### 9.3 Media Picker Integration
 
@@ -920,6 +965,8 @@ src/
 ---
 
 ## 12. Sitecore Parity Checklist
+
+> **Reference:** Sitecore dump analysis reports available at `.ai-reports/sitecore-dump/` -- 6 reports covering templates (92), renderings (56), workflows (3), content tree (~1,400 items), media library (~1,112 items), and site architecture. These reports informed the parity decisions below.
 
 Features explicitly replicated from Sitecore 10.2 XM/SXA:
 

@@ -51,7 +51,11 @@ Build the custom admin panel foundation: dashboard, sidebar navigation, workflow
 - Payload `beforeChange` hook enforces valid transitions (PRD Section 7.2)
 - Payload `afterChange` hook logs transition to workflowHistory
 - Rejection requires mandatory comment (validated in hook)
-- **Output:** Workflow state persists, transitions validated server-side
+- Email notifications fire on workflow transitions (configurable per transition)
+- Default: "Submit for Review" sends email to editors, "Reject" sends email to author with rejection comment, "Publish" sends notification to translation team
+- Email template fields: from, to, subject (supports `{title}` and `{frasIdNumber}` variables), body
+- Email addresses configurable via Payload admin settings (default: `communications@frascanada.ca`, `webtranslation@cpacanada.ca`)
+- **Output:** Workflow state persists, transitions validated server-side, email notifications sent
 
 ### 22.4 Workflow action bar component
 - Custom Payload admin component shown at bottom of edit view for workflow-enabled collections
@@ -139,3 +143,4 @@ Per task:
 - Use Payload's built-in localization — do NOT build custom i18n for admin
 - Server Components by default in admin; `'use client'` only where interactivity requires it
 - Test workflow transitions with all 3 roles (create test users in seed data)
+- Sitecore's Fras Workflow sent emails to `communications@frascanada.ca` and `webtranslation@cpacanada.ca` on transitions — replicate this with configurable email hooks

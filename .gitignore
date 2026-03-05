@@ -1,3 +1,31 @@
+# Dependencies
 node_modules/
+
+# Next.js
+.next/
+out/
+dist/
+
+# Payload CMS
+src/payload-types.ts
+src/app/(payload)/admin/importMap.js
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Build
+*.tsbuildinfo
+.vercel/
+
+# Data (crawl artifacts)
 data/
+data/batches/
+
+# Screenshots from dogfooding
 .ai-reports/dogfood-frascanada/screenshots/
+
+# OS
+.DS_Store
+Thumbs.db

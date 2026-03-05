@@ -71,7 +71,10 @@ Build a folder-based media library browser for the admin panel, replacing Payloa
 - **Usage list:** which pages/components reference this media item (Payload relationship query)
 - Save button for metadata edits
 - Delete button (with confirmation: "This media is used by X pages. Delete anyway?")
-- **Output:** Detail panel shows metadata, usage list, editable fields
+- Alt text and title fields must be locale-aware (EN/FR) — Sitecore stored separate alt text per language while sharing one blob
+- Description field also locale-aware
+- This is critical for WCAG 2.1 AA bilingual compliance
+- **Output:** Detail panel shows metadata, usage list, editable fields with per-locale alt text/title/description
 
 ### 24.7 Media picker modal
 - Reusable modal component for field/component media selection
@@ -136,3 +139,4 @@ Per task:
 - Media picker modal must be a reusable component importable by page builder and field editor
 - Thumbnails: use Payload's auto-generated sizes (add a `thumbnail` size: 200x200 if not already defined)
 - Reference Payload 3.x upload collection docs via Context7 MCP
+- Media items share a single file across locales but alt text, title, and description must be per-locale (Payload's localization on fields)

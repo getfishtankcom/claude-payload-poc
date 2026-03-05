@@ -38,13 +38,13 @@ Build the template-first visual page builder with component toolbox, placeholder
   type, label, category, icon, thumbnail, allowedZones[], propsSchema, renderComponent
   ```
 - 4 categories with all components from PRD Section 6.2:
-  - **Content Blocks** (9): Rich Text, Heading, Image, Video, Accordion, Tabs, Table, Blockquote, Divider
+  - **Content Blocks** (10): Rich Text, Heading, Image, Video, Accordion, Tabs, Table, Blockquote, Divider, Image Grid
   - **Layout Components** (7): Card Grid, 2-Column, 3-Column, Hero Banner, CTA Banner, Feature Row, Stats Bar
-  - **Data-Driven Widgets** (7): Project List, News Feed, Event Calendar, Document Table, Contact Card, Board Members Grid, Consultation Countdown
+  - **Data-Driven Widgets** (9): Project List, News Feed, Event Calendar, Document Table, Contact Card, Board Members Grid, Consultation Countdown, Standards List, Effective Dates Table
   - **Interactive Elements** (5): Search Bar, Filter Panel, Newsletter Signup, Download Button, Anchor Link
 - Props schemas define configurable fields per component (PRD Section 6.2 tables)
 - Data-driven widgets support two data source modes: Manual (inline data) and Dynamic (collection + filters)
-- **Output:** Registry exports all 28 component types with schemas
+- **Output:** Registry exports all 31 component types with schemas
 
 ### 25.3 Page builder view (`/admin/builder/:id`)
 - Custom Payload admin view at `/admin/builder/:id`
@@ -65,7 +65,7 @@ Build the template-first visual page builder with component toolbox, placeholder
 - Categories collapsible: Content, Layout, Data, Interactive
 - Components are draggable — `@dnd-kit/core` drag source
 - Toolbox collapses to icon-only strip when canvas is in tablet/mobile preview mode
-- **Output:** Toolbox renders all 28 components, drag initiates correctly
+- **Output:** Toolbox renders all 31 components, drag initiates correctly
 
 ### 25.5 Canvas with placeholder zones (center panel)
 - Render page in iframe with `?preview=true&editing=true` query params
@@ -158,7 +158,7 @@ npm run dev  # Page builder loads without errors
 
 Per task:
 - 25.1: Page with template "board-detail" shows correct locked + editable zones
-- 25.2: `registry.ts` exports 28 components, each with propsSchema
+- 25.2: `registry.ts` exports 31 components, each with propsSchema
 - 25.3: `/admin/builder/:id` renders 3-panel layout, loads existing layout JSON
 - 25.4: Search "card" in toolbox — filters to Card Grid. Drag Card Grid initiates DnD.
 - 25.5: Canvas shows locked zones with lock icon, editable zones with blue border
@@ -193,3 +193,4 @@ Per task:
 - Props drawer fields should reuse Payload's field components where possible (Lexical editor, relationship picker, etc.)
 - Page-level drafts: editing in the builder creates a draft version. Published version stays live until the draft is approved + published via the workflow.
 - Reference Payload 3.x Live Preview docs via Context7 MCP for iframe communication patterns
+- 3 additional components (Standards List, Effective Dates Table, Image Grid) were identified from Sitecore dump analysis — these are common renderings on the live site with no equivalent in the original 28-component spec

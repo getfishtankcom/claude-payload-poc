@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "FRAS Canada PoC — Site inventory and analysis pipeline",
+  "description": "FRAS Canada PoC — Next.js 15 + Payload CMS 3.x + Tailwind CSS v4",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
     "crawl": "node scripts/crawl-sitemap.mjs",
     "classify": "node scripts/classify-pages.mjs",
     "inspect": "node scripts/inspect-pages.mjs",
@@ -13,6 +19,30 @@
     "registry": "node scripts/build-url-registry.mjs"
   },
   "dependencies": {
-    "playwright": "^1.58.2"
+    "@payloadcms/db-postgres": "^3.77.0",
+    "@payloadcms/next": "^3.77.0",
+    "@payloadcms/richtext-lexical": "^3.77.0",
+    "@payloadcms/ui": "^3.77.0",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.10.0",
+    "next": "15.4.11",
+    "payload": "^3.77.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.26.0",
+    "eslint-config-next": "15.4.11",
+    "playwright": "^1.52.0",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3"
   }
 }
