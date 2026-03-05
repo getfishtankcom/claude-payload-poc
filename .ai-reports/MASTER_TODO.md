@@ -2628,7 +2628,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Complete UI translation files for EN/FR with matching key sets and slug mappings
 
 ### 18.5 Implement hreflang and locale metadata
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - All pages include `<link rel="alternate" hreflang="en" href="..." />` and `<link rel="alternate" hreflang="fr" href="..." />`
   - `<html lang="...">` attribute set per locale

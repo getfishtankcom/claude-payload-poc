@@ -22,6 +22,7 @@
  */
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { withLocaleMetadata } from '@/lib/i18n-metadata'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { ProjectTimeline } from '@/components/board/ProjectTimeline'
 import {
@@ -52,14 +53,18 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale, 'project-slug': slug } = await params
+  const { locale, board: boardSlugParam, 'project-slug': slug } = await params
   const project = await getProjectBySlug(slug, locale)
   if (!project) return { title: 'Project Not Found' }
 
-  return {
-    title: `${project.title} — FRAS Canada`,
-    description: `Learn about the ${project.title} project and its current status.`,
-  }
+  return withLocaleMetadata(
+    {
+      title: `${project.title} — FRAS Canada`,
+      description: `Learn about the ${project.title} project and its current status.`,
+    },
+    `/active-projects/${boardSlugParam}/${slug}`,
+    locale,
+  )
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
