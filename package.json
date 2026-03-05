@@ -46,6 +46,7 @@
     "pdf-parse": "^2.4.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-google-recaptcha-v3": "^1.11.0",
     "react-instantsearch": "^7.26.1",
     "sharp": "^0.33.5"
   },

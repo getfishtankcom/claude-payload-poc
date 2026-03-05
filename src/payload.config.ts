@@ -29,7 +29,8 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp'
-import { seed } from './seed'
+// Seed available via: npx tsx src/seed/index.ts
+// import { seed } from './seed'
 
 // Phase 1 collections
 import { Users } from './collections/Users'
@@ -131,12 +132,13 @@ export default buildConfig({
   // Image processing
   sharp,
 
-  // Auto-seed in development when database is empty
-  async onInit(payload) {
-    if (process.env.NODE_ENV !== 'production') {
-      await seed(payload)
-    }
-  },
+  // Seed is available via: npx tsx src/seed/index.ts
+  // Disabled in onInit to avoid blocking dev server startup
+  // async onInit(payload) {
+  //   if (process.env.NODE_ENV !== 'production') {
+  //     await seed()
+  //   }
+  // },
 
   // Plugins will be added as needed (Meilisearch, etc.)
   plugins: [],

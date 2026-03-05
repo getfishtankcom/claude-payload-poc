@@ -2,26 +2,37 @@
   "epic": "epic-17-20",
   "pages": [
     {
-      "url": "/sign-in",
-      "name": "sign-in",
+      "url": "/my-account/login",
+      "name": "login",
       "structuralChecks": [
-        { "selector": "[data-testid='page-sign-in']", "severity": "block" },
+        { "selector": "[data-testid='page-login']", "severity": "block" },
         { "selector": "form", "severity": "block" },
-        { "selector": "input[type='email'], input[name='email']", "severity": "block" },
-        { "selector": "input[type='password'], input[name='password']", "severity": "block" },
+        { "selector": "input[name='username']", "severity": "block" },
+        { "selector": "input[type='password']", "severity": "block" },
         { "selector": "button[type='submit']", "severity": "block" }
       ],
       "interactions": [
-        { "action": "focus", "selector": "input[type='email'], input[name='email']", "severity": "warn" },
+        { "action": "focus", "selector": "input[name='username']", "severity": "warn" },
         { "action": "keyboard", "key": "Tab", "severity": "warn" }
       ],
       "consoleErrorsAllowed": false
     },
     {
-      "url": "/volunteer",
-      "name": "volunteer-registration",
+      "url": "/my-account/register",
+      "name": "register",
       "structuralChecks": [
-        { "selector": "[data-testid='page-volunteer']", "severity": "block" },
+        { "selector": "[data-testid='page-register']", "severity": "block" },
+        { "selector": "form", "severity": "block" },
+        { "selector": "button[type='submit']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/contact-us",
+      "name": "contact-us",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-contact-us']", "severity": "block" },
         { "selector": "form", "severity": "block" }
       ],
       "interactions": [],

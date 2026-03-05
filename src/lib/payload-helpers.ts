@@ -31,6 +31,7 @@ import type {
   Navigation,
   Footer,
   SearchConfig,
+  AuthConfig,
   Page,
   News,
   Event,
@@ -360,6 +361,22 @@ export async function getAllConsultations(): Promise<Consultation[]> {
     return result.docs as unknown as Consultation[]
   } catch {
     return []
+  }
+}
+
+/**
+ * Fetches the auth-config global (login labels, support info).
+ * Returns null if not configured yet.
+ */
+export async function getAuthConfig(): Promise<AuthConfig | null> {
+  try {
+    const payload = await getPayload({ config })
+    const authConfig = await payload.findGlobal({
+      slug: 'auth-config',
+    })
+    return authConfig as unknown as AuthConfig
+  } catch {
+    return null
   }
 }
 
