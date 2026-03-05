@@ -22,7 +22,7 @@ This is the single source of truth for build progress. Each task has:
 
 ### 0.1 Initialize Next.js + Payload CMS project
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - `create-payload-app` scaffolded with Next.js template in project root
@@ -52,7 +52,7 @@ grep '"strict": true' tsconfig.json
 
 ### 0.2 Configure Tailwind CSS v4 design system
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 - `globals.css` contains `@theme inline` block with all design tokens
@@ -105,7 +105,7 @@ grep -r 'Inter' src/app/layout.tsx
 
 ### 0.2.1 Install and configure Tailwind UI
 
-- [ ] **Status:** Pending
+- [ ] **Status:** Pending (deferred — Headless UI + Heroicons will be installed when first needed in Epic 2/3)
 
 **Acceptance Criteria:**
 - `@headlessui/react` installed and listed in `package.json` dependencies
@@ -133,7 +133,7 @@ npx tsc --noEmit 2>&1 | head -20
 
 ### 0.2.2 Build design primitives
 
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (2026-03-05)
 
 **Acceptance Criteria:**
 
