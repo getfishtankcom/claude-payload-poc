@@ -267,25 +267,36 @@ $(cat "$EXIT_PROTOCOL")${port_hint}"
 
   # Run the Ralph loop: feed the same prompt repeatedly
   # Claude processes it, checks MASTER_TODO, does work, outputs <promise> when done
+  #
+  # IMPORTANT: We use `tee` to stream output to the log file in real-time instead
+  # of capturing into a bash variable. Long-running sessions (30+ min) can exceed
+  # bash variable buffer limits, causing empty $result despite successful work.
   (
     cd "$worktree_dir"
     iteration=0
-    result=""
 
     while [ "$iteration" -lt "$MAX_ITERATIONS" ]; do
       iteration=$((iteration + 1))
       log "[$epic] Iteration $iteration/$MAX_ITERATIONS"
 
+      # Write iteration header to log
+      echo "=== ITERATION $iteration ===" >> "$log_file"
+
+      # Use a temp file to capture output via tee (streams to log in real-time)
+      local_tmp="$LOG_DIR/${epic}.iter${iteration}.tmp"
+
       # First iteration: fresh conversation. Subsequent: --continue
       # env -u strips Claude nesting detection vars (safe to run from within Claude Code)
       if [ "$iteration" -gt 1 ]; then
-        result=$(echo "$full_prompt" | env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT claude --print --verbose --continue $CLAUDE_PERMISSION_FLAG 2>>"$log_file.stderr") || true
+        echo "$full_prompt" | env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT claude --print --verbose --continue $CLAUDE_PERMISSION_FLAG 2>>"$log_file.stderr" | tee "$local_tmp" >> "$log_file" || true
       else
-        result=$(echo "$full_prompt" | env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT claude --print --verbose $CLAUDE_PERMISSION_FLAG 2>>"$log_file.stderr") || true
+        echo "$full_prompt" | env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT claude --print --verbose $CLAUDE_PERMISSION_FLAG 2>>"$log_file.stderr" | tee "$local_tmp" >> "$log_file" || true
       fi
 
+      echo "" >> "$log_file"
+
       # Guard: if claude produced no output, it was likely blocked
-      if [ -z "$result" ]; then
+      if [ ! -s "$local_tmp" ]; then
         log "[$epic] WARNING: claude returned empty output on iteration $iteration"
         log "[$epic] This may indicate a nested session issue or API error"
         # Check if we've had 3 consecutive empty results
@@ -293,40 +304,45 @@ $(cat "$EXIT_PROTOCOL")${port_hint}"
         if [ "$empty_count" -ge 3 ]; then
           log "[$epic] 3 consecutive empty outputs — aborting to prevent wasted iterations"
           echo "ABORTED_EMPTY" > "$status_file"
+          rm -f "$local_tmp"
           break
         fi
+        rm -f "$local_tmp"
         sleep 10
         continue
       fi
       empty_count=0
 
-      # Append result to log
-      echo "=== ITERATION $iteration ===" >> "$log_file"
-      echo "$result" >> "$log_file"
-      echo "" >> "$log_file"
-
-      # Check for completion signals
-      if echo "$result" | grep -q '<promise>.*COMPLETE</promise>'; then
+      # Check for completion signals in the iteration output
+      if grep -q '<promise>.*COMPLETE</promise>' "$local_tmp"; then
         log "[$epic] COMPLETE at iteration $iteration"
         echo "COMPLETE" > "$status_file"
+        rm -f "$local_tmp"
         break
       fi
 
-      if echo "$result" | grep -q '<promise>.*BLOCKED'; then
+      if grep -q '<promise>.*BLOCKED' "$local_tmp"; then
         log "[$epic] BLOCKED at iteration $iteration"
         echo "BLOCKED" > "$status_file"
+        rm -f "$local_tmp"
         break
       fi
 
-      if echo "$result" | grep -q '<promise>.*ABORTED'; then
+      if grep -q '<promise>.*ABORTED' "$local_tmp"; then
         log "[$epic] ABORTED at iteration $iteration"
         echo "ABORTED" > "$status_file"
+        rm -f "$local_tmp"
         break
       fi
+
+      rm -f "$local_tmp"
 
       # Brief pause between iterations to avoid rate limits
       sleep 5
     done
+
+    # Clean up any leftover tmp files
+    rm -f "$LOG_DIR/${epic}".iter*.tmp
 
     if [ "$iteration" -ge "$MAX_ITERATIONS" ]; then
       log "[$epic] Hit max iterations ($MAX_ITERATIONS)"

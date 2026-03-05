@@ -24,6 +24,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp'
+import { seed } from './seed'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -96,6 +97,13 @@ export default buildConfig({
 
   // Image processing
   sharp,
+
+  // Auto-seed in development when database is empty
+  async onInit(payload) {
+    if (process.env.NODE_ENV !== 'production') {
+      await seed(payload)
+    }
+  },
 
   // Plugins will be added as needed (Meilisearch, etc.)
   plugins: [],
