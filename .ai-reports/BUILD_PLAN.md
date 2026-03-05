@@ -271,24 +271,28 @@
 
 ### CMS Integration (5.1–5.6)
 
-### 5.1 Create Payload block schemas
-- [ ] Create `src/blocks/` with: HeroBlock, CTABlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock, ContentBlock
-- [ ] Each block uses `Block` type from `payload/types`
+### 5.1 Create block schemas, hero system, and reusable fields
+- [ ] Create reusable `link()` and `linkGroup()` field factories in `src/fields/`
+- [ ] Create hero group field in `src/heros/config.ts` (type select: none/highImpact/lowImpact + richText + links + media)
+- [ ] Create `RenderHero.tsx` + hero variant components (HighImpact, LowImpact) in `src/heros/`
+- [ ] Create 5 block directories in `src/blocks/`, each with `config.ts` + `Component.tsx`:
+  - CTABlock, ContentBlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock
+- [ ] Every `config.ts` has: `slug`, `interfaceName`, `fields` with `lexicalEditor()` for richText
 - [ ] Export blocks array from `src/blocks/index.ts`
-- **Output:** 6+ block schema files, typed and exportable
+- **Output:** Block + hero architecture matching official Payload website template
 
-### 5.2 Create `<BlockRenderer />` component
-- [ ] Block type → React component registry in `src/components/blocks/block-registry.ts`
-- [ ] `<BlockRenderer blocks={blocks} />` iterates and renders
-- [ ] Handles unknown block types gracefully (logs warning, renders nothing)
-- [ ] Co-located `.stories.tsx` with mixed block types
-- **Output:** Reusable block renderer for page builder
+### 5.2 Create `<RenderBlocks />` + update Pages collection + Homepage global
+- [ ] `src/blocks/RenderBlocks.tsx` — slug → Component map, iterates blocks, spreads props
+- [ ] Update `src/collections/Pages.ts` — add tabs (Hero + Content with `layout` blocks field + SEO)
+- [ ] Update `src/globals/Homepage.ts` — add tabs (Hero + Content with `layout` blocks field), migrate flat fields to hero group + blocks
+- [ ] Co-located `.stories.tsx` for RenderBlocks with mixed block types
+- [ ] Run `npx payload generate:types` to regenerate types
+- **Output:** Pages + Homepage both support hero + blocks layout; RenderBlocks renders any block mix
 
 ### 5.3 Create typed CMS fetch helpers
 - [ ] File: `src/lib/payload-helpers.ts`
-- [ ] Helpers: `getHomepage()`, `getNavigation()`, `getFooter()`, `getLatestNews(limit)`, `getUpcomingEvents(limit)`, `getStandardsByCategory()`
-- [ ] All helpers return typed results from `payload-types.ts`
-- [ ] Update `homepage` global to include `blocks` array field
+- [ ] Helpers: `getHomepage()`, `getNavigation()`, `getFooter()`, `getPageBySlug(slug)`, `getLatestNews(limit)`, `getUpcomingEvents(limit)`, `getStandardsByCategory()`
+- [ ] All helpers use `getPayload` + `configPromise` pattern, return typed results from `payload-types.ts`
 - **Output:** Typed data access layer for all page routes
 
 ### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
@@ -304,11 +308,11 @@
 - **Output:** Footer driven entirely by CMS data
 
 ### 5.6 Wire homepage route to CMS data
-- [ ] `page.tsx` fetches homepage global + news + events + standards via helpers
-- [ ] Pass data as props to all homepage section components
+- [ ] `page.tsx` uses `<RenderHero {...homepage.hero} />` + `<RenderBlocks blocks={homepage.layout} />`
+- [ ] Also fetches news + events for dynamic blocks (NewsGridBlock fetches server-side like ArchiveBlock)
 - [ ] Remove ALL hardcoded content strings from Epic 4 components
 - [ ] Add empty state handling for all sections
-- **Output:** Homepage renders CMS data, zero hardcoded user-facing text
+- **Output:** Homepage renders via hero + blocks pattern, zero hardcoded user-facing text
 
 ### Search (5.7–5.11)
 

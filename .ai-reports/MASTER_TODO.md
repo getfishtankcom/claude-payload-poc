@@ -1169,54 +1169,70 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 
 ### CMS Integration (5.1–5.6)
 
-### 5.1 Create Payload block schemas
+### 5.1 Create block schemas, hero system, and reusable fields
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
-  1. `src/blocks/` directory exists with 6+ block schema files: HeroBlock, CTABlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock, ContentBlock
-  2. Each block uses `Block` type from `payload/types` with proper field definitions
-  3. `src/blocks/index.ts` exports a `blocks` array containing all block schemas
-  4. All blocks have `slug`, `labels`, and typed `fields` defined
-  5. `npx tsc --noEmit` passes with zero errors
+  1. `src/fields/link.ts` exports `link()` factory function (internal/external toggle, label, newTab, optional appearance select)
+  2. `src/fields/linkGroup.ts` exports `linkGroup()` wrapping `link()` in an array field
+  3. `src/heros/config.ts` exports `hero` group field with `type` select (none/highImpact/lowImpact), `richText` (Lexical), `links` (linkGroup), conditional `media` upload, conditional `search_enabled` boolean
+  4. `src/heros/RenderHero.tsx` maps hero `type` → variant component (returns null for `none`)
+  5. `src/heros/HighImpact/index.tsx` renders gradient hero with rich text, links, optional search bar
+  6. `src/heros/LowImpact/index.tsx` renders simple text hero with rich text and links
+  7. 5 block directories exist in `src/blocks/`: CTABlock, ContentBlock, RichTextBlock, NewsGridBlock, BrowseByStandardBlock — each with `config.ts` + `Component.tsx`
+  8. Every `config.ts` has `slug`, `interfaceName`, and `fields` using `lexicalEditor()` with `FixedToolbarFeature()` + `InlineToolbarFeature()` for all richText fields
+  9. `src/blocks/index.ts` exports blocks array
+  10. `npx tsc --noEmit` passes with zero errors
 - **Validation:**
   ```bash
-  ls src/blocks/*.ts | wc -l  # ≥ 7 (6 blocks + index)
+  find src/blocks -name "config.ts" | wc -l  # ≥ 5
+  find src/blocks -name "Component.tsx" | wc -l  # ≥ 5
+  ls src/heros/config.ts src/heros/RenderHero.tsx  # hero system exists
+  ls src/fields/link.ts src/fields/linkGroup.ts  # reusable fields exist
   npx tsc --noEmit
   ```
-- **Ralph Stop:** All 6 block schemas compile, exported from index.ts.
+- **Ralph Stop:** All blocks, hero, and reusable fields compile; directory structure matches Payload website template.
 
-### 5.2 Create `<BlockRenderer />` component
+### 5.2 Create `<RenderBlocks />` + update Pages collection + Homepage global
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
-  1. `src/components/blocks/BlockRenderer.tsx` accepts `blocks` array prop and renders each block
-  2. `src/components/blocks/block-registry.ts` maps `blockType` → React component
-  3. Unknown block types log a warning and render nothing (no crash)
-  4. Co-located `.stories.tsx` file renders mixed block types
-  5. `npx storybook build --quiet` exits 0
+  1. `src/blocks/RenderBlocks.tsx` has slug → Component mapping, iterates blocks array, spreads props, returns null for unknown types
+  2. `src/collections/Pages.ts` updated with tabs: Hero tab (using `hero` field), Content tab (with `layout` blocks field), SEO tab (existing meta)
+  3. `src/globals/Homepage.ts` updated with tabs: Hero tab + Content tab with `layout` blocks field; flat fields migrated to hero group + blocks
+  4. Blocks registered on both Pages `layout` and Homepage `layout` via imported blocks array
+  5. `admin: { initCollapsed: true }` set on layout blocks field
+  6. Types regenerated: `npx payload generate:types` produces updated `payload-types.ts`
+  7. Co-located `.stories.tsx` for RenderBlocks with mixed block types
+  8. `npx storybook build --quiet` exits 0
 - **Validation:**
   ```bash
+  ls src/blocks/RenderBlocks.tsx  # exists
+  grep "type: 'blocks'" src/collections/Pages.ts  # layout field exists
+  grep "type: 'blocks'" src/globals/Homepage.ts  # layout field exists
+  grep "interfaceName" src/blocks/*/config.ts | wc -l  # ≥ 5
   npx tsc --noEmit
   npx storybook build --quiet
   ```
-- **Ralph Stop:** BlockRenderer story renders mixed blocks without errors.
+- **Ralph Stop:** RenderBlocks renders mixed blocks; Pages + Homepage both use hero + blocks layout; types generated.
 
 ### 5.3 Create typed CMS fetch helpers
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
-  1. `src/lib/payload-helpers.ts` exists with 6 typed helper functions
-  2. `getHomepage()` returns typed homepage global data
+  1. `src/lib/payload-helpers.ts` exists with 7 typed helper functions
+  2. `getHomepage()` returns typed homepage global (with hero + layout)
   3. `getNavigation()` returns typed navigation global data
   4. `getFooter()` returns typed footer global data
-  5. `getLatestNews(limit)` returns news collection sorted by date desc
-  6. `getUpcomingEvents(limit)` returns events filtered by future dates, sorted
-  7. `getStandardsByCategory()` returns standards grouped by category enum
-  8. `homepage` global updated with `blocks` array field
-  9. All return types match generated `payload-types.ts`
+  5. `getPageBySlug(slug)` returns typed page from `pages` collection (with hero + layout)
+  6. `getLatestNews(limit)` returns news collection sorted by date desc
+  7. `getUpcomingEvents(limit)` returns events filtered by future dates, sorted
+  8. `getStandardsByCategory()` returns standards grouped by category enum
+  9. All helpers use `getPayload` + `configPromise` pattern from Payload template
+  10. All return types match generated `payload-types.ts`
 - **Validation:**
   ```bash
   npx tsc --noEmit  # All helpers compile with correct return types
-  grep -c "export.*async.*function" src/lib/payload-helpers.ts  # ≥ 6
+  grep -c "export.*async.*function" src/lib/payload-helpers.ts  # ≥ 7
   ```
-- **Ralph Stop:** All 6 helpers compile, homepage global has blocks field.
+- **Ralph Stop:** All 7 helpers compile with correct return types.
 
 ### 5.4 Wire SiteHeader + MegaMenu to `navigation` global
 - [ ] **Status:** Not Started
@@ -1253,20 +1269,21 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ### 5.6 Wire homepage route to CMS data
 - [ ] **Status:** Not Started
 - **Acceptance Criteria:**
-  1. `src/app/(frontend)/page.tsx` fetches homepage global + news + events + standards via helpers
-  2. All data passed as props to section components (no CMS fetching inside components)
-  3. Hero heading comes from `homepage.hero_heading` (not hardcoded "Canada's Official Hub...")
-  4. "New to FRAS?" section content from `homepage.cta_block` (not hardcoded)
-  5. News, events, standards data from collection queries
-  6. Empty state handling for all sections when CMS has no data
-  7. Zero hardcoded user-facing content strings in homepage components (outside seed data)
+  1. `src/app/(frontend)/page.tsx` fetches homepage global via `getHomepage()`
+  2. Uses `<RenderHero {...homepage.hero} />` for hero section
+  3. Uses `<RenderBlocks blocks={homepage.layout} />` for page body
+  4. NewsGridBlock fetches data server-side (async component, like Payload template's ArchiveBlock)
+  5. Empty state handling for all sections when CMS has no data
+  6. Zero hardcoded user-facing content strings in homepage components (outside seed data)
+  7. `npx tsc --noEmit` passes
 - **Validation:**
   ```bash
   grep -rn "New to FRAS\|Canada's Official Hub" src/app/ src/components/  # 0 outside seed data
+  grep "RenderHero\|RenderBlocks" src/app/\(frontend\)/page.tsx  # both present
   npx tsc --noEmit
   npm run dev  # Homepage renders with CMS data or empty states
   ```
-- **Ralph Stop:** Homepage renders CMS data; zero hardcoded user-facing text.
+- **Ralph Stop:** Homepage renders via RenderHero + RenderBlocks; zero hardcoded user-facing text.
 
 ### Search (5.7–5.11)
 
