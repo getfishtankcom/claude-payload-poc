@@ -28,11 +28,15 @@ import {
   getAllStandards,
 } from '@/lib/payload-helpers'
 import { ActiveProjectsClient } from './ActiveProjectsClient'
+import { BreadcrumbSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
   title: 'Active Projects — FRAS Canada',
   description: 'Browse active standards-setting projects across all boards.',
 }
+
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
 
 export default async function ActiveProjectsPage() {
   // Fetch data in parallel
@@ -92,6 +96,7 @@ export default async function ActiveProjectsPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Active Projects', url: '/active-projects' }]} />
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
           <PageHeader

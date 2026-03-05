@@ -1,0 +1,43 @@
+=== ITERATION 1 ===
+<promise>EPIC 11 COMPLETE</promise>
+
+## Summary
+
+All 13 Epic 11 tasks complete. Here's what was built:
+
+### New Collections (9)
+- **BoardMembers** — name, credentials, photo, role enum (chair/vice-chair/voting-member/non-voting), appointment dates, board relationship
+- **Committees** — embedded members array, meeting reports array, board relationship, status lifecycle
+- **Resources** — category/resourceType enums, file upload + external URL, board + standard relationships
+- **EffectiveDates** — nested sections → rows structure, footnotes array, standard relationship
+- **DocumentsForComment** — group enum (exposure-draft etc.), open/closed status, comment period dates, FRAS ID
+- **DocumentDetails** — comment questions array, howToReply group, support materials array, staff contacts
+- **FormSubmissions** — admin-only (access control), auto-timestamp, status workflow (new/read/replied)
+- **JobPostings** — draft/published/closed lifecycle, department, closing date, external URL
+- **StandardsSections** — configurable tabs (5-7), feature CTAs with variants, board + projects relationships
+
+### New Global (1)
+- **AuthConfig** — login labels, forgot links, registration, CPA Canada section, support contact info
+
+### Extended Collections (3)
+- **Pages** — sidebar content (staff contacts, section nav links), CTA block, news section, board rel, T15 form config, T17 listing config, page layout variant
+- **News** — externalUrl, isVolunteerOpportunity, expanded category enum (Document for Comment, International Activity, Meeting Summary, News, Resource)
+- **Events** — expanded type enum (meeting/event/webinar/decision-summary), status field (draft/published/archived), content richText, excerpt
+
+### Validation
+- `npx tsc --noEmit` — zero errors in new files (pre-existing errors only)
+- `npm run build` — passes successfully
+- All grep validation commands from acceptance criteria pass
+
+=== ITERATION 1 ===
+The AUDIT_LOG already has Epic 11 entries. Everything is in order.
+
+<promise>EPIC 11 COMPLETE</promise>
+
+All 13 tasks (11.1–11.13) were completed in a previous session. Verification confirms:
+- All collection files exist in `src/collections/` and `src/globals/`
+- All registered in `payload.config.ts`
+- Zero TypeScript errors from Epic 11 files
+- MASTER_TODO.md has all tasks marked `[x]`
+- AUDIT_LOG.md updated
+

@@ -14,13 +14,14 @@
  * @notes
  * - Client component due to form state management
  * - Email validation done client-side before submission
- * - HubSpot API call is a placeholder — real integration in later epic
+ * - Submits to HubSpot Forms API via server action (keeps credentials server-side)
  * - LinkedIn icon is an inline SVG
  */
 'use client'
 
 import React, { useState } from 'react'
 import { Button } from '@/components/ui'
+import { subscribeToNewsletter } from '@/app/(frontend)/actions/newsletter'
 
 type NewsletterCTAProps = {
   /** Heading text */
@@ -52,12 +53,15 @@ export function NewsletterCTA({
 
     setStatus('submitting')
 
-    // Placeholder for HubSpot Forms API integration
-    // TODO: Replace with actual HubSpot API call in Epic 5
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      setStatus('success')
-      setEmail('')
+      const result = await subscribeToNewsletter(email)
+      if (result.success) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        setStatus('error')
+        setErrorMessage(result.message)
+      }
     } catch {
       setStatus('error')
       setErrorMessage('Something went wrong. Please try again.')

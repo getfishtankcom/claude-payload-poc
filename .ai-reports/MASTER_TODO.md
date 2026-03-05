@@ -1590,7 +1590,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 10: Integration & Polish + HubSpot
 
 ### 10.1 Seed CMS with sample data
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. 4 boards (CSSB, AcSB, PSAB, AASB) + RASOC created with full field data
   2. 11 standards created and linked to correct boards
@@ -1606,7 +1606,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All collections populated; all pages render with realistic sample content.
 
 ### 10.1.1 Integrate HubSpot newsletter subscription
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Newsletter form submits email to HubSpot Forms API endpoint
   2. Success state: confirmation message displayed to user
@@ -1621,7 +1621,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Newsletter form submits to HubSpot; success/error states work; env vars documented.
 
 ### 10.2 Responsive testing
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. All pages tested at 4 breakpoints: 390px, 768px, 1024px, 1440px
   2. Mobile adaptations verified: sidebar→dropdown, grid→stack, filter→accordion
@@ -1634,7 +1634,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All pages render correctly at all 4 breakpoints with no overflow or undersized touch targets.
 
 ### 10.3 Accessibility audit
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. WCAG 2.1 AA compliance: no critical or serious axe violations
   2. Full keyboard navigation: all interactive elements reachable via Tab/Enter/Escape
@@ -1648,7 +1648,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Zero critical a11y violations; keyboard nav complete; screen reader announces modal/menu state.
 
 ### 10.4 Performance optimization
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. Lighthouse performance score ≥ 90 on homepage
   2. LCP < 2.5s, FID < 100ms, CLS < 0.1
@@ -1661,7 +1661,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Core Web Vitals pass; Lighthouse ≥ 90; no oversized bundles.
 
 ### 10.5 SEO setup
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. All pages have unique `<title>` and `<meta name="description">` from CMS data
   2. Open Graph tags (og:title, og:description, og:image) set on all pages

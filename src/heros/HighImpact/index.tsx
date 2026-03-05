@@ -26,6 +26,7 @@ import type { Page } from '@/payload-types'
 
 import { Container } from '@/components/ui'
 import { CMSLink } from '@/components/CMSLink'
+import { RichText } from '@/components/RichText'
 
 type HighImpactHeroProps = Page['hero']
 
@@ -44,10 +45,7 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
           {/* Rich text content — heading + subtitle */}
           {richText && (
             <div className="text-white [&_h1]:text-3xl [&_h1]:md:text-4xl [&_h1]:font-black [&_h1]:leading-tight [&_p]:mt-4 [&_p]:text-base [&_p]:md:text-lg [&_p]:text-white/80 [&_p]:leading-relaxed [&_p]:max-w-2xl">
-              {/* Lexical rich text is serialized server-side by Payload;
-                  we render the serialized HTML or use RichText component.
-                  For now, we handle the case where richText may be serialized JSON. */}
-              <RichTextRenderer content={richText} />
+              <RichText content={richText} />
             </div>
           )}
 
@@ -82,15 +80,3 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
   )
 }
 
-/**
- * Simple rich text renderer for Lexical serialized content.
- * Renders the root children as HTML. Falls back to empty if no content.
- */
-function RichTextRenderer({ content }: { content: Record<string, unknown> | null | undefined }) {
-  if (!content) return null
-  if (typeof content === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content as string }} />
-  }
-  // Lexical JSON content — placeholder until Payload RichText component is wired
-  return null
-}

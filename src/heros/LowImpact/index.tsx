@@ -23,6 +23,7 @@ import type { Page } from '@/payload-types'
 
 import { Container } from '@/components/ui'
 import { CMSLink } from '@/components/CMSLink'
+import { RichText } from '@/components/RichText'
 
 type LowImpactHeroProps = Page['hero']
 
@@ -33,7 +34,7 @@ export const LowImpactHero: React.FC<LowImpactHeroProps> = ({ links, richText })
         <div className="max-w-3xl">
           {richText && (
             <div className="[&_h1]:text-3xl [&_h1]:font-black [&_h1]:text-text-heading [&_h1]:leading-tight [&_p]:mt-3 [&_p]:text-base [&_p]:text-text-muted [&_p]:leading-relaxed">
-              <RichTextRenderer content={richText} />
+              <RichText content={richText} />
             </div>
           )}
 
@@ -50,14 +51,3 @@ export const LowImpactHero: React.FC<LowImpactHeroProps> = ({ links, richText })
   )
 }
 
-/**
- * Simple rich text renderer — same as HighImpact version.
- * Will be replaced by shared Payload RichText component.
- */
-function RichTextRenderer({ content }: { content: Record<string, unknown> | null | undefined }) {
-  if (!content) return null
-  if (typeof content === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content as string }} />
-  }
-  return null
-}

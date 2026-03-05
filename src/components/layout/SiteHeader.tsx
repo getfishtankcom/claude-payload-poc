@@ -23,14 +23,17 @@
 'use client'
 
 import React, { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
-import { MobileMenu } from './MobileMenu'
-import { SearchModal } from '@/components/SearchModal'
 import type { Navigation } from '@/payload-types'
+
+/** Lazy-load interaction-triggered overlays to reduce initial bundle */
+const MobileMenu = dynamic(() => import('./MobileMenu').then((m) => ({ default: m.MobileMenu })), { ssr: false })
+const SearchModal = dynamic(() => import('@/components/SearchModal').then((m) => ({ default: m.SearchModal })), { ssr: false })
 
 type PopularTag = { label: string; query: string; id?: string }
 

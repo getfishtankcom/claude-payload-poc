@@ -20,6 +20,7 @@ import React from 'react'
 
 import { Container } from '@/components/ui'
 import { CMSLink } from '@/components/CMSLink'
+import { RichText } from '@/components/RichText'
 
 type Column = {
   size?: 'oneThird' | 'half' | 'twoThirds' | 'full' | null
@@ -53,7 +54,7 @@ export const ContentBlockComponent: React.FC<ContentBlockProps> = ({ columns }) 
               <div key={col.id || i} className={colSize}>
                 {col.richText && (
                   <div className="prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-semibold [&_p]:text-text-muted [&_p]:leading-relaxed">
-                    <RichTextRenderer content={col.richText} />
+                    <RichText content={col.richText} />
                   </div>
                 )}
                 {col.link && (
@@ -70,10 +71,3 @@ export const ContentBlockComponent: React.FC<ContentBlockProps> = ({ columns }) 
   )
 }
 
-function RichTextRenderer({ content }: { content: Record<string, unknown> | null | undefined }) {
-  if (!content) return null
-  if (typeof content === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content }} />
-  }
-  return null
-}

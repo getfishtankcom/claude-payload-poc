@@ -30,6 +30,7 @@ import {
   getEventsByBoard,
 } from '@/lib/payload-helpers'
 import { BoardDetailClient } from './BoardDetailClient'
+import { BreadcrumbSchema } from '@/components/StructuredData'
 import type { Event as EventType, News as NewsType } from '@/payload-types'
 
 type PageProps = {
@@ -55,6 +56,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: board.description || `Learn about the ${board.name} and its standards activities.`,
   }
 }
+
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
 
 export default async function BoardDetailPage({ params }: PageProps) {
   const { 'board-slug': slug } = await params
@@ -112,6 +116,7 @@ export default async function BoardDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <BreadcrumbSchema items={breadcrumbItems.map((b) => ({ name: b.label, url: b.href }))} />
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />

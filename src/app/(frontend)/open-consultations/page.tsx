@@ -29,11 +29,15 @@ import {
   getAllStandards,
 } from '@/lib/payload-helpers'
 import { OpenConsultationsClient } from './OpenConsultationsClient'
+import { BreadcrumbSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
   title: 'Open Consultations — FRAS Canada',
   description: 'Review and comment on open consultations from all boards.',
 }
+
+/** Revalidate every 60s — ISR for CMS-driven content */
+export const revalidate = 60
 
 export default async function OpenConsultationsPage() {
   const [consultations, boards, standards] = await Promise.all([
@@ -80,6 +84,7 @@ export default async function OpenConsultationsPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Open Consultations', url: '/open-consultations' }]} />
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
           <PageHeader
