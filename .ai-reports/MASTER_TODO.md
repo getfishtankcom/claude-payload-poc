@@ -2690,7 +2690,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All Phase 2 pages meet WCAG 2.1 AA with zero automated violations
 
 ### 21.4 Phase 2 performance optimization
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Core Web Vitals passing on all Phase 2 pages (LCP < 2.5s, FID < 100ms, CLS < 0.1)
   - Member photos optimized (205x205px via next/image with proper sizing props)

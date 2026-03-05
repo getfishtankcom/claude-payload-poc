@@ -61,6 +61,7 @@ export function MemberCard({ member }: MemberCardProps) {
             alt={`Portrait of ${member.name}`}
             width={205}
             height={205}
+            sizes="(min-width: 640px) 205px, 180px"
             className="h-full w-full object-cover"
           />
         ) : (
