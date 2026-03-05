@@ -1621,7 +1621,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Newsletter form submits to HubSpot; success/error states work; env vars documented.
 
 ### 10.2 Responsive testing
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. All pages tested at 4 breakpoints: 390px, 768px, 1024px, 1440px
   2. Mobile adaptations verified: sidebar→dropdown, grid→stack, filter→accordion

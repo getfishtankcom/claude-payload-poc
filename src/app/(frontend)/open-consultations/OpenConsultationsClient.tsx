@@ -67,7 +67,7 @@ export function OpenConsultationsClient({
       data-testid="page-open-consultations"
     >
       {/* Filter bar */}
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center">
         <div className="relative flex-1">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden="true" />
           <input
@@ -82,7 +82,7 @@ export function OpenConsultationsClient({
         <select
           value={selectedBoard}
           onChange={(e) => setSelectedBoard(e.target.value)}
-          className="rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary"
+          className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary md:w-auto md:max-w-[220px]"
           data-testid="board-filter"
         >
           <option value="">All Boards</option>
@@ -95,7 +95,7 @@ export function OpenConsultationsClient({
         <select
           value={selectedStandard}
           onChange={(e) => setSelectedStandard(e.target.value)}
-          className="rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary"
+          className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary md:w-auto md:max-w-[220px]"
           data-testid="standard-filter"
         >
           <option value="">All Standards</option>
