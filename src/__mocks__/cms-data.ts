@@ -363,6 +363,7 @@ import type { Navigation, Footer } from '@/payload-types'
 
 export function mockNavigationData(): Navigation {
   return {
+    id: 1,
     utility_links: [
       { label: 'About Us', url: '/about', has_dropdown: true, id: 'u1' },
       { label: 'Boards', url: '/boards', has_dropdown: true, id: 'u2' },
@@ -452,6 +453,7 @@ export function mockNavigationData(): Navigation {
 
 export function mockFooterData(): Footer {
   return {
+    id: 1,
     columns: [
       {
         heading: 'FRAS Canada',

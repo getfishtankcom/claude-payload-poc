@@ -116,11 +116,11 @@ export const extractDocumentText: CollectionAfterChangeHook = async ({ doc, req 
       id: String(mediaId),
     })
 
-    const mimeType = (media as Record<string, unknown>).mimeType as string | undefined
+    const mimeType = (media as unknown as Record<string, unknown>).mimeType as string | undefined
     if (!mimeType || !SUPPORTED_MIME_TYPES[mimeType]) return doc
 
     // Get the file URL and fetch its content
-    const url = (media as Record<string, unknown>).url as string | undefined
+    const url = (media as unknown as Record<string, unknown>).url as string | undefined
     if (!url) return doc
 
     // Fetch the file buffer from the media URL

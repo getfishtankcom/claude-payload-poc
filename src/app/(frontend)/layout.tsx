@@ -54,7 +54,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
-        <SiteHeader navigation={navigation} popularTags={searchConfig?.popular_tags} />
+        <SiteHeader navigation={navigation} popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined} />
         <main data-testid="main-content">{children}</main>
         <SiteFooter footer={footer} />
       </body>

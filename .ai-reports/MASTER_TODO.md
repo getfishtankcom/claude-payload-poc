@@ -1375,7 +1375,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 6: Board Detail Page
 
 ### 6.1 Build `<SectionNav />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Vertical nav sidebar renders 7 navigation items from board `tabs` data
   2. Active item visually highlighted (left border + bold text or background)
@@ -1390,7 +1390,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Nav renders all items, active state works, mobile dropdown functional.
 
 ### 6.2 Build `<QuickActions />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Vertical button list renders from board `quick_actions` array
   2. Each button displays label and optional icon
@@ -1404,7 +1404,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Quick action buttons render from CMS data and link correctly.
 
 ### 6.3 Build `<UpcomingEvents />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. "View All" header link navigates to events listing
   2. Each event shows: formatted date, title, type badge (Webinar/Meeting/Deadline)
@@ -1419,7 +1419,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Events display with correct sorting, badges, and date formatting.
 
 ### 6.4 Build `<ResourcesList />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Document links rendered from board `resources` array
   2. Each resource shows file type icon (PDF, DOC, link), title, and type label
@@ -1433,7 +1433,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Resources render with correct icons and functional download/navigation links.
 
 ### 6.5 Build `<RecentNews />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. "View All →" header link navigates to news listing filtered by board
   2. Each news item shows: date, title, excerpt, "Read More →" link
@@ -1448,7 +1448,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Recent news renders with correct sorting and functional links.
 
 ### 6.6 Wire Board Detail route
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/boards/[board-slug]/page.tsx` exists
   2. 3-column layout: SectionNav (left) | Main content (center) | Quick Actions + Events + Resources (right)
@@ -1468,7 +1468,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 7: Project Detail Page
 
 ### 7.1 Build `<ProjectTimeline />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. 5-stage vertical stepper renders from project `timeline_stages` array
   2. Each stage shows: phase number, date, title, description
@@ -1485,7 +1485,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Timeline stepper renders all stages with correct completed/current/future states and functional CTAs.
 
 ### 7.2 Build Project Detail page
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/active-projects/[board]/[project-slug]/page.tsx` exists
   2. 3-column layout: SectionNav (left) | Main (summary, key proposals, timeline, news, contacts) | Right sidebar (actions, events, resources)
@@ -1505,7 +1505,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 8: Active Projects Listing
 
 ### 8.1 Build `<BoardNav />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Vertical list of board full names with active state highlighting
   2. Click selects board and filters project list
@@ -1520,7 +1520,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Board nav filters projects correctly; mobile dropdown works; active state visible.
 
 ### 8.2 Build `<ProjectCard />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Title renders as linked heading to project detail page
   2. Type badges row displays project badges (Exposure Draft, Survey, etc.)
@@ -1535,7 +1535,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Project card displays all fields with functional links and correct badge/stage rendering.
 
 ### 8.3 Wire Active Projects route
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/active-projects/page.tsx` exists
   2. 2-column layout: BoardNav (left sidebar) + project cards list (right)
@@ -1555,7 +1555,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 9: Open Consultations Listing
 
 ### 9.1 Build `<ConsultationCard />`
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Title renders as linked heading to consultation detail or related project
   2. Type badges (Exposure Draft, Survey, Re-exposure Draft) + deadline date badge
@@ -1571,7 +1571,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Consultation card renders all fields with accurate countdown and type-appropriate badges.
 
 ### 9.2 Wire Open Consultations route
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete (2026-03-05)
 - **Acceptance Criteria:**
   1. Route `app/(frontend)/open-consultations/page.tsx` exists
   2. Filter bar with text search, board dropdown, standard dropdown
