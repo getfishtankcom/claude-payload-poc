@@ -1,0 +1,22 @@
+{
+  "epic": "epic-05",
+  "pages": [
+    {
+      "url": "/search",
+      "name": "search-results",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-search']", "severity": "block" },
+        { "selector": "[data-testid='search-results-container']", "severity": "block" },
+        { "selector": "[data-testid='facet-sidebar']", "severity": "block" },
+        { "selector": "[data-testid='search-input']", "severity": "block" },
+        { "selector": "[data-testid='search-pagination']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='search-input']", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

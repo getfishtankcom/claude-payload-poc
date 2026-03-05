@@ -1,0 +1,63 @@
+{
+  "epic": "epic-21",
+  "pages": [
+    {
+      "url": "/",
+      "name": "homepage-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='site-header']", "severity": "block" },
+        { "selector": "[data-testid='site-footer']", "severity": "block" },
+        { "selector": "[data-testid='hero-section']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/news",
+      "name": "news-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-news']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/resources",
+      "name": "resources-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-resources']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/standards",
+      "name": "standards-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-standards']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/search",
+      "name": "search-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-search']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/boards/acsb",
+      "name": "board-detail-phase2",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-board-detail']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": true
+}

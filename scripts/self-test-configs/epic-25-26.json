@@ -1,0 +1,22 @@
+{
+  "epic": "epic-25-26",
+  "pages": [
+    {
+      "url": "/admin",
+      "name": "admin-page-builder",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-builder']", "severity": "block" },
+        { "selector": "[data-testid='toolbox-palette']", "severity": "warn" },
+        { "selector": "[data-testid='template-zones']", "severity": "warn" },
+        { "selector": "[data-testid='props-drawer']", "severity": "warn" },
+        { "selector": "[data-testid='responsive-preview']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='toolbox-palette'] button", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}

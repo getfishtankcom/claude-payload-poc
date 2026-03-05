@@ -1,0 +1,33 @@
+{
+  "epic": "epic-17-20",
+  "pages": [
+    {
+      "url": "/sign-in",
+      "name": "sign-in",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-sign-in']", "severity": "block" },
+        { "selector": "form", "severity": "block" },
+        { "selector": "input[type='email'], input[name='email']", "severity": "block" },
+        { "selector": "input[type='password'], input[name='password']", "severity": "block" },
+        { "selector": "button[type='submit']", "severity": "block" }
+      ],
+      "interactions": [
+        { "action": "focus", "selector": "input[type='email'], input[name='email']", "severity": "warn" },
+        { "action": "keyboard", "key": "Tab", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/volunteer",
+      "name": "volunteer-registration",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-volunteer']", "severity": "block" },
+        { "selector": "form", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

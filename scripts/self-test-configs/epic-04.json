@@ -1,0 +1,24 @@
+{
+  "epic": "epic-04",
+  "pages": [
+    {
+      "url": "/",
+      "name": "homepage",
+      "structuralChecks": [
+        { "selector": "h1", "contains": "Canada", "severity": "block" },
+        { "selector": "[data-testid='hero-section']", "severity": "block" },
+        { "selector": "[data-testid='hero-gradient']", "severity": "block" },
+        { "selector": "[data-testid='hero-search-bar']", "severity": "block" },
+        { "selector": "[data-testid='section-new-to-fras']", "severity": "warn" },
+        { "selector": "[data-testid='section-news-events']", "severity": "block" },
+        { "selector": "[data-testid='section-browse-by-standard']", "severity": "block" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='hero-search-bar']", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

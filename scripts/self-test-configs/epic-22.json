@@ -1,0 +1,21 @@
+{
+  "epic": "epic-22",
+  "pages": [
+    {
+      "url": "/admin",
+      "name": "admin-dashboard",
+      "structuralChecks": [
+        { "selector": "[data-testid='admin-dashboard']", "severity": "block" },
+        { "selector": "[data-testid='widget-workflow-queue']", "severity": "warn" },
+        { "selector": "[data-testid='widget-quick-actions']", "severity": "warn" },
+        { "selector": "[data-testid='widget-recent-items']", "severity": "warn" },
+        { "selector": "[data-testid='widget-publishing-schedule']", "severity": "warn" },
+        { "selector": "[data-testid='workflow-bar']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}
