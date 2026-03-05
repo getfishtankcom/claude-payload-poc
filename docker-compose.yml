@@ -1,0 +1,38 @@
+##
+# FRAS Canada — Local Development Services
+#
+# Starts PostgreSQL for local dev.
+# The Next.js app runs on the host (not containerized) for fast HMR.
+#
+# Usage:
+#   docker compose up -d          # Start services
+#   docker compose down           # Stop services
+#   docker compose down -v        # Stop + delete all data volumes
+#
+# After starting, run `npm run dev` on the host.
+# Payload auto-pushes schema changes in dev mode (push: true).
+# For production, use `npx payload migrate` (see migration skill).
+#
+# Meilisearch will be added in Epic 5 (Search).
+##
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fras
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
