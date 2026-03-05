@@ -2315,7 +2315,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 17: Forms & Auth (8 tasks)
 
 ### 17.1 Build `<ContactForm />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/ContactForm.tsx` with vertical stacked labeled inputs
   - Fields: Full Name* (text), Title (text), Organization (text), Email address* (email), Business Phone (tel), Comments* (textarea ~6 rows)
@@ -2331,7 +2331,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Contact form validates all fields, displays inline errors, submits successfully with confirmation
 
 ### 17.2 Build `<ReCaptcha />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Install `react-google-recaptcha-v3` package
   - `<ReCaptchaProvider />` wrapper in root layout with site key from `RECAPTCHA_SITE_KEY` env var
@@ -2346,7 +2346,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Invisible reCAPTCHA v3 executes on submit, server validates token, honeypot fallback present
 
 ### 17.3 Build `<MediaInquiriesBlock />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/MediaInquiriesBlock.tsx` with props: `heading: string`, `contactName: string`, `contactTitle: string`, `contactEmail: string`, `contactPhone: string`
   - "Media Inquiries" heading
@@ -2359,7 +2359,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Media inquiries block renders contact info with working mailto and tel links
 
 ### 17.4 Build Template 15: Contact / Form Page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/contact-us/page.tsx`
   - Full-width, no sidebar layout
@@ -2374,7 +2374,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Contact form page submits to CMS, reCAPTCHA validates, success message shows, admin sees submission
 
 ### 17.5 Build `<LoginForm />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/LoginForm.tsx`
   - Username input (label: "User Name (email address):", type="text")
@@ -2392,7 +2392,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Login form renders with correct labels, forgot links, generic error message, and two-word "Log in" button
 
 ### 17.6 Build `<AuthLayout />` component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/AuthLayout.tsx` with props: `children: ReactNode`
   - Centered card/container wrapper with ~480px max-width
@@ -2404,7 +2404,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Auth layout renders centered card container at ~480px max-width
 
 ### 17.7 Build `<SupportContactBlock />` and `<CpaExplanationBlock />`
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - `<SupportContactBlock />` at `src/components/SupportContactBlock.tsx`: "Support" heading, email (mailto), toll-free phone (tel link), international phone (tel link)
   - `<CpaExplanationBlock />` at `src/components/CpaExplanationBlock.tsx`: rich text explaining CPA Canada shared auth, link to `cpacanada.ca/en/login` (opens new tab)
@@ -2417,7 +2417,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Both blocks render with correct content from auth-config global, all links functional
 
 ### 17.8 Build Template 16: Authentication Page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/my-account/login/page.tsx`
   - Full-width `<AuthLayout />` wrapper
@@ -2438,7 +2438,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ## Epic 20: Gap Pages & Forms (10 tasks)
 
 ### 20.1 Build Annual Report page template
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[board]/about/annual-report/page.tsx`
   - Layout: Content page with section nav sidebar (reuse T3B pattern)
@@ -2450,7 +2450,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Annual report pages render for all boards with section nav and downloadable PDFs
 
 ### 20.2 Build Error Pages (404/500)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - `app/not-found.tsx` — custom 404 page with brand colors and "Back to Home" CTA
   - `app/error.tsx` — custom 500 error page with brand colors and "Back to Home" CTA
@@ -2463,7 +2463,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Both error pages render with brand styling, header/footer, and home CTA
 
 ### 20.3 Build RSS Feed endpoint
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/api/rss/route.ts` generates RSS XML feed
   - Includes news items, meeting summaries, documents for comment
@@ -2477,7 +2477,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** RSS feeds return valid XML with correct content-type, board-specific feeds filter correctly
 
 ### 20.4 Build Decision Summaries Listing page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/[board]/decision-summaries/page.tsx`
   - Reuses listing pattern from T13 (Meetings & Events) without TabToggle (no upcoming/past split)
@@ -2489,7 +2489,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Decision summaries listing renders with pagination for all boards, no tab toggle
 
 ### 20.5 Build Registration form page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/my-account/register/page.tsx`
   - `<AuthLayout />` wrapper
@@ -2505,7 +2505,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Registration form validates all fields, submits to Aptify, redirects to login on success
 
 ### 20.6 Build Forgot Username page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/my-account/forgot-username/page.tsx`
   - `<AuthLayout />` wrapper
@@ -2518,7 +2518,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Forgot username page submits email, displays success confirmation message
 
 ### 20.7 Build Forgot Password page
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Route at `app/(frontend)/my-account/forgot-my-password/page.tsx`
   - `<AuthLayout />` wrapper
@@ -2531,7 +2531,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Forgot password page submits username, displays success confirmation message
 
 ### 20.8 Build Member-Only Form Template
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Shared form component for Document Comment Submission, Event Registration, Volunteer Registration
   - Auth gate: redirects to login if not authenticated (Aptify session check)
@@ -2548,7 +2548,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Member-only forms enforce auth gate, accept file uploads, send email on submit, show confirmation
 
 ### 20.9 Build Event Summary Table component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/EventSummaryTable.tsx` with props: `rows: Array<{ date: string; topic: string; decision: string }>`
   - Three columns: Date, Topic/Item, Decision/Action
@@ -2560,7 +2560,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Event summary table renders with correct columns, mobile layout stacks as cards
 
 ### 20.10 Build Meeting Topics Table component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Component at `src/components/MeetingTopicsTable.tsx` with props: `topics: Array<{ topic: string; description: string; status: string }>`
   - Three columns: Topic, Description, Status/Outcome
