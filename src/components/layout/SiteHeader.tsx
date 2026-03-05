@@ -27,6 +27,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
 import type { Navigation } from '@/payload-types'
@@ -93,47 +94,46 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
 
   return (
     <header className="w-full border-b border-gray-200 bg-white" data-testid="site-header">
-      {/* Row 1: Utility bar — hidden on mobile */}
-      {utilityLinks.length > 0 && (
-        <div className="hidden lg:block border-b border-gray-200 bg-gray-50" data-testid="utility-bar">
-          <Container>
-            <div className="flex items-center justify-end gap-1 py-2 text-sm text-text-muted">
-              {utilityLinks.map((item, i) => {
-                const hasMegaMenu = megaMenu.some((m) => m.trigger_label === item.label)
+      {/* Row 1: Utility bar — always visible for language switcher */}
+      <div className="hidden lg:block border-b border-gray-200 bg-gray-50" data-testid="utility-bar">
+        <Container>
+          <div className="flex items-center justify-end gap-1 py-2 text-sm text-text-muted">
+            <LanguageSwitcher />
+            {utilityLinks.map((item, i) => {
+              const hasMegaMenu = megaMenu.some((m) => m.trigger_label === item.label)
 
-                if (item.has_dropdown && hasMegaMenu) {
-                  const entry = megaMenu.find((m) => m.trigger_label === item.label)
-                  const isMultiColumn = entry?.columns && entry.columns.length > 1 && entry.columns.some((c) => c.heading)
+              if (item.has_dropdown && hasMegaMenu) {
+                const entry = megaMenu.find((m) => m.trigger_label === item.label)
+                const isMultiColumn = entry?.columns && entry.columns.length > 1 && entry.columns.some((c) => c.heading)
 
-                  const items = isMultiColumn
-                    ? buildMegaMenuItems(megaMenu, item.label)
-                    : buildFlatMenuItems(megaMenu, item.label)
-
-                  return (
-                    <React.Fragment key={item.id || i}>
-                      {i > 0 && <span className="text-gray-300 px-1" aria-hidden="true">|</span>}
-                      <MegaMenu
-                        trigger={item.label}
-                        items={items}
-                        variant={isMultiColumn ? 'multi-column' : 'single-column'}
-                      />
-                    </React.Fragment>
-                  )
-                }
+                const items = isMultiColumn
+                  ? buildMegaMenuItems(megaMenu, item.label)
+                  : buildFlatMenuItems(megaMenu, item.label)
 
                 return (
                   <React.Fragment key={item.id || i}>
-                    {i > 0 && <span className="text-gray-300 px-1" aria-hidden="true">|</span>}
-                    <Link href={item.url} className="px-2 py-1 hover:text-primary">
-                      {item.label}
-                    </Link>
+                    <span className="text-gray-300 px-1" aria-hidden="true">|</span>
+                    <MegaMenu
+                      trigger={item.label}
+                      items={items}
+                      variant={isMultiColumn ? 'multi-column' : 'single-column'}
+                    />
                   </React.Fragment>
                 )
-              })}
-            </div>
-          </Container>
-        </div>
-      )}
+              }
+
+              return (
+                <React.Fragment key={item.id || i}>
+                  <span className="text-gray-300 px-1" aria-hidden="true">|</span>
+                  <Link href={item.url} className="px-2 py-1 hover:text-primary">
+                    {item.label}
+                  </Link>
+                </React.Fragment>
+              )
+            })}
+          </div>
+        </Container>
+      </div>
 
       {/* Row 2: Logo + Search */}
       <Container>

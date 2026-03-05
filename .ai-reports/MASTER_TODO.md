@@ -2602,7 +2602,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** All CMS content supports EN/FR, admin locale switcher works, API returns locale-specific content
 
 ### 18.3 Build language switcher component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Displays current language name ("English" or "Francais")
   - Click toggles to alternate locale, preserving current page path
