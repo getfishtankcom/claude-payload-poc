@@ -314,21 +314,23 @@ $(cat "$EXIT_PROTOCOL")${port_hint}"
       empty_count=0
 
       # Check for completion signals in the iteration output
-      if grep -q '<promise>.*COMPLETE</promise>' "$local_tmp"; then
+      # NOTE: Use simple fixed-string grep (-F) to avoid regex issues with
+      # multibyte chars (em dashes, etc.) that break .* patterns
+      if grep -qF 'COMPLETE</promise>' "$local_tmp"; then
         log "[$epic] COMPLETE at iteration $iteration"
         echo "COMPLETE" > "$status_file"
         rm -f "$local_tmp"
         break
       fi
 
-      if grep -q '<promise>.*BLOCKED' "$local_tmp"; then
+      if grep -qF 'BLOCKED</promise>' "$local_tmp" || grep -qF 'BLOCKED<' "$local_tmp"; then
         log "[$epic] BLOCKED at iteration $iteration"
         echo "BLOCKED" > "$status_file"
         rm -f "$local_tmp"
         break
       fi
 
-      if grep -q '<promise>.*ABORTED' "$local_tmp"; then
+      if grep -qF 'ABORTED</promise>' "$local_tmp" || grep -qF 'ABORTED<' "$local_tmp"; then
         log "[$epic] ABORTED at iteration $iteration"
         echo "ABORTED" > "$status_file"
         rm -f "$local_tmp"
