@@ -1170,7 +1170,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 ### CMS Integration (5.1–5.6)
 
 ### 5.1 Create block schemas, hero system, and reusable fields
-- [ ] **Status:** Not Started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   1. `src/fields/link.ts` exports `link()` factory function (internal/external toggle, label, newTab, optional appearance select)
   2. `src/fields/linkGroup.ts` exports `linkGroup()` wrapping `link()` in an array field
