@@ -1,89 +1,21 @@
 /**
  * @description
- * Custom admin dashboard for FRAS Canada CMS.
- * Replaces Payload's default dashboard at /admin.
- *
- * Key features:
- * - 4 widgets in 2x2 grid: Workflow Queue, Quick Actions, My Recent Items, Publishing Schedule
- * - Role-filtered: Authors see own items, Editors/Admins see all
- * - Publishing Schedule widget is Editor/Admin only
- * - Widgets refresh on page focus (not polling)
- *
- * @dependencies
- * - @payloadcms/ui: useAuth
- * - Widget sub-components
+ * Server component wrapper for the custom admin dashboard.
+ * Payload's DashboardView passes props containing non-serializable objects
+ * (locale with toString function, req, i18n, etc.) via RenderServerComponent.
+ * This server component absorbs those props and renders the client component
+ * without forwarding them, avoiding the "Functions cannot be passed to Client
+ * Components" error.
  *
  * @notes
  * - Registered via payload.config.ts admin.components.views.dashboard
- * - data-testid="admin-dashboard" on container
+ * - The actual UI lives in DashboardClient.tsx (client component)
  */
-'use client'
-
 import React from 'react'
-import { useAuth } from '@payloadcms/ui'
-import { WorkflowQueueWidget } from '../components/widgets/WorkflowQueueWidget'
-import { QuickActionsWidget } from '../components/widgets/QuickActionsWidget'
-import { RecentItemsWidget } from '../components/widgets/RecentItemsWidget'
-import { PublishingScheduleWidget } from '../components/widgets/PublishingScheduleWidget'
+import { DashboardClient } from './DashboardClient'
 
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  firstName?: string
-  email?: string
-  [key: string]: unknown
-}
-
-export const Dashboard: React.FC = () => {
-  const { user } = useAuth()
-  const typedUser = user as UserWithRole | null
-  const isEditorOrAdmin = typedUser?.role === 'admin' || typedUser?.role === 'editor'
-  const displayName = typedUser?.firstName || typedUser?.email || 'User'
-
-  return (
-    <div
-      data-testid="admin-dashboard"
-      style={{
-        padding: '24px',
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}
-    >
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 600, margin: 0 }}>
-          Welcome, {displayName}
-        </h1>
-        {typedUser?.role && (
-          <span style={{
-            display: 'inline-block',
-            marginTop: '8px',
-            padding: '2px 8px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: 600,
-            textTransform: 'capitalize',
-            background: 'var(--theme-elevation-100)',
-            color: 'var(--theme-elevation-600)',
-          }}>
-            {typedUser.role}
-          </span>
-        )}
-      </div>
-
-      {/* Widget Grid — 2x2 */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: isEditorOrAdmin ? '1fr 1fr' : '1fr 1fr',
-        gap: '20px',
-      }}>
-        <WorkflowQueueWidget userId={typedUser?.id} role={typedUser?.role} />
-        <QuickActionsWidget />
-        <RecentItemsWidget userId={typedUser?.id} />
-        {isEditorOrAdmin && <PublishingScheduleWidget />}
-      </div>
-    </div>
-  )
+const Dashboard: React.FC = () => {
+  return <DashboardClient />
 }
 
 export default Dashboard
