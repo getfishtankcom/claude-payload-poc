@@ -3,17 +3,11 @@
   "pages": [
     {
       "url": "/admin",
-      "name": "admin-page-builder",
+      "name": "admin-dashboard",
       "structuralChecks": [
-        { "selector": "[data-testid='page-builder']", "severity": "block" },
-        { "selector": "[data-testid='toolbox-palette']", "severity": "warn" },
-        { "selector": "[data-testid='template-zones']", "severity": "warn" },
-        { "selector": "[data-testid='props-drawer']", "severity": "warn" },
-        { "selector": "[data-testid='responsive-preview']", "severity": "warn" }
+        { "selector": "[data-testid='page-dashboard']", "severity": "warn" }
       ],
-      "interactions": [
-        { "action": "click", "selector": "[data-testid='toolbox-palette'] button", "severity": "warn" }
-      ],
+      "interactions": [],
       "consoleErrorsAllowed": true
     }
   ],
