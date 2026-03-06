@@ -3113,7 +3113,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Template configs exist, pages have template + builderLayout fields
 
 ### 25.2 Component registry
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Central registry at `src/admin/components/builder/registry.ts`
   - Each component type registers: type, label, category, icon, allowedZones[], propsSchema, renderComponent
