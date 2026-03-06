@@ -104,6 +104,10 @@ export default buildConfig({
           Component: '/admin/views/MediaLibrary',
           path: '/media',
         },
+        pageBuilder: {
+          Component: '/admin/views/PageBuilder',
+          path: '/builder/:id',
+        },
       },
     },
   },
