@@ -45,6 +45,7 @@ import { getComponentType, type BuilderComponentType } from '../components/build
 import { ComponentToolbox } from '../components/builder/ComponentToolbox'
 import { BuilderCanvas } from '../components/builder/BuilderCanvas'
 import { PropsDrawer } from '../components/builder/PropsDrawer'
+import { AddComponentModal } from '../components/builder/AddComponentModal'
 import type { BuilderLayout, ComponentInstance } from '../templates/types'
 
 // ---------------------------------------------------------------------------
@@ -95,6 +96,9 @@ export function PageBuilderClient() {
 
   // Builder state
   const builder = useBuilderState()
+
+  // Add Component modal state
+  const [addComponentZone, setAddComponentZone] = useState<string | null>(null)
 
   // DnD state
   const [activeDrag, setActiveDrag] = useState<{
@@ -457,7 +461,7 @@ export function PageBuilderClient() {
             onDuplicateComponent={(zone, componentId) => builder.duplicateComponent(zone, componentId)}
             onCopyComponent={(zone, componentId) => builder.copyComponent(zone, componentId)}
             onPasteComponent={(zone) => builder.pasteComponent(zone)}
-            onAddComponent={(zone) => builder.selectComponent(null, zone)}
+            onAddComponent={(zone) => setAddComponentZone(zone)}
             clipboard={builder.clipboard}
           />
 
@@ -485,6 +489,33 @@ export function PageBuilderClient() {
           </div>
         )}
       </DragOverlay>
+
+      {/* Add Component modal */}
+      {addComponentZone && template && (
+        <AddComponentModal
+          allowedComponents={
+            template.zones.find((z) => z.name === addComponentZone)?.allowedComponents
+          }
+          onSelect={(componentType) => {
+            const compDef = getComponentType(componentType)
+            if (!compDef) return
+            const defaultProps: Record<string, unknown> = {}
+            for (const field of compDef.propsSchema) {
+              if (field.defaultValue !== undefined) {
+                defaultProps[field.name] = field.defaultValue
+              }
+            }
+            const newComponent: ComponentInstance = {
+              id: generateId(),
+              type: componentType,
+              props: defaultProps,
+            }
+            builder.addComponent(addComponentZone, newComponent)
+            setAddComponentZone(null)
+          }}
+          onClose={() => setAddComponentZone(null)}
+        />
+      )}
     </DndContext>
   )
 }

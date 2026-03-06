@@ -3210,7 +3210,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 > Responsive preview, undo/redo, copy/paste, remove, and add-component modal. Depends on Epic 25 (core).
 
 ### 26.1 Responsive preview
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Toolbar toggles: Desktop (1440px), Tablet (768px), Mobile (375px)
   - Canvas width changes with smooth CSS transition
@@ -3224,7 +3224,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Breakpoint toggle resizes canvas, layout responds
 
 ### 26.2 Undo/redo
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Layout state history (array of JSON snapshots, max 50)
   - Undo reverts to previous state, Redo advances
@@ -3238,7 +3238,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Undo/redo works for all layout changes
 
 ### 26.3 Component copy/paste + duplicate
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Gear menu or right-click: Copy, Paste, Duplicate
   - Copy stores component JSON in admin clipboard state
@@ -3251,7 +3251,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Copy/paste/duplicate works within and across zones
 
 ### 26.4 Remove component
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - X button triggers confirmation: "Remove [Component Name]?"
   - Confirmation shows component type and brief content preview
@@ -3264,7 +3264,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Remove works with confirmation, undo restores
 
 ### 26.5 "Add Component" modal
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - "+" button at bottom of editable zone opens component picker modal
   - Searchable grid of available components (filtered by zone's allowed types)
