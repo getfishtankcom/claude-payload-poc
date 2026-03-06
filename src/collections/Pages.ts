@@ -50,6 +50,7 @@ import { workflowFields } from '@/fields/workflow'
 import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
 import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 import { clearExpiredLock } from '@/admin/hooks/locking-hooks'
+import { templateOptions } from '@/admin/templates'
 
 const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
 
@@ -144,6 +145,27 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Associated board for board-scoped pages',
+      },
+    },
+    // --- Page Builder fields (Epic 25) ---
+    {
+      name: 'template',
+      type: 'select',
+      label: 'Page Template',
+      options: templateOptions,
+      admin: {
+        position: 'sidebar',
+        description: 'Template determines locked/editable zones in the page builder',
+      },
+    },
+    {
+      name: 'builderLayout',
+      type: 'json',
+      label: 'Builder Layout',
+      admin: {
+        description: 'Page builder component layout JSON — managed by the visual builder',
+        // Hidden from standard edit view — only editable via the page builder
+        condition: () => false,
       },
     },
     // --- Tree hierarchy fields (Epic 23) ---

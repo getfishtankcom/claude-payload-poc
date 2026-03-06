@@ -3092,3 +3092,187 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - `npx tsc --noEmit` passes
   - Folders can be created, renamed, deleted, reorganized
 - **Ralph Stop:** Folder CRUD and drag-and-drop reorganization work
+
+## Epic 25: Page Builder Core (7 tasks)
+
+> The most complex admin feature — a template-first visual page builder with component toolbox, placeholder zones, drag-and-drop, and props drawer. Depends on Epic 22 (admin foundation), Epic 23 (content tree), Epic 24 (media library).
+
+### 25.1 Page template system
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Template zone configurations defined in code (`src/admin/templates/`)
+  - Each template defines locked zones (component + position) and editable zones (name + allowed component types)
+  - 8 templates: Homepage, Board Detail, Project Detail, Active Projects, Open Consultations, Search Results, Content Page, Flexible Page
+  - `template` select field added to `pages` collection
+  - `builderLayout` JSON field added to `pages` collection (stores component placement per zone)
+  - Template selected on page creation determines available zones
+  - `data-testid="template-select"` on template selector
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Page with template "board-detail" shows correct locked + editable zones
+- **Ralph Stop:** Template configs exist, pages have template + builderLayout fields
+
+### 25.2 Component registry
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Central registry at `src/admin/components/builder/registry.ts`
+  - Each component type registers: type, label, category, icon, allowedZones[], propsSchema, renderComponent
+  - 4 categories: Content Blocks (10), Layout Components (7), Data-Driven Widgets (9), Interactive Elements (5) = 31 total
+  - Props schemas define configurable fields per component
+  - Data-driven widgets support Manual and Dynamic data source modes
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Registry exports 31 components, each with propsSchema
+- **Ralph Stop:** Registry exports all 31 component types with schemas
+
+### 25.3 Page builder view (`/admin/builder/:id`)
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Custom Payload admin view at `/admin/builder/:id`
+  - Three-panel layout: Left (toolbox), Center (canvas), Right (props drawer)
+  - Toolbar: Save, Undo, Redo, Preview, Desktop/Tablet/Mobile, Language EN/FR
+  - Loads page's `builderLayout` JSON on mount, renders zone structure
+  - Save persists `builderLayout` JSON back to Payload API
+  - "Open in Page Builder" button on Payload edit view for pages
+  - `data-testid="page-builder"` on main container
+  - `data-testid="builder-toolbar"` on toolbar
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - `/admin/builder/:id` renders 3-panel layout, loads existing layout JSON
+- **Ralph Stop:** Builder view renders with all 3 panels, loads/saves layout
+
+### 25.4 Component toolbox (left panel)
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Categorized list of available components from registry
+  - Search bar at top to filter components
+  - Each component shows: icon + label
+  - 4 collapsible categories: Content, Layout, Data, Interactive
+  - Components are draggable via `@dnd-kit/core`
+  - Toolbox collapses to icon-only strip on tablet/mobile preview
+  - `data-testid="component-toolbox"` on toolbox container
+  - `data-testid="toolbox-search"` on search input
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Search "card" filters to Card Grid. Drag Card Grid initiates DnD.
+- **Ralph Stop:** Toolbox renders all 31 components, drag initiates correctly
+
+### 25.5 Canvas with placeholder zones (center panel)
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Renders zone structure based on template configuration
+  - Locked zones: gray dashed border, lock icon, "Locked" label, not interactive
+  - Editable zones: blue dashed border, "Editable Zone" label, "+" button at bottom
+  - Components in editable zones show chrome on hover: label, gear icon, drag handle, X (remove)
+  - Drop targets: green highlight when dragging valid component over editable zone
+  - `data-testid="builder-canvas"` on canvas container
+  - `data-testid="zone-locked"` on locked zones
+  - `data-testid="zone-editable"` on editable zones
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Canvas shows locked zones with lock icon, editable zones with blue border
+- **Ralph Stop:** Canvas renders zones, component chrome works
+
+### 25.6 Drag-and-drop: toolbox to canvas + reorder
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Drag from toolbox -> drop into editable zone creates new component instance
+  - Drag component within zone reorders (sort order changes)
+  - Drag component between editable zones (if multiple zones on template)
+  - Drop validation: check component's `allowedZones` against target zone
+  - Invalid drops: red highlight, snap back to origin
+  - On drop: update `builderLayout` JSON, re-render canvas
+  - Uses `@dnd-kit/core` + `@dnd-kit/sortable`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Drag Rich Text from toolbox into main zone — component appears. Drag to reorder — order updates.
+- **Ralph Stop:** Drag from toolbox creates component, drag within zone reorders
+
+### 25.7 Props drawer (right panel)
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Slides out (300px wide) on gear icon click
+  - Shows component label + close button at top
+  - Renders form fields based on component's `propsSchema`
+  - Field types: text input, select, rich text (Lexical), media picker, relationships, arrays
+  - Data source mode toggle for data-driven widgets: Manual vs Dynamic
+  - Apply and Cancel buttons
+  - Apply updates component props in `builderLayout` JSON
+  - `data-testid="props-drawer"` on drawer container
+  - `data-testid="props-apply"` on Apply button
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Click gear on Card Grid — drawer shows Columns, Style, Items fields. Change columns to 2, Apply — updates.
+- **Ralph Stop:** Drawer opens with correct fields per component, Apply saves
+
+## Epic 26: Page Builder Polish (5 tasks)
+
+> Responsive preview, undo/redo, copy/paste, remove, and add-component modal. Depends on Epic 25 (core).
+
+### 26.1 Responsive preview
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Toolbar toggles: Desktop (1440px), Tablet (768px), Mobile (375px)
+  - Canvas width changes with smooth CSS transition
+  - Toolbox collapses to icons on tablet/mobile preview
+  - Active breakpoint highlighted in toolbar
+  - Canvas centered within available space for smaller breakpoints
+  - `data-testid="breakpoint-desktop"`, `data-testid="breakpoint-tablet"`, `data-testid="breakpoint-mobile"`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Click Tablet — canvas shrinks to 768px, layout responds
+- **Ralph Stop:** Breakpoint toggle resizes canvas, layout responds
+
+### 26.2 Undo/redo
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Layout state history (array of JSON snapshots, max 50)
+  - Undo reverts to previous state, Redo advances
+  - Keyboard shortcuts: Ctrl+Z (undo), Ctrl+Shift+Z (redo)
+  - Toolbar buttons grayed when no history available
+  - History cleared on save
+  - `data-testid="undo-button"`, `data-testid="redo-button"`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Add component, Ctrl+Z — removed. Ctrl+Shift+Z — restored.
+- **Ralph Stop:** Undo/redo works for all layout changes
+
+### 26.3 Component copy/paste + duplicate
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - Gear menu or right-click: Copy, Paste, Duplicate
+  - Copy stores component JSON in admin clipboard state
+  - Paste inserts at cursor position in current zone
+  - Duplicate creates identical component directly below source
+  - `data-testid="component-duplicate"`, `data-testid="component-copy"`, `data-testid="component-paste"`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Right-click component, Duplicate — identical component appears below
+- **Ralph Stop:** Copy/paste/duplicate works within and across zones
+
+### 26.4 Remove component
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - X button triggers confirmation: "Remove [Component Name]?"
+  - Confirmation shows component type and brief content preview
+  - Remove updates `builderLayout` JSON
+  - Undo-able (tracked in undo history)
+  - `data-testid="component-remove"`, `data-testid="remove-confirm"`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Click X on component, confirm — removed. Ctrl+Z — restored.
+- **Ralph Stop:** Remove works with confirmation, undo restores
+
+### 26.5 "Add Component" modal
+- [ ] **Status:** Not started
+- **Acceptance Criteria:**
+  - "+" button at bottom of editable zone opens component picker modal
+  - Searchable grid of available components (filtered by zone's allowed types)
+  - Shows icon + label + brief description per component
+  - Categorized tabs: Content, Layout, Data, Interactive
+  - Click component to add it to the zone
+  - `data-testid="add-component-modal"`, `data-testid="add-component-search"`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Modal opens, search/filter works, selection adds component to zone
+- **Ralph Stop:** Modal opens, search/filter works, selection adds component
