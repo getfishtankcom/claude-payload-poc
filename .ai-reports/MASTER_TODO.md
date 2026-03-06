@@ -2935,7 +2935,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Drag-and-drop moves/reorders items, database updated
 
 ### 23.6 Tree search
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (built as part of 23.2 — integral to tree view)
 - **Acceptance Criteria:**
   - Search bar at top of tree panel
   - Client-side filter for expanded/visible nodes (instant, as-you-type)
