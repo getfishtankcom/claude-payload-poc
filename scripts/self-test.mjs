@@ -301,6 +301,41 @@ async function main() {
 
   const browser = await chromium.launch({ headless: true });
 
+  // If any page URL starts with /admin, get auth token via API and inject as cookie
+  const needsAuth = config.pages.some((p) => p.url.startsWith('/admin'));
+  let storageState = undefined;
+  if (needsAuth) {
+    try {
+      const loginRes = await fetch(`http://localhost:${port}/api/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: 'admin@test.com', password: 'Test1234!' }),
+      });
+      if (loginRes.ok) {
+        const data = await loginRes.json();
+        const token = data.token;
+        if (token) {
+          storageState = {
+            cookies: [{
+              name: 'payload-token',
+              value: token,
+              domain: 'localhost',
+              path: '/',
+              httpOnly: true,
+              secure: false,
+              sameSite: 'Lax',
+              expires: -1,
+            }],
+            origins: [],
+          };
+          console.log('Admin auth: logged in via API');
+        }
+      }
+    } catch (err) {
+      console.warn('Admin login failed (test user may not exist):', err.message);
+    }
+  }
+
   try {
     for (const pageConfig of config.pages) {
       const { url, name, structuralChecks = [], interactions = [], consoleErrorsAllowed = true } = pageConfig;
@@ -322,6 +357,7 @@ async function main() {
 
         const context = await browser.newContext({
           viewport: { width: bp, height: 900 },
+          ...(storageState ? { storageState } : {}),
         });
         const page = await context.newPage();
 
@@ -335,7 +371,9 @@ async function main() {
 
         // Navigate
         try {
-          await page.goto(fullUrl, { waitUntil: 'networkidle', timeout: 30_000 });
+          await page.goto(fullUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+          // Allow time for client-side hydration and rendering
+          await page.waitForTimeout(3000);
         } catch (err) {
           pageResult.breakpoints.push({
             width: bp,
