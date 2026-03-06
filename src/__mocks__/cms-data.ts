@@ -905,3 +905,171 @@ export function mockTreeNodes(): TreeNode[] {
     },
   ]
 }
+
+// ── Media Library Mocks (Epic 24) ─────────────────────────────────────────
+
+export type MockMediaFolder = {
+  id: string | number
+  name: string
+  hasChildren: boolean
+  sortOrder: number
+  parent: string | number | null
+  mediaCount: number
+  children?: MockMediaFolder[]
+}
+
+export type MockMediaItem = {
+  id: string | number
+  filename: string
+  alt: string
+  title?: string
+  description?: string
+  mimeType: string
+  filesize: number
+  width?: number
+  height?: number
+  url: string
+  folder?: string | number | null
+  createdAt: string
+  updatedAt: string
+  createdBy?: { id: string; email?: string; firstName?: string; lastName?: string } | null
+  sizes?: {
+    thumbnail?: { url: string; width: number; height: number }
+    card?: { url: string; width: number; height: number }
+  }
+}
+
+/** Mock folder tree for media library stories */
+export function mockMediaFolders(): MockMediaFolder[] {
+  return [
+    {
+      id: 'folder-images',
+      name: 'Images',
+      hasChildren: true,
+      sortOrder: 0,
+      parent: null,
+      mediaCount: 0,
+      children: [
+        { id: 'folder-boards', name: 'Boards', hasChildren: false, sortOrder: 0, parent: 'folder-images', mediaCount: 4 },
+        { id: 'folder-news', name: 'News', hasChildren: false, sortOrder: 1, parent: 'folder-images', mediaCount: 3 },
+        { id: 'folder-heroes', name: 'Heroes', hasChildren: false, sortOrder: 2, parent: 'folder-images', mediaCount: 2 },
+      ],
+    },
+    {
+      id: 'folder-documents',
+      name: 'Documents',
+      hasChildren: true,
+      sortOrder: 1,
+      parent: null,
+      mediaCount: 0,
+      children: [
+        { id: 'folder-pdfs', name: 'PDFs', hasChildren: false, sortOrder: 0, parent: 'folder-documents', mediaCount: 5 },
+        { id: 'folder-reports', name: 'Reports', hasChildren: false, sortOrder: 1, parent: 'folder-documents', mediaCount: 2 },
+      ],
+    },
+    { id: 'folder-logos', name: 'Logos', hasChildren: false, sortOrder: 2, parent: null, mediaCount: 6 },
+    { id: 'folder-videos', name: 'Videos', hasChildren: false, sortOrder: 3, parent: null, mediaCount: 1 },
+  ]
+}
+
+/** Mock media items for media library stories */
+export function mockMediaItems(): MockMediaItem[] {
+  return [
+    {
+      id: 'media-1',
+      filename: 'acsb-hero-banner.jpg',
+      alt: 'AcSB Hero Banner',
+      title: 'AcSB Homepage Hero',
+      mimeType: 'image/jpeg',
+      filesize: 1200000,
+      width: 1920,
+      height: 600,
+      url: '/media/acsb-hero-banner.jpg',
+      folder: 'folder-heroes',
+      createdAt: '2026-02-15T10:30:00Z',
+      updatedAt: '2026-02-15T10:30:00Z',
+      createdBy: { id: '1', email: 'admin@frascanada.ca', firstName: 'Admin' },
+      sizes: {
+        thumbnail: { url: '/media/acsb-hero-banner-200x200.jpg', width: 200, height: 200 },
+        card: { url: '/media/acsb-hero-banner-640x480.jpg', width: 640, height: 480 },
+      },
+    },
+    {
+      id: 'media-2',
+      filename: 'fras-logo-purple.svg',
+      alt: 'FRAS Canada Logo',
+      title: 'FRAS Logo Purple',
+      mimeType: 'image/svg+xml',
+      filesize: 45000,
+      width: 400,
+      height: 120,
+      url: '/media/fras-logo-purple.svg',
+      folder: 'folder-logos',
+      createdAt: '2026-01-10T08:00:00Z',
+      updatedAt: '2026-01-10T08:00:00Z',
+      createdBy: { id: '1', email: 'admin@frascanada.ca', firstName: 'Admin' },
+    },
+    {
+      id: 'media-3',
+      filename: 'psab-board-photo.jpg',
+      alt: 'PSAB Board Members Photo',
+      title: 'PSAB Board Photo 2026',
+      mimeType: 'image/jpeg',
+      filesize: 800000,
+      width: 1200,
+      height: 800,
+      url: '/media/psab-board-photo.jpg',
+      folder: 'folder-boards',
+      createdAt: '2026-02-20T14:00:00Z',
+      updatedAt: '2026-02-20T14:00:00Z',
+      createdBy: { id: '2', email: 'editor@frascanada.ca', firstName: 'Sarah' },
+      sizes: {
+        thumbnail: { url: '/media/psab-board-photo-200x200.jpg', width: 200, height: 200 },
+      },
+    },
+    {
+      id: 'media-4',
+      filename: '2026-annual-report.pdf',
+      alt: '2026 Annual Report',
+      title: 'FRAS 2026 Annual Report',
+      description: 'Complete annual report covering all board activities for fiscal year 2025-2026.',
+      mimeType: 'application/pdf',
+      filesize: 5400000,
+      url: '/media/2026-annual-report.pdf',
+      folder: 'folder-reports',
+      createdAt: '2026-03-01T09:00:00Z',
+      updatedAt: '2026-03-01T09:00:00Z',
+      createdBy: { id: '1', email: 'admin@frascanada.ca', firstName: 'Admin' },
+    },
+    {
+      id: 'media-5',
+      filename: 'sustainability-webinar.mp4',
+      alt: 'CSSB Sustainability Webinar',
+      title: 'Climate Disclosure Standards Webinar',
+      mimeType: 'video/mp4',
+      filesize: 125000000,
+      url: '/media/sustainability-webinar.mp4',
+      folder: 'folder-videos',
+      createdAt: '2026-02-28T16:00:00Z',
+      updatedAt: '2026-02-28T16:00:00Z',
+      createdBy: { id: '2', email: 'editor@frascanada.ca', firstName: 'Sarah' },
+    },
+    {
+      id: 'media-6',
+      filename: 'news-standards-update.jpg',
+      alt: 'Standards Update Illustration',
+      mimeType: 'image/jpeg',
+      filesize: 320000,
+      width: 800,
+      height: 450,
+      url: '/media/news-standards-update.jpg',
+      folder: 'folder-news',
+      createdAt: '2026-03-03T11:00:00Z',
+      updatedAt: '2026-03-03T11:00:00Z',
+      createdBy: { id: '3', email: 'author@frascanada.ca', firstName: 'James' },
+      sizes: {
+        thumbnail: { url: '/media/news-standards-update-200x200.jpg', width: 200, height: 200 },
+      },
+    },
+  ]
+}

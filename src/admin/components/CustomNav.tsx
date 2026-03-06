@@ -105,7 +105,7 @@ export const CustomNav: React.FC = () => {
 
         {/* Tools Section */}
         <NavSection label="TOOLS" />
-        <NavLink href="/admin/collections/media" label="Media Library" icon="image" />
+        <NavLink href="/admin/media" label="Media Library" icon="image" />
         <NavLink href="/admin/globals/search-config" label="Search Config" icon="search" />
 
         {/* System Section — Admin only */}

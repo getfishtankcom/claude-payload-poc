@@ -2968,7 +2968,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Folder collection exists, tree API returns folder structure, media collection has folder field
 
 ### 24.2 Media library view (/admin/media)
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom Payload admin view registered at route `/admin/media`
   - Two-panel layout: left panel folder tree, right panel media grid

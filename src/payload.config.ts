@@ -100,6 +100,10 @@ export default buildConfig({
           Component: '/admin/views/ContentTree',
           path: '/tree',
         },
+        mediaLibrary: {
+          Component: '/admin/views/MediaLibrary',
+          path: '/media',
+        },
       },
     },
   },
