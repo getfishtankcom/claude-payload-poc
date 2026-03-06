@@ -578,6 +578,73 @@ export function mockDocumentForCommentList(count = 6): DocumentForComment[] {
   )
 }
 
+// ── Admin Panel Mock Data ────────────────────────────────────────────────────
+
+export type WorkflowHistoryEntry = {
+  from?: string
+  to?: string
+  user?: { firstName?: string; email?: string } | string
+  date?: string
+  comment?: string
+}
+
+export type WorkflowItem = {
+  id: string
+  title?: string
+  slug?: string
+  workflowState: string
+  createdBy?: { id: string; email?: string; firstName?: string } | string
+  updatedAt?: string
+}
+
+export type ScheduledItem = {
+  id: string
+  title?: string
+  slug?: string
+  publishOn?: string
+}
+
+export function mockWorkflowHistory(): WorkflowHistoryEntry[] {
+  return [
+    { from: 'draft', to: 'in_review', user: { firstName: 'Author', email: 'author@frascanada.ca' }, date: '2026-03-01T10:00:00.000Z' },
+    { from: 'in_review', to: 'needs_revision', user: { firstName: 'Editor', email: 'editor@frascanada.ca' }, date: '2026-03-02T14:30:00.000Z', comment: 'Please add the French translation and update the summary to reference Section 3856.' },
+    { from: 'needs_revision', to: 'in_review', user: { firstName: 'Author', email: 'author@frascanada.ca' }, date: '2026-03-03T09:15:00.000Z' },
+  ]
+}
+
+export function mockWorkflowItems(): WorkflowItem[] {
+  return [
+    { id: '1', title: 'Revenue Recognition Update', workflowState: 'in_review', updatedAt: '2026-03-05T10:00:00.000Z' },
+    { id: '2', title: 'Climate Disclosure Framework', workflowState: 'in_review', updatedAt: '2026-03-04T15:30:00.000Z' },
+    { id: '3', title: 'PSAB Annual Report 2025', workflowState: 'needs_revision', updatedAt: '2026-03-03T09:15:00.000Z' },
+    { id: '4', title: 'New Auditing Standard CAS 600', workflowState: 'approved', updatedAt: '2026-03-02T14:00:00.000Z' },
+  ]
+}
+
+export function mockScheduledItems(): ScheduledItem[] {
+  const now = new Date()
+  const tomorrow = new Date(now)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const nextWeek = new Date(now)
+  nextWeek.setDate(nextWeek.getDate() + 7)
+  return [
+    { id: '1', title: 'Revenue Recognition Update', publishOn: tomorrow.toISOString() },
+    { id: '2', title: 'PSAB Guidelines Q1', publishOn: tomorrow.toISOString() },
+    { id: '3', title: 'Climate Disclosure Standard', publishOn: nextWeek.toISOString() },
+  ]
+}
+
+export function mockRecentItems(): Array<{ id: string; title: string; updatedAt: string }> {
+  const now = Date.now()
+  return [
+    { id: '1', title: 'Revenue Recognition for NFPOs', updatedAt: new Date(now - 5 * 60000).toISOString() },
+    { id: '2', title: 'AcSB March Meeting Summary', updatedAt: new Date(now - 30 * 60000).toISOString() },
+    { id: '3', title: 'Climate Disclosure Framework', updatedAt: new Date(now - 2 * 3600000).toISOString() },
+    { id: '4', title: 'PSAB Annual Report 2025', updatedAt: new Date(now - 24 * 3600000).toISOString() },
+    { id: '5', title: 'New Auditing Standard CAS 600', updatedAt: new Date(now - 48 * 3600000).toISOString() },
+  ]
+}
+
 // ── Navigation & Footer Mock Data ────────────────────────────────────────────
 
 import type { Navigation, Footer } from '@/payload-types'
