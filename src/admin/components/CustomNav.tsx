@@ -82,7 +82,7 @@ export const CustomNav: React.FC = () => {
       {/* Main Navigation */}
       <div style={{ padding: '8px 0', flex: 1 }}>
         <NavLink href="/admin" label="Dashboard" icon="home" />
-        <NavLink href="/admin/collections/pages" label="Content Tree" icon="folder" />
+        <NavLink href="/admin/tree" label="Content Tree" icon="folder" />
         <NavLink
           href="/admin/collections/pages?where[workflowState][in]=in_review,needs_revision,approved"
           label="Workbox"

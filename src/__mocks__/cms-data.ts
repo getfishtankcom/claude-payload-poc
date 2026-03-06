@@ -772,3 +772,136 @@ export function mockFooterData(): Footer {
     newsletter_description: 'Get critical updates on regulatory changes and new standard releases.',
   }
 }
+
+// ── Tree Node mock data (Epic 23) ────────────────────────────────────────
+
+export type TreeNode = {
+  id: string | number
+  title: string
+  slug: string
+  contentType: string
+  workflowState: string
+  lockedBy: string | number | null
+  hasChildren: boolean
+  sortOrder: number
+  parent: string | number | null
+  board: string | number | null
+  children?: TreeNode[]
+}
+
+/** Returns a mock tree hierarchy for Storybook stories */
+export function mockTreeNodes(): TreeNode[] {
+  return [
+    {
+      id: 'root-1',
+      title: 'FRAS Canada',
+      slug: 'fras-canada-root',
+      contentType: 'folder',
+      workflowState: 'published',
+      lockedBy: null,
+      hasChildren: true,
+      sortOrder: 0,
+      parent: null,
+      board: null,
+      children: [
+        {
+          id: 'home-1',
+          title: 'Home',
+          slug: 'home',
+          contentType: 'page',
+          workflowState: 'published',
+          lockedBy: null,
+          hasChildren: false,
+          sortOrder: 0,
+          parent: 'root-1',
+          board: null,
+        },
+        {
+          id: 'boards-folder',
+          title: 'Boards',
+          slug: 'boards-folder',
+          contentType: 'folder',
+          workflowState: 'published',
+          lockedBy: null,
+          hasChildren: true,
+          sortOrder: 1,
+          parent: 'root-1',
+          board: null,
+          children: [
+            {
+              id: 'acsb-page',
+              title: 'AcSB',
+              slug: 'board-acsb',
+              contentType: 'page',
+              workflowState: 'published',
+              lockedBy: null,
+              hasChildren: true,
+              sortOrder: 0,
+              parent: 'boards-folder',
+              board: 'board-1',
+              children: [
+                { id: 'acsb-about', title: 'About AcSB', slug: 'acsb-about', contentType: 'page', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 0, parent: 'acsb-page', board: 'board-1' },
+                { id: 'acsb-members', title: 'AcSB Members', slug: 'acsb-members', contentType: 'page', workflowState: 'draft', lockedBy: null, hasChildren: false, sortOrder: 1, parent: 'acsb-page', board: 'board-1' },
+              ],
+            },
+            { id: 'psab-page', title: 'PSAB', slug: 'board-psab', contentType: 'page', workflowState: 'published', lockedBy: 'user-2', hasChildren: false, sortOrder: 1, parent: 'boards-folder', board: 'board-2' },
+            { id: 'cssb-page', title: 'CSSB', slug: 'board-cssb', contentType: 'page', workflowState: 'in_review', lockedBy: null, hasChildren: false, sortOrder: 2, parent: 'boards-folder', board: 'board-3' },
+            { id: 'aasb-page', title: 'AASB', slug: 'board-aasb', contentType: 'page', workflowState: 'approved', lockedBy: null, hasChildren: false, sortOrder: 3, parent: 'boards-folder', board: 'board-4' },
+            { id: 'rasoc-page', title: 'RASOC', slug: 'board-rasoc', contentType: 'page', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 4, parent: 'boards-folder', board: 'board-5' },
+          ],
+        },
+        {
+          id: 'projects-folder',
+          title: 'Projects',
+          slug: 'projects-folder',
+          contentType: 'folder',
+          workflowState: 'published',
+          lockedBy: null,
+          hasChildren: true,
+          sortOrder: 2,
+          parent: 'root-1',
+          board: null,
+          children: [
+            { id: 'proj-1', title: 'IFRS S1 Sustainability', slug: 'project-ifrs-s1', contentType: 'project', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 0, parent: 'projects-folder', board: null },
+            { id: 'proj-2', title: 'ASPE Review', slug: 'project-aspe-review', contentType: 'project', workflowState: 'draft', lockedBy: null, hasChildren: false, sortOrder: 1, parent: 'projects-folder', board: null },
+          ],
+        },
+        {
+          id: 'news-folder',
+          title: 'News',
+          slug: 'news-folder',
+          contentType: 'folder',
+          workflowState: 'published',
+          lockedBy: null,
+          hasChildren: true,
+          sortOrder: 3,
+          parent: 'root-1',
+          board: null,
+          children: [
+            { id: 'news-1', title: 'New Sustainability Standards Published', slug: 'news-sustainability', contentType: 'news', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 0, parent: 'news-folder', board: null },
+            { id: 'news-2', title: 'Board Appointments for 2026', slug: 'news-appointments', contentType: 'news', workflowState: 'draft', lockedBy: null, hasChildren: false, sortOrder: 1, parent: 'news-folder', board: null },
+            { id: 'news-3', title: 'PSAB Consultation Update', slug: 'news-psab-consult', contentType: 'news', workflowState: 'in_review', lockedBy: 'user-3', hasChildren: false, sortOrder: 2, parent: 'news-folder', board: null },
+          ],
+        },
+        {
+          id: 'events-folder',
+          title: 'Events',
+          slug: 'events-folder',
+          contentType: 'folder',
+          workflowState: 'published',
+          lockedBy: null,
+          hasChildren: true,
+          sortOrder: 4,
+          parent: 'root-1',
+          board: null,
+          children: [
+            { id: 'event-1', title: 'AcSB Board Meeting — March 2026', slug: 'event-acsb-march', contentType: 'event', workflowState: 'approved', lockedBy: null, hasChildren: false, sortOrder: 0, parent: 'events-folder', board: null },
+            { id: 'event-2', title: 'CSSB Webinar: Climate Disclosure', slug: 'event-cssb-webinar', contentType: 'event', workflowState: 'needs_revision', lockedBy: null, hasChildren: false, sortOrder: 1, parent: 'events-folder', board: null },
+          ],
+        },
+        { id: 'docs-folder', title: 'Documents', slug: 'documents-folder', contentType: 'folder', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 5, parent: 'root-1', board: null },
+        { id: 'settings-node', title: 'Settings', slug: 'settings-node', contentType: 'settings', workflowState: 'published', lockedBy: null, hasChildren: false, sortOrder: 6, parent: 'root-1', board: null },
+      ],
+    },
+  ]
+}

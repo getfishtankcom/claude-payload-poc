@@ -93,6 +93,10 @@ export default buildConfig({
         dashboard: {
           Component: '/admin/views/Dashboard',
         },
+        contentTree: {
+          Component: '/admin/views/ContentTree',
+          path: '/tree',
+        },
       },
     },
   },

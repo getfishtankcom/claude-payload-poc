@@ -2876,7 +2876,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** API returns tree data, seed data creates initial hierarchy
 
 ### 23.2 Tree view component (/admin/tree)
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom Payload admin view registered at route `/admin/tree`
   - Left panel: tree with expand/collapse, item selection
@@ -2891,7 +2891,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Tree renders with full hierarchy, items open in editor
 
 ### 23.3 Tree icons + gutter indicators
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Type-specific icons per item: page (document), folder, news (newspaper), project (clipboard), event (calendar), document (file), media (image), settings (gear)
   - Gutter indicators: workflow state colored dot (gray=draft, blue=review, yellow=revision, green=approved, purple=published)
