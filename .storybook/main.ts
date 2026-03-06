@@ -40,6 +40,8 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, '../src'),
+      // Mock @payloadcms/ui hooks for admin component stories
+      '@payloadcms/ui': path.resolve(__dirname, 'mocks/payloadcms-ui.tsx'),
     }
     return config
   },
