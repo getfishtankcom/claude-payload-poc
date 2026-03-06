@@ -19,6 +19,8 @@
  * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
  * - Locking: lockedBy, lockedAt for concurrent edit prevention
  * - RBAC: role-based access control (author/editor/admin)
+ * - Tree hierarchy: parent (self-ref), sortOrder, contentType for unified content tree
+ * - Epic 23: Content tree data model fields
  *
  * @dependencies
  * - hero field from @/heros/config
@@ -142,6 +144,48 @@ export const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Associated board for board-scoped pages',
+      },
+    },
+    // --- Tree hierarchy fields (Epic 23) ---
+    {
+      name: 'parent',
+      type: 'relationship',
+      relationTo: 'pages',
+      label: 'Parent Page',
+      admin: {
+        position: 'sidebar',
+        description: 'Parent item in the content tree hierarchy',
+      },
+      index: true,
+    },
+    {
+      name: 'sortOrder',
+      type: 'number',
+      label: 'Sort Order',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        description: 'Order within parent for tree display',
+      },
+    },
+    {
+      name: 'contentType',
+      type: 'select',
+      label: 'Content Type',
+      defaultValue: 'page',
+      options: [
+        { label: 'Page', value: 'page' },
+        { label: 'Folder', value: 'folder' },
+        { label: 'News Article', value: 'news' },
+        { label: 'Project', value: 'project' },
+        { label: 'Event', value: 'event' },
+        { label: 'Document', value: 'document' },
+        { label: 'Media', value: 'media' },
+        { label: 'Settings', value: 'settings' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Type of content (determines tree icon)',
       },
     },
     // --- Workflow fields (Epic 22) ---

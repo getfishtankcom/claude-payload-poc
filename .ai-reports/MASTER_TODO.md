@@ -2855,3 +2855,96 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - `npx tsc --noEmit` passes
   - Author cannot approve/publish, Editor cannot manage users, Admin can do everything
 - **Ralph Stop:** Role enforcement works end-to-end
+
+---
+
+## Epic 23: Content Tree (6 tasks)
+
+### 23.1 Tree data model + API
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - `parent` (self-referential relationship) and `sortOrder` (number) fields added to `pages` collection
+  - `contentType` select field added to `pages` for tree icon display (page, folder, news, project, event, document, media, settings)
+  - Custom Payload endpoint `GET /api/tree` returns full tree hierarchy as nested JSON
+  - Endpoint supports `?parentId=X` for lazy-loading children of a specific node
+  - Response includes: id, title, contentType, workflowState, lockedBy, hasChildren, sortOrder
+  - Seed data creates base tree structure (FRAS Canada root > Boards > [AcSB, PSAB, CSSB, AASB, RASOC], Projects folder, News folder, etc.)
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - `GET /api/tree` returns nested JSON with seed data hierarchy
+  - `GET /api/tree?parentId=X` returns only children of that node
+- **Ralph Stop:** API returns tree data, seed data creates initial hierarchy
+
+### 23.2 Tree view component (/admin/tree)
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Custom Payload admin view registered at route `/admin/tree`
+  - Left panel: tree with expand/collapse, item selection
+  - Right panel: link to Payload edit view for selected item
+  - Tree state (expanded/collapsed nodes) persisted in localStorage
+  - Lazy-load children on expand for large folders
+  - Click item to navigate to its edit view in right panel
+  - `data-testid="page-content-tree"` on container
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Tree renders at `/admin/tree`, items expand/collapse, selection works
+- **Ralph Stop:** Tree renders with full hierarchy, items open in editor
+
+### 23.3 Tree icons + gutter indicators
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Type-specific icons per item: page (document), folder, news (newspaper), project (clipboard), event (calendar), document (file), media (image), settings (gear)
+  - Gutter indicators: workflow state colored dot (gray=draft, blue=review, yellow=revision, green=approved, purple=published)
+  - Lock icon when lockedBy is set
+  - Warning icon when missing FR version
+  - Icons from `@heroicons/react` (already installed)
+  - `data-testid="tree-item-icon"` and `data-testid="tree-gutter"` attributes
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Each tree item shows correct icon + gutter state visually
+- **Ralph Stop:** Icons match item types, gutter dots show correct workflow colors
+
+### 23.4 Right-click context menu
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Custom context menu component positioned at cursor on right-click
+  - Menu items: Insert > (submenu filtered by valid child types), Open in New Tab, separator, Copy, Move To, Duplicate, Rename, separator, Lock/Unlock, separator, Delete (with confirmation)
+  - Insert menu dynamically filtered per PRD Section 4.4 insert options table
+  - Depth limit enforced: items at level 5 show no Insert option
+  - Role-based: Authors can't delete published items
+  - Close on Escape or click-outside
+  - `data-testid="context-menu"` on container
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Right-click menu appears, Insert shows only valid children, Delete confirms
+- **Ralph Stop:** Right-click menu works with all actions, insert options filtered correctly
+
+### 23.5 Drag-and-drop reorder + move
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Drag items to reorder within same parent (updates `sortOrder`)
+  - Drag items to different parent to move (updates `parent` relationship)
+  - Drop target highlighting: blue outline on valid, red on invalid
+  - Moving item under a Board subtree auto-updates the `board` relationship field
+  - Depth limit enforced: can't drag beyond level 5
+  - Confirmation dialog for cross-parent moves
+  - Uses `@dnd-kit/core` + `@dnd-kit/sortable`
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Drag reorders items, cross-parent move updates parent + board fields
+- **Ralph Stop:** Drag-and-drop moves/reorders items, database updated
+
+### 23.6 Tree search
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Search bar at top of tree panel
+  - Client-side filter for expanded/visible nodes (instant, as-you-type)
+  - Server-side API search endpoint `GET /api/tree/search?q=...` for deep search
+  - Search matches on title and slug
+  - Results highlight matching items, auto-expand parents to show matches
+  - Clear search button returns to normal tree view
+  - `data-testid="tree-search"` on search input
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Search filters tree in real-time, deep search finds buried items
+- **Ralph Stop:** Search works client-side and server-side
