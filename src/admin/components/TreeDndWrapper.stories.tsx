@@ -3,6 +3,7 @@
  * Storybook stories for the TreeDndWrapper component (Epic 23, task 23.5).
  * Shows the DnD context with draggable items in various configurations.
  */
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { TreeDndWrapper, DraggableTreeItem } from './TreeDndWrapper'
 import { mockTreeNodes } from '@/__mocks__/cms-data'
@@ -14,20 +15,21 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
+  args: {
+    tree: mockTreeNodes(),
+    onMoveNode: async (result) => {
+      console.log('Move:', result)
+    },
+    children: null,
+  },
 } satisfies Meta<typeof TreeDndWrapper>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {
-    tree: mockTreeNodes(),
-    onMoveNode: async (result) => {
-      console.log('Move:', result)
-    },
-  },
   render: (args) => (
-    <TreeDndWrapper {...args}>
+    <TreeDndWrapper tree={args.tree} onMoveNode={args.onMoveNode}>
       <div style={{ width: 300, padding: 8 }}>
         {['Item 1', 'Item 2', 'Item 3'].map((label, i) => (
           <DraggableTreeItem key={i} id={`item-${i}`}>
@@ -59,10 +61,9 @@ export const Default: Story = {
 export const EmptyTree: Story = {
   args: {
     tree: [],
-    onMoveNode: async () => {},
   },
   render: (args) => (
-    <TreeDndWrapper {...args}>
+    <TreeDndWrapper tree={args.tree} onMoveNode={args.onMoveNode}>
       <div style={{ padding: 16, color: '#999' }}>No items to drag</div>
     </TreeDndWrapper>
   ),

@@ -62,7 +62,7 @@ interface TreeNode {
 // --------------------------------------------------------------------------
 
 const STORAGE_KEY = 'fras-content-tree-expanded'
-const LAZY_LOAD_THRESHOLD = 0 // Always lazy-load children on expand
+// Lazy-load threshold is 0 — always lazy-load children on expand
 
 // Workflow state colors (PRD Section 4.2)
 const WORKFLOW_COLORS: Record<string, string> = {

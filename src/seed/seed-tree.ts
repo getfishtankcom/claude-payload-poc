@@ -115,7 +115,7 @@ export async function seedTree() {
   console.log(`  Root: FRAS Canada (${root})`)
 
   // --- Level 1: Top-level sections ---
-  const home = await createTreeNode(payload, {
+  await createTreeNode(payload, {
     title: 'Home',
     slug: 'home',
     contentType: 'page',
@@ -163,7 +163,7 @@ export async function seedTree() {
     sortOrder: 5,
   })
 
-  const documentsFolder = await createTreeNode(payload, {
+  await createTreeNode(payload, {
     title: 'Documents',
     slug: 'documents-folder',
     contentType: 'folder',
@@ -171,7 +171,7 @@ export async function seedTree() {
     sortOrder: 6,
   })
 
-  const membersFolder = await createTreeNode(payload, {
+  await createTreeNode(payload, {
     title: 'Members',
     slug: 'members-folder',
     contentType: 'folder',
@@ -179,7 +179,7 @@ export async function seedTree() {
     sortOrder: 7,
   })
 
-  const settingsNode = await createTreeNode(payload, {
+  await createTreeNode(payload, {
     title: 'Settings',
     slug: 'settings-node',
     contentType: 'settings',
