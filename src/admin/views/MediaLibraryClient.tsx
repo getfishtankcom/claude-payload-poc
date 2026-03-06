@@ -216,6 +216,7 @@ interface FolderTreeItemProps {
   expandedIds: Set<string>
   onSelect: (folderId: string | number | null) => void
   onToggleExpand: (folderId: string | number) => void
+  onContextMenu?: (e: React.MouseEvent, node: FolderNode) => void
   depth: number
 }
 
@@ -225,6 +226,7 @@ function FolderTreeItem({
   expandedIds,
   onSelect,
   onToggleExpand,
+  onContextMenu,
   depth,
 }: FolderTreeItemProps) {
   const isExpanded = expandedIds.has(String(node.id))
@@ -235,6 +237,10 @@ function FolderTreeItem({
       <div
         data-testid={`folder-tree-item-${node.id}`}
         onClick={() => onSelect(node.id)}
+        onContextMenu={(e) => {
+          e.preventDefault()
+          onContextMenu?.(e, node)
+        }}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -304,6 +310,7 @@ function FolderTreeItem({
           expandedIds={expandedIds}
           onSelect={onSelect}
           onToggleExpand={onToggleExpand}
+          onContextMenu={onContextMenu}
           depth={depth + 1}
         />
       ))}
@@ -893,6 +900,79 @@ export function MediaLibraryClient() {
     }
   }, [uploadFiles])
 
+  // ----- Folder management state -----
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false)
+  const [newFolderName, setNewFolderName] = useState('')
+  const [renamingFolderId, setRenamingFolderId] = useState<string | number | null>(null)
+  const [renameFolderName, setRenameFolderName] = useState('')
+  const [folderContextMenu, setFolderContextMenu] = useState<{
+    folderId: string | number
+    folderName: string
+    x: number
+    y: number
+    hasChildren: boolean
+    mediaCount: number
+  } | null>(null)
+
+  // Create new folder
+  const handleCreateFolder = useCallback(async () => {
+    if (!newFolderName.trim()) return
+    try {
+      await fetch('/api/media-folders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newFolderName.trim(),
+          parent: selectedFolderId || undefined,
+          sortOrder: 0,
+        }),
+      })
+      setNewFolderName('')
+      setIsCreatingFolder(false)
+      await fetchFolders()
+    } catch (err) {
+      console.error('Failed to create folder:', err)
+    }
+  }, [newFolderName, selectedFolderId, fetchFolders])
+
+  // Rename folder
+  const handleRenameFolder = useCallback(async () => {
+    if (!renamingFolderId || !renameFolderName.trim()) return
+    try {
+      await fetch(`/api/media-folders/${renamingFolderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: renameFolderName.trim() }),
+      })
+      setRenamingFolderId(null)
+      setRenameFolderName('')
+      await fetchFolders()
+    } catch (err) {
+      console.error('Failed to rename folder:', err)
+    }
+  }, [renamingFolderId, renameFolderName, fetchFolders])
+
+  // Delete folder (only if empty — no media and no children)
+  const handleDeleteFolder = useCallback(async (folderId: string | number) => {
+    try {
+      await fetch(`/api/media-folders/${folderId}`, { method: 'DELETE' })
+      if (String(selectedFolderId) === String(folderId)) {
+        setSelectedFolderId(null)
+      }
+      await fetchFolders()
+    } catch (err) {
+      console.error('Failed to delete folder:', err)
+    }
+  }, [selectedFolderId, fetchFolders])
+
+  // Close context menu on click outside
+  useEffect(() => {
+    if (!folderContextMenu) return
+    const handleClickOutside = () => setFolderContextMenu(null)
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [folderContextMenu])
+
   // ----- Loading state -----
   if (loading) {
     return (
@@ -943,7 +1023,61 @@ export function MediaLibraryClient() {
           <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--theme-elevation-700)' }}>
             Folders
           </span>
+          <button
+            data-testid="new-folder-button"
+            onClick={() => setIsCreatingFolder(true)}
+            title="New Folder"
+            style={{
+              border: 'none',
+              background: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+              color: 'var(--theme-elevation-500)',
+              padding: '2px 4px',
+              lineHeight: 1,
+            }}
+          >
+            +
+          </button>
         </div>
+
+        {/* New folder inline input */}
+        {isCreatingFolder && (
+          <div style={{ padding: '4px 8px', display: 'flex', gap: '4px' }}>
+            <input
+              type="text"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleCreateFolder()
+                if (e.key === 'Escape') { setIsCreatingFolder(false); setNewFolderName('') }
+              }}
+              placeholder="Folder name..."
+              autoFocus
+              style={{
+                flex: 1,
+                padding: '4px 6px',
+                border: '1px solid var(--theme-elevation-200)',
+                borderRadius: '4px',
+                fontSize: '12px',
+              }}
+            />
+            <button
+              onClick={handleCreateFolder}
+              style={{
+                padding: '4px 8px',
+                border: 'none',
+                borderRadius: '4px',
+                background: 'var(--theme-elevation-800)',
+                color: 'var(--theme-elevation-0)',
+                cursor: 'pointer',
+                fontSize: '11px',
+              }}
+            >
+              Add
+            </button>
+          </div>
+        )}
 
         {/* Folder tree */}
         <div style={{ flex: 1, overflow: 'auto', padding: '4px 0' }}>
@@ -982,10 +1116,168 @@ export function MediaLibraryClient() {
               expandedIds={expandedIds}
               onSelect={handleSelectFolder}
               onToggleExpand={handleToggleExpand}
+              onContextMenu={(e, node) => {
+                setFolderContextMenu({
+                  folderId: node.id,
+                  folderName: node.name,
+                  x: e.clientX,
+                  y: e.clientY,
+                  hasChildren: node.hasChildren,
+                  mediaCount: node.mediaCount,
+                })
+              }}
               depth={0}
             />
           ))}
         </div>
+
+        {/* Folder context menu */}
+        {folderContextMenu && (
+          <div
+            data-testid="folder-context-menu"
+            style={{
+              position: 'fixed',
+              left: folderContextMenu.x,
+              top: folderContextMenu.y,
+              background: 'var(--theme-elevation-0)',
+              border: '1px solid var(--theme-elevation-200)',
+              borderRadius: '6px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              padding: '4px 0',
+              zIndex: 100,
+              minWidth: '140px',
+            }}
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setRenamingFolderId(folderContextMenu.folderId)
+                setRenameFolderName(folderContextMenu.folderName)
+                setFolderContextMenu(null)
+              }}
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '6px 12px',
+                border: 'none',
+                background: 'none',
+                textAlign: 'left',
+                cursor: 'pointer',
+                fontSize: '13px',
+                color: 'var(--theme-elevation-800)',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--theme-elevation-50)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+            >
+              Rename
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                if (folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0) {
+                  alert('Cannot delete a folder that contains items. Move or delete contents first.')
+                } else {
+                  handleDeleteFolder(folderContextMenu.folderId)
+                }
+                setFolderContextMenu(null)
+              }}
+              disabled={folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0}
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '6px 12px',
+                border: 'none',
+                background: 'none',
+                textAlign: 'left',
+                cursor: folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0 ? 'not-allowed' : 'pointer',
+                fontSize: '13px',
+                color: folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0
+                  ? 'var(--theme-elevation-300)'
+                  : 'var(--theme-error-500)',
+              }}
+              onMouseEnter={(e) => {
+                if (!(folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0))
+                  e.currentTarget.style.background = 'var(--theme-elevation-50)'
+              }}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+            >
+              Delete{(folderContextMenu.hasChildren || folderContextMenu.mediaCount > 0) ? ' (not empty)' : ''}
+            </button>
+          </div>
+        )}
+
+        {/* Rename folder dialog */}
+        {renamingFolderId && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 1000,
+          }}>
+            <div style={{
+              background: 'var(--theme-elevation-0)',
+              borderRadius: '8px',
+              padding: '24px',
+              width: '300px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+            }}>
+              <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>
+                Rename Folder
+              </div>
+              <input
+                type="text"
+                value={renameFolderName}
+                onChange={(e) => setRenameFolderName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleRenameFolder()
+                  if (e.key === 'Escape') { setRenamingFolderId(null); setRenameFolderName('') }
+                }}
+                autoFocus
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  border: '1px solid var(--theme-elevation-200)',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  marginBottom: '12px',
+                }}
+              />
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => { setRenamingFolderId(null); setRenameFolderName('') }}
+                  style={{
+                    padding: '6px 16px',
+                    border: '1px solid var(--theme-elevation-200)',
+                    borderRadius: '6px',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleRenameFolder}
+                  style={{
+                    padding: '6px 16px',
+                    border: 'none',
+                    borderRadius: '6px',
+                    background: 'var(--theme-elevation-800)',
+                    color: 'var(--theme-elevation-0)',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                  }}
+                >
+                  Rename
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ==================== RIGHT PANEL: Media Grid ==================== */}

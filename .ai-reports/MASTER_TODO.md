@@ -3080,7 +3080,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Bulk operations work for move, delete, download
 
 ### 24.9 Folder management
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - "New Folder" button in left panel toolbar
   - Right-click folder context menu: Rename, Delete (only if empty), Move
