@@ -2,7 +2,7 @@
   "epic": "epic-24",
   "pages": [
     {
-      "url": "/admin",
+      "url": "/admin/media",
       "name": "admin-media-library",
       "structuralChecks": [
         { "selector": "[data-testid='page-media-library']", "severity": "block" },
