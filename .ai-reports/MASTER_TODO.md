@@ -3000,7 +3000,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Grid/list toggle works, view preference persists
 
 ### 24.4 Upload + drag-and-drop
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Upload button in toolbar opens file picker
   - Drag-and-drop zone: drag files onto grid area to upload

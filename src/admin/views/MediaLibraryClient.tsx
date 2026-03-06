@@ -27,7 +27,7 @@
  */
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
 
 // --------------------------------------------------------------------------
 // Types
@@ -68,6 +68,28 @@ interface MediaItem {
 
 /** View mode for the media grid */
 type ViewMode = 'grid' | 'list'
+
+/** Upload progress tracking for individual files */
+interface UploadProgress {
+  id: string
+  filename: string
+  progress: number // 0-100
+  status: 'uploading' | 'complete' | 'error'
+  error?: string
+}
+
+/** Accepted MIME types for upload validation */
+const ACCEPTED_MIME_TYPES = [
+  'image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/gif',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'video/mp4', 'video/webm',
+]
+
+/** File extensions for the file input accept attribute */
+const ACCEPTED_EXTENSIONS = '.jpg,.jpeg,.png,.webp,.svg,.gif,.pdf,.docx,.xlsx,.pptx,.mp4,.webm'
 
 // --------------------------------------------------------------------------
 // Constants
@@ -572,6 +594,9 @@ export function MediaLibraryClient() {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState<string>('all')
   const [detailItem, setDetailItem] = useState<MediaItem | null>(null)
+  const [uploads, setUploads] = useState<UploadProgress[]>([])
+  const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // ----- Persist expanded state -----
   useEffect(() => {
@@ -701,6 +726,121 @@ export function MediaLibraryClient() {
       return next
     })
   }, [])
+
+  // ----- Upload a single file via XMLHttpRequest (for progress tracking) -----
+  const uploadFile = useCallback(async (file: File) => {
+    const uploadId = `upload-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
+    // Validate mime type
+    if (!ACCEPTED_MIME_TYPES.includes(file.type)) {
+      setUploads((prev) => [...prev, {
+        id: uploadId,
+        filename: file.name,
+        progress: 0,
+        status: 'error',
+        error: `Unsupported file type: ${file.type}`,
+      }])
+      return
+    }
+
+    // Add to upload list
+    setUploads((prev) => [...prev, {
+      id: uploadId,
+      filename: file.name,
+      progress: 0,
+      status: 'uploading',
+    }])
+
+    return new Promise<void>((resolve) => {
+      const xhr = new XMLHttpRequest()
+      const formData = new FormData()
+
+      formData.append('file', file)
+      formData.append('alt', file.name.replace(/\.[^.]+$/, ''))
+      if (selectedFolderId) {
+        formData.append('folder', String(selectedFolderId))
+      }
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100)
+          setUploads((prev) =>
+            prev.map((u) => u.id === uploadId ? { ...u, progress: pct } : u),
+          )
+        }
+      })
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          setUploads((prev) =>
+            prev.map((u) => u.id === uploadId ? { ...u, progress: 100, status: 'complete' } : u),
+          )
+          // Auto-clear completed uploads after 3 seconds
+          setTimeout(() => {
+            setUploads((prev) => prev.filter((u) => u.id !== uploadId))
+          }, 3000)
+        } else {
+          setUploads((prev) =>
+            prev.map((u) => u.id === uploadId ? { ...u, status: 'error', error: `Upload failed (${xhr.status})` } : u),
+          )
+        }
+        resolve()
+      })
+
+      xhr.addEventListener('error', () => {
+        setUploads((prev) =>
+          prev.map((u) => u.id === uploadId ? { ...u, status: 'error', error: 'Network error' } : u),
+        )
+        resolve()
+      })
+
+      xhr.open('POST', '/api/media')
+      xhr.send(formData)
+    })
+  }, [selectedFolderId])
+
+  // ----- Upload multiple files -----
+  const uploadFiles = useCallback(async (files: FileList | File[]) => {
+    const fileArray = Array.from(files)
+    // Upload all files concurrently
+    await Promise.all(fileArray.map((file) => uploadFile(file)))
+    // Refresh media list and folder counts
+    await Promise.all([fetchMedia(), fetchFolders()])
+  }, [uploadFile, fetchMedia, fetchFolders])
+
+  // ----- Handle file input change -----
+  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      uploadFiles(e.target.files)
+      // Reset input so same file can be re-uploaded
+      e.target.value = ''
+    }
+  }, [uploadFiles])
+
+  // ----- Drag-and-drop handlers -----
+  const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(true)
+  }, [])
+
+  const handleDragLeave = useCallback((e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // Only set false if leaving the container (not entering a child)
+    if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragOver(false)
+    }
+  }, [])
+
+  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      uploadFiles(e.dataTransfer.files)
+    }
+  }, [uploadFiles])
 
   // ----- Loading state -----
   if (loading) {
@@ -903,6 +1043,38 @@ export function MediaLibraryClient() {
             )}
           </button>
 
+          {/* Upload button */}
+          <button
+            data-testid="upload-button"
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              padding: '6px 12px',
+              border: '1px solid var(--theme-elevation-200)',
+              borderRadius: '6px',
+              background: 'var(--theme-elevation-800)',
+              color: 'var(--theme-elevation-0)',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+          >
+            <svg width={14} height={14} viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
+            Upload
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={ACCEPTED_EXTENSIONS}
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleFileInputChange}
+          />
+
           {/* Item count */}
           <span style={{ fontSize: '12px', color: 'var(--theme-elevation-400)', marginLeft: 'auto' }}>
             {totalMedia} item{totalMedia !== 1 ? 's' : ''}
@@ -918,8 +1090,99 @@ export function MediaLibraryClient() {
           />
         </div>
 
-        {/* Media content area */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '8px 16px 16px' }}>
+        {/* Upload progress indicators */}
+        {uploads.length > 0 && (
+          <div style={{ padding: '8px 16px 0', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {uploads.map((upload) => (
+              <div key={upload.id} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '4px 8px',
+                background: upload.status === 'error' ? 'var(--theme-error-50)' : 'var(--theme-elevation-50)',
+                borderRadius: '4px',
+                fontSize: '12px',
+              }}>
+                <span style={{
+                  flex: 1,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  color: upload.status === 'error' ? 'var(--theme-error-500)' : 'var(--theme-elevation-700)',
+                }}>
+                  {upload.filename}
+                  {upload.error && ` — ${upload.error}`}
+                </span>
+                {upload.status === 'uploading' && (
+                  <div style={{
+                    width: '80px',
+                    height: '4px',
+                    background: 'var(--theme-elevation-200)',
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      width: `${upload.progress}%`,
+                      height: '100%',
+                      background: 'var(--theme-success-500)',
+                      transition: 'width 200ms ease',
+                    }} />
+                  </div>
+                )}
+                {upload.status === 'complete' && (
+                  <span style={{ color: 'var(--theme-success-500)', fontSize: '11px' }}>✓</span>
+                )}
+                {upload.status === 'uploading' && (
+                  <span style={{ color: 'var(--theme-elevation-400)', fontSize: '11px' }}>
+                    {upload.progress}%
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Media content area with drag-and-drop */}
+        <div
+          data-testid="drop-zone"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          style={{
+            flex: 1,
+            overflow: 'auto',
+            padding: '8px 16px 16px',
+            position: 'relative',
+            border: isDragOver ? '2px dashed var(--theme-success-500)' : '2px dashed transparent',
+            transition: 'border-color 200ms ease',
+          }}
+        >
+          {/* Drag overlay */}
+          {isDragOver && (
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(34, 197, 94, 0.05)',
+              zIndex: 10,
+              borderRadius: '4px',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                padding: '16px 24px',
+                background: 'var(--theme-elevation-0)',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: 'var(--theme-success-600)',
+              }}>
+                Drop files here to upload
+              </div>
+            </div>
+          )}
           {mediaLoading ? (
             <div style={{
               display: 'flex',
