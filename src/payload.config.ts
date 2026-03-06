@@ -32,6 +32,9 @@ import sharp from 'sharp'
 // Seed available via: npx tsx src/seed/index.ts
 // import { seed } from './seed'
 
+// Epic 22: Scheduled publishing
+import { initScheduledPublishing } from './admin/hooks/scheduled-publishing'
+
 // Phase 1 collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -78,11 +81,19 @@ export default buildConfig({
     fallback: true,
   },
 
-  // Admin panel configuration
+  // Admin panel configuration (Epic 22: custom Nav + Dashboard)
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    components: {
+      Nav: '/admin/components/CustomNav',
+      views: {
+        dashboard: {
+          Component: '/admin/views/Dashboard',
+        },
+      },
     },
   },
 
@@ -144,11 +155,10 @@ export default buildConfig({
 
   // Seed is available via: npx tsx src/seed/index.ts
   // Disabled in onInit to avoid blocking dev server startup
-  // async onInit(payload) {
-  //   if (process.env.NODE_ENV !== 'production') {
-  //     await seed()
-  //   }
-  // },
+  // Epic 22: Initialize scheduled publishing (5-min interval)
+  async onInit(payload) {
+    initScheduledPublishing(payload)
+  },
 
   // Plugins will be added as needed (Meilisearch, etc.)
   plugins: [],

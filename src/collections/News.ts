@@ -10,30 +10,47 @@
  * - Board relationship for filtering by organization
  * - External URL for link-out news items
  * - Volunteer opportunity flag for volunteer listing pages
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Media collection (upload for featured_image)
  * - Boards collection (relationship)
+ * - Users collection (createdBy relationship)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - News stories currently have NO images in Sitecore content (fields exist but unpopulated)
  * - frasIdNumber is the Sitecore FRAS ID for migration/workflow reference
  * - Phase 2 additions: externalUrl, isVolunteerOpportunity, expanded category enum
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
 import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'news' })
+const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'news' })
 
 export const News: CollectionConfig = {
   slug: 'news',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'date', 'category', 'board'],
+    defaultColumns: ['title', 'date', 'category', 'workflowState', 'board'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
   },
   hooks: {
-    afterChange: [afterChange],
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('news'), meilisearchAfterChange],
     afterDelete: [afterDelete],
   },
   fields: [
@@ -123,5 +140,7 @@ export const News: CollectionConfig = {
       relationTo: 'boards',
       label: 'Board',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

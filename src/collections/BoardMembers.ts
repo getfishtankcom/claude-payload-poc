@@ -8,24 +8,44 @@
  * - Photo upload at 205x205 for member cards
  * - Relationship to boards collection for board-specific member listings
  * - Sort order for manual ordering within role groups
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Boards collection (relationship)
  * - Pages collection (relationship for bio page)
  * - Media collection (upload for photo)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - Separate from contacts collection (contacts = staff, board-members = appointed members)
  * - roleLabel allows custom display text (e.g., "Ex-officio Member")
  * - sortOrder controls display order within role groups
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
+
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
 export const BoardMembers: CollectionConfig = {
   slug: 'board-members',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'role', 'board', 'termExpires'],
+    defaultColumns: ['name', 'role', 'workflowState', 'board', 'termExpires'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
+  },
+  hooks: {
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('board-members')],
   },
   fields: [
     {
@@ -110,5 +130,7 @@ export const BoardMembers: CollectionConfig = {
       required: true,
       label: 'Board',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }

@@ -2735,3 +2735,123 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - Manual walkthrough of contact form, login, document comment, and language switch flows
   - API edge cases return appropriate error responses (400/404) not 500s
 - **Ralph Stop:** All Phase 2 user flows verified end-to-end, no broken flows, error handling graceful
+
+---
+
+## Epic 22: Admin Panel Foundation (8 tasks)
+
+### 22.1 Custom sidebar navigation
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Custom Nav component replaces Payload default sidebar
+  - Sections: Dashboard, Content Tree, Workbox (with badge count), Collections, Tools, System
+  - Admin-only links (Users, Settings) hidden for Author/Editor roles
+  - Collapsible to icons on smaller screens
+  - Uses Payload `admin.components.Nav` override
+- **Validation:**
+  - `grep "Nav:" src/payload.config.ts` confirms Nav override
+  - Custom sidebar renders on all admin pages
+  - Author role cannot see System section links
+- **Ralph Stop:** Custom nav renders on all admin pages with role-based visibility
+
+### 22.2 Custom dashboard (/admin)
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Custom dashboard replaces Payload default at `/admin`
+  - 4 widgets in 2x2 grid: Workflow Queue, Quick Actions, My Recent Items, Publishing Schedule
+  - Workflow Queue: items grouped by state, Authors see own items, Editors/Admins see all
+  - Quick Actions: Create new Page/News/Project/Event shortcuts respecting role permissions
+  - My Recent Items: Last 10 items current user edited with relative timestamps
+  - Publishing Schedule: Upcoming scheduled publishes grouped by day (Editor/Admin only)
+  - Widgets refresh on page focus (not polling)
+  - `data-testid="admin-dashboard"` on container
+- **Validation:**
+  - `grep "dashboard:" src/payload.config.ts` confirms dashboard override
+  - Dashboard shows at `/admin` with all 4 widgets
+  - Author cannot see Publishing Schedule widget
+- **Ralph Stop:** Dashboard renders at `/admin` with all 4 widgets, role-filtered
+
+### 22.3 Workflow state field + transitions
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - `workflowState` select field on Pages collection (and workflow-enabled collections)
+  - Options: draft, in_review, needs_revision, approved, published, unpublished
+  - Default: draft
+  - `workflowHistory` array field: from, to, user, date, comment
+  - `beforeChange` hook enforces valid transitions per PRD Section 7.2
+  - `afterChange` hook logs transition to workflowHistory
+  - Rejection requires mandatory comment (validated in hook)
+  - `publishOn` and `unpublishOn` date fields added
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Workflow state persists, invalid transitions rejected server-side
+- **Ralph Stop:** Workflow state persists, transitions validated server-side, history logged
+
+### 22.4 Workflow action bar component
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Custom component shown at bottom of edit view for workflow-enabled collections
+  - Buttons change based on current state + user role per PRD Section 5.4
+  - Draft: Save Draft, Submit for Review
+  - In Review: Save Draft, Approve, Reject (Editor/Admin only)
+  - Needs Revision: Save Draft, Submit for Review (shows rejection banner)
+  - Approved: Publish Now, Schedule (Editor/Admin only)
+  - Published: Edit (creates new draft), Unpublish
+  - Rejection modal with mandatory comment field
+  - Rejection banner at top of editor showing reviewer's comment
+  - `data-testid="workflow-bar"` on container
+- **Validation:**
+  - Action bar renders below fields, transitions work end-to-end
+  - Author cannot see Approve/Reject buttons
+- **Ralph Stop:** Action bar renders per state+role, rejection modal requires comment
+
+### 22.5 Item locking system
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - `lockedBy` (relationship to users) and `lockedAt` (date) fields on Pages
+  - Auto-lock on edit open via admin component useEffect
+  - Lock indicator: "Locked by [Name]" with lock icon
+  - If locked by another user: read-only mode + "Request Unlock" button
+  - Auto-unlock after 30 min idle (check lockedAt in beforeChange hook)
+  - Admin force-unlock capability
+- **Validation:**
+  - Locking prevents concurrent edits, auto-expires after 30 min
+- **Ralph Stop:** Locking prevents concurrent edits, auto-expires
+
+### 22.6 Language switcher component
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Dropdown in edit view toolbar showing EN/FR
+  - Switches Payload locale context for localized fields
+  - Translation status banner: "FR version: NOT TRANSLATED" when no FR content
+  - "Copy from EN" button when creating FR version
+  - Shared fields labeled "Shared" regardless of language
+- **Validation:**
+  - Language switcher works, fields swap per locale
+- **Ralph Stop:** Language switcher works, fields swap per locale, banner shows
+
+### 22.7 Scheduled publishing cron
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - Payload job or custom endpoint runs on 5-min interval
+  - Queries items where workflowState=approved AND publishOn <= now, transitions to published
+  - Queries items where workflowState=published AND unpublishOn <= now, transitions to unpublished
+  - Transitions logged in workflowHistory
+  - Dashboard widget reads publishOn for upcoming schedule
+- **Validation:**
+  - Item with publishOn in the past auto-publishes within 5 min
+- **Ralph Stop:** Items auto-publish/unpublish on schedule
+
+### 22.8 Role-based access control
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - 3 roles: author, editor, admin on Users collection
+  - Access control functions per PRD Section 2.2:
+    - Authors: create/edit own drafts, submit for review, view all, delete own drafts
+    - Editors: everything Author + approve/reject, publish/unpublish, schedule, delete drafts
+    - Admins: everything + manage users, edit templates, system settings, delete anything
+  - Applied to all content collections
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Author cannot approve/publish, Editor cannot manage users, Admin can do everything
+- **Ralph Stop:** Role enforcement works end-to-end

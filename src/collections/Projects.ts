@@ -9,32 +9,48 @@
  * - Badge array for content type indicators
  * - Multiple relationship fields for cross-referencing
  * - current_stage tracks which timeline stage is active
+ * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
+ * - RBAC: role-based access control (author/editor/admin)
  *
  * @dependencies
  * - Boards collection (relationship)
  * - Standards collection (relationship)
  * - Documents collection (relationship, hasMany)
  * - Contacts collection (relationship, hasMany)
+ * - workflow fields from @/fields/workflow
+ * - access/roles for RBAC
+ * - admin/hooks/workflow-hooks for transition validation
  *
  * @notes
  * - current_stage max is 7 (not 5 — wireframe shows 5 as example only)
  * - frasIdNumber is the Sitecore FRAS ID for migration/workflow reference
  * - type field is used for Active Projects listing filter
+ * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
 import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { workflowFields } from '@/fields/workflow'
+import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
+import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange, afterDelete } = syncToMeilisearch({ indexName: 'projects' })
+const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'projects' })
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'status', 'board', 'current_stage'],
+    defaultColumns: ['title', 'status', 'workflowState', 'board', 'current_stage'],
+  },
+  access: {
+    read: contentRead,
+    create: contentCreate,
+    update: contentUpdate,
+    delete: contentDelete,
   },
   hooks: {
-    afterChange: [afterChange],
+    beforeChange: [validateWorkflowTransition],
+    afterChange: [createLogWorkflowTransition('projects'), meilisearchAfterChange],
     afterDelete: [afterDelete],
   },
   fields: [
@@ -210,5 +226,7 @@ export const Projects: CollectionConfig = {
       hasMany: true,
       label: 'Staff Contacts',
     },
+    // --- Workflow fields (Epic 22) ---
+    ...workflowFields,
   ],
 }
