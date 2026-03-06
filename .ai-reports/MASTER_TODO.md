@@ -3126,7 +3126,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Registry exports all 31 component types with schemas
 
 ### 25.3 Page builder view (`/admin/builder/:id`)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom Payload admin view at `/admin/builder/:id`
   - Three-panel layout: Left (toolbox), Center (canvas), Right (props drawer)
@@ -3142,7 +3142,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Builder view renders with all 3 panels, loads/saves layout
 
 ### 25.4 Component toolbox (left panel)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Categorized list of available components from registry
   - Search bar at top to filter components
@@ -3158,7 +3158,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Toolbox renders all 31 components, drag initiates correctly
 
 ### 25.5 Canvas with placeholder zones (center panel)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Renders zone structure based on template configuration
   - Locked zones: gray dashed border, lock icon, "Locked" label, not interactive
@@ -3174,7 +3174,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Canvas renders zones, component chrome works
 
 ### 25.6 Drag-and-drop: toolbox to canvas + reorder
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Drag from toolbox -> drop into editable zone creates new component instance
   - Drag component within zone reorders (sort order changes)
@@ -3189,7 +3189,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Drag from toolbox creates component, drag within zone reorders
 
 ### 25.7 Props drawer (right panel)
-- [ ] **Status:** Not started
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Slides out (300px wide) on gear icon click
   - Shows component label + close button at top
