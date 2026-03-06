@@ -28,6 +28,7 @@
 'use client'
 
 import React, { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+import { MediaDetailPanel } from '../components/MediaDetailPanel'
 
 // --------------------------------------------------------------------------
 // Types
@@ -1263,6 +1264,23 @@ export function MediaLibraryClient() {
           )}
         </div>
       </div>
+
+      {/* ==================== RIGHT DRAWER: Media Detail Panel ==================== */}
+      {detailItem && (
+        <MediaDetailPanel
+          item={detailItem}
+          onClose={() => setDetailItem(null)}
+          onSave={() => {
+            fetchMedia()
+            setDetailItem(null)
+          }}
+          onDelete={() => {
+            fetchMedia()
+            fetchFolders()
+            setDetailItem(null)
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -3032,7 +3032,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Search and filters work correctly
 
 ### 24.6 Media detail panel
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Click media item opens slide-out detail drawer
   - Shows: full preview (image render or file icon), metadata fields
