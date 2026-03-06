@@ -23,7 +23,7 @@
  */
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState, type DragEvent } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 // --------------------------------------------------------------------------
 // Types
@@ -165,14 +165,6 @@ function SmallFileIcon({ mimeType }: { mimeType: string }) {
       <path d="M14 4v5h5" />
     </svg>
   )
-}
-
-function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`
 }
 
 // --------------------------------------------------------------------------

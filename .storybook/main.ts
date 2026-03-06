@@ -44,6 +44,8 @@ const config: StorybookConfig = {
       '@payloadcms/ui': path.resolve(__dirname, 'mocks/payloadcms-ui.tsx'),
       // Mock @payload-config — only resolves in Next.js/Payload runtime
       '@payload-config': path.resolve(__dirname, 'mocks/payload-config.ts'),
+      // Mock payload — server-side code uses Node.js built-ins (URL, fs) incompatible with Vite browser bundle
+      'payload': path.resolve(__dirname, 'mocks/payload.ts'),
     }
     return config
   },

@@ -5,13 +5,13 @@
       "url": "/admin",
       "name": "admin-media-library",
       "structuralChecks": [
-        { "selector": "[data-testid='media-library']", "severity": "block" },
-        { "selector": "[data-testid='media-folder-tree']", "severity": "warn" },
-        { "selector": "[data-testid='media-thumbnail-grid']", "severity": "warn" },
-        { "selector": "[data-testid='media-upload-button']", "severity": "warn" }
+        { "selector": "[data-testid='page-media-library']", "severity": "block" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "warn" },
+        { "selector": "[data-testid='media-grid']", "severity": "warn" },
+        { "selector": "[data-testid='upload-button']", "severity": "warn" }
       ],
       "interactions": [
-        { "action": "click", "selector": "[data-testid='media-folder-tree'] [data-testid='tree-node']", "severity": "warn" }
+        { "action": "click", "selector": "[data-testid='sidebar-nav'] [data-testid^='folder-tree-item']", "severity": "warn" }
       ],
       "consoleErrorsAllowed": true
     }
