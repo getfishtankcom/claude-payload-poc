@@ -2920,7 +2920,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Right-click menu works with all actions, insert options filtered correctly
 
 ### 23.5 Drag-and-drop reorder + move
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Drag items to reorder within same parent (updates `sortOrder`)
   - Drag items to different parent to move (updates `parent` relationship)

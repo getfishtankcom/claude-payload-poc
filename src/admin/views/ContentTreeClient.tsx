@@ -29,6 +29,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAuth } from '@payloadcms/ui'
 import { TreeContextMenu } from '../components/TreeContextMenu'
+import { TreeDndWrapper, DraggableTreeItem } from '../components/TreeDndWrapper'
 
 // User type with role
 type UserWithRole = {
@@ -232,39 +233,47 @@ function TreeItem({
 
   return (
     <div data-testid={`tree-item-${nodeIdStr}`}>
-      {/* Node row */}
+      <DraggableTreeItem id={node.id}>
+        {({ isDragging, isOver, dragListeners, setDragRef, setDropRef }) => (
       <div
+        ref={(el) => { setDragRef(el); setDropRef(el) }}
         role="treeitem"
         aria-expanded={node.hasChildren ? isExpanded : undefined}
         aria-selected={isSelected}
         onClick={() => onSelect(node)}
         onContextMenu={(e) => onContextMenu(e, node)}
+        {...(dragListeners || {})}
         style={{
           display: 'flex',
           alignItems: 'center',
           padding: '4px 8px',
           paddingLeft: `${depth * 20 + 8}px`,
-          cursor: 'pointer',
+          cursor: isDragging ? 'grabbing' : 'pointer',
           fontSize: '13px',
           lineHeight: '24px',
           borderRadius: '4px',
-          backgroundColor: isSelected
-            ? 'var(--theme-elevation-150)'
-            : isSearchMatch
-              ? 'rgba(59, 130, 246, 0.1)'
-              : 'transparent',
+          backgroundColor: isOver
+            ? 'rgba(59, 130, 246, 0.15)'
+            : isSelected
+              ? 'var(--theme-elevation-150)'
+              : isSearchMatch
+                ? 'rgba(59, 130, 246, 0.1)'
+                : 'transparent',
           color: isSelected ? 'var(--theme-elevation-900)' : 'var(--theme-elevation-700)',
           fontWeight: isSelected ? 600 : 400,
           userSelect: 'none',
           transition: 'background-color 100ms ease',
+          opacity: isDragging ? 0.5 : 1,
+          outline: isOver ? '2px solid #3B82F6' : 'none',
+          outlineOffset: '-2px',
         }}
         onMouseEnter={(e) => {
-          if (!isSelected) {
+          if (!isSelected && !isOver) {
             (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--theme-elevation-50)'
           }
         }}
         onMouseLeave={(e) => {
-          if (!isSelected) {
+          if (!isSelected && !isOver) {
             (e.currentTarget as HTMLElement).style.backgroundColor = isSearchMatch
               ? 'rgba(59, 130, 246, 0.1)'
               : 'transparent'
@@ -318,6 +327,8 @@ function TreeItem({
           {node.title}
         </span>
       </div>
+        )}
+      </DraggableTreeItem>
 
       {/* Children (recursive) */}
       {showChildren && (
@@ -639,6 +650,34 @@ export const ContentTreeClient: React.FC = () => {
     }
   }, [selectedNode])
 
+  // DnD move handler — updates parent, sortOrder, and board via API
+  const handleMoveNode = useCallback(async (result: {
+    nodeId: string | number
+    newParentId: string | number | null
+    newSortOrder: number
+    boardId: string | number | null
+  }) => {
+    try {
+      await fetch(`/api/pages/${result.nodeId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          parent: result.newParentId,
+          sortOrder: result.newSortOrder,
+          board: result.boardId,
+        }),
+      })
+      // Refresh tree
+      const res = await fetch('/api/tree')
+      if (res.ok) {
+        const data = await res.json()
+        setTree(data.nodes || [])
+      }
+    } catch {
+      // Silently fail
+    }
+  }, [])
+
   // Close context menu on click outside
   useEffect(() => {
     const handleClick = () => setContextMenu(null)
@@ -831,33 +870,35 @@ export const ContentTreeClient: React.FC = () => {
           )}
         </div>
 
-        {/* Tree items */}
-        <div
-          role="tree"
-          style={{ flex: 1, overflow: 'auto', padding: '4px 0' }}
-        >
-          {tree.length === 0 ? (
-            <div style={{ padding: '16px', color: 'var(--theme-elevation-400)', fontSize: '13px' }}>
-              No content tree items. Run the tree seed script to create the initial structure.
-            </div>
-          ) : (
-            tree.map((node) => (
-              <TreeItem
-                key={node.id}
-                node={node}
-                depth={0}
-                expandedIds={expandedIds}
-                selectedId={selectedNode?.id ?? null}
-                onToggle={handleToggle}
-                onSelect={handleSelect}
-                onContextMenu={handleContextMenu}
-                lazyChildren={lazyChildren}
-                loadingIds={loadingIds}
-                searchMatchIds={searchMatchIds.size > 0 ? searchMatchIds : undefined}
-              />
-            ))
-          )}
-        </div>
+        {/* Tree items with drag-and-drop */}
+        <TreeDndWrapper tree={tree} onMoveNode={handleMoveNode}>
+          <div
+            role="tree"
+            style={{ flex: 1, overflow: 'auto', padding: '4px 0' }}
+          >
+            {tree.length === 0 ? (
+              <div style={{ padding: '16px', color: 'var(--theme-elevation-400)', fontSize: '13px' }}>
+                No content tree items. Run the tree seed script to create the initial structure.
+              </div>
+            ) : (
+              tree.map((node) => (
+                <TreeItem
+                  key={node.id}
+                  node={node}
+                  depth={0}
+                  expandedIds={expandedIds}
+                  selectedId={selectedNode?.id ?? null}
+                  onToggle={handleToggle}
+                  onSelect={handleSelect}
+                  onContextMenu={handleContextMenu}
+                  lazyChildren={lazyChildren}
+                  loadingIds={loadingIds}
+                  searchMatchIds={searchMatchIds.size > 0 ? searchMatchIds : undefined}
+                />
+              ))
+            )}
+          </div>
+        </TreeDndWrapper>
       </div>
 
       {/* Right panel: Editor or placeholder */}
