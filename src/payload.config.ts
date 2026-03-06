@@ -49,6 +49,9 @@ import { DecisionSummaries } from './collections/DecisionSummaries'
 import { Contacts } from './collections/Contacts'
 import { Pages } from './collections/Pages'
 
+// Epic 24: Media library
+import { MediaFolders } from './collections/MediaFolders'
+
 // Phase 2 collections (Epic 11)
 import { BoardMembers } from './collections/BoardMembers'
 import { Committees } from './collections/Committees'
@@ -106,6 +109,7 @@ export default buildConfig({
     // Core
     Users,
     Media,
+    MediaFolders,
     // Organization
     Boards,
     Standards,

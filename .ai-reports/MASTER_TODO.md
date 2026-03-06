@@ -2948,3 +2948,147 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
   - `npx tsc --noEmit` passes
   - Search filters tree in real-time, deep search finds buried items
 - **Ralph Stop:** Search works client-side and server-side
+
+---
+
+## Epic 24: Media Library (9 tasks)
+
+### 24.1 Media folder collection
+- [x] **Status:** Complete
+- **Acceptance Criteria:**
+  - `media-folders` collection created with fields: `name` (text, required), `parent` (self-referential relationship), `sortOrder` (number, default 0)
+  - `folder` relationship field added to existing `media` collection pointing to `media-folders`
+  - Seed initial folder structure: Images/ (Boards/, News/, Heroes/), Documents/ (PDFs/, Reports/), Logos/, Videos/
+  - Custom API endpoint `GET /api/media-folders/tree` returns nested folder hierarchy
+  - `title` and `description` fields added to media collection (localized: true) alongside existing `alt`
+  - Media upload mimeTypes expanded: images (jpg, png, webp, svg, gif), docs (pdf, docx, xlsx, pptx), video (mp4, webm)
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - `GET /api/media-folders/tree` returns nested JSON with seed data hierarchy
+- **Ralph Stop:** Folder collection exists, tree API returns folder structure, media collection has folder field
+
+### 24.2 Media library view (/admin/media)
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Custom Payload admin view registered at route `/admin/media`
+  - Two-panel layout: left panel folder tree, right panel media grid
+  - Click folder in tree to filter media grid to that folder
+  - Breadcrumb showing current folder path above grid
+  - Reuse tree component patterns from Epic 23 for folder tree
+  - `data-testid="page-media-library"` on container
+  - `data-testid="sidebar-nav"` on folder tree panel
+  - `data-testid="main-content"` on media grid panel
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Media library renders at `/admin/media`, folder click filters grid
+- **Ralph Stop:** Media library renders with folder navigation
+
+### 24.3 Media grid + list toggle
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Grid view (default): thumbnail cards showing preview image (or file type icon), filename, file size
+  - List view: table with columns — thumbnail, filename, type, size, dimensions, uploaded date, uploaded by
+  - Toggle button in toolbar: grid/list icon
+  - View preference persisted in localStorage
+  - Lazy-load thumbnails using intersection observer
+  - `data-testid="media-grid"` on grid container
+  - `data-testid="media-list"` on list container
+  - `data-testid="view-toggle"` on toggle button
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Both views render, toggle works, thumbnails lazy-load
+- **Ralph Stop:** Grid/list toggle works, view preference persists
+
+### 24.4 Upload + drag-and-drop
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Upload button in toolbar opens file picker
+  - Drag-and-drop zone: drag files onto grid area to upload
+  - Bulk upload: select multiple files at once
+  - Files uploaded to media collection with `folder` relationship set to current folder
+  - Upload progress indicator per file
+  - Accepted types: Images (jpg, png, webp, svg, gif), Docs (pdf, docx, xlsx, pptx), Video (mp4, webm)
+  - `data-testid="upload-button"` on upload button
+  - `data-testid="drop-zone"` on drag-and-drop area
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Drag file onto grid uploads to current folder, progress shown
+- **Ralph Stop:** Upload works via button and drag-and-drop, files appear in correct folder
+
+### 24.5 Search + filters
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Search bar in toolbar: full-text search across filename, alt text, title, description
+  - Filter dropdown: file type (Image, Document, Video, Audio, All)
+  - Search scoped to current folder + descendants (with global toggle)
+  - Results update grid in real-time (debounced)
+  - Clear search button
+  - Uses Payload's `where` query for filtering
+  - `data-testid="media-search"` on search input
+  - `data-testid="media-filter"` on filter dropdown
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Search finds media across folders, filters narrow by type
+- **Ralph Stop:** Search and filters work correctly
+
+### 24.6 Media detail panel
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Click media item opens slide-out detail drawer
+  - Shows: full preview (image render or file icon), metadata fields
+  - Editable fields: alt text (localized EN/FR), title (localized EN/FR), description (localized EN/FR)
+  - Read-only fields: filename, file type, dimensions (images), file size, uploaded by, upload date
+  - Usage list: which pages/components reference this media item (Payload relationship query)
+  - Save button for metadata edits
+  - Delete button with confirmation ("This media is used by X pages. Delete anyway?")
+  - Language switcher for toggling EN/FR metadata
+  - `data-testid="media-detail-panel"` on drawer
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Detail panel shows metadata, usage list, editable fields with per-locale alt text/title/description
+- **Ralph Stop:** Detail panel shows metadata, usage list, locale-aware editing works
+
+### 24.7 Media picker modal
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Reusable modal component for field/component media selection
+  - Opens media library as modal overlay (compact version of full view)
+  - Same folder tree + grid, search, filters
+  - "Select" button confirms choice and returns media reference to calling field
+  - "Upload" option within modal for adding new media on the fly
+  - Importable by page builder and field editor
+  - `data-testid="media-picker-modal"` on modal container
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Modal opens, browse/search/upload works, selection returns to calling field
+- **Ralph Stop:** Modal works end-to-end for media selection
+
+### 24.8 Bulk operations
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - Multi-select: checkboxes on each media item in grid/list view
+  - "Select All" checkbox in toolbar
+  - Bulk actions toolbar appears when items selected
+  - Actions: Move to... (folder picker dialog), Delete (confirmation with usage check), Download (zip)
+  - Deselect all button
+  - Count indicator: "X items selected"
+  - `data-testid="bulk-actions"` on bulk toolbar
+  - `data-testid="select-all"` on select all checkbox
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Multi-select works, bulk move/delete execute correctly
+- **Ralph Stop:** Bulk operations work for move, delete, download
+
+### 24.9 Folder management
+- [ ] **Status:** Pending
+- **Acceptance Criteria:**
+  - "New Folder" button in left panel toolbar
+  - Right-click folder context menu: Rename, Delete (only if empty), Move
+  - Drag media items from grid to folder in tree to move
+  - Drag folders within tree to reorganize
+  - `data-testid="new-folder-button"` on new folder button
+  - `data-testid="folder-context-menu"` on context menu
+- **Validation:**
+  - `npx tsc --noEmit` passes
+  - Folders can be created, renamed, deleted, reorganized
+- **Ralph Stop:** Folder CRUD and drag-and-drop reorganization work
