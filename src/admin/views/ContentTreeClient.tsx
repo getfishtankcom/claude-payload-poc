@@ -27,6 +27,15 @@
 'use client'
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useAuth } from '@payloadcms/ui'
+import { TreeContextMenu } from '../components/TreeContextMenu'
+
+// User type with role
+type UserWithRole = {
+  id: string
+  role?: 'admin' | 'editor' | 'author'
+  [key: string]: unknown
+}
 
 // --------------------------------------------------------------------------
 // Types
@@ -339,6 +348,11 @@ function TreeItem({
 // --------------------------------------------------------------------------
 
 export const ContentTreeClient: React.FC = () => {
+  const { user } = useAuth()
+  const typedUser = user as UserWithRole | null
+  const userRole = typedUser?.role || 'author'
+  const userId = typedUser?.id || null
+
   // Tree data
   const [tree, setTree] = useState<TreeNode[]>([])
   const [loading, setLoading] = useState(true)
@@ -355,11 +369,12 @@ export const ContentTreeClient: React.FC = () => {
   const [searchMatchIds, setSearchMatchIds] = useState<Set<string>>(new Set())
   const [isSearching, setIsSearching] = useState(false)
 
-  // Context menu state (used by task 23.4)
+  // Context menu state
   const [contextMenu, setContextMenu] = useState<{
     x: number
     y: number
     node: TreeNode
+    nodeDepth: number
   } | null>(null)
 
   const treeContainerRef = useRef<HTMLDivElement>(null)
@@ -464,16 +479,165 @@ export const ContentTreeClient: React.FC = () => {
     setContextMenu(null)
   }, [])
 
-  // Right-click handler (placeholder for task 23.4)
+  // Compute depth of a node by walking the parent chain in the tree
+  const getNodeDepth = useCallback((nodeId: string | number, nodes: TreeNode[], depth = 0): number => {
+    for (const n of nodes) {
+      if (n.id === nodeId) return depth
+      if (n.children) {
+        const found = getNodeDepth(nodeId, n.children, depth + 1)
+        if (found >= 0) return found
+      }
+    }
+    return -1
+  }, [])
+
+  // Right-click handler
   const handleContextMenu = useCallback((e: React.MouseEvent, node: TreeNode) => {
     e.preventDefault()
     setSelectedNode(node)
+    const depth = getNodeDepth(node.id, tree)
     setContextMenu({
       x: e.clientX,
       y: e.clientY,
       node,
+      nodeDepth: depth >= 0 ? depth : 0,
     })
+  }, [tree, getNodeDepth])
+
+  // Context menu action handlers
+  const handleInsert = useCallback(async (parentNode: TreeNode, contentType: string) => {
+    try {
+      await fetch('/api/pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `New ${contentType}`,
+          slug: `new-${contentType}-${Date.now()}`,
+          contentType,
+          parent: parentNode.id,
+          sortOrder: 999,
+          workflowState: 'draft',
+        }),
+      })
+      // Refresh tree
+      const res = await fetch('/api/tree')
+      if (res.ok) {
+        const data = await res.json()
+        setTree(data.nodes || [])
+      }
+    } catch {
+      // Silently fail — user can retry
+    }
   }, [])
+
+  const handleOpenInNewTab = useCallback((node: TreeNode) => {
+    window.open(`/admin/collections/pages/${node.id}`, '_blank')
+  }, [])
+
+  const handleDuplicate = useCallback(async (node: TreeNode) => {
+    try {
+      // Fetch the full document, then create a copy
+      const res = await fetch(`/api/pages/${node.id}`)
+      if (res.ok) {
+        const doc = await res.json()
+        await fetch('/api/pages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...doc,
+            id: undefined,
+            title: `${doc.title} (Copy)`,
+            slug: `${doc.slug}-copy-${Date.now()}`,
+            workflowState: 'draft',
+          }),
+        })
+        // Refresh tree
+        const treeRes = await fetch('/api/tree')
+        if (treeRes.ok) {
+          const data = await treeRes.json()
+          setTree(data.nodes || [])
+        }
+      }
+    } catch {
+      // Silently fail
+    }
+  }, [])
+
+  const handleRename = useCallback((node: TreeNode) => {
+    const newTitle = prompt('New title:', node.title)
+    if (newTitle && newTitle !== node.title) {
+      fetch(`/api/pages/${node.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: newTitle }),
+      }).then(async () => {
+        const res = await fetch('/api/tree')
+        if (res.ok) {
+          const data = await res.json()
+          setTree(data.nodes || [])
+        }
+      })
+    }
+  }, [])
+
+  const handleMoveTo = useCallback((node: TreeNode) => {
+    // Move functionality will be enhanced with a tree picker modal in task 23.5
+    const newParentId = prompt('Enter parent ID to move to:')
+    if (newParentId) {
+      fetch(`/api/pages/${node.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ parent: newParentId }),
+      }).then(async () => {
+        const res = await fetch('/api/tree')
+        if (res.ok) {
+          const data = await res.json()
+          setTree(data.nodes || [])
+        }
+      })
+    }
+  }, [])
+
+  const handleCopy = useCallback((node: TreeNode) => {
+    // Store copied node ID in sessionStorage for paste
+    sessionStorage.setItem('fras-tree-copied', JSON.stringify({ id: node.id, title: node.title }))
+  }, [])
+
+  const handleLockToggle = useCallback(async (node: TreeNode) => {
+    try {
+      await fetch(`/api/pages/${node.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lockedBy: node.lockedBy ? null : userId,
+          lockedAt: node.lockedBy ? null : new Date().toISOString(),
+        }),
+      })
+      const res = await fetch('/api/tree')
+      if (res.ok) {
+        const data = await res.json()
+        setTree(data.nodes || [])
+      }
+    } catch {
+      // Silently fail
+    }
+  }, [userId])
+
+  const handleDelete = useCallback(async (node: TreeNode) => {
+    try {
+      await fetch(`/api/pages/${node.id}`, { method: 'DELETE' })
+      const res = await fetch('/api/tree')
+      if (res.ok) {
+        const data = await res.json()
+        setTree(data.nodes || [])
+      }
+      if (selectedNode?.id === node.id) {
+        setSelectedNode(null)
+      }
+    } catch {
+      // Silently fail
+    }
+  }, [selectedNode])
 
   // Close context menu on click outside
   useEffect(() => {
@@ -758,20 +922,25 @@ export const ContentTreeClient: React.FC = () => {
         )}
       </div>
 
-      {/* Context menu placeholder (task 23.4 will replace this) */}
+      {/* Context menu */}
       {contextMenu && (
-        <div
-          data-testid="context-menu"
-          style={{
-            position: 'fixed',
-            left: contextMenu.x,
-            top: contextMenu.y,
-            zIndex: 9999,
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Context menu content will be added in task 23.4 */}
-        </div>
+        <TreeContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          node={contextMenu.node}
+          nodeDepth={contextMenu.nodeDepth}
+          userRole={userRole as 'admin' | 'editor' | 'author'}
+          userId={userId}
+          onClose={() => setContextMenu(null)}
+          onInsert={handleInsert}
+          onOpenInNewTab={handleOpenInNewTab}
+          onDuplicate={handleDuplicate}
+          onRename={handleRename}
+          onMoveTo={handleMoveTo}
+          onCopy={handleCopy}
+          onLockToggle={handleLockToggle}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   )

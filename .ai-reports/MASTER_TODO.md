@@ -2905,7 +2905,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Icons match item types, gutter dots show correct workflow colors
 
 ### 23.4 Right-click context menu
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Custom context menu component positioned at cursor on right-click
   - Menu items: Insert > (submenu filtered by valid child types), Open in New Tab, separator, Copy, Move To, Duplicate, Rename, separator, Lock/Unlock, separator, Delete (with confirmation)
