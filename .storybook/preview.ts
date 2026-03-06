@@ -15,7 +15,7 @@
 import type { Preview } from '@storybook/react'
 
 // Load all Tailwind CSS v4 design tokens and base styles
-import '../src/app/(frontend)/globals.css'
+import '../src/app/(frontend)/[locale]/(frontend)/globals.css'
 
 const preview: Preview = {
   parameters: {

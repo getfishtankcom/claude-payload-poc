@@ -4,7 +4,7 @@
  * Shows the 4-widget grid with role-specific visibility.
  */
 import type { Meta, StoryObj } from '@storybook/react'
-import { Dashboard } from './Dashboard'
+import Dashboard from './Dashboard'
 import { PayloadMockProvider } from '../../../.storybook/mocks/payloadcms-ui'
 import { mockWorkflowItems, mockRecentItems, mockScheduledItems } from '@/__mocks__/cms-data'
 

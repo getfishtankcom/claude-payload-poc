@@ -41,13 +41,14 @@ async function node(
   // Create as draft first (workflow hook requires it)
   const doc = await payload.create({
     collection: 'pages',
+    draft: true,
     data: {
       title: data.title,
       slug: data.slug,
-      contentType: data.contentType,
-      parent: data.parent || null,
+      contentType: data.contentType as 'page' | 'folder' | 'news' | 'project' | 'event' | 'document' | 'media' | 'settings',
+      parent: (data.parent || null) as number | null,
       sortOrder: data.sortOrder,
-      board: data.board || null,
+      board: (data.board || null) as number | null,
       workflowState: 'draft',
     },
     context: { skipWorkflowValidation: true, skipWorkflowLogging: true },
@@ -58,7 +59,7 @@ async function node(
     await payload.update({
       collection: 'pages',
       id: doc.id,
-      data: { workflowState: desiredState },
+      data: { workflowState: desiredState as 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished' },
       context: { skipWorkflowValidation: true, skipWorkflowLogging: true },
     })
   }

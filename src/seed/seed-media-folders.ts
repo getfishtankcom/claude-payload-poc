@@ -46,7 +46,7 @@ const FOLDER_STRUCTURE: FolderSeed[] = [
 async function createFolders(
   payload: Awaited<ReturnType<typeof getPayload>>,
   folders: FolderSeed[],
-  parentId: number | string | null,
+  parentId: number | null,
 ): Promise<void> {
   for (const folder of folders) {
     // Check if folder already exists under this parent
@@ -61,10 +61,10 @@ async function createFolders(
       limit: 1,
     })
 
-    let folderId: number | string
+    let folderId: number
 
     if (existing.docs.length > 0) {
-      folderId = existing.docs[0].id
+      folderId = existing.docs[0].id as number
       console.log(`  Folder exists: ${folder.name} (id: ${folderId})`)
     } else {
       const created = await payload.create({
@@ -75,7 +75,7 @@ async function createFolders(
           ...(parentId ? { parent: parentId } : {}),
         },
       })
-      folderId = created.id
+      folderId = created.id as number
       console.log(`  Created folder: ${folder.name} (id: ${folderId})`)
     }
 

@@ -42,6 +42,8 @@ const config: StorybookConfig = {
       '@': path.resolve(__dirname, '../src'),
       // Mock @payloadcms/ui hooks for admin component stories
       '@payloadcms/ui': path.resolve(__dirname, 'mocks/payloadcms-ui.tsx'),
+      // Mock @payload-config — only resolves in Next.js/Payload runtime
+      '@payload-config': path.resolve(__dirname, 'mocks/payload-config.ts'),
     }
     return config
   },
