@@ -3049,7 +3049,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Detail panel shows metadata, usage list, locale-aware editing works
 
 ### 24.7 Media picker modal
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Reusable modal component for field/component media selection
   - Opens media library as modal overlay (compact version of full view)
