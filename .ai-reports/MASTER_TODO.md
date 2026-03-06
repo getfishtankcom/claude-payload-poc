@@ -3064,7 +3064,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Modal works end-to-end for media selection
 
 ### 24.8 Bulk operations
-- [ ] **Status:** Pending
+- [x] **Status:** Complete
 - **Acceptance Criteria:**
   - Multi-select: checkboxes on each media item in grid/list view
   - "Select All" checkbox in toolbar

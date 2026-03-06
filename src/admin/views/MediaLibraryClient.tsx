@@ -715,6 +715,56 @@ export function MediaLibraryClient() {
     setDetailItem(item)
   }, [])
 
+  // ----- Bulk select all / deselect all -----
+  const handleSelectAll = useCallback((checked: boolean) => {
+    if (checked) {
+      setSelectedItems(new Set(mediaItems.map((item) => item.id)))
+    } else {
+      setSelectedItems(new Set())
+    }
+  }, [mediaItems])
+
+  // ----- Bulk move to folder -----
+  const [showBulkMoveDialog, setShowBulkMoveDialog] = useState(false)
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false)
+
+  const handleBulkMove = useCallback(async (targetFolderId: string | number | null) => {
+    const ids = Array.from(selectedItems)
+    await Promise.all(
+      ids.map((id) =>
+        fetch(`/api/media/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ folder: targetFolderId }),
+        }),
+      ),
+    )
+    setSelectedItems(new Set())
+    setShowBulkMoveDialog(false)
+    await Promise.all([fetchMedia(), fetchFolders()])
+  }, [selectedItems, fetchMedia, fetchFolders])
+
+  const handleBulkDelete = useCallback(async () => {
+    const ids = Array.from(selectedItems)
+    await Promise.all(
+      ids.map((id) => fetch(`/api/media/${id}`, { method: 'DELETE' })),
+    )
+    setSelectedItems(new Set())
+    setShowBulkDeleteConfirm(false)
+    await Promise.all([fetchMedia(), fetchFolders()])
+  }, [selectedItems, fetchMedia, fetchFolders])
+
+  const handleBulkDownload = useCallback(() => {
+    // Download each selected item individually
+    const items = mediaItems.filter((item) => selectedItems.has(item.id))
+    items.forEach((item) => {
+      const link = document.createElement('a')
+      link.href = item.url
+      link.download = item.filename
+      link.click()
+    })
+  }, [mediaItems, selectedItems])
+
   // ----- Bulk select toggle -----
   const handleItemSelect = useCallback((id: string | number, checked: boolean) => {
     setSelectedItems((prev) => {
@@ -957,6 +1007,16 @@ export function MediaLibraryClient() {
           gap: '8px',
           flexWrap: 'wrap',
         }}>
+          {/* Select All checkbox */}
+          <input
+            data-testid="select-all"
+            type="checkbox"
+            checked={mediaItems.length > 0 && selectedItems.size === mediaItems.length}
+            onChange={(e) => handleSelectAll(e.target.checked)}
+            title="Select all"
+            style={{ width: '16px', height: '16px', cursor: 'pointer', flexShrink: 0 }}
+          />
+
           {/* Search */}
           <div style={{ position: 'relative', flex: '1 1 200px', maxWidth: '300px' }}>
             <input
@@ -1081,6 +1141,80 @@ export function MediaLibraryClient() {
             {totalMedia} item{totalMedia !== 1 ? 's' : ''}
           </span>
         </div>
+
+        {/* Bulk actions bar */}
+        {selectedItems.size > 0 && (
+          <div
+            data-testid="bulk-actions"
+            style={{
+              padding: '8px 16px',
+              background: 'var(--theme-elevation-50)',
+              borderBottom: '1px solid var(--theme-elevation-100)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '13px',
+            }}
+          >
+            <span style={{ fontWeight: 500, color: 'var(--theme-elevation-700)' }}>
+              {selectedItems.size} item{selectedItems.size !== 1 ? 's' : ''} selected
+            </span>
+            <button
+              onClick={() => setShowBulkMoveDialog(true)}
+              style={{
+                padding: '4px 10px',
+                border: '1px solid var(--theme-elevation-200)',
+                borderRadius: '4px',
+                background: 'var(--theme-elevation-0)',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Move to...
+            </button>
+            <button
+              onClick={handleBulkDownload}
+              style={{
+                padding: '4px 10px',
+                border: '1px solid var(--theme-elevation-200)',
+                borderRadius: '4px',
+                background: 'var(--theme-elevation-0)',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Download
+            </button>
+            <button
+              onClick={() => setShowBulkDeleteConfirm(true)}
+              style={{
+                padding: '4px 10px',
+                border: '1px solid var(--theme-error-500)',
+                borderRadius: '4px',
+                background: 'transparent',
+                color: 'var(--theme-error-500)',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => setSelectedItems(new Set())}
+              style={{
+                padding: '4px 10px',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+                fontSize: '12px',
+                color: 'var(--theme-elevation-500)',
+                marginLeft: 'auto',
+              }}
+            >
+              Deselect all
+            </button>
+          </div>
+        )}
 
         {/* Breadcrumb */}
         <div style={{ padding: '8px 16px 0' }}>
@@ -1281,6 +1415,160 @@ export function MediaLibraryClient() {
           }}
         />
       )}
+
+      {/* ==================== Bulk Move Dialog ==================== */}
+      {showBulkMoveDialog && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 1000,
+        }}>
+          <div style={{
+            background: 'var(--theme-elevation-0)',
+            borderRadius: '8px',
+            padding: '24px',
+            width: '320px',
+            maxHeight: '400px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+            <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>
+              Move to Folder
+            </div>
+            <div style={{ flex: 1, overflow: 'auto', marginBottom: '16px' }}>
+              {/* Root option */}
+              <div
+                onClick={() => handleBulkMove(null)}
+                style={{
+                  padding: '6px 8px',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
+                  fontSize: '13px',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--theme-elevation-50)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+              >
+                (No folder)
+              </div>
+              {/* Flatten folder tree for the picker */}
+              {flattenFolders(folders).map((f) => (
+                <div
+                  key={String(f.id)}
+                  onClick={() => handleBulkMove(f.id)}
+                  style={{
+                    padding: '6px 8px',
+                    paddingLeft: `${(f.depth || 0) * 16 + 8}px`,
+                    cursor: 'pointer',
+                    borderRadius: '4px',
+                    fontSize: '13px',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--theme-elevation-50)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                >
+                  📁 {f.name}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowBulkMoveDialog(false)}
+              style={{
+                padding: '6px 16px',
+                border: '1px solid var(--theme-elevation-200)',
+                borderRadius: '6px',
+                background: 'transparent',
+                cursor: 'pointer',
+                fontSize: '13px',
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== Bulk Delete Confirmation ==================== */}
+      {showBulkDeleteConfirm && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 1000,
+        }}>
+          <div style={{
+            background: 'var(--theme-elevation-0)',
+            borderRadius: '8px',
+            padding: '24px',
+            maxWidth: '400px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+          }}>
+            <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
+              Delete {selectedItems.size} Item{selectedItems.size !== 1 ? 's' : ''}
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--theme-elevation-600)', marginBottom: '16px' }}>
+              Are you sure you want to delete {selectedItems.size} selected media item{selectedItems.size !== 1 ? 's' : ''}? This action cannot be undone.
+            </div>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowBulkDeleteConfirm(false)}
+                style={{
+                  padding: '6px 16px',
+                  border: '1px solid var(--theme-elevation-200)',
+                  borderRadius: '6px',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleBulkDelete}
+                style={{
+                  padding: '6px 16px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  background: 'var(--theme-error-500)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
+}
+
+// --------------------------------------------------------------------------
+// Helper: flatten folder tree for move dialog
+// --------------------------------------------------------------------------
+
+interface FlatFolder {
+  id: string | number
+  name: string
+  depth: number
+}
+
+function flattenFolders(nodes: FolderNode[], depth: number = 0): FlatFolder[] {
+  const result: FlatFolder[] = []
+  for (const node of nodes) {
+    result.push({ id: node.id, name: node.name, depth })
+    if (node.children) {
+      result.push(...flattenFolders(node.children, depth + 1))
+    }
+  }
+  return result
 }
