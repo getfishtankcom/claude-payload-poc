@@ -2984,7 +2984,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Media library renders with folder navigation
 
 ### 24.3 Media grid + list toggle
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (built as part of 24.2 — integral to media library view)
 - **Acceptance Criteria:**
   - Grid view (default): thumbnail cards showing preview image (or file type icon), filename, file size
   - List view: table with columns — thumbnail, filename, type, size, dimensions, uploaded date, uploaded by
@@ -3016,7 +3016,7 @@ grep 'date\|Date\|format' src/components/NewsItem.tsx
 - **Ralph Stop:** Upload works via button and drag-and-drop, files appear in correct folder
 
 ### 24.5 Search + filters
-- [ ] **Status:** Pending
+- [x] **Status:** Complete (built as part of 24.2 — integral to media library view)
 - **Acceptance Criteria:**
   - Search bar in toolbar: full-text search across filename, alt text, title, description
   - Filter dropdown: file type (Image, Document, Video, Audio, All)
