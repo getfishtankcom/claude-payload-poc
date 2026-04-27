@@ -136,57 +136,34 @@ export const validateWorkflowTransition: CollectionBeforeChangeHook = ({
     }
   }
 
+  // Append history entry to the same write — eliminates the previous
+  // afterChange double-write where every transition cost two PATCHes.
+  if (!context?.skipWorkflowLogging) {
+    const existingHistory = (originalDoc?.workflowHistory as unknown[]) || []
+    const incoming = (data.workflowHistory as unknown[]) || existingHistory
+    const historyEntry = {
+      from: oldState,
+      to: newState,
+      user: req.user?.id ?? null,
+      date: new Date().toISOString(),
+      comment: (context?.workflowComment as string) || null,
+    }
+    data.workflowHistory = [...incoming, historyEntry]
+  }
+
   return data
 }
 
 /**
- * afterChange hook: logs workflow transition to workflowHistory.
- */
-/**
- * Factory to create afterChange hook for a specific collection.
- * Pass the collection slug so the hook can update workflowHistory.
+ * afterChange hook factory.
+ *
+ * History is now appended in the beforeChange hook, so this is a no-op
+ * factory kept for API compatibility with existing collection wiring.
+ * Callers can keep importing/registering it; remove safely when no
+ * collections reference it.
  */
 export const createLogWorkflowTransition = (
-  collectionSlug: CollectionSlug,
+  _collectionSlug: CollectionSlug,
 ): CollectionAfterChangeHook => {
-  return async ({ doc, previousDoc, req, context }) => {
-    // Skip if no state change or validation was skipped with no logging intent
-    if (context?.skipWorkflowLogging) return doc
-
-    const oldState = previousDoc?.workflowState || 'draft'
-    const newState = doc.workflowState
-
-    if (!newState || newState === oldState) return doc
-
-    const historyEntry = {
-      from: oldState,
-      to: newState,
-      user: req.user?.id || null,
-      date: new Date().toISOString(),
-      comment: (context?.workflowComment as string) || null,
-    }
-
-    // Append to workflowHistory via local API
-    const existingHistory = doc.workflowHistory || []
-    try {
-      await req.payload.update({
-        collection: collectionSlug,
-        id: doc.id,
-        data: {
-          workflowHistory: [...existingHistory, historyEntry],
-        },
-        req,
-        context: {
-          skipWorkflowValidation: true,
-          skipWorkflowLogging: true,
-        },
-      })
-    } catch (err) {
-      req.payload.logger.error(
-        `Failed to log workflow transition for ${doc.id}: ${err}`,
-      )
-    }
-
-    return doc
-  }
+  return async ({ doc }) => doc
 }

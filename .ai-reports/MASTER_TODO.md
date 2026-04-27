@@ -694,7 +694,7 @@ npx tsc --noEmit
 
 ### Task 0.14: Error handling + AbortController + stale closure fixes
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — ContentTreeClient: 7 silent fetch catches now showError() inline toast (top-right, 5s auto-hide). AbortController added to /api/tree/search; previous in-flight search aborted on new keystroke. handleRename + handleMoveTo replace prompt() with PromptModal (ModalOverlay + input, Enter to submit, Escape/Cancel to dismiss). WorkboxClient.performTransition rewritten with functional setState — captures `removed` item inside the setItems callback so rapid transitions never replay a stale snapshot on rollback. workflow-hooks.ts: history append moved into beforeChange (single PATCH) so each transition is one write instead of two; afterChange factory kept as a no-op for API compat. tsc + 30 tests clean.
 - **Dependencies:** 0.11 (TanStack Query preferred), 0.12 (shared Modal for replacing prompt())
 - **Skills:** react-best-practices
 - **Acceptance Criteria:**

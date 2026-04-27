@@ -34,6 +34,7 @@ import { TreeDndWrapper, DraggableTreeItem } from '../components/TreeDndWrapper'
 import type { UserWithRole } from '../types/workflow'
 import type { TreeNode } from '../types/tree'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ModalOverlay, ModalButton } from '../components/ui/Modal'
 
 // --------------------------------------------------------------------------
 // Constants
@@ -342,6 +343,35 @@ export const ContentTreeClient: React.FC = () => {
   const userRole = typedUser?.role || 'author'
   const userId = typedUser?.id || null
 
+  // Toast error state — surfaces fetch failures so they aren't silent.
+  const [toastError, setToastError] = useState<string | null>(null)
+  const showError = useCallback((message: string) => {
+    setToastError(message)
+    setTimeout(() => setToastError(null), 5000)
+  }, [])
+
+  // Modal prompt state — replaces native prompt() for rename / move-to.
+  const [promptDialog, setPromptDialog] = useState<{
+    title: string
+    label: string
+    initialValue: string
+    onSubmit: (value: string) => void
+  } | null>(null)
+  const askForValue = useCallback(
+    (
+      title: string,
+      label: string,
+      initialValue: string,
+      onSubmit: (value: string) => void,
+    ) => {
+      setPromptDialog({ title, label, initialValue, onSubmit })
+    },
+    [],
+  )
+
+  // AbortController ref for in-flight server search requests.
+  const searchAbortRef = useRef<AbortController | null>(null)
+
   // Tree data — TanStack Query
   const queryClient = useQueryClient()
   const treeQuery = useQuery<TreeNode[]>({
@@ -448,8 +478,8 @@ export const ContentTreeClient: React.FC = () => {
             return next
           })
         }
-      } catch {
-        // Silently fail — user can retry by collapsing and re-expanding
+      } catch (err) {
+        showError(err instanceof Error ? err.message : 'Failed to load children')
       } finally {
         setLoadingIds((prev) => {
           const next = new Set(prev)
@@ -508,10 +538,10 @@ export const ContentTreeClient: React.FC = () => {
         }),
       })
       refetchTree()
-    } catch {
-      // Silently fail — user can retry
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Insert failed')
     }
-  }, [])
+  }, [refetchTree, showError])
 
   const handleOpenInNewTab = useCallback((node: TreeNode) => {
     window.open(`/admin/collections/pages/${node.id}`, '_blank')
@@ -536,32 +566,37 @@ export const ContentTreeClient: React.FC = () => {
         })
         refetchTree()
       }
-    } catch {
-      // Silently fail
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Duplicate failed')
     }
-  }, [refetchTree])
+  }, [refetchTree, showError])
 
   const handleRename = useCallback((node: TreeNode) => {
-    const newTitle = prompt('New title:', node.title)
-    if (newTitle && newTitle !== node.title) {
-      fetch(`/api/pages/${node.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle }),
-      }).then(() => refetchTree())
-    }
-  }, [refetchTree])
+    askForValue('Rename', 'New title', node.title, (newTitle) => {
+      if (newTitle && newTitle !== node.title) {
+        fetch(`/api/pages/${node.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: newTitle }),
+        })
+          .then(() => refetchTree())
+          .catch((err) => showError(err instanceof Error ? err.message : 'Rename failed'))
+      }
+    })
+  }, [refetchTree, askForValue, showError])
 
   const handleMoveTo = useCallback((node: TreeNode) => {
-    // Move functionality will be enhanced with a tree picker modal in task 23.5
-    const newParentId = prompt('Enter parent ID to move to:')
-    if (newParentId) {
-      fetch(`/api/pages/${node.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ parent: newParentId }),
-      }).then(() => refetchTree())
-    }
+    askForValue('Move to', 'Parent ID', '', (newParentId) => {
+      if (newParentId) {
+        fetch(`/api/pages/${node.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ parent: newParentId }),
+        })
+          .then(() => refetchTree())
+          .catch((err) => showError(err instanceof Error ? err.message : 'Move failed'))
+      }
+    })
   }, [refetchTree])
 
   const handleCopy = useCallback((node: TreeNode) => {
@@ -580,10 +615,10 @@ export const ContentTreeClient: React.FC = () => {
         }),
       })
       refetchTree()
-    } catch {
-      // Silently fail
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Lock toggle failed')
     }
-  }, [userId, refetchTree])
+  }, [userId, refetchTree, showError])
 
   const handleDelete = useCallback(async (node: TreeNode) => {
     try {
@@ -592,10 +627,10 @@ export const ContentTreeClient: React.FC = () => {
       if (selectedNode?.id === node.id) {
         setSelectedNode(null)
       }
-    } catch {
-      // Silently fail
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Delete failed')
     }
-  }, [selectedNode, refetchTree])
+  }, [selectedNode, refetchTree, showError])
 
   // DnD move handler — updates parent, sortOrder, and board via API
   const handleMoveNode = useCallback(async (result: {
@@ -615,10 +650,10 @@ export const ContentTreeClient: React.FC = () => {
         }),
       })
       refetchTree()
-    } catch {
-      // Silently fail
+    } catch (err) {
+      showError(err instanceof Error ? err.message : 'Move failed')
     }
-  }, [])
+  }, [refetchTree, showError])
 
   // Close context menu on click outside
   useEffect(() => {
@@ -659,11 +694,19 @@ export const ContentTreeClient: React.FC = () => {
     searchInNodes(tree)
     setSearchMatchIds(matchIds)
 
-    // Server-side deep search for items not yet loaded
+    // Server-side deep search for items not yet loaded.
+    // Cancel any in-flight search before issuing a new one so rapid typing
+    // doesn't surface stale results.
     if (query.length >= 2) {
+      searchAbortRef.current?.abort()
+      const controller = new AbortController()
+      searchAbortRef.current = controller
       setIsSearching(true)
       try {
-        const res = await fetch(`/api/tree/search?q=${encodeURIComponent(query)}`)
+        const res = await fetch(
+          `/api/tree/search?q=${encodeURIComponent(query)}`,
+          { signal: controller.signal },
+        )
         if (res.ok) {
           const data = await res.json()
           // Add server results to match set
@@ -685,13 +728,18 @@ export const ContentTreeClient: React.FC = () => {
             })
           }
         }
-      } catch {
-        // Silently fail — client-side results still shown
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          showError(err instanceof Error ? err.message : 'Search failed — showing local results only')
+        }
       } finally {
-        setIsSearching(false)
+        if (searchAbortRef.current === controller) {
+          searchAbortRef.current = null
+          setIsSearching(false)
+        }
       }
     }
-  }, [tree])
+  }, [tree, showError])
 
   // Debounced search
   const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -925,7 +973,93 @@ export const ContentTreeClient: React.FC = () => {
           onDelete={handleDelete}
         />
       )}
+
+      {/* Error toast */}
+      {toastError && (
+        <div
+          role="alert"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            background: '#ef4444',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '6px',
+            fontSize: '13px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            zIndex: 10001,
+            maxWidth: '360px',
+          }}
+        >
+          {toastError}
+        </div>
+      )}
+
+      {/* Modal prompt — replaces native prompt() */}
+      {promptDialog && (
+        <PromptModal
+          title={promptDialog.title}
+          label={promptDialog.label}
+          initialValue={promptDialog.initialValue}
+          onSubmit={(value) => {
+            promptDialog.onSubmit(value)
+            setPromptDialog(null)
+          }}
+          onCancel={() => setPromptDialog(null)}
+        />
+      )}
     </div>
+  )
+}
+
+/** Simple prompt-style modal: title + single text input + OK/Cancel. */
+function PromptModal({
+  title,
+  label,
+  initialValue,
+  onSubmit,
+  onCancel,
+}: {
+  title: string
+  label: string
+  initialValue: string
+  onSubmit: (value: string) => void
+  onCancel: () => void
+}) {
+  const [value, setValue] = useState(initialValue)
+  return (
+    <ModalOverlay onClose={onCancel} ariaLabel={title}>
+      <h2 style={{ fontSize: '16px', fontWeight: 600, marginTop: 0, marginBottom: '12px' }}>{title}</h2>
+      <label style={{ display: 'block', fontSize: '12px', color: 'var(--theme-elevation-600)', marginBottom: '6px' }}>
+        {label}
+      </label>
+      <input
+        autoFocus
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && value.trim()) onSubmit(value.trim())
+        }}
+        style={{
+          width: '100%',
+          padding: '8px 10px',
+          border: '1px solid var(--theme-elevation-200)',
+          borderRadius: '4px',
+          fontSize: '14px',
+          marginBottom: '16px',
+        }}
+      />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+        <ModalButton label="Cancel" variant="ghost" onClick={onCancel} />
+        <ModalButton
+          label="OK"
+          variant="primary"
+          disabled={!value.trim()}
+          onClick={() => onSubmit(value.trim())}
+        />
+      </div>
+    </ModalOverlay>
   )
 }
 

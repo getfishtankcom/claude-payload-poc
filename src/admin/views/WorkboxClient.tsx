@@ -302,9 +302,18 @@ export function WorkboxClient() {
     setTransitioningIds((prev) => new Set(prev).add(itemKey))
     setToastError(null)
 
-    // Optimistic: remove from list
-    const prevItems = [...items]
-    setItems((prev) => prev.filter((i) => !(i.id === item.id && i._collection === item._collection)))
+    // Optimistic: remove from list functionally so rapid transitions don't
+    // capture a stale `items` snapshot. Keep the removed item so we can
+    // restore it on failure.
+    let removed: WorkboxItem | undefined
+    setItems((prev) => {
+      const idx = prev.findIndex(
+        (i) => i.id === item.id && i._collection === item._collection,
+      )
+      if (idx < 0) return prev
+      removed = prev[idx]
+      return [...prev.slice(0, idx), ...prev.slice(idx + 1)]
+    })
 
     try {
       const body: Record<string, unknown> = { workflowState: newState }
@@ -322,8 +331,8 @@ export function WorkboxClient() {
       }
       // Successful — item stays removed from list (it moved states)
     } catch (err) {
-      // Rollback optimistic update
-      setItems(prevItems)
+      // Rollback optimistic update functionally — re-insert the removed item.
+      setItems((prev) => (removed ? [...prev, removed] : prev))
       setToastError(err instanceof Error ? err.message : 'Transition failed')
       setTimeout(() => setToastError(null), 5000)
     } finally {
@@ -333,7 +342,7 @@ export function WorkboxClient() {
         return next
       })
     }
-  }, [items])
+  }, [])
 
   // --- Reject handler ---
   const handleReject = useCallback(() => {
