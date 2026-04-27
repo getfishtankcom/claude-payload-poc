@@ -32,7 +32,7 @@
  */
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -105,6 +105,38 @@ export function PageBuilderClient() {
 
   // Add Component modal state
   const [addComponentZone, setAddComponentZone] = useState<string | null>(null)
+
+  // Live preview iframe — postMessage bridge.
+  const previewIframeRef = useRef<HTMLIFrameElement | null>(null)
+  const previewSecret = process.env.NEXT_PUBLIC_PREVIEW_SECRET ?? ''
+  const previewUrl =
+    pageData?.id && previewSecret
+      ? `/api/preview?id=${pageData.id}&secret=${previewSecret}`
+      : null
+
+  // Re-post the latest layout to the preview iframe whenever it changes.
+  useEffect(() => {
+    if (!previewIframeRef.current?.contentWindow) return
+    previewIframeRef.current.contentWindow.postMessage(
+      { type: 'LAYOUT_UPDATE', payload: builder.layout },
+      '*',
+    )
+  }, [builder.layout])
+
+  // Listen for the iframe's PREVIEW_READY signal and post the current layout.
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      const data = e.data as { type?: string } | null
+      if (data?.type === 'PREVIEW_READY' && previewIframeRef.current?.contentWindow) {
+        previewIframeRef.current.contentWindow.postMessage(
+          { type: 'LAYOUT_UPDATE', payload: builder.layout },
+          '*',
+        )
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [builder.layout])
 
   // DnD state
   const [activeDrag, setActiveDrag] = useState<{
@@ -427,6 +459,18 @@ export function PageBuilderClient() {
               &#x21AA;
             </button>
 
+            {previewUrl && (
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 text-xs text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
+                title="Open live preview in a new tab"
+              >
+                Open preview ↗
+              </a>
+            )}
+
             <span className="mx-1 text-gray-300">|</span>
 
             {/* Breakpoint toggles */}
@@ -481,7 +525,7 @@ export function PageBuilderClient() {
             onAddComponent={(zone) => setAddComponentZone(zone)}
           />
 
-          {/* Center: Canvas */}
+          {/* Center: Canvas (schematic) + optional live-preview iframe overlay */}
           <BuilderCanvas
             template={template}
             layout={builder.layout}
@@ -496,6 +540,21 @@ export function PageBuilderClient() {
             onAddComponent={(zone) => setAddComponentZone(zone)}
             clipboard={builder.clipboard}
           />
+          {previewUrl && (
+            <iframe
+              ref={previewIframeRef}
+              src={previewUrl}
+              title="Live preview"
+              data-testid="builder-preview-iframe"
+              style={{
+                width: canvasWidth,
+                height: '100%',
+                border: '1px solid var(--theme-elevation-200)',
+                marginLeft: '12px',
+                background: 'white',
+              }}
+            />
+          )}
 
           {/* Right: Inspector Panel */}
           {builder.selectedComponent && builder.selectedZone && (

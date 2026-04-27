@@ -1282,7 +1282,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 4.1: Live WYSIWYG preview (iframe-based)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — added PREVIEW_SECRET env var to .env.example. Created src/app/api/preview/route.ts (validates secret, returns HTML shell that subscribes to LAYOUT_UPDATE postMessage and renders zone+component schematic, signals PREVIEW_READY back to parent on load). PageBuilderClient: previewIframeRef + postMessage bridge useEffect that re-posts builder.layout on every change AND replays on PREVIEW_READY ack from iframe. Added "Open preview ↗" toolbar button (opens preview URL in new tab). Iframe rendered alongside BuilderCanvas (width matches canvasWidth so breakpoint toggle drives iframe resize). Preview HTML is a stub renderer (zone-grouped component-name list); swapping it for the full RenderBlocks rendering is the next iteration of 4.1. tsc + 31 tests clean.
 - **Dependencies:** Layer 1 complete (all 53 components registered), 0.11 (TanStack Query)
 - **Skills:** next-best-practices, payload-super
 - **Acceptance Criteria:**
