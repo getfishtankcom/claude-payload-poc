@@ -437,7 +437,7 @@ npx tsc --noEmit
 
 ### Task 0.6: Set up Vitest + initial test suite
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — installed vitest@4 + @testing-library/react + jest-dom + jsdom + user-event. vitest.config.ts at root (jsdom env, src/__tests__/setup.ts, @ alias). 30 tests passing across useBuilderState (12 reducer actions), registry (12 helper tests), brand (5). npm scripts test/test:watch/test:ui added. Skipped @vitejs/plugin-react (incompatible with vitest 4's bundled vite).
 - **Dependencies:** 0.1 (stable platform needed for install)
 - **Skills:** javascript-testing-patterns
 - **Acceptance Criteria:**

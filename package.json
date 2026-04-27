@@ -9,6 +9,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
     "migrate": "payload migrate",
@@ -64,13 +67,19 @@
     "@storybook/react-vite": "^8.6.17",
     "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.15.3",
     "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/ui": "^4.1.5",
     "cross-env": "^7.0.3",
     "eslint": "^9.26.0",
     "eslint-config-next": "15.4.11",
+    "jsdom": "^29.1.0",
     "playwright": "^1.52.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
@@ -78,6 +87,7 @@
     "tailwindcss": "^4.1.4",
     "tsx": "^4.21.0",
     "typescript": "^5.8.3",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "vitest": "^4.1.5"
   }
 }
