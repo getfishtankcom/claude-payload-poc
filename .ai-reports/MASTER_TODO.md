@@ -598,7 +598,7 @@ npx tsc --noEmit
 
 ### Task 0.11: Install + configure TanStack Query
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — installed @tanstack/react-query@5 + devtools. Created src/admin/providers/QueryProvider.tsx with QueryClient defaults (staleTime 30s, gcTime 5min, retry 1) and DevTools (dev-only). Wrapped admin RootLayout with QueryProvider. Migrated ContentTreeClient initial tree fetch to useQuery({queryKey: ['tree']}). All 7 mutation paths (create-child, duplicate, rename, move-to, lock-toggle, delete, DnD move) now invalidate the tree query via queryClient.invalidateQueries instead of inlining a re-fetch. tsc + 30 tests clean.
 - **Dependencies:** 0.1 (stable platform)
 - **Skills:** react-best-practices
 - **Acceptance Criteria:**

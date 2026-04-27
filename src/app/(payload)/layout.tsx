@@ -18,6 +18,7 @@ import React from 'react'
 import './custom.scss'
 import './admin-tailwind.css'
 import { importMap } from './admin/importMap.js'
+import { QueryProvider } from '../../admin/providers/QueryProvider'
 
 type Args = {
   children: React.ReactNode
@@ -34,7 +35,7 @@ const serverFunction: ServerFunctionClient = async function (args) {
 
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    {children}
+    <QueryProvider>{children}</QueryProvider>
   </RootLayout>
 )
 

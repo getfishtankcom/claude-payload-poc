@@ -33,6 +33,7 @@ import { TreeDndWrapper, DraggableTreeItem } from '../components/TreeDndWrapper'
 
 import type { UserWithRole } from '../types/workflow'
 import type { TreeNode } from '../types/tree'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 // --------------------------------------------------------------------------
 // Constants
@@ -341,10 +342,24 @@ export const ContentTreeClient: React.FC = () => {
   const userRole = typedUser?.role || 'author'
   const userId = typedUser?.id || null
 
-  // Tree data
-  const [tree, setTree] = useState<TreeNode[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  // Tree data — TanStack Query
+  const queryClient = useQueryClient()
+  const treeQuery = useQuery<TreeNode[]>({
+    queryKey: ['tree'],
+    queryFn: async () => {
+      const res = await fetch('/api/tree')
+      if (!res.ok) throw new Error(`Failed to fetch tree: ${res.status}`)
+      const data = await res.json()
+      return (data.nodes ?? []) as TreeNode[]
+    },
+  })
+  const tree = treeQuery.data ?? []
+  const loading = treeQuery.isLoading
+  const error = treeQuery.error instanceof Error ? treeQuery.error.message : null
+  // Helper: invalidate tree query to refetch.
+  const refetchTree = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['tree'] })
+  }, [queryClient])
 
   // Tree interaction state
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
@@ -387,22 +402,7 @@ export const ContentTreeClient: React.FC = () => {
     }
   }, [expandedIds])
 
-  // Fetch full tree on mount
-  useEffect(() => {
-    const fetchTree = async () => {
-      try {
-        const res = await fetch('/api/tree')
-        if (!res.ok) throw new Error(`Failed to fetch tree: ${res.status}`)
-        const data = await res.json()
-        setTree(data.nodes || [])
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load tree')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchTree()
-  }, [])
+  // Tree fetch handled by useQuery above; no useEffect needed for initial load.
 
   // Toggle expand/collapse with lazy-loading
   const handleToggle = useCallback(async (id: string | number) => {
@@ -507,12 +507,7 @@ export const ContentTreeClient: React.FC = () => {
           workflowState: 'draft',
         }),
       })
-      // Refresh tree
-      const res = await fetch('/api/tree')
-      if (res.ok) {
-        const data = await res.json()
-        setTree(data.nodes || [])
-      }
+      refetchTree()
     } catch {
       // Silently fail — user can retry
     }
@@ -539,17 +534,12 @@ export const ContentTreeClient: React.FC = () => {
             workflowState: 'draft',
           }),
         })
-        // Refresh tree
-        const treeRes = await fetch('/api/tree')
-        if (treeRes.ok) {
-          const data = await treeRes.json()
-          setTree(data.nodes || [])
-        }
+        refetchTree()
       }
     } catch {
       // Silently fail
     }
-  }, [])
+  }, [refetchTree])
 
   const handleRename = useCallback((node: TreeNode) => {
     const newTitle = prompt('New title:', node.title)
@@ -558,15 +548,9 @@ export const ContentTreeClient: React.FC = () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle }),
-      }).then(async () => {
-        const res = await fetch('/api/tree')
-        if (res.ok) {
-          const data = await res.json()
-          setTree(data.nodes || [])
-        }
-      })
+      }).then(() => refetchTree())
     }
-  }, [])
+  }, [refetchTree])
 
   const handleMoveTo = useCallback((node: TreeNode) => {
     // Move functionality will be enhanced with a tree picker modal in task 23.5
@@ -576,15 +560,9 @@ export const ContentTreeClient: React.FC = () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ parent: newParentId }),
-      }).then(async () => {
-        const res = await fetch('/api/tree')
-        if (res.ok) {
-          const data = await res.json()
-          setTree(data.nodes || [])
-        }
-      })
+      }).then(() => refetchTree())
     }
-  }, [])
+  }, [refetchTree])
 
   const handleCopy = useCallback((node: TreeNode) => {
     // Store copied node ID in sessionStorage for paste
@@ -601,31 +579,23 @@ export const ContentTreeClient: React.FC = () => {
           lockedAt: node.lockedBy ? null : new Date().toISOString(),
         }),
       })
-      const res = await fetch('/api/tree')
-      if (res.ok) {
-        const data = await res.json()
-        setTree(data.nodes || [])
-      }
+      refetchTree()
     } catch {
       // Silently fail
     }
-  }, [userId])
+  }, [userId, refetchTree])
 
   const handleDelete = useCallback(async (node: TreeNode) => {
     try {
       await fetch(`/api/pages/${node.id}`, { method: 'DELETE' })
-      const res = await fetch('/api/tree')
-      if (res.ok) {
-        const data = await res.json()
-        setTree(data.nodes || [])
-      }
+      refetchTree()
       if (selectedNode?.id === node.id) {
         setSelectedNode(null)
       }
     } catch {
       // Silently fail
     }
-  }, [selectedNode])
+  }, [selectedNode, refetchTree])
 
   // DnD move handler — updates parent, sortOrder, and board via API
   const handleMoveNode = useCallback(async (result: {
@@ -644,12 +614,7 @@ export const ContentTreeClient: React.FC = () => {
           board: result.boardId,
         }),
       })
-      // Refresh tree
-      const res = await fetch('/api/tree')
-      if (res.ok) {
-        const data = await res.json()
-        setTree(data.nodes || [])
-      }
+      refetchTree()
     } catch {
       // Silently fail
     }
