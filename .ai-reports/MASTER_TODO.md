@@ -1471,7 +1471,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 5.3: Plugin extraction scoping
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — produced scoping doc at .ai-reports/layer-5-plugin-extraction-scoping.md. Identifies 5 candidates for extraction (3 high-reuse: workflow, content-tree, redirects; 2 medium: language-audit, favorites) with proposed plugin shapes, effort estimates, and a suggested extraction order (redirects → workflow → content-tree). Cross-cutting decisions outlined for monorepo, versioning, Storybook, tests, license.
 - **Dependencies:** Layer 4 complete, 5.2 (security issues resolved first)
 - **Skills:** payload-super
 - **Acceptance Criteria:**
