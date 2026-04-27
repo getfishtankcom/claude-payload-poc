@@ -97,8 +97,27 @@ export async function GET(request: NextRequest) {
     if (t) {
       e.preventDefault();
       postSelected(t);
+      // Make text fields directly editable on click (Level 3).
+      if (t.getAttribute('data-builder-field') && !t.isContentEditable) {
+        t.setAttribute('contenteditable', 'true');
+        t.focus();
+      }
     }
   });
+  // Serialize edits and post FIELD_UPDATE on blur.
+  document.addEventListener('blur', function (e) {
+    var t = e.target.closest && e.target.closest('[data-builder-component-id][contenteditable="true"]');
+    if (t) {
+      var componentId = t.getAttribute('data-builder-component-id');
+      var zone = (t.closest('[data-builder-zone]') || {}).getAttribute && t.closest('[data-builder-zone]').getAttribute('data-builder-zone');
+      var field = t.getAttribute('data-builder-field') || 'primary';
+      var value = t.innerText;
+      if (window.parent && window.parent.postMessage) {
+        window.parent.postMessage({ type: 'FIELD_UPDATE', componentId: componentId, zone: zone, field: field, value: value }, '*');
+      }
+      t.removeAttribute('contenteditable');
+    }
+  }, true);
   window.addEventListener('message', function (event) {
     var data = event.data || {};
     if (data && data.type === 'LAYOUT_UPDATE' && data.payload) {

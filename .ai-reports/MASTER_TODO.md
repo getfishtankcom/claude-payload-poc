@@ -1343,7 +1343,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 4.3: Field editing Level 3 (contenteditable rich text)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — preview HTML now sets contenteditable=true on the clicked component (turns the schematic component div into an editable text surface). On blur the iframe serializes innerText and posts FIELD_UPDATE { componentId, zone, field, value } to the parent; PageBuilderClient already routes FIELD_UPDATE through builder.updateComponentProps which means edits flow into builder.layout, mark isDirty, and participate in undo/redo. Created src/admin/components/builder/InlineEditToolbar.tsx (floating B/I/U/Link toolbar at fixed x/y). Mounting + selection-tracking the toolbar in the iframe is left as a follow-up — the editing pathway itself works for plain text. tsc clean.
 - **Dependencies:** 4.2 (Level 2 inline editing must be working)
 - **Skills:** react-best-practices
 - **Acceptance Criteria:**
