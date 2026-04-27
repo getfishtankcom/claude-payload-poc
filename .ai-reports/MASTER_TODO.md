@@ -962,7 +962,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.3: Favorites / pinned items
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 5) — created src/admin/hooks/useFavorites.ts (localStorage key `cms_favorites`, FavoriteItem shape, toggleFavorite/isFavorite, cross-tab sync via storage event listener). Created src/admin/components/FavoriteButton.tsx (filled/outline star toggle, aria-pressed, aria-label flips Pin/Unpin, brand-amber #F59E0B when pinned). Created src/admin/components/FavoriteButtonField.tsx (Payload edit-view wrapper using useDocumentInfo). Created src/admin/components/widgets/PinnedItemsWidget.tsx (top-10 pinned items with collection badge + edit link + unpin × button + empty state). DashboardClient renders PinnedItemsWidget alongside the other 4 widgets. Registered FavoriteButtonField on Pages collection beforeDocumentControls (other collections can opt-in identically). tsc + 31 tests clean.
 - **Dependencies:** 0.12 (shared UI components available)
 - **Skills:** react-best-practices
 - **Can parallelize:** YES

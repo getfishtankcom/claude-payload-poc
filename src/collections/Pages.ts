@@ -63,6 +63,7 @@ export const Pages: CollectionConfig = {
       beforeListTable: ['/admin/components/BoardFilterBar'],
       edit: {
         beforeDocumentControls: [
+          '/admin/components/FavoriteButtonField',
           '/admin/components/LanguageSwitcher',
           '/admin/components/LockIndicator',
           '/admin/components/WorkflowActionBarField',

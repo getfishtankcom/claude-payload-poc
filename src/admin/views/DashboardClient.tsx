@@ -21,6 +21,7 @@ import { WorkflowQueueWidget } from '../components/widgets/WorkflowQueueWidget'
 import { QuickActionsWidget } from '../components/widgets/QuickActionsWidget'
 import { RecentItemsWidget } from '../components/widgets/RecentItemsWidget'
 import { PublishingScheduleWidget } from '../components/widgets/PublishingScheduleWidget'
+import { PinnedItemsWidget } from '../components/widgets/PinnedItemsWidget'
 
 import type { UserWithRole } from '../types/workflow'
 
@@ -71,6 +72,7 @@ export const DashboardClient: React.FC = () => {
         <QuickActionsWidget />
         <RecentItemsWidget userId={typedUser?.id} />
         {isEditorOrAdmin && <PublishingScheduleWidget />}
+        <PinnedItemsWidget />
       </div>
     </div>
   )
