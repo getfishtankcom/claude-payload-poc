@@ -123,20 +123,32 @@ export function PageBuilderClient() {
     )
   }, [builder.layout])
 
-  // Listen for the iframe's PREVIEW_READY signal and post the current layout.
+  // Listen for the iframe's signals: PREVIEW_READY (replay layout),
+  // SELECT_ELEMENT (open the inspector for that component), HOVER_ELEMENT
+  // (no-op for now — iframe handles its own outline). FIELD_UPDATE patches
+  // the named prop directly so contenteditable rich-text edits flow back.
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      const data = e.data as { type?: string } | null
-      if (data?.type === 'PREVIEW_READY' && previewIframeRef.current?.contentWindow) {
+      const data = e.data as
+        | { type?: string; componentId?: string; zone?: string; field?: string; value?: unknown }
+        | null
+      if (!data?.type) return
+      if (data.type === 'PREVIEW_READY' && previewIframeRef.current?.contentWindow) {
         previewIframeRef.current.contentWindow.postMessage(
           { type: 'LAYOUT_UPDATE', payload: builder.layout },
           '*',
         )
+      } else if (data.type === 'SELECT_ELEMENT' && data.componentId && data.zone) {
+        builder.selectComponent(data.componentId, data.zone)
+      } else if (data.type === 'FIELD_UPDATE' && data.componentId && data.zone && data.field) {
+        builder.updateComponentProps(data.zone, data.componentId, {
+          [data.field]: data.value,
+        })
       }
     }
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
-  }, [builder.layout])
+  }, [builder])
 
   // DnD state
   const [activeDrag, setActiveDrag] = useState<{

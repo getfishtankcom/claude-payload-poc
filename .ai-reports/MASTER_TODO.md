@@ -1315,7 +1315,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 4.2: Field editing Level 2 (inline editing)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — preview HTML now emits `data-builder-zone`, `data-builder-component-id`, `data-builder-component-type`, `data-builder-field` on every component. mouseover/mouseout add a 2px blue outline on hover (also posts HOVER_ELEMENT to parent), click posts SELECT_ELEMENT with componentId + zone + field. PageBuilderClient onMessage handler dispatches: PREVIEW_READY → replay layout, SELECT_ELEMENT → builder.selectComponent (opens InspectorPanel), FIELD_UPDATE → builder.updateComponentProps for the named field. Image-replace overlay deferred (no images rendered in stub preview yet). tsc clean.
 - **Dependencies:** 4.1 (iframe must be working first)
 - **Skills:** react-best-practices, payload-super
 - **Acceptance Criteria:**
