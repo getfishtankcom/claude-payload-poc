@@ -1180,7 +1180,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 3.3: Version comparison (diff view)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/admin/components/VersionDiffModal.tsx (loads up to 20 versions from /api/{collection}/{id}/versions, A/B selectors default to oldest/newest, flattens fields with SKIP_FIELDS guard, side-by-side table with yellow-highlight rows for changes, AbortController on unmount). Created src/admin/components/VersionDiffButton.tsx (uses useDocumentInfo, opens modal). Registered button on Pages, News, Projects beforeDocumentControls. Skipped: in-modal "Restore this version" button (Payload's existing restore in versions panel covers it). tsc clean.
 - **Dependencies:** 0.12 (shared Modal)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

@@ -65,6 +65,7 @@ export const Pages: CollectionConfig = {
         beforeDocumentControls: [
           '/admin/components/FavoriteButtonField',
           '/admin/components/FrTranslationWarning',
+          '/admin/components/VersionDiffButton',
           '/admin/components/LanguageSwitcher',
           '/admin/components/LockIndicator',
           '/admin/components/WorkflowActionBarField',

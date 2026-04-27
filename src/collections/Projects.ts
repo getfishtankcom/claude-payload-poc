@@ -44,7 +44,10 @@ export const Projects: CollectionConfig = {
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
       edit: {
-        beforeDocumentControls: ['/admin/components/FrTranslationWarning'],
+        beforeDocumentControls: [
+          '/admin/components/FrTranslationWarning',
+          '/admin/components/VersionDiffButton',
+        ],
       },
     },
   },
