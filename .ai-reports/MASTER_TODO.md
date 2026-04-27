@@ -1373,7 +1373,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 4.4: /cms shell page (admin quick-start)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/app/(payload)/cms/page.tsx with branded RAS Canada landing page, 8 quick-link cards (Admin / Tree / Workbox / Page Builder / Media / Schedule / Language Audit / Redirects), Status section showing Next.js + Payload versions read from package.json plus NEXT_PUBLIC_BUILD_TIME and BRAND.fullName. Public route — no auth wall. NEXT_PUBLIC_BUILD_TIME added to .env.example. tsc clean.
 - **Dependencies:** Layer 2 complete (redirects, command palette available), 0.2 (brand constant)
 - **Skills:** next-best-practices
 - **Acceptance Criteria:**
