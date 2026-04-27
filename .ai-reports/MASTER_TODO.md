@@ -1240,7 +1240,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 3.5: Dictionary manager (glossary CMS)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/collections/Dictionary.ts (term/termFr/definition/definitionFr/category/relatedTerms/status fields, group: Content). Registered in payload.config.ts. Created src/app/(payload)/api/dictionary/route.ts (public read of published terms, 5-min Cache-Control). Created src/components/GlossaryTooltip.tsx (module-scope cache with TTL, walks Lexical rich text to plain definition string, renders <abbr> with dotted underline, locale-aware EN/FR lookup). CustomNav: Dictionary link added under Collections. Skipped: 20+ seed terms (deferred, can be added via admin UI). tsc + 31 tests clean.
 - **Dependencies:** 0.1 (Payload version)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

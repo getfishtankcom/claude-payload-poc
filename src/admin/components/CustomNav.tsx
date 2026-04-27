@@ -102,6 +102,7 @@ export const CustomNav: React.FC = () => {
         <NavLink href="/admin/collections/standards" label="Standards" icon="book" />
         <NavLink href="/admin/collections/board-members" label="Members" icon="user" />
         <NavLink href="/admin/collections/pages" label="Pages" icon="layout" />
+        <NavLink href="/admin/collections/dictionary" label="Dictionary" icon="book" />
 
         {/* Tools Section */}
         <NavSection label="TOOLS" />
