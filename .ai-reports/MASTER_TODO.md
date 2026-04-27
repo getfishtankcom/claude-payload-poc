@@ -521,7 +521,7 @@ npx tsc --noEmit
 
 ### Task 0.9: Decompose MediaLibraryClient.tsx
 
-- **Status:** [~] Substantially complete (AFK Ralph iteration 7) — extracted 9 supporting modules from the original 1866-line monolith:
+- **Status:** [x] Complete (AFK Ralph iteration 8) — final state: 923 lines (down from 1866, -50%). 10 supporting modules extracted from the original monolith:
   - **types** — src/admin/views/media/types.ts (FolderNode, MediaItem, ViewMode, UploadProgress, FlatFolder)
   - **helpers** — src/admin/views/media/helpers.ts (ACCEPTED_MIME_TYPES, formatFileSize, flattenFolders, etc.)
   - **icons** — src/admin/views/media/icons.tsx (FolderIcon, ChevronIcon, FileTypeIcon)
