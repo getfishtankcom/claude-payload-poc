@@ -12,8 +12,9 @@
  * - Checks for existing folders before creating to avoid duplicates
  * - Uses Payload Local API with overrideAccess: true for seeding
  */
+import 'dotenv/config'
 import { getPayload } from 'payload'
-import config from '@payload-config'
+import config from '../payload.config'
 
 interface FolderSeed {
   name: string

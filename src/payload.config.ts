@@ -108,6 +108,10 @@ export default buildConfig({
           Component: '/admin/views/PageBuilder',
           path: '/builder/:id',
         },
+        workbox: {
+          Component: '/admin/views/Workbox',
+          path: '/workbox',
+        },
       },
     },
   },

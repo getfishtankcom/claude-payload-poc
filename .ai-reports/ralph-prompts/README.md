@@ -46,15 +46,18 @@ Ralph loops run in this order. Approval gates (GATE) require human review before
 | 12 | `epic-18-i18n.md` | Epic 18 | 5 | GATE | with #11 |
 | 13 | `epic-21-phase2-polish.md` | Epic 21 | 6 | — | — |
 
-### Custom Admin Panel (39 tasks)
+### Custom Admin Panel — Layer-Based (26 tasks)
 
-| # | Prompt File | Epics | Tasks | Gate? | Parallel? |
+> The admin panel prompts have been reorganized from epic-based to layer-based. The original epic prompts (epic-22 through epic-27) are archived in `./archive/`.
+
+| # | Prompt File | Layer | Tasks | Gate? | Parallel? |
 |---|------------|-------|-------|-------|-----------|
-| 14 | `epic-22-admin-foundation.md` | Epic 22 | 8 | GATE | — |
-| 15 | `epic-23-content-tree.md` | Epic 23 | 6 | — | with #16 |
-| 16 | `epic-24-media-library.md` | Epic 24 | 9 | — | with #15 |
-| 17 | `epic-25-26-page-builder.md` | Epics 25+26 | 12 | GATE | — |
-| 18 | `epic-27-workbox.md` | Epic 27 | 6 | — | — |
+| 14 | `layer-00-foundation.md` | Layer 0: Foundation | 14 | GATE | — |
+| 15 | `layer-01-registry.md` | Layer 1: Registry | 4 | — | — |
+| 16 | `layer-02-admin-quick-wins.md` | Layer 2: Quick Wins | 6 | — | Yes (per-task) |
+| 17 | `layer-03-admin-medium-lifts.md` | Layer 3: Medium Lifts | 5 | — | — |
+| 18 | `layer-04-big-builds.md` | Layer 4: Big Builds | 4 | GATE (after 4.1 + 4.4) | — |
+| 19 | `layer-05-polish.md` | Layer 5: Polish | 3 | GATE (after each task) | — |
 
 ## How It Works
 
@@ -142,13 +145,61 @@ Every prompt includes `_exit-protocol.md` which defines:
 - **Aborted:** `<promise>EPIC N ABORTED: [reason]</promise>` for hard failures
 - **Hard stops:** unrecoverable DB/build failures, infinite loops, missing gate dependencies
 
+## Layer Execution Details
+
+### Layer 0 — Foundation (14 tasks, GATE)
+Prerequisites for everything. Upgrades, refactors, tests, brand rename.
+- Next.js 15→16.2.4, Payload 3.79→3.84.1
+- TanStack Query installed + ContentTreeClient migrated
+- MediaLibraryClient decomposed (1,866→~200 lines)
+- ContentTreeClient decomposed (800+→~200 lines)
+- FRAS→RAS rename: `src/lib/brand.ts` constants
+- Vitest setup + tests for useBuilderState, registry helpers, brand constants
+- Dead code deleted (old PropsDrawer, ComponentToolbox)
+- WCAG 2.2 AA (not 2.1) throughout
+
+### Layer 1 — Registry (4 tasks)
+Expand component registry from 31 to 53 components. Preview renderers for all. Storybook stories for all. SiteAlert global.
+
+### Layer 2 — Quick Wins (6 tasks, parallelizable)
+Independent admin improvements. Each requires: unit tests + Storybook + Playwright E2E.
+- 2.1 Board filter in Workbox
+- 2.2 FR translation gutter icon in Content Tree
+- 2.3 Favorites/bookmarks (localStorage + star icon + nav section)
+- 2.4 Command palette (Cmd+K, search by title/slug, recent, quick actions)
+- 2.5 Insert options enforcement (parent→allowed-children rules)
+- 2.6 Redirect manager view
+
+### Layer 3 — Medium Lifts (5 tasks)
+More complex features touching multiple systems.
+- 3.1 Publishing schedule full view (list + calendar)
+- 3.2 Language version audit (missing FR translations dashboard)
+- 3.3 Version comparison (diff-match-patch for text, Lexical text extraction for rich text)
+- 3.4 Notification center (bell icon, server-side notifications collection, workflow hooks)
+- 3.5 Dictionary/labels manager (EN/FR UI string management)
+
+### Layer 4 — Big Builds (4 tasks, sequential, GATE after 4.1 and 4.4)
+Architecturally complex. Must be done in order.
+- 4.1 Live WYSIWYG preview (postMessage bridge + Edit/Preview toggle + live prop updates)
+- 4.2 Native field editing Level 2 (key-fields floating card + real-time canvas update)
+- 4.3 Native field editing Level 3 (@payloadcms/ui components replacing custom renderers)
+- 4.4 /cms standalone admin shell (separate route group, same views, cleaner UX)
+
+### Layer 5 — Polish (3 tasks, GATE after each)
+Production hardening. No new features.
+- 5.1 UI.sh full pass (WCAG 2.2 AA audit + performance audit + visual quality)
+- 5.2 Final audits (architecture + security — invoke security-audit-orchestrator)
+- 5.3 Plugin extraction scoping (scoping document only, no code changes)
+
 ## Files
 
 | File | Purpose |
 |------|---------|
 | `_exit-protocol.md` | Shared stop/success conditions (appended to all prompts) |
-| `epic-*.md` | Per-epic Ralph loop prompts |
+| `layer-*.md` | Per-layer Ralph loop prompts (admin platform) |
+| `epic-*.md` | Per-epic Ralph loop prompts (Phase 1 + Phase 2 site) |
 | `README.md` | This file |
+| `archive/` | Superseded epic-22 through epic-27 admin prompts |
 | `../ralph-logs/` | Output logs from headless runs |
 
 ## Payload CMS Skills

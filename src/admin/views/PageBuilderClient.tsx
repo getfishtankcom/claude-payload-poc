@@ -1,23 +1,28 @@
 /**
  * @description
  * Client-side Page Builder view for FRAS Canada CMS admin (Epics 25-26).
- * Three-panel layout: Component Toolbox (left), Page Canvas (center),
- * Props Drawer (right, slides out on component gear click).
+ * Three-panel layout: Structure Panel (left), Page Canvas (center),
+ * Inspector Panel (right, slides out on component selection).
  *
  * Key features:
  * - Loads page data + template on mount
- * - Toolbar: Save, Undo, Redo, Preview, Breakpoint toggles, Language
- * - Left panel: ComponentToolbox (categorized, searchable, draggable)
- * - Center panel: BuilderCanvas (zone rendering, component chrome, DnD targets)
- * - Right panel: PropsDrawer (slides out on gear click)
+ * - Toolbar: Save, Undo, Redo, Preview, Breakpoint toggles
+ * - Left panel: StructurePanel (zone tree, click-to-select, reorder)
+ * - Center panel: BuilderCanvas (zone rendering, visual previews, DnD)
+ * - Right panel: InspectorPanel (live preview + props form)
  * - DnD via @dnd-kit/core for toolbox-to-canvas and reorder
  * - Keyboard shortcuts: Ctrl+Z undo, Ctrl+Shift+Z redo, Ctrl+S save
+ * - DragOverlay shows visual preview at 50% opacity
  *
  * @dependencies
  * - useBuilderState: state management
  * - templates: zone configs
  * - registry: component types
  * - @dnd-kit/core: drag-and-drop
+ * - StructurePanel: left panel
+ * - BuilderCanvas: center panel
+ * - InspectorPanel: right panel
+ * - PreviewRenderer: visual previews in drag overlay
  *
  * @notes
  * - Page ID extracted from URL path: /admin/builder/:id
@@ -42,10 +47,11 @@ import {
 import { useBuilderState, generateId, type Breakpoint } from '../components/builder/useBuilderState'
 import { getTemplate, type PageTemplate } from '../templates'
 import { getComponentType, type BuilderComponentType } from '../components/builder/registry'
-import { ComponentToolbox } from '../components/builder/ComponentToolbox'
+import { StructurePanel } from '../components/builder/StructurePanel'
 import { BuilderCanvas } from '../components/builder/BuilderCanvas'
-import { PropsDrawer } from '../components/builder/PropsDrawer'
+import { InspectorPanel } from '../components/builder/InspectorPanel'
 import { AddComponentModal } from '../components/builder/AddComponentModal'
+import { PreviewRenderer } from '../components/builder/previews'
 import type { BuilderLayout, ComponentInstance } from '../templates/types'
 
 // ---------------------------------------------------------------------------
@@ -153,10 +159,14 @@ export function PageBuilderClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Save error toast state (separate from fatal page-load error)
+  const [saveError, setSaveError] = useState<string | null>(null)
+
   // --- Save handler ---
   const handleSave = useCallback(async () => {
     if (!pageData) return
     setSaving(true)
+    setSaveError(null)
     try {
       const res = await fetch(`/api/pages/${pageData.id}`, {
         method: 'PATCH',
@@ -166,7 +176,10 @@ export function PageBuilderClient() {
       if (!res.ok) throw new Error(`Save failed: ${res.status}`)
       builder.markSaved()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Save failed')
+      // Show toast error instead of replacing the entire page
+      setSaveError(err instanceof Error ? err.message : 'Save failed')
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => setSaveError(null), 5000)
     } finally {
       setSaving(false)
     }
@@ -302,15 +315,19 @@ export function PageBuilderClient() {
   )
 
   // --- Active drag component info (for overlay) ---
-  const activeDragComponent: BuilderComponentType | null = useMemo(() => {
+  const activeDragComponent = useMemo<{ def: BuilderComponentType; instance?: ComponentInstance } | null>(() => {
     if (!activeDrag) return null
     if (activeDrag.type === 'toolbox' && activeDrag.componentType) {
-      return getComponentType(activeDrag.componentType) ?? null
+      const def = getComponentType(activeDrag.componentType)
+      return def ? { def } : null
     }
     if (activeDrag.type === 'canvas' && activeDrag.componentId && activeDrag.sourceZone) {
       const zone = builder.layout.zones[activeDrag.sourceZone]
       const comp = zone?.find((c) => c.id === activeDrag.componentId)
-      if (comp) return getComponentType(comp.type) ?? null
+      if (comp) {
+        const def = getComponentType(comp.type)
+        return def ? { def, instance: comp } : null
+      }
     }
     return null
   }, [activeDrag, builder.layout])
@@ -346,7 +363,6 @@ export function PageBuilderClient() {
   }
 
   const canvasWidth = BREAKPOINT_WIDTHS[builder.breakpoint]
-  const isCompact = builder.breakpoint !== 'desktop'
 
   return (
     <DndContext
@@ -444,10 +460,26 @@ export function PageBuilderClient() {
           </div>
         </div>
 
+        {/* Save error toast — non-destructive notification */}
+        {saveError && (
+          <div className="absolute top-14 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+            <span>Save failed: {saveError}</span>
+            <button onClick={() => setSaveError(null)} className="text-white/80 hover:text-white ml-2">✕</button>
+          </div>
+        )}
+
         {/* --- Main 3-panel layout --- */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Left: Component Toolbox */}
-          <ComponentToolbox compact={isCompact} />
+          {/* Left: Structure Panel */}
+          <StructurePanel
+            template={template}
+            layout={builder.layout}
+            selectedComponentId={builder.selectedComponentId}
+            selectedZone={builder.selectedZone}
+            onSelectComponent={(componentId, zone) => builder.selectComponent(componentId, zone)}
+            onRemoveComponent={(zone, componentId) => builder.removeComponent(zone, componentId)}
+            onAddComponent={(zone) => setAddComponentZone(zone)}
+          />
 
           {/* Center: Canvas */}
           <BuilderCanvas
@@ -465,9 +497,9 @@ export function PageBuilderClient() {
             clipboard={builder.clipboard}
           />
 
-          {/* Right: Props Drawer */}
+          {/* Right: Inspector Panel */}
           {builder.selectedComponent && builder.selectedZone && (
-            <PropsDrawer
+            <InspectorPanel
               component={builder.selectedComponent}
               zone={builder.selectedZone}
               onApply={(props) => {
@@ -481,11 +513,20 @@ export function PageBuilderClient() {
         </div>
       </div>
 
-      {/* Drag overlay */}
+      {/* Drag overlay — visual preview instead of plain text */}
       <DragOverlay>
         {activeDragComponent && (
-          <div className="px-3 py-2 bg-white border border-blue-300 rounded shadow-lg text-sm font-medium text-gray-700">
-            {activeDragComponent.label}
+          <div className="bg-white border border-blue-300 rounded-lg shadow-lg overflow-hidden opacity-80 max-w-[200px]">
+            <div className="px-2 py-1 bg-blue-50 border-b border-blue-200 text-xs font-medium text-blue-700">
+              {activeDragComponent.def.label}
+            </div>
+            <div className="px-2 py-1.5">
+              <PreviewRenderer
+                type={activeDragComponent.def.type}
+                props={activeDragComponent.instance?.props ?? {}}
+                compact={true}
+              />
+            </div>
           </div>
         )}
       </DragOverlay>

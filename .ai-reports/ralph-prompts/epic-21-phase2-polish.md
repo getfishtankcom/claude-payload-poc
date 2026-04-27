@@ -14,7 +14,7 @@ Final polish for Phase 2: seed all Phase 2 CMS data, responsive testing, accessi
 
 - 21.1 Seed Phase 2 CMS data (20+ members, 25+ committees, 30+ resources, effective dates, documents, meetings, jobs, auth config)
 - 21.2 Phase 2 responsive testing (all templates at 4 breakpoints)
-- 21.3 Phase 2 accessibility audit (WCAG 2.1 AA, keyboard nav, screen reader, ReCaptcha alt)
+- 21.3 Phase 2 accessibility audit (WCAG 2.2 AA, keyboard nav, screen reader, ReCaptcha alt)
 - 21.4 Performance optimization (Core Web Vitals, member photos, server/client split, large lists)
 - 21.5 Phase 2 SEO (metadata, structured data, sitemap update, hreflang)
 - 21.6 E2E integration testing (contact form, login, document comment flow, bilingual nav, search, registration/recovery)

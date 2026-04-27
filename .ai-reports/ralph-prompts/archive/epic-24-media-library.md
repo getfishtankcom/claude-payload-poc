@@ -73,7 +73,7 @@ Build a folder-based media library browser for the admin panel, replacing Payloa
 - Delete button (with confirmation: "This media is used by X pages. Delete anyway?")
 - Alt text and title fields must be locale-aware (EN/FR) — Sitecore stored separate alt text per language while sharing one blob
 - Description field also locale-aware
-- This is critical for WCAG 2.1 AA bilingual compliance
+- This is critical for WCAG 2.2 AA bilingual compliance
 - **Output:** Detail panel shows metadata, usage list, editable fields with per-locale alt text/title/description
 
 ### 24.7 Media picker modal

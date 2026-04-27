@@ -728,14 +728,14 @@
 - **Output:** All Phase 2 pages responsive and cross-browser compatible
 
 ### 21.3 Phase 2 accessibility audit
-- [ ] WCAG 2.1 AA compliance check for all Phase 2 templates
+- [ ] WCAG 2.2 AA compliance check for all Phase 2 templates
 - [ ] Keyboard navigation: forms (T15, T16), tab toggles (T8, T13), anchor nav (T14), scroll-spy
 - [ ] Screen reader testing: form labels, error messages, table headers, section headers, ReCaptcha screen reader compatibility
 - [ ] Color contrast: purple headers on white, white text on dark purple CTA, alternating row backgrounds
 - [ ] Focus management: form submit → error scroll, tab switching
 - [ ] Test member-only form auth gates, registration form validation, ReCaptcha screen reader compatibility
 - **Dependencies:** All Epic 12-17, Epic 20 tasks
-- **Output:** All Phase 2 pages meet WCAG 2.1 AA
+- **Output:** All Phase 2 pages meet WCAG 2.2 AA
 
 ### 21.4 Phase 2 performance optimization
 - [ ] Verify Core Web Vitals on all Phase 2 pages

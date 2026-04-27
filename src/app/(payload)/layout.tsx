@@ -16,6 +16,7 @@ import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 
 import './custom.scss'
+import './admin-tailwind.css'
 import { importMap } from './admin/importMap.js'
 
 type Args = {

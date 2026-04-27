@@ -36,7 +36,7 @@ CMS data wiring was completed in Epic 5. This epic focuses on seeding real conte
 - Verify mobile adaptations: sidebar→dropdown, grid→stack, filter→accordion
 
 ### 10.3 Accessibility audit
-- WCAG 2.1 AA compliance
+- WCAG 2.2 AA compliance
 - Keyboard nav for mega-menu, search modal, mobile menu
 - Screen reader testing
 - Color contrast for all badge types

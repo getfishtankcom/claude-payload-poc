@@ -6,7 +6,7 @@
  *
  * Key features:
  * - Folder-based organization via `folder` relationship to `media-folders`
- * - Localized alt text, title, and description for WCAG 2.1 AA bilingual compliance
+ * - Localized alt text, title, and description for WCAG 2.2 AA bilingual compliance
  * - Expanded mimeTypes: images, documents (pdf, docx, xlsx, pptx), video (mp4, webm)
  * - Payload's built-in image resizing for thumbnails
  *
@@ -66,11 +66,18 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      required: true,
       localized: true,
       label: 'Alt Text',
       admin: {
-        description: 'Alternative text for screen readers (WCAG 2.1 AA). Required for images.',
+        description: 'Alternative text for screen readers (WCAG 2.2 AA). Required for images.',
+      },
+      validate: (value: string | null | undefined, { data }: { data: Record<string, unknown> }) => {
+        // Alt text is required for images but optional for documents/video
+        const mime = String(data?.mimeType || '')
+        if (mime.startsWith('image/') && !value) {
+          return 'Alt text is required for images (WCAG 2.2 AA)'
+        }
+        return true
       },
     },
     {

@@ -421,32 +421,17 @@ npx tsc --noEmit
 
 ---
 
-### Task 0.5: Update WCAG 2.1 → 2.2 AA references
+### Task 0.5: Update WCAG references to 2.2 AA
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 1) — replaced all "WCAG 2.1" with "WCAG 2.2" across `.ai-reports/` and `src/`; added new-criteria note to PRD.md NFR section.
 - **Dependencies:** none
 - **Skills:** none
-- **Acceptance Criteria:**
-  - [ ] All references to "WCAG 2.1" in `.ai-reports/PRD.md` updated to "WCAG 2.2"
-  - [ ] All references to "WCAG 2.1" in `.ai-reports/PRD-phase2.md` updated to "WCAG 2.2"
-  - [ ] All references to "WCAG 2.1" in `.ai-reports/BUILD_PLAN.md` updated to "WCAG 2.2"
-  - [ ] All references to "WCAG 2.1" in `.ai-reports/PRD-admin-panel.md` updated to "WCAG 2.2"
-  - [ ] All references to "WCAG 2.1" in `src/` code files (comments, JSDoc, etc.) updated to "WCAG 2.2"
-  - [ ] `grep -r "WCAG 2.1" .ai-reports/ src/` returns zero hits
-  - [ ] Note added in PRD NFR sections: "WCAG 2.2 AA — key new criteria include Focus Appearance (2.4.11), Dragging Movements (2.5.7), Target Size Minimum (2.5.8)"
-- **Validation Commands:**
-  ```bash
-  grep -r "WCAG 2.1" .ai-reports/
-  grep -r "WCAG 2.1" src/
-  grep "WCAG 2.2" .ai-reports/PRD.md
-  ```
-- **Stop Condition:** `grep -r "WCAG 2.1"` returns zero hits in both directories. Output `<promise>TASK 0.5 COMPLETE</promise>`
 - **Files to create/modify:**
   - `.ai-reports/PRD.md`
   - `.ai-reports/PRD-phase2.md`
   - `.ai-reports/BUILD_PLAN.md`
   - `.ai-reports/PRD-admin-panel.md`
-  - Any `src/` files with WCAG 2.1 references in comments
+  - Any `src/` files with WCAG 2.2 references in comments
 
 ---
 

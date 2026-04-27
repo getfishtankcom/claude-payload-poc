@@ -721,7 +721,7 @@ Phase 2 introduces additional design tokens that must align with Phase 1:
 All Phase 1 NFRs apply, plus:
 
 - **Performance:** Core Web Vitals passing (LCP < 2.5s, INP < 200ms, CLS < 0.1). Effective dates tables and meeting archives (180+ items) must use server-side pagination and/or virtual scrolling.
-- **Accessibility:** WCAG 2.1 AA compliance. Specific concerns: form field labels and error messages (T15), CAPTCHA alternative for screen readers (T15), keyboard navigation for scroll-spy anchor nav (T14), focus management on tab toggles (T8, T13).
+- **Accessibility:** WCAG 2.2 AA compliance. Specific concerns: form field labels and error messages (T15), CAPTCHA alternative for screen readers (T15), keyboard navigation for scroll-spy anchor nav (T14), focus management on tab toggles (T8, T13).
 - **SEO:** Server-rendered pages, semantic HTML, structured data. Standards pages need `BreadcrumbList` and potentially `FAQPage` schema for comment questions (T9). Job postings need `JobPosting` schema (T17).
 - **Responsive:** 390px (mobile) to 1440px (desktop), fluid breakpoints. Key adaptation patterns: sidebar drops below content (T3, T4, T9, T14), pills collapse to `<select>` (T11, T12), tables collapse to stacked cards (T5, T10).
 - **Browser support:** Latest 2 versions of Chrome, Firefox, Safari, Edge

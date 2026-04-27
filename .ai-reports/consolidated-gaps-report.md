@@ -288,7 +288,7 @@ These are client requirements from the FRAS discovery meetings. Cross-referenced
 | No major visual changes or deviations from brand standards | Design tokens doc reflects current brand | No |
 | **Logo removal from homepage** — Megan to confirm if logos can be removed and users can still navigate to standards | **Decision pending** | **Yes** — Promo Card Grid currently has board logos. Need confirmation. |
 | Better category tagging/visuals on news stories (badge, subheading, Coveo facets) | Covered — News Card has Type Badge field | No |
-| WCAG 2.1 AA compliance | Already in NFRs | No |
+| WCAG 2.2 AA compliance | Already in NFRs | No |
 
 ### 9.7 Cross-Reference Summary: New Gaps from Stakeholder Notes
 

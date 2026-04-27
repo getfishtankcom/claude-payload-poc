@@ -752,13 +752,13 @@ Folder-based media browser with Sitecore-style organization.
 | **Bulk operations** | Multi-select with checkboxes. Bulk move, bulk delete, bulk download. |
 | **Accepted types** | Images: jpg, png, webp, svg, gif. Docs: pdf, docx, xlsx, pptx. Video: mp4, webm. |
 
-#### Per-Locale Metadata (WCAG 2.1 AA)
+#### Per-Locale Metadata (WCAG 2.2 AA)
 
 Media items store a **single file blob** but support **per-locale text fields** for bilingual compliance. This matches the Sitecore media library pattern (separate alt text per language, shared binary).
 
 | Field | Localized? | Description |
 |-------|-----------|-------------|
-| **alt** | Yes (EN/FR) | Alt text for screen readers. Required for images (WCAG 2.1 AA 1.1.1). |
+| **alt** | Yes (EN/FR) | Alt text for screen readers. Required for images (WCAG 2.2 AA 1.1.1). |
 | **title** | Yes (EN/FR) | Display title / tooltip text. |
 | **description** | Yes (EN/FR) | Extended description for media detail panel and search indexing. |
 | **filename** | No | Original uploaded filename. Shared across locales. |

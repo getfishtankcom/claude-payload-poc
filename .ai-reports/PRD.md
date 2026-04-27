@@ -379,7 +379,7 @@ These must be resolved before or during implementation:
 ## 9. Non-Functional Requirements
 
 - **Performance:** Core Web Vitals passing (LCP < 2.5s, INP < 200ms, CLS < 0.1)
-- **Accessibility:** WCAG 2.1 AA compliance
+- **Accessibility:** WCAG 2.2 AA compliance — key new criteria include Focus Appearance (2.4.11), Dragging Movements (2.5.7), Target Size Minimum (2.5.8)
 - **SEO:** Server-rendered pages, semantic HTML, structured data (Organization, BreadcrumbList)
 - **Responsive:** 390px (mobile) → 1440px (desktop), fluid breakpoints
 - **Browser support:** Latest 2 versions of Chrome, Firefox, Safari, Edge

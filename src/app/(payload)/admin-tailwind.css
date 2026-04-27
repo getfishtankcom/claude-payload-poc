@@ -1,0 +1,19 @@
+/**
+ * @description
+ * Tailwind CSS for the Payload admin panel — specifically for the
+ * Page Builder components (Epics 25-26) which use Tailwind utility classes.
+ *
+ * Scoped to src/admin/components/builder/ and src/admin/views/PageBuilder*.
+ * This is separate from the frontend globals.css to avoid token conflicts.
+ *
+ * @notes
+ * - Uses Tailwind v4's CSS-first configuration
+ * - Source paths tell Tailwind which files to scan for class names
+ * - Intentionally minimal — only covers what the builder needs
+ */
+
+@import 'tailwindcss/utilities';
+@import 'tailwindcss/theme';
+
+@source "../../../admin/components/builder/*.tsx";
+@source "../../../admin/views/PageBuilder*.tsx";

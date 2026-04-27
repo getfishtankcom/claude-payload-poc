@@ -84,7 +84,7 @@ export const CustomNav: React.FC = () => {
         <NavLink href="/admin" label="Dashboard" icon="home" />
         <NavLink href="/admin/tree" label="Content Tree" icon="folder" />
         <NavLink
-          href="/admin/collections/pages?where[workflowState][in]=in_review,needs_revision,approved"
+          href="/admin/workbox"
           label="Workbox"
           icon="inbox"
           badge={workboxCount > 0 ? workboxCount : undefined}

@@ -2,13 +2,14 @@
  * @description
  * Builder Canvas — center panel of the page builder.
  * Renders the template's zone structure with locked/editable zones.
- * Components in editable zones show chrome (label, gear, drag handle, remove).
+ * Components show visual preview renderers instead of plain text labels.
  *
  * Key features:
  * - Locked zones: gray dashed border, lock icon, "Locked" label
  * - Editable zones: blue dashed border, "Editable Zone" label, "+" button
- * - Component chrome on hover: label, gear, arrows (drag), X (remove)
- * - Drop targets via @dnd-kit: green highlight on valid drag-over
+ * - Component chrome bar (label, gear, drag handle, remove) as absolute overlay on hover/select
+ * - Visual previews via PreviewRenderer (compact mode)
+ * - Blue ring on selected component
  * - Context menu: Copy, Paste, Duplicate
  * - Responsive width via prop
  *
@@ -16,6 +17,7 @@
  * - templates: PageTemplate, TemplateZone
  * - templates/types: BuilderLayout, ComponentInstance
  * - registry: getComponentType
+ * - previews: PreviewRenderer
  * - @dnd-kit/core: useDroppable
  * - @dnd-kit/sortable: useSortable, SortableContext
  *
@@ -37,6 +39,7 @@ import { CSS } from '@dnd-kit/utilities'
 import type { PageTemplate, TemplateZone } from '../../templates/types'
 import type { BuilderLayout, ComponentInstance } from '../../templates/types'
 import { getComponentType } from './registry'
+import { PreviewRenderer } from './previews'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,7 +61,7 @@ interface BuilderCanvasProps {
 }
 
 // ---------------------------------------------------------------------------
-// SortableComponent
+// SortableComponent — visual preview with chrome overlay
 // ---------------------------------------------------------------------------
 
 interface SortableComponentProps {
@@ -105,19 +108,16 @@ function SortableComponent({
     opacity: isDragging ? 0.4 : 1,
   }
 
-  // Get a brief preview of the component's content
-  const contentPreview = getContentPreview(component)
-
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative group border rounded mb-2 transition-all ${
+      className={`relative group rounded mb-2 transition-all ${
         isSelected
-          ? 'border-blue-500 ring-2 ring-blue-200'
+          ? 'ring-2 ring-blue-500 ring-offset-1'
           : hovered
-            ? 'border-blue-300'
-            : 'border-gray-200'
+            ? 'ring-1 ring-blue-300'
+            : ''
       }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
@@ -129,10 +129,10 @@ function SortableComponent({
         setShowContextMenu(true)
       }}
     >
-      {/* Component chrome bar */}
+      {/* Chrome bar overlay — visible on hover/select. z-20 to sit above the preview body */}
       <div
-        className={`flex items-center justify-between px-2 py-1 text-xs bg-gray-50 border-b border-gray-200 transition-opacity ${
-          hovered || isSelected ? 'opacity-100' : 'opacity-0'
+        className={`absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-2 py-1 text-xs bg-white/90 backdrop-blur-sm border-b border-gray-200 rounded-t transition-opacity ${
+          hovered || isSelected ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
         <span className="font-medium text-gray-600">{label}</span>
@@ -172,14 +172,19 @@ function SortableComponent({
         </div>
       </div>
 
-      {/* Component body / preview */}
+      {/* Visual preview body */}
       <div
-        className="px-3 py-2 min-h-[40px] text-sm text-gray-500 cursor-pointer"
+        className="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer"
         onClick={onSelect}
       >
-        {contentPreview || (
-          <span className="italic text-gray-400">{label} — click gear to configure</span>
-        )}
+        {/* Top padding for chrome overlay space */}
+        <div className={`${hovered || isSelected ? 'pt-7' : 'pt-1'} px-3 pb-2 min-h-[48px] transition-[padding]`}>
+          <PreviewRenderer
+            type={component.type}
+            props={component.props}
+            compact={true}
+          />
+        </div>
       </div>
 
       {/* Context menu */}
@@ -219,32 +224,6 @@ function SortableComponent({
       )}
     </div>
   )
-}
-
-// ---------------------------------------------------------------------------
-// Content preview helper
-// ---------------------------------------------------------------------------
-
-function getContentPreview(component: ComponentInstance): string {
-  const { props } = component
-  // Try common text fields
-  if (typeof props.text === 'string') return truncate(props.text)
-  if (typeof props.heading === 'string') return truncate(props.heading)
-  if (typeof props.quote === 'string') return truncate(props.quote)
-  if (typeof props.buttonText === 'string') return truncate(props.buttonText)
-  if (typeof props.placeholder === 'string') return truncate(props.placeholder)
-  if (typeof props.buttonLabel === 'string') return truncate(props.buttonLabel)
-  // Array items count
-  if (Array.isArray(props.items)) return `${props.items.length} item(s)`
-  if (Array.isArray(props.tabs)) return `${props.tabs.length} tab(s)`
-  if (Array.isArray(props.stats)) return `${props.stats.length} stat(s)`
-  if (Array.isArray(props.images)) return `${props.images.length} image(s)`
-  return ''
-}
-
-function truncate(str: string, max = 60): string {
-  if (str.length <= max) return str
-  return str.slice(0, max) + '...'
 }
 
 // ---------------------------------------------------------------------------
