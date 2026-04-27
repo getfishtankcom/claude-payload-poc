@@ -48,6 +48,19 @@ is the most prominent color, used for headings, links, active states, and CTA ba
 | `color-primary-vivid` | `#800080` | `rgb(128, 0, 128)` | H3 sub-headers (inner pages), news item title links |
 | `color-primary-feature` | `#601F5B` | `rgb(96, 31, 91)` | Homepage "Top Stories" section full-width background |
 
+### 1.1.1 Board / Council Brand Tokens
+
+Each board and council has a brand color used on its respective landing pages and badges.
+**Use council color (blue) for PSAB / CSSB / RASOC board pages; board color (red-brown) for AcSB / AASB board pages.** `color-brand-gray` is the neutral fallback for FRAS-umbrella surfaces and chrome.
+
+| Token Name | Hex | RGB | Usage |
+|------------|-----|-----|-------|
+| `color-brand-councils` | `#00438C` | `rgb(0, 67, 140)` | PSAB, CSSB, RASOC — board landing accent, badges, council-scoped CTAs |
+| `color-brand-councils-tint` | `#7986B9` | `rgb(121, 134, 185)` | Council backgrounds, soft surfaces, tinted hover states |
+| `color-brand-boards` | `#983232` | `rgb(152, 50, 50)` | AcSB, AASB — board landing accent, badges, board-scoped CTAs |
+| `color-brand-boards-tint` | `#C98578` | `rgb(201, 133, 120)` | Board backgrounds, soft surfaces, tinted hover states |
+| `color-brand-gray` | `#A7A9AB` | `rgb(167, 169, 171)` | FRAS-umbrella neutral chrome, dividers, disabled states |
+
 ### 1.2 Hero Banner Gradient
 
 The hero/header banner uses a multi-stop linear gradient transitioning from red through purple to blue.

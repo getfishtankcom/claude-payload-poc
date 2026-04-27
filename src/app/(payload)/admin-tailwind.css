@@ -17,3 +17,17 @@
 
 @source "../../../admin/components/builder/*.tsx";
 @source "../../../admin/views/PageBuilder*.tsx";
+
+/*
+ * Board / council brand tokens.
+ * Use council color (blue) for PSAB / CSSB / RASOC board pages;
+ * board color (red-brown) for AcSB / AASB board pages.
+ * gray is the neutral fallback for FRAS-umbrella surfaces.
+ */
+@theme inline {
+  --color-brand-councils: #00438C;
+  --color-brand-councils-tint: #7986B9;
+  --color-brand-boards: #983232;
+  --color-brand-boards-tint: #C98578;
+  --color-brand-gray: #A7A9AB;
+}
