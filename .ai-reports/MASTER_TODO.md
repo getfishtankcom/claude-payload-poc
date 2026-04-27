@@ -823,7 +823,7 @@ test -f src/config/brand.ts  # must exist
 
 ### Task 1.3: Template zone allowedComponents
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 4) — every editable zone in src/admin/templates/index.ts now has an explicit allowedComponents array (no empty arrays). Updated CONTENT_COMPONENTS, LAYOUT_COMPONENTS, DATA_COMPONENTS, INTERACTIVE_COMPONENTS to the 53-component set. Added RIGHT_RAIL_COMPONENTS, HERO_COMPONENTS, FOOTER_COMPONENTS, MAIN_COMPONENTS (excludes hero+rail-only), SIDEBAR_COMPONENTS (broader than rail), ALL_COMPONENTS sets. Applied per-template: Homepage hero=HERO, main=MAIN, newsletter=FOOTER; Board Detail tab-content=MAIN; Project Detail main=MAIN, sidebar=RIGHT_RAIL; Active Projects results=['project-list']; Open Consultations main=MAIN; Search Results results=[search-bar,filter-panel]; Content Page main=MAIN, sidebar=SIDEBAR; Flexible Page body=ALL. tsc + 31 tests clean.
 - **Dependencies:** 1.1 (all 53 components must exist before assigning them to zones)
 - **Skills:** none
 - **Acceptance Criteria:**

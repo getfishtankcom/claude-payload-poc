@@ -24,27 +24,74 @@ import type { PageTemplate, TemplateName } from './types'
 
 export type { PageTemplate, TemplateZone, TemplateName, ComponentInstance, BuilderLayout } from './types'
 
-// All component type slugs, grouped by category for reference
+// All component type slugs, grouped by category for reference (Layer 1: 53 total).
 const CONTENT_COMPONENTS = [
   'rich-text', 'heading', 'image', 'video', 'accordion',
   'tabs', 'table', 'blockquote', 'divider', 'image-grid',
+  'disclaimer',
 ]
 const LAYOUT_COMPONENTS = [
   'card-grid', 'two-column', 'three-column', 'hero-banner',
   'cta-banner', 'feature-row', 'stats-bar',
+  'quick-links', 'page-header', 'promo-card-grid',
 ]
 const DATA_COMPONENTS = [
   'project-list', 'news-feed', 'event-calendar', 'document-table',
   'contact-card', 'board-members-grid', 'consultation-countdown',
   'standards-list', 'effective-dates-table',
+  'project-timeline', 'news-card-widget', 'drafts-card', 'events-card',
+  'news-events-grid', 'browse-by-standard',
+  'right-rail-events-list', 'right-rail-resource-list',
+  'event-summary-table', 'meeting-topics-table', 'related-content',
+  'meeting-detail',
 ]
 const INTERACTIVE_COMPONENTS = [
   'search-bar', 'filter-panel', 'newsletter-signup',
   'download-button', 'anchor-link',
+  'subscribe-banner', 'member-action-form', 'category-pills',
+  'anchor-nav', 'social-share', 'rss-link',
 ]
 
-// All non-layout components (for zones that shouldn't contain nested layouts)
-const ALL_CONTENT_AND_DATA = [...CONTENT_COMPONENTS, ...DATA_COMPONENTS, ...INTERACTIVE_COMPONENTS]
+// Right-rail / sidebar zones — restricted to widgets that read well at narrow width.
+const RIGHT_RAIL_COMPONENTS = [
+  'right-rail-events-list', 'right-rail-resource-list',
+  'contact-card', 'board-members-grid',
+  'quick-links', 'subscribe-banner', 'rss-link',
+  'anchor-nav', 'disclaimer', 'related-content',
+]
+
+// Hero zones — limited to hero/header components.
+const HERO_COMPONENTS = ['hero-banner', 'page-header']
+
+// Footer zones — limited to opt-in calls to action.
+const FOOTER_COMPONENTS = ['newsletter-signup', 'rss-link', 'subscribe-banner']
+
+// Main / body zones — exclude right-rail-only widgets but allow everything else.
+const MAIN_COMPONENTS = [
+  ...CONTENT_COMPONENTS,
+  ...LAYOUT_COMPONENTS.filter((c) => !HERO_COMPONENTS.includes(c)),
+  ...DATA_COMPONENTS.filter(
+    (c) => c !== 'right-rail-events-list' && c !== 'right-rail-resource-list',
+  ),
+  ...INTERACTIVE_COMPONENTS.filter((c) => c !== 'rss-link'),
+]
+
+// Full set — flexible-page body has no restrictions.
+const ALL_COMPONENTS = [
+  ...CONTENT_COMPONENTS,
+  ...LAYOUT_COMPONENTS,
+  ...DATA_COMPONENTS,
+  ...INTERACTIVE_COMPONENTS,
+]
+
+// Sidebar set used by Project Detail / Content Page (broader than right-rail-only).
+const SIDEBAR_COMPONENTS = [
+  ...DATA_COMPONENTS,
+  ...INTERACTIVE_COMPONENTS,
+  'rich-text',
+  'heading',
+  'download-button',
+]
 
 /**
  * Homepage template
@@ -57,9 +104,9 @@ const homepage: PageTemplate = {
   description: 'Main landing page with hero, flexible main content area, and newsletter zone.',
   zones: [
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
-    { name: 'hero', label: 'Hero', type: 'editable', allowedComponents: ['hero-banner'], maxComponents: 1 },
-    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: [], maxComponents: 0 },
-    { name: 'newsletter', label: 'Newsletter', type: 'editable', allowedComponents: ['newsletter-signup'], maxComponents: 1 },
+    { name: 'hero', label: 'Hero', type: 'editable', allowedComponents: HERO_COMPONENTS, maxComponents: 1 },
+    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: MAIN_COMPONENTS, maxComponents: 0 },
+    { name: 'newsletter', label: 'Newsletter', type: 'editable', allowedComponents: FOOTER_COMPONENTS, maxComponents: 1 },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
   ],
 }
@@ -67,7 +114,7 @@ const homepage: PageTemplate = {
 /**
  * Board Detail template
  * Locked: Header, Hero Banner, Tab Nav, Footer
- * Editable: Tab Content (unlimited per tab)
+ * Editable: Tab Content (main components allowed)
  */
 const boardDetail: PageTemplate = {
   slug: 'board-detail',
@@ -77,7 +124,7 @@ const boardDetail: PageTemplate = {
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
     { name: 'hero', label: 'Hero Banner', type: 'locked', lockedComponent: 'hero-banner' },
     { name: 'tab-nav', label: 'Tab Navigation', type: 'locked', lockedComponent: 'section-nav' },
-    { name: 'tab-content', label: 'Tab Content', type: 'editable', allowedComponents: [], maxComponents: 0 },
+    { name: 'tab-content', label: 'Tab Content', type: 'editable', allowedComponents: MAIN_COMPONENTS, maxComponents: 0 },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
   ],
 }
@@ -95,13 +142,13 @@ const projectDetail: PageTemplate = {
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
     { name: 'hero', label: 'Hero', type: 'locked', lockedComponent: 'hero-banner' },
     { name: 'timeline', label: 'Timeline', type: 'locked', lockedComponent: 'project-timeline' },
-    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: [], maxComponents: 0 },
+    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: MAIN_COMPONENTS, maxComponents: 0 },
     {
       name: 'sidebar',
       label: 'Sidebar',
       type: 'editable',
-      allowedComponents: [...DATA_COMPONENTS, ...INTERACTIVE_COMPONENTS, 'rich-text', 'heading', 'download-button'],
-      maxComponents: 5,
+      allowedComponents: RIGHT_RAIL_COMPONENTS,
+      maxComponents: 8,
     },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
   ],
@@ -137,7 +184,7 @@ const openConsultations: PageTemplate = {
   zones: [
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
     { name: 'hero', label: 'Hero', type: 'locked', lockedComponent: 'hero-banner' },
-    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: [], maxComponents: 0 },
+    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: MAIN_COMPONENTS, maxComponents: 0 },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
   ],
 }
@@ -170,12 +217,12 @@ const contentPage: PageTemplate = {
   description: 'Standard content page with main area and optional sidebar.',
   zones: [
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
-    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: [], maxComponents: 0 },
+    { name: 'main', label: 'Main Content', type: 'editable', allowedComponents: MAIN_COMPONENTS, maxComponents: 0 },
     {
       name: 'sidebar',
       label: 'Sidebar',
       type: 'editable',
-      allowedComponents: ALL_CONTENT_AND_DATA,
+      allowedComponents: SIDEBAR_COMPONENTS,
       maxComponents: 8,
     },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
@@ -185,7 +232,7 @@ const contentPage: PageTemplate = {
 /**
  * Flexible Page template — most freedom
  * Locked: Header, Footer
- * Editable: Full Body (unlimited, all component types)
+ * Editable: Full Body (all 53 component types)
  */
 const flexiblePage: PageTemplate = {
   slug: 'flexible-page',
@@ -193,7 +240,7 @@ const flexiblePage: PageTemplate = {
   description: 'Maximum editorial freedom — full body zone with no restrictions.',
   zones: [
     { name: 'header', label: 'Header', type: 'locked', lockedComponent: 'site-header' },
-    { name: 'body', label: 'Full Body', type: 'editable', allowedComponents: [], maxComponents: 0 },
+    { name: 'body', label: 'Full Body', type: 'editable', allowedComponents: ALL_COMPONENTS, maxComponents: 0 },
     { name: 'footer', label: 'Footer', type: 'locked', lockedComponent: 'site-footer' },
   ],
 }
