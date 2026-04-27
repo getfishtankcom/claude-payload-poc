@@ -851,7 +851,7 @@ test -f src/config/brand.ts  # must exist
 
 ### Task 1.4: SiteAlert global + utilities
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 4) — created src/globals/SiteAlert.ts (slug 'site-alert' with show/message/link/severity fields, message + link.label localized) and registered in payload.config.ts globals array. Created src/components/SiteAlert.tsx (3 severity variants info/warning/urgent, role=status aria-live=polite, dismiss via localStorage), src/components/BackToTop.tsx (IntersectionObserver sentinel — no scroll listener, smooth scroll, brand purple, aria-label), src/components/RssLink.tsx (RSS icon + label, opens new tab, rel=noopener noreferrer). Co-located stories for all 3. Regenerated payload-types. tsc + 31 tests clean.
 - **Dependencies:** 0.1 (Payload version for global schema)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

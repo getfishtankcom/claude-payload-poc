@@ -69,6 +69,7 @@ import { Footer } from './globals/Footer'
 import { Homepage } from './globals/Homepage'
 import { SearchConfig } from './globals/SearchConfig'
 import { AuthConfig } from './globals/AuthConfig'
+import { SiteAlert } from './globals/SiteAlert'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -147,7 +148,7 @@ export default buildConfig({
   ],
 
   // Globals for site-wide settings
-  globals: [Navigation, Footer, Homepage, SearchConfig, AuthConfig],
+  globals: [Navigation, Footer, Homepage, SearchConfig, AuthConfig, SiteAlert],
 
   // Rich text editor
   editor: lexicalEditor(),
