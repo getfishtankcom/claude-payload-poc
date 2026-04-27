@@ -1146,7 +1146,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 3.2: Language audit view
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/app/(payload)/api/admin/language-audit/route.ts (queries pages/news/projects in EN + FR, computes per-item frStatus translated/partial/missing using a localized-fields heuristic, returns per-collection summary). Created src/admin/views/LanguageAuditView.tsx + LanguageAuditViewClient.tsx (TanStack Query, 3 summary cards with X/Y translated, table with status badges, filters: collection/status/board, "Open in FR →" links). Registered at /admin/language-audit. CustomNav adds Language Audit under Tools. tsc clean.
 - **Dependencies:** 0.11 (TanStack Query)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

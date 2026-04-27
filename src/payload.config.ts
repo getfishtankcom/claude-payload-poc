@@ -118,6 +118,10 @@ export default buildConfig({
           Component: '/admin/views/ScheduleView',
           path: '/schedule',
         },
+        languageAudit: {
+          Component: '/admin/views/LanguageAuditView',
+          path: '/language-audit',
+        },
       },
     },
   },

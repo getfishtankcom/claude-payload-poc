@@ -99,6 +99,7 @@ export const CustomNav: React.FC = () => {
         <NavSection label="TOOLS" />
         <NavLink href="/admin/media" label="Media Library" icon="image" />
         <NavLink href="/admin/schedule" label="Schedule" icon="calendar" />
+        <NavLink href="/admin/language-audit" label="Language Audit" icon="file" />
         <NavLink href="/admin/collections/redirects" label="Redirects" icon="layout" />
         <NavLink href="/admin/globals/search-config" label="Search Config" icon="search" />
 
