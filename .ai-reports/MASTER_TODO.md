@@ -663,7 +663,7 @@ npx tsc --noEmit
 
 ### Task 0.13: Delete dead code
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — deleted PropsDrawer.tsx, PropsDrawer.stories.tsx, ComponentToolbox.tsx, ComponentToolbox.stories.tsx. Only comments referenced them; updated 2 doc comments. tsc clean.
 - **Dependencies:** 0.11 (confirm nothing still imports these files)
 - **Skills:** none
 - **Acceptance Criteria:**

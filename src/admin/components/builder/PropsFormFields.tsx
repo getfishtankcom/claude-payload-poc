@@ -1,8 +1,7 @@
 /**
  * @description
  * Shared form field renderers for the page builder props editing.
- * Extracted from PropsDrawer to be reused by both the legacy PropsDrawer
- * and the new InspectorPanel.
+ * Used by InspectorPanel.
  *
  * Key features:
  * - FieldRenderer: renders a single prop field based on its type

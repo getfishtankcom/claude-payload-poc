@@ -1,8 +1,7 @@
 /**
  * @description
- * Structure Panel — left panel of the redesigned page builder.
+ * Structure Panel — left panel of the page builder.
  * Shows a tree view of the page's zone/component hierarchy.
- * Replaces the ComponentToolbox as the primary left panel.
  *
  * Key features:
  * - 280px wide, always visible
