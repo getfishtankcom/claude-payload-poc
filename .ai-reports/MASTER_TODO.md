@@ -521,7 +521,7 @@ npx tsc --noEmit
 
 ### Task 0.9: Decompose MediaLibraryClient.tsx
 
-- **Status:** [ ] Not started
+- **Status:** [~] Partial (AFK Ralph iteration 3) — extracted to src/admin/views/media/: types.ts (FolderNode/MediaItem/ViewMode/UploadProgress/FlatFolder), helpers.ts (ACCEPTED_MIME_TYPES/EXTENSIONS, STORAGE_KEYS, getFileCategory, formatFileSize, flattenFolders), icons.tsx (FolderIcon/ChevronIcon/FileTypeIcon), FolderTreeItem.tsx, MediaItems.tsx (MediaGridItem + MediaListItem), Breadcrumb.tsx. MediaLibraryClient went 1866 → 1334 lines (-532). Did NOT reach <300 line target — that requires extracting the ~1000-line state machine into a useMediaLibraryState hook plus extracting BulkMove/BulkDelete/RenameFolder dialog components. Punt to follow-up. tsc + 30 tests clean.
 - **Dependencies:** none
 - **Skills:** none
 - **Acceptance Criteria:**
