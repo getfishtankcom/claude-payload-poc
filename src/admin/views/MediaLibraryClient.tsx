@@ -27,21 +27,17 @@
  */
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+import React, { useCallback, useRef, type DragEvent } from 'react'
 import { MediaDetailPanel } from '../components/MediaDetailPanel'
-import type { FolderNode, MediaItem, ViewMode } from './media/types'
-import {
-  ACCEPTED_EXTENSIONS,
-  STORAGE_KEY_EXPANDED,
-  STORAGE_KEY_VIEW,
-  formatFileSize,
-} from './media/helpers'
+import type { MediaItem } from './media/types'
+import { ACCEPTED_EXTENSIONS, formatFileSize } from './media/helpers'
 import { FileTypeIcon } from './media/icons'
 import { FolderTreeItem } from './media/FolderTreeItem'
 import { MediaGridItem, MediaListItem } from './media/MediaItems'
 import { Breadcrumb } from './media/Breadcrumb'
 import { BulkMoveDialog, BulkDeleteDialog } from './media/dialogs'
 import { useMediaUpload } from '../hooks/useMediaUpload'
+import { useMediaLibraryState } from '../hooks/useMediaLibraryState'
 
 // --------------------------------------------------------------------------
 // FolderTreeItem Component
@@ -60,218 +56,63 @@ import { useMediaUpload } from '../hooks/useMediaUpload'
 // Main MediaLibraryClient Component
 // --------------------------------------------------------------------------
 
+
 export function MediaLibraryClient() {
-  // ----- State -----
-  const [folders, setFolders] = useState<FolderNode[]>([])
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([])
-  const [selectedFolderId, setSelectedFolderId] = useState<string | number | null>(null)
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(() => {
-    if (typeof window === 'undefined') return new Set()
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_EXPANDED)
-      return saved ? new Set(JSON.parse(saved)) : new Set()
-    } catch {
-      return new Set()
-    }
-  })
-  const [viewMode, setViewMode] = useState<ViewMode>(() => {
-    if (typeof window === 'undefined') return 'grid'
-    try {
-      return (localStorage.getItem(STORAGE_KEY_VIEW) as ViewMode) || 'grid'
-    } catch {
-      return 'grid'
-    }
-  })
-  const [loading, setLoading] = useState(true)
-  const [mediaLoading, setMediaLoading] = useState(false)
-  const [totalMedia, setTotalMedia] = useState(0)
-  const [selectedItems, setSelectedItems] = useState<Set<string | number>>(new Set())
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filterType, setFilterType] = useState<string>('all')
-  const [detailItem, setDetailItem] = useState<MediaItem | null>(null)
-  const [isDragOver, setIsDragOver] = useState(false)
+  // All state + handlers live in useMediaLibraryState. This component
+  // is now a render shell.
+  const state = useMediaLibraryState()
+  const {
+    folders,
+    mediaItems,
+    totalMedia,
+    loading,
+    mediaLoading,
+    selectedFolderId,
+    expandedIds,
+    viewMode,
+    setViewMode,
+    searchQuery,
+    setSearchQuery,
+    filterType,
+    setFilterType,
+    detailItem,
+    setDetailItem,
+    selectedItems,
+    setSelectedItems,
+    showBulkMoveDialog,
+    setShowBulkMoveDialog,
+    showBulkDeleteConfirm,
+    setShowBulkDeleteConfirm,
+    isDragOver,
+    setIsDragOver,
+    isCreatingFolder,
+    setIsCreatingFolder,
+    newFolderName,
+    setNewFolderName,
+    renamingFolderId,
+    setRenamingFolderId,
+    renameFolderName,
+    setRenameFolderName,
+    folderContextMenu,
+    setFolderContextMenu,
+    fetchFolders,
+    fetchMedia,
+    handleToggleExpand,
+    handleSelectFolder,
+    handleToggleView,
+    handleMediaClick,
+    handleSelectAll,
+    handleItemSelect,
+    handleBulkMove,
+    handleBulkDelete,
+    handleBulkDownload,
+    handleCreateFolder,
+    handleRenameFolder,
+    handleDeleteFolder,
+  } = state
+
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // ----- Persist expanded state -----
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY_EXPANDED, JSON.stringify([...expandedIds]))
-    } catch { /* ignore */ }
-  }, [expandedIds])
-
-  // ----- Persist view mode -----
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY_VIEW, viewMode)
-    } catch { /* ignore */ }
-  }, [viewMode])
-
-  // ----- Fetch folders -----
-  const fetchFolders = useCallback(async () => {
-    try {
-      const res = await fetch('/api/media-folders/tree')
-      if (res.ok) {
-        const data = await res.json()
-        setFolders(data.nodes || [])
-      }
-    } catch (err) {
-      console.error('Failed to fetch media folders:', err)
-    }
-  }, [])
-
-  // ----- Fetch media items -----
-  const fetchMedia = useCallback(async () => {
-    setMediaLoading(true)
-    try {
-      const params = new URLSearchParams({ limit: '100', depth: '1', sort: '-createdAt' })
-
-      // Folder filter
-      if (selectedFolderId) {
-        params.set('where[folder][equals]', String(selectedFolderId))
-      }
-
-      // Search filter
-      if (searchQuery.trim()) {
-        params.set('where[or][0][filename][contains]', searchQuery.trim())
-        params.set('where[or][1][alt][contains]', searchQuery.trim())
-        params.set('where[or][2][title][contains]', searchQuery.trim())
-      }
-
-      // Type filter
-      if (filterType !== 'all') {
-        const mimePrefix = filterType === 'document' ? 'application/' : `${filterType}/`
-        params.set('where[mimeType][contains]', mimePrefix)
-      }
-
-      const res = await fetch(`/api/media?${params.toString()}`)
-      if (res.ok) {
-        const data = await res.json()
-        setMediaItems(data.docs || [])
-        setTotalMedia(data.totalDocs || 0)
-      }
-    } catch (err) {
-      console.error('Failed to fetch media:', err)
-    } finally {
-      setMediaLoading(false)
-    }
-  }, [selectedFolderId, searchQuery, filterType])
-
-  // ----- Initial load -----
-  useEffect(() => {
-    const init = async () => {
-      setLoading(true)
-      await fetchFolders()
-      setLoading(false)
-    }
-    init()
-  }, [fetchFolders])
-
-  // ----- Fetch media on folder/search/filter change -----
-  useEffect(() => {
-    fetchMedia()
-  }, [fetchMedia])
-
-  // ----- Toggle folder expand/collapse -----
-  const handleToggleExpand = useCallback((folderId: string | number) => {
-    setExpandedIds((prev) => {
-      const next = new Set(prev)
-      const key = String(folderId)
-      if (next.has(key)) {
-        next.delete(key)
-      } else {
-        next.add(key)
-      }
-      return next
-    })
-  }, [])
-
-  // ----- Select folder (also auto-expand) -----
-  const handleSelectFolder = useCallback((folderId: string | number | null) => {
-    setSelectedFolderId(folderId)
-    setSelectedItems(new Set())
-    if (folderId) {
-      setExpandedIds((prev) => {
-        const next = new Set(prev)
-        next.add(String(folderId))
-        return next
-      })
-    }
-  }, [])
-
-  // ----- Toggle view mode -----
-  const handleToggleView = useCallback(() => {
-    setViewMode((prev) => (prev === 'grid' ? 'list' : 'grid'))
-  }, [])
-
-  // ----- Media item click (open detail) -----
-  const handleMediaClick = useCallback((item: MediaItem) => {
-    setDetailItem(item)
-  }, [])
-
-  // ----- Bulk select all / deselect all -----
-  const handleSelectAll = useCallback((checked: boolean) => {
-    if (checked) {
-      setSelectedItems(new Set(mediaItems.map((item) => item.id)))
-    } else {
-      setSelectedItems(new Set())
-    }
-  }, [mediaItems])
-
-  // ----- Bulk move to folder -----
-  const [showBulkMoveDialog, setShowBulkMoveDialog] = useState(false)
-  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false)
-
-  const handleBulkMove = useCallback(async (targetFolderId: string | number | null) => {
-    const ids = Array.from(selectedItems)
-    await Promise.all(
-      ids.map((id) =>
-        fetch(`/api/media/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ folder: targetFolderId }),
-        }),
-      ),
-    )
-    setSelectedItems(new Set())
-    setShowBulkMoveDialog(false)
-    await Promise.all([fetchMedia(), fetchFolders()])
-  }, [selectedItems, fetchMedia, fetchFolders])
-
-  const handleBulkDelete = useCallback(async () => {
-    const ids = Array.from(selectedItems)
-    await Promise.all(
-      ids.map((id) => fetch(`/api/media/${id}`, { method: 'DELETE' })),
-    )
-    setSelectedItems(new Set())
-    setShowBulkDeleteConfirm(false)
-    await Promise.all([fetchMedia(), fetchFolders()])
-  }, [selectedItems, fetchMedia, fetchFolders])
-
-  const handleBulkDownload = useCallback(() => {
-    // Download each selected item individually
-    const items = mediaItems.filter((item) => selectedItems.has(item.id))
-    items.forEach((item) => {
-      const link = document.createElement('a')
-      link.href = item.url
-      link.download = item.filename
-      link.click()
-    })
-  }, [mediaItems, selectedItems])
-
-  // ----- Bulk select toggle -----
-  const handleItemSelect = useCallback((id: string | number, checked: boolean) => {
-    setSelectedItems((prev) => {
-      const next = new Set(prev)
-      if (checked) {
-        next.add(id)
-      } else {
-        next.delete(id)
-      }
-      return next
-    })
-  }, [])
-
-  // ----- Upload a single file via XMLHttpRequest (for progress tracking) -----
   // Upload state + handlers come from a shared hook.
   const { uploads, uploadFiles } = useMediaUpload({
     selectedFolderId,
@@ -281,111 +122,48 @@ export function MediaLibraryClient() {
   })
 
   // ----- Handle file input change -----
-  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      uploadFiles(e.target.files)
-      // Reset input so same file can be re-uploaded
-      e.target.value = ''
-    }
-  }, [uploadFiles])
-
-  // ----- Drag-and-drop handlers -----
-  const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragOver(true)
-  }, [])
-
-  const handleDragLeave = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    // Only set false if leaving the container (not entering a child)
-    if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget as Node)) {
-      setIsDragOver(false)
-    }
-  }, [])
-
-  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragOver(false)
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      uploadFiles(e.dataTransfer.files)
-    }
-  }, [uploadFiles])
-
-  // ----- Folder management state -----
-  const [isCreatingFolder, setIsCreatingFolder] = useState(false)
-  const [newFolderName, setNewFolderName] = useState('')
-  const [renamingFolderId, setRenamingFolderId] = useState<string | number | null>(null)
-  const [renameFolderName, setRenameFolderName] = useState('')
-  const [folderContextMenu, setFolderContextMenu] = useState<{
-    folderId: string | number
-    folderName: string
-    x: number
-    y: number
-    hasChildren: boolean
-    mediaCount: number
-  } | null>(null)
-
-  // Create new folder
-  const handleCreateFolder = useCallback(async () => {
-    if (!newFolderName.trim()) return
-    try {
-      await fetch('/api/media-folders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newFolderName.trim(),
-          parent: selectedFolderId || undefined,
-          sortOrder: 0,
-        }),
-      })
-      setNewFolderName('')
-      setIsCreatingFolder(false)
-      await fetchFolders()
-    } catch (err) {
-      console.error('Failed to create folder:', err)
-    }
-  }, [newFolderName, selectedFolderId, fetchFolders])
-
-  // Rename folder
-  const handleRenameFolder = useCallback(async () => {
-    if (!renamingFolderId || !renameFolderName.trim()) return
-    try {
-      await fetch(`/api/media-folders/${renamingFolderId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: renameFolderName.trim() }),
-      })
-      setRenamingFolderId(null)
-      setRenameFolderName('')
-      await fetchFolders()
-    } catch (err) {
-      console.error('Failed to rename folder:', err)
-    }
-  }, [renamingFolderId, renameFolderName, fetchFolders])
-
-  // Delete folder (only if empty — no media and no children)
-  const handleDeleteFolder = useCallback(async (folderId: string | number) => {
-    try {
-      await fetch(`/api/media-folders/${folderId}`, { method: 'DELETE' })
-      if (String(selectedFolderId) === String(folderId)) {
-        setSelectedFolderId(null)
+  const handleFileInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        uploadFiles(e.target.files)
+        e.target.value = ''
       }
-      await fetchFolders()
-    } catch (err) {
-      console.error('Failed to delete folder:', err)
-    }
-  }, [selectedFolderId, fetchFolders])
+    },
+    [uploadFiles],
+  )
 
-  // Close context menu on click outside
-  useEffect(() => {
-    if (!folderContextMenu) return
-    const handleClickOutside = () => setFolderContextMenu(null)
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [folderContextMenu])
+  // ----- Drag-and-drop handlers (canvas-wide) -----
+  const handleDragOver = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsDragOver(true)
+    },
+    [setIsDragOver],
+  )
+
+  const handleDragLeave = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget as Node)) {
+        setIsDragOver(false)
+      }
+    },
+    [setIsDragOver],
+  )
+
+  const handleDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsDragOver(false)
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        uploadFiles(e.dataTransfer.files)
+      }
+    },
+    [setIsDragOver, uploadFiles],
+  )
 
   // ----- Loading state -----
   if (loading) {
