@@ -358,7 +358,7 @@ npx tsc --noEmit
 
 ### Task 0.3: Fix 9 registry bugs
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — all 9 props fixed: hero-banner showProjectSearch+searchPlaceholder, cta-banner backgroundImage, consultation-countdown relationTo→document-for-comment, project-list deferred status, event-calendar decision-summary, newsletter-signup linkedinUrl, contact-card multiContact + sidebar-sticky layout, board-members-grid groupByRole, document-table grouping by-type + showGroupHeaders. tsc clean.
 - **Dependencies:** none (can run parallel with 0.2)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

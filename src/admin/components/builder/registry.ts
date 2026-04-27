@@ -406,7 +406,7 @@ const heroBanner: BuilderComponentType = {
   label: 'Hero Banner',
   category: 'layout',
   icon: 'RectangleGroupIcon',
-  description: 'Full-width hero with heading, subheading, and CTA',
+  description: 'Full-width hero with heading, subheading, and CTA. Search (when enabled) is scoped to Projects only.',
   allowedZones: [],
   propsSchema: [
     { name: 'heading', label: 'Heading', type: 'text', required: true },
@@ -414,6 +414,8 @@ const heroBanner: BuilderComponentType = {
     { name: 'ctaLabel', label: 'CTA Button Label', type: 'text' },
     { name: 'ctaUrl', label: 'CTA Button URL', type: 'text' },
     { name: 'backgroundImage', label: 'Background Image', type: 'media' },
+    { name: 'showProjectSearch', label: 'Show Project Search', type: 'checkbox', defaultValue: false },
+    { name: 'searchPlaceholder', label: 'Search Placeholder Text', type: 'text', defaultValue: 'Search projects...' },
     {
       name: 'backgroundStyle',
       label: 'Background Style',
@@ -440,6 +442,7 @@ const ctaBanner: BuilderComponentType = {
     { name: 'body', label: 'Body Text', type: 'textarea' },
     { name: 'buttonLabel', label: 'Button Label', type: 'text', required: true },
     { name: 'buttonUrl', label: 'Button URL', type: 'text', required: true },
+    { name: 'backgroundImage', label: 'Background Image', type: 'media' },
     {
       name: 'variant',
       label: 'Style',
@@ -532,6 +535,8 @@ const projectList: BuilderComponentType = {
         { label: 'All', value: 'all' },
         { label: 'Active', value: 'active' },
         { label: 'Completed', value: 'completed' },
+        { label: 'Paused', value: 'paused' },
+        { label: 'Deferred', value: 'deferred' },
       ],
       defaultValue: 'all',
     },
@@ -590,6 +595,7 @@ const eventCalendar: BuilderComponentType = {
         { label: 'Meeting', value: 'meeting' },
         { label: 'Webinar', value: 'webinar' },
         { label: 'Deadline', value: 'deadline' },
+        { label: 'Decision Summary', value: 'decision-summary' },
       ],
       defaultValue: 'all',
     },
@@ -627,6 +633,18 @@ const documentTable: BuilderComponentType = {
       ],
       defaultValue: 'all',
     },
+    {
+      name: 'grouping',
+      label: 'Grouping',
+      type: 'select',
+      defaultValue: 'none',
+      options: [
+        { label: 'None', value: 'none' },
+        { label: 'By Section', value: 'by-section' },
+        { label: 'By Type', value: 'by-type' },
+      ],
+    },
+    { name: 'showGroupHeaders', label: 'Show Group Headers', type: 'checkbox', defaultValue: true },
     { name: 'searchable', label: 'Show Search', type: 'checkbox', defaultValue: true },
   ],
 }
@@ -640,6 +658,7 @@ const contactCard: BuilderComponentType = {
   allowedZones: [],
   propsSchema: [
     { name: 'contact', label: 'Contact', type: 'relationship', relationTo: 'contacts', required: true },
+    { name: 'multiContact', label: 'Multi-Contact (array of contacts)', type: 'checkbox', defaultValue: false },
     {
       name: 'layout',
       label: 'Layout',
@@ -648,6 +667,7 @@ const contactCard: BuilderComponentType = {
       options: [
         { label: 'Card', value: 'card' },
         { label: 'Inline', value: 'inline' },
+        { label: 'Sidebar Sticky', value: 'sidebar-sticky' },
       ],
     },
   ],
@@ -663,6 +683,7 @@ const boardMembersGrid: BuilderComponentType = {
   propsSchema: [
     { name: 'board', label: 'Board', type: 'relationship', relationTo: 'boards', required: true },
     { name: 'showBio', label: 'Show Bio', type: 'checkbox', defaultValue: true },
+    { name: 'groupByRole', label: 'Group by Role', type: 'checkbox', defaultValue: false },
     { name: 'columns', label: 'Columns', type: 'number', defaultValue: 3, min: 2, max: 4 },
   ],
 }
@@ -675,7 +696,7 @@ const consultationCountdown: BuilderComponentType = {
   description: 'Active consultation with countdown timer',
   allowedZones: [],
   propsSchema: [
-    { name: 'consultation', label: 'Consultation', type: 'relationship', relationTo: 'consultations', required: true },
+    { name: 'consultation', label: 'Consultation', type: 'relationship', relationTo: 'document-for-comment', required: true },
     { name: 'showDescription', label: 'Show Description', type: 'checkbox', defaultValue: true },
   ],
 }
@@ -797,6 +818,7 @@ const newsletterSignup: BuilderComponentType = {
     { name: 'description', label: 'Description', type: 'textarea' },
     { name: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Subscribe' },
     { name: 'hubspotFormId', label: 'HubSpot Form ID', type: 'text', required: true },
+    { name: 'linkedinUrl', label: 'LinkedIn URL', type: 'text' },
   ],
 }
 
