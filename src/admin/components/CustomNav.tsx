@@ -22,6 +22,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@payloadcms/ui'
 import { NavLink } from './NavLink'
+import { NotificationBell } from './NotificationBell'
 
 import type { UserWithRole } from '../types/workflow'
 
@@ -66,9 +67,16 @@ export const CustomNav: React.FC = () => {
         overflow: 'auto',
       }}
     >
-      {/* Logo / Brand */}
-      <div style={{ padding: '0 16px 16px', borderBottom: '1px solid var(--theme-elevation-150)' }}>
+      {/* Logo / Brand + Notifications */}
+      <div style={{
+        padding: '0 16px 16px',
+        borderBottom: '1px solid var(--theme-elevation-150)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
         <span style={{ fontSize: '14px', fontWeight: 600 }}>RAS Canada CMS</span>
+        <NotificationBell />
       </div>
 
       {/* Main Navigation */}

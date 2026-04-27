@@ -1208,7 +1208,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 3.4: Notification center
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/collections/Notifications.ts (recipient/type/message/link/read fields, row-level access scoped to recipient with admin override). Registered in payload.config.ts. Created src/admin/components/NotificationBell.tsx (60s polling via useEffect+setInterval, dropdown with last 20 items, unread count badge, mark-individual + mark-all-read). Mounted in CustomNav header strip. workflow-hooks createLogWorkflowTransition now creates Notification records on transitions: draft→in_review notifies all editors+admins; in_review→{needs_revision,approved} and approved→published notify the original author. Recursion guard via context.skipWorkflowNotifications. Regenerated payload-types. tsc clean.
 - **Dependencies:** 0.10 (shared types), 0.12 (shared Modal), 0.14 (error handling)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

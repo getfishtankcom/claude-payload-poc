@@ -63,6 +63,7 @@ import { FormSubmissions } from './collections/FormSubmissions'
 import { JobPostings } from './collections/JobPostings'
 import { StandardsSections } from './collections/StandardsSections'
 import { Redirects } from './collections/Redirects'
+import { Notifications } from './collections/Notifications'
 
 // Globals
 import { Navigation } from './globals/Navigation'
@@ -155,6 +156,7 @@ export default buildConfig({
     JobPostings,
     StandardsSections,
     Redirects,
+    Notifications,
   ],
 
   // Globals for site-wide settings

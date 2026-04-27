@@ -155,15 +155,75 @@ export const validateWorkflowTransition: CollectionBeforeChangeHook = ({
 }
 
 /**
- * afterChange hook factory.
+ * afterChange hook factory — creates Notifications on workflow transitions.
  *
- * History is now appended in the beforeChange hook, so this is a no-op
- * factory kept for API compatibility with existing collection wiring.
- * Callers can keep importing/registering it; remove safely when no
- * collections reference it.
+ * History append happens in beforeChange (single PATCH). This factory now
+ * handles only the side-effect of creating in-app notifications:
+ *   draft → in_review               → notify all editors + admins
+ *   in_review → needs_revision      → notify the original author
+ *   in_review → approved            → notify the original author
+ *   approved → published            → notify the original author
  */
 export const createLogWorkflowTransition = (
-  _collectionSlug: CollectionSlug,
+  collectionSlug: CollectionSlug,
 ): CollectionAfterChangeHook => {
-  return async ({ doc }) => doc
+  return async ({ doc, previousDoc, req, context }) => {
+    if (context?.skipWorkflowNotifications) return doc
+    const oldState = (previousDoc?.workflowState as WorkflowState) || 'draft'
+    const newState = doc.workflowState as WorkflowState | undefined
+    if (!newState || newState === oldState) return doc
+
+    const baseLink = `/admin/collections/${collectionSlug}/${doc.id}`
+    const title = (doc.title as string) || 'Item'
+    const transition = `${oldState} → ${newState}`
+
+    type Recipient = string | number
+    const recipients: Recipient[] = []
+
+    try {
+      if (oldState === 'draft' && newState === 'in_review') {
+        // Notify editors + admins.
+        const reviewers = await req.payload.find({
+          collection: 'users',
+          where: { or: [{ role: { equals: 'editor' } }, { role: { equals: 'admin' } }] },
+          limit: 100,
+          depth: 0,
+        })
+        for (const u of reviewers.docs) recipients.push(u.id as Recipient)
+      } else if (
+        (oldState === 'in_review' && (newState === 'needs_revision' || newState === 'approved')) ||
+        (oldState === 'approved' && newState === 'published')
+      ) {
+        const author = (doc.createdBy as { id?: string | number } | string | number | null | undefined)
+        const authorId =
+          typeof author === 'object' && author && 'id' in author
+            ? (author as { id?: Recipient }).id
+            : (author as Recipient | null | undefined)
+        if (authorId != null) recipients.push(authorId)
+      }
+
+      if (recipients.length === 0) return doc
+
+      await Promise.allSettled(
+        recipients.map((recipient) =>
+          req.payload.create({
+            collection: 'notifications',
+            data: {
+              recipient: typeof recipient === 'string' ? Number(recipient) : recipient,
+              type: 'workflow_transition',
+              message: `${title}: ${transition}`,
+              link: baseLink,
+              read: false,
+            },
+            req,
+            context: { skipWorkflowNotifications: true },
+          }),
+        ),
+      )
+    } catch (err) {
+      req.payload.logger.error(`Failed to create workflow notifications for ${doc.id}: ${err}`)
+    }
+
+    return doc
+  }
 }
