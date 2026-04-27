@@ -336,7 +336,7 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
       )}
 
       {/* Configure filter string */}
-      {filterString && <Configure filters={filterString} />}
+      {filterString && <Configure {...({ filters: filterString } as Record<string, string>)} />}
 
       {/* 2-column layout: filters + results */}
       <div className="flex flex-col gap-6 pb-16 lg:flex-row">

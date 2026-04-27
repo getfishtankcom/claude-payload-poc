@@ -20,7 +20,8 @@
 import React from 'react'
 
 /** Generic block type — blockType discriminator + arbitrary block data */
-type LayoutBlock = { blockType: string; [key: string]: unknown }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type LayoutBlock = { blockType?: string | null; [key: string]: any }
 
 import { CTABlockComponent } from './CTABlock/Component'
 import { ContentBlockComponent } from './ContentBlock/Component'
@@ -47,6 +48,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
     <>
       {blocks.map((block, index) => {
         const { blockType } = block
+        if (!blockType) return null
         const BlockComponent = blockComponents[blockType]
 
         if (!BlockComponent) return null
