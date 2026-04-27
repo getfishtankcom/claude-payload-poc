@@ -23,15 +23,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '@payloadcms/ui'
 import { NavLink } from './NavLink'
 
-// Type for the user with role
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  email?: string
-  firstName?: string
-  lastName?: string
-  [key: string]: unknown
-}
+import type { UserWithRole } from '../types/workflow'
 
 export const CustomNav: React.FC = () => {
   const { user } = useAuth()

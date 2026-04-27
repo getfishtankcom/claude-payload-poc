@@ -19,13 +19,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useDocumentInfo, useAuth } from '@payloadcms/ui'
 
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  firstName?: string
-  email?: string
-  [key: string]: unknown
-}
+import type { UserWithRole } from '../types/workflow'
 
 interface LockInfo {
   lockedBy: { id: string; firstName?: string; email?: string } | null

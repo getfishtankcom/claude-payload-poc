@@ -28,19 +28,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 // Types
 // --------------------------------------------------------------------------
 
-interface TreeNode {
-  id: string | number
-  title: string
-  slug: string
-  contentType: string
-  workflowState: string
-  lockedBy: string | number | null
-  hasChildren: boolean
-  sortOrder: number
-  parent: string | number | null
-  board: string | number | null
-  children?: TreeNode[]
-}
+import type { TreeNode } from '../types/tree'
 
 type UserRole = 'admin' | 'editor' | 'author'
 

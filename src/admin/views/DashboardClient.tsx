@@ -22,13 +22,7 @@ import { QuickActionsWidget } from '../components/widgets/QuickActionsWidget'
 import { RecentItemsWidget } from '../components/widgets/RecentItemsWidget'
 import { PublishingScheduleWidget } from '../components/widgets/PublishingScheduleWidget'
 
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  firstName?: string
-  email?: string
-  [key: string]: unknown
-}
+import type { UserWithRole } from '../types/workflow'
 
 export const DashboardClient: React.FC = () => {
   const { user } = useAuth()

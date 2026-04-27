@@ -13,8 +13,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDocumentInfo } from '@payloadcms/ui'
 import { WorkflowActionBar } from './WorkflowActionBar'
-
-type WorkflowState = 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished'
+import type { WorkflowState } from '../types/workflow'
 
 interface WorkflowHistoryEntry {
   from?: string

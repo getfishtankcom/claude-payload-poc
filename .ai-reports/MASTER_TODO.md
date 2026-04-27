@@ -393,7 +393,7 @@ npx tsc --noEmit
 
 ### Task 0.4: Add 5 missing color tokens
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 1) — 5 brand tokens added to admin-tailwind.css @theme inline + documented in design-tokens.md §1.1.1.
 - **Dependencies:** none
 - **Skills:** none
 - **Acceptance Criteria:**
@@ -562,7 +562,7 @@ npx tsc --noEmit
 
 ### Task 0.10: Create shared admin types
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 2) — created `src/admin/types/workflow.ts` (WorkflowState, UserRole, UserWithRole, WorkflowHistoryEntry, STATE_LABELS, STATE_COLORS, WORKFLOW_TRANSITIONS) and `src/admin/types/tree.ts` (TreeNode, FolderNode). Replaced local duplicates in 8 files: WorkflowActionBar, WorkflowActionBarField, WorkboxClient, CustomNav, LockIndicator, DashboardClient, ContentTreeClient, TreeContextMenu, TreeDndWrapper, workflow-hooks. tsc clean.
 - **Dependencies:** none (can run in parallel with any other 0.x task)
 - **Skills:** typescript-advanced-types
 - **Acceptance Criteria:**

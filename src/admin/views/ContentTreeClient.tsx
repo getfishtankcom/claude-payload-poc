@@ -31,31 +31,8 @@ import { useAuth } from '@payloadcms/ui'
 import { TreeContextMenu } from '../components/TreeContextMenu'
 import { TreeDndWrapper, DraggableTreeItem } from '../components/TreeDndWrapper'
 
-// User type with role
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  [key: string]: unknown
-}
-
-// --------------------------------------------------------------------------
-// Types
-// --------------------------------------------------------------------------
-
-/** Tree node shape returned by /api/tree */
-interface TreeNode {
-  id: string | number
-  title: string
-  slug: string
-  contentType: string
-  workflowState: string
-  lockedBy: string | number | null
-  hasChildren: boolean
-  sortOrder: number
-  parent: string | number | null
-  board: string | number | null
-  children?: TreeNode[]
-}
+import type { UserWithRole } from '../types/workflow'
+import type { TreeNode } from '../types/tree'
 
 // --------------------------------------------------------------------------
 // Constants

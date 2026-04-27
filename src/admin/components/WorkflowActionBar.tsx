@@ -25,14 +25,8 @@
 
 import React, { useState, useCallback } from 'react'
 import { useAuth } from '@payloadcms/ui'
-
-type UserWithRole = {
-  id: string
-  role?: 'admin' | 'editor' | 'author'
-  [key: string]: unknown
-}
-
-type WorkflowState = 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished'
+import type { UserWithRole, WorkflowState } from '../types/workflow'
+import { STATE_LABELS as SHARED_STATE_LABELS, STATE_COLORS as SHARED_STATE_COLORS } from '../types/workflow'
 
 interface WorkflowActionBarProps {
   docId?: string
@@ -47,23 +41,8 @@ interface WorkflowActionBarProps {
   }>
 }
 
-const STATE_LABELS: Record<WorkflowState, string> = {
-  draft: 'Draft',
-  in_review: 'In Review',
-  needs_revision: 'Needs Revision',
-  approved: 'Approved',
-  published: 'Published',
-  unpublished: 'Unpublished',
-}
-
-const STATE_COLORS: Record<WorkflowState, string> = {
-  draft: '#6b7280',
-  in_review: '#3b82f6',
-  needs_revision: '#f59e0b',
-  approved: '#22c55e',
-  published: '#8b5cf6',
-  unpublished: '#ef4444',
-}
+const STATE_LABELS = SHARED_STATE_LABELS
+const STATE_COLORS = SHARED_STATE_COLORS
 
 export const WorkflowActionBar: React.FC<WorkflowActionBarProps> = ({
   docId,

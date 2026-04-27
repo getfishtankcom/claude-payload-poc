@@ -26,7 +26,7 @@ import type {
 import { isAdmin, isEditorOrAbove } from '@/access/roles'
 import type { User } from '@/payload-types'
 
-type WorkflowState = 'draft' | 'in_review' | 'needs_revision' | 'approved' | 'published' | 'unpublished'
+import type { WorkflowState } from '../types/workflow'
 
 /**
  * Valid workflow transitions mapped by from -> to states.
