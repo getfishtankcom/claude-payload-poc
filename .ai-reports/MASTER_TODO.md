@@ -474,7 +474,7 @@ npx tsc --noEmit
 
 ### Task 0.7: Fix N+1 in /api/tree
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — replaced per-doc payload.count() and recursive fetchTreeLevel calls with a single payload.find({limit:0}). hasChildren derived from in-memory parent→children map. Response: { nodes, total }. tsc clean. (Run-time benchmark deferred until Postgres is up.)
 - **Dependencies:** none
 - **Skills:** payload-super
 - **Acceptance Criteria:**
@@ -498,7 +498,7 @@ npx tsc --noEmit
 
 ### Task 0.8: Fix N+1 in /api/tree/search
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — replaced recursive findByID-per-result with single payload.find({limit:0}) + in-memory id→page map. Ancestor chains walked entirely in memory. Response now includes ancestors[] (id/title/slug) for breadcrumbing in addition to ancestorIds. tsc clean.
 - **Dependencies:** 0.7 (shares the tree fetch pattern)
 - **Skills:** payload-super
 - **Acceptance Criteria:**

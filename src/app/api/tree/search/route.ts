@@ -1,21 +1,15 @@
 /**
  * @description
- * Tree search API endpoint for deep search across all tree items (Epic 23).
- * Searches title and slug fields, returns matching items with their
- * ancestor chain so the tree UI can auto-expand parents.
+ * Tree search API endpoint — deep search across all tree items.
  *
- * Key features:
- * - GET /api/tree/search?q=IFRS — searches all pages by title/slug
- * - Returns matching items plus their ancestor IDs for tree expansion
- * - Case-insensitive partial matching
+ * GET /api/tree/search?q=... — case-insensitive partial match against
+ * title and slug, returns matching items with their full ancestor chain
+ * so the client tree can auto-expand parents.
  *
- * @dependencies
- * - payload: Local API for querying pages collection
- *
- * @notes
- * - Used by the tree search bar for "deep search" (server-side)
- * - Client-side search handles filtering already-expanded nodes
- * - Ancestor chain computed by walking parent references up to root
+ * Implementation:
+ * Single bulk fetch of all pages (limit:0). Builds an in-memory id→node
+ * map, walks parent pointers entirely in memory to resolve ancestor
+ * chains. No N+1 findByID calls in the result loop.
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
@@ -28,88 +22,101 @@ interface SearchResult {
   contentType: string
   workflowState: string
   parent: string | number | null
-  /** IDs of all ancestors from root to this item's parent */
+  /** IDs of all ancestors from root → this item's parent. */
   ancestorIds: (string | number)[]
+  /** Full ancestor records for breadcrumbing. */
+  ancestors: Array<{ id: string | number; title: string; slug: string }>
 }
 
-/**
- * Walk the parent chain to collect all ancestor IDs for auto-expanding the tree.
- */
-async function getAncestorIds(
-  payload: Awaited<ReturnType<typeof getPayload>>,
-  parentId: string | number | null,
-  visited: Set<string | number> = new Set(),
-): Promise<(string | number)[]> {
-  if (!parentId) return []
-  // Guard against circular references
-  if (visited.has(parentId)) return []
-  visited.add(parentId)
+interface IndexedPage {
+  id: string | number
+  title: string
+  slug: string
+  contentType: string
+  workflowState: string
+  parent: string | number | null
+}
 
-  const parent = await payload.findByID({
-    collection: 'pages',
-    id: parentId,
-    depth: 0,
-    select: { parent: true },
-  })
-
-  const grandparentId = (parent?.parent as string | number) || null
-  const ancestors = await getAncestorIds(payload, grandparentId, visited)
-  return [...ancestors, parentId]
+function normalizeRel(value: unknown): string | number | null {
+  if (value && typeof value === 'object' && 'id' in (value as Record<string, unknown>)) {
+    const id = (value as { id?: string | number }).id
+    return id ?? null
+  }
+  return (value as string | number | null | undefined) ?? null
 }
 
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayload({ config })
     const { searchParams } = request.nextUrl
-    const query = searchParams.get('q')
+    const query = (searchParams.get('q') ?? '').trim()
 
-    if (!query || query.trim().length === 0) {
-      return NextResponse.json({ results: [], expandIds: [] })
+    if (query.length === 0) {
+      return NextResponse.json({ results: [], expandIds: [], total: 0 })
     }
 
-    // Search pages by title or slug (case-insensitive contains)
+    // Single bulk fetch — used both for searching and for ancestor lookups.
     const result = await payload.find({
       collection: 'pages',
-      where: {
-        or: [
-          { title: { contains: query } },
-          { slug: { contains: query } },
-        ],
-      },
-      limit: 50,
-      depth: 0,
-      select: {
-        title: true,
-        slug: true,
-        contentType: true,
-        workflowState: true,
-        parent: true,
-      },
+      limit: 0,
+      depth: 1,
     })
 
-    // Collect all ancestor IDs for auto-expanding tree paths
-    const allAncestorIds = new Set<string | number>()
-    const results: SearchResult[] = await Promise.all(
-      result.docs.map(async (doc) => {
-        const parentId = (doc.parent as string | number) || null
-        const ancestorIds = await getAncestorIds(payload, parentId)
-        ancestorIds.forEach((id) => allAncestorIds.add(id))
+    // Build indexed map of every page in one pass.
+    const byId = new Map<string | number, IndexedPage>()
+    for (const doc of result.docs) {
+      const d = doc as unknown as Record<string, unknown>
+      byId.set(d.id as string | number, {
+        id: d.id as string | number,
+        title: (d.title as string) || 'Untitled',
+        slug: (d.slug as string) || '',
+        contentType: (d.contentType as string) || 'page',
+        workflowState: (d.workflowState as string) || 'draft',
+        parent: normalizeRel(d.parent),
+      })
+    }
 
-        return {
-          id: doc.id,
-          title: (doc.title as string) || 'Untitled',
-          slug: (doc.slug as string) || '',
-          contentType: (doc.contentType as string) || 'page',
-          workflowState: (doc.workflowState as string) || 'draft',
-          parent: parentId,
-          ancestorIds,
-        }
-      }),
-    )
+    // Filter to matching pages (case-insensitive partial match on title/slug).
+    const needle = query.toLowerCase()
+    const matches: IndexedPage[] = []
+    for (const page of byId.values()) {
+      if (page.title.toLowerCase().includes(needle) || page.slug.toLowerCase().includes(needle)) {
+        matches.push(page)
+      }
+    }
+
+    // Resolve ancestor chains entirely from the in-memory map.
+    const allAncestorIds = new Set<string | number>()
+    const results: SearchResult[] = matches.map((page) => {
+      const ancestorIds: (string | number)[] = []
+      const ancestors: Array<{ id: string | number; title: string; slug: string }> = []
+      let currentParent = page.parent
+      const seen = new Set<string | number>()
+      while (currentParent != null && !seen.has(currentParent)) {
+        seen.add(currentParent)
+        const parentNode = byId.get(currentParent)
+        if (!parentNode) break
+        ancestorIds.unshift(parentNode.id)
+        ancestors.unshift({ id: parentNode.id, title: parentNode.title, slug: parentNode.slug })
+        allAncestorIds.add(parentNode.id)
+        currentParent = parentNode.parent
+      }
+      return {
+        id: page.id,
+        title: page.title,
+        slug: page.slug,
+        contentType: page.contentType,
+        workflowState: page.workflowState,
+        parent: page.parent,
+        ancestorIds,
+        ancestors,
+      }
+    })
 
     return NextResponse.json({
       results,
-      /** All node IDs that should be expanded to reveal search results */
+      total: results.length,
+      /** All node IDs that should be expanded to reveal search results. */
       expandIds: Array.from(allAncestorIds),
     })
   } catch (error) {

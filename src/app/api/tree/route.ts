@@ -1,29 +1,19 @@
 /**
  * @description
- * Tree API endpoint for the admin content tree (Epic 23).
- * Returns hierarchical tree data from the `pages` collection using the
- * `parent` self-referential relationship.
+ * Tree API endpoint for the admin content tree.
  *
- * Key features:
- * - GET /api/tree — returns full tree from root nodes (parent=null)
- * - GET /api/tree?parentId=X — returns only children of node X (lazy-load)
- * - Response includes: id, title, slug, contentType, workflowState,
- *   lockedBy, hasChildren, sortOrder, parent, board
+ * - GET /api/tree — returns full nested tree from root pages (parent=null)
+ * - GET /api/tree?parentId=X — returns direct children of node X (lazy-load)
  *
- * @dependencies
- * - payload: Local API for querying pages collection
- *
- * @notes
- * - Tree nodes are pages with parent=null at root level
- * - hasChildren is computed by checking if any page has parent=thisId
- * - Sorted by sortOrder ascending within each level
- * - Used by the admin ContentTree component at /admin/tree
+ * Implementation:
+ * Single bulk fetch of all pages (limit:0). Nodes are grouped into a
+ * parent → children map in memory; hasChildren is derived from that map.
+ * No N+1 count queries, no recursive fetches.
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-/** Shape of a tree node returned by the API */
 interface TreeNode {
   id: string | number
   title: string
@@ -38,86 +28,90 @@ interface TreeNode {
   children?: TreeNode[]
 }
 
-/**
- * Fetches tree nodes at a given level (children of parentId, or root nodes if null).
- * Recursively fetches children to build nested structure when no parentId filter is specified.
- */
-async function fetchTreeLevel(
-  payload: Awaited<ReturnType<typeof getPayload>>,
-  parentId: string | number | null,
-  recursive: boolean,
-): Promise<TreeNode[]> {
-  // Build the where clause for parent filtering
-  const where = parentId
-    ? { parent: { equals: parentId } }
-    : { parent: { exists: false } }
+/** Normalize a Payload doc (parent/board may be a relationship object) into a TreeNode shape. */
+function toTreeNode(doc: Record<string, unknown>): TreeNode {
+  const parentField = doc.parent as { id?: string | number } | string | number | null | undefined
+  const parentId =
+    parentField && typeof parentField === 'object' && parentField !== null
+      ? (parentField.id ?? null)
+      : ((parentField as string | number | null | undefined) ?? null)
 
-  const result = await payload.find({
-    collection: 'pages',
-    where,
-    sort: 'sortOrder',
-    limit: 500,
-    depth: 0,
-    select: {
-      title: true,
-      slug: true,
-      contentType: true,
-      workflowState: true,
-      lockedBy: true,
-      sortOrder: true,
-      parent: true,
-      board: true,
-    },
-  })
+  const boardField = doc.board as { id?: string | number } | string | number | null | undefined
+  const boardId =
+    boardField && typeof boardField === 'object' && boardField !== null
+      ? (boardField.id ?? null)
+      : ((boardField as string | number | null | undefined) ?? null)
 
-  // For each node, check if it has children
-  const nodes: TreeNode[] = await Promise.all(
-    result.docs.map(async (doc) => {
-      const childCount = await payload.count({
-        collection: 'pages',
-        where: { parent: { equals: doc.id } },
-      })
-
-      const node: TreeNode = {
-        id: doc.id,
-        title: (doc.title as string) || 'Untitled',
-        slug: (doc.slug as string) || '',
-        contentType: (doc.contentType as string) || 'page',
-        workflowState: (doc.workflowState as string) || 'draft',
-        lockedBy: (doc.lockedBy as string | number) || null,
-        hasChildren: childCount.totalDocs > 0,
-        sortOrder: (doc.sortOrder as number) || 0,
-        parent: (doc.parent as string | number) || null,
-        board: (doc.board as string | number) || null,
-      }
-
-      // Recursively fetch children for full tree (when no parentId filter)
-      if (recursive && node.hasChildren) {
-        node.children = await fetchTreeLevel(payload, doc.id, true)
-      }
-
-      return node
-    }),
-  )
-
-  return nodes
+  return {
+    id: doc.id as string | number,
+    title: (doc.title as string) || 'Untitled',
+    slug: (doc.slug as string) || '',
+    contentType: (doc.contentType as string) || 'page',
+    workflowState: (doc.workflowState as string) || 'draft',
+    lockedBy: (doc.lockedBy as string | number | null) || null,
+    sortOrder: (doc.sortOrder as number) || 0,
+    parent: parentId,
+    board: boardId,
+    hasChildren: false,
+  }
 }
 
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayload({ config })
     const { searchParams } = request.nextUrl
-    const parentId = searchParams.get('parentId')
+    const parentIdParam = searchParams.get('parentId')
 
-    if (parentId) {
-      // Lazy-load: return only direct children of the specified parent
-      const children = await fetchTreeLevel(payload, parentId, false)
-      return NextResponse.json({ nodes: children })
+    // Single bulk fetch — limit:0 returns ALL matching pages.
+    const result = await payload.find({
+      collection: 'pages',
+      limit: 0,
+      depth: 1,
+      sort: 'sortOrder',
+    })
+
+    // Build in-memory parent → children map.
+    const nodesById = new Map<string | number, TreeNode>()
+    const childrenByParent = new Map<string | number | 'ROOT', TreeNode[]>()
+
+    for (const doc of result.docs) {
+      const node = toTreeNode(doc as unknown as Record<string, unknown>)
+      nodesById.set(node.id, node)
+      const key: string | number | 'ROOT' = node.parent ?? 'ROOT'
+      const bucket = childrenByParent.get(key)
+      if (bucket) {
+        bucket.push(node)
+      } else {
+        childrenByParent.set(key, [node])
+      }
     }
 
-    // Full tree: return nested structure from root
-    const tree = await fetchTreeLevel(payload, null, true)
-    return NextResponse.json({ nodes: tree })
+    // Mark hasChildren on every node from the parent map.
+    for (const node of nodesById.values()) {
+      node.hasChildren = childrenByParent.has(node.id)
+    }
+
+    // Lazy-load mode: return only direct children of parentId.
+    if (parentIdParam) {
+      const numericId = Number.isNaN(Number(parentIdParam)) ? parentIdParam : Number(parentIdParam)
+      const children =
+        childrenByParent.get(parentIdParam) ?? childrenByParent.get(numericId) ?? []
+      // Clone without children arrays so the client can lazy-fetch deeper levels.
+      const flat = children.map((c) => ({ ...c }))
+      return NextResponse.json({ nodes: flat, total: flat.length })
+    }
+
+    // Full tree mode: build nested structure starting from root nodes.
+    const attachChildren = (node: TreeNode): TreeNode => {
+      const kids = childrenByParent.get(node.id) ?? []
+      return {
+        ...node,
+        children: kids.length > 0 ? kids.map(attachChildren) : undefined,
+      }
+    }
+
+    const roots = (childrenByParent.get('ROOT') ?? []).map(attachChildren)
+    return NextResponse.json({ nodes: roots, total: result.totalDocs })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: message }, { status: 500 })
