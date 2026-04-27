@@ -1030,7 +1030,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.5: Insert options (Sitecore parity)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 5) — extracted INSERT_OPTIONS table to src/admin/config/insertOptions.ts (canonical PRD §4.4 mapping). Added MAX_TREE_DEPTH = 5 constant + CONTENT_TYPE_LABELS map + getAllowedInserts() + getInsertOptionsLabelled() helpers. TreeContextMenu now imports and delegates rather than holding the table inline; folder-slug overrides preserved (boards-folder, projects-folder, news-folder, events-folder, documents-folder, consultations-folder, data-folder). Depth-limit reference now uses MAX_TREE_DEPTH instead of magic 5. Leaf types declare empty arrays so menu shows "(no insert options)" rather than falling back to "everything allowed". tsc + 31 tests clean.
 - **Dependencies:** 0.10 (shared types), 0.14 (replace prompt() dialogs)
 - **Skills:** payload-super
 - **Can parallelize:** YES

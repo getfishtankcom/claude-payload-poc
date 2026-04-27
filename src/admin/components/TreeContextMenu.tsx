@@ -29,6 +29,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 // --------------------------------------------------------------------------
 
 import type { TreeNode } from '../types/tree'
+import { getInsertOptionsLabelled, MAX_TREE_DEPTH } from '../config/insertOptions'
 
 type UserRole = 'admin' | 'editor' | 'author'
 
@@ -50,55 +51,11 @@ export interface TreeContextMenuProps {
   onDelete: (node: TreeNode) => void
 }
 
-// --------------------------------------------------------------------------
-// Insert options table (PRD Section 4.4)
-// --------------------------------------------------------------------------
-
-/** Maps parent contentType to allowed child content types */
-const INSERT_OPTIONS: Record<string, Array<{ label: string; value: string }>> = {
-  folder: [
-    { label: 'Page', value: 'page' },
-    { label: 'Folder', value: 'folder' },
-  ],
-  page: [
-    { label: 'Page', value: 'page' },
-  ],
-  settings: [],
-  news: [],
-  project: [],
-  event: [],
-  document: [],
-  media: [],
-}
-
-/** Special folder-type insert rules based on slug patterns */
+// Insert-options table lives in src/admin/config/insertOptions.ts (PRD §4.4).
+// `getInsertOptionsLabelled` resolves both contentType-based and folder-slug
+// based insert rules and returns labelled menu options.
 function getInsertOptionsForNode(node: TreeNode): Array<{ label: string; value: string }> {
-  const slug = node.slug.toLowerCase()
-
-  // Special folder types based on their slug
-  if (slug.includes('boards-folder')) {
-    return [{ label: 'Board Detail Page', value: 'page' }]
-  }
-  if (slug.includes('projects-folder')) {
-    return [{ label: 'Project', value: 'project' }]
-  }
-  if (slug.includes('news-folder')) {
-    return [{ label: 'News Article', value: 'news' }]
-  }
-  if (slug.includes('events-folder')) {
-    return [{ label: 'Event', value: 'event' }]
-  }
-  if (slug.includes('documents-folder') || slug.includes('consultations-folder')) {
-    return [{ label: 'Document', value: 'document' }]
-  }
-  if (slug.includes('data-')) {
-    return [
-      { label: 'Folder', value: 'folder' },
-    ]
-  }
-
-  // Default: use generic rules based on contentType
-  return INSERT_OPTIONS[node.contentType] || []
+  return getInsertOptionsLabelled(node)
 }
 
 // --------------------------------------------------------------------------
@@ -285,7 +242,7 @@ export const TreeContextMenu: React.FC<TreeContextMenuProps> = ({
 
   // Determine available actions
   const insertOptions = getInsertOptionsForNode(node)
-  const canInsert = insertOptions.length > 0 && nodeDepth < 5
+  const canInsert = insertOptions.length > 0 && nodeDepth < MAX_TREE_DEPTH
   const isLocked = !!node.lockedBy
   const isLockedByOther = isLocked && node.lockedBy !== userId
   const canDelete = (() => {
