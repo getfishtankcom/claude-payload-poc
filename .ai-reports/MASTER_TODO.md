@@ -992,7 +992,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.4: Command palette (Ctrl+K)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — installed `cmdk`. Created src/admin/components/CommandPalette.tsx (Cmd/Ctrl+K toggle, autofocused input, Escape/click-outside/select to close, keyboard nav via cmdk's loop, three groups: Navigate (12 admin sections), Pinned (top-5 from useFavorites), Create New (5 new-doc shortcuts). Mounted globally inside QueryProvider so it's available on every admin page. tsc + 31 tests clean.
 - **Dependencies:** 0.1 (package install), 0.12 (shared Modal)
 - **Skills:** react-best-practices
 - **Can parallelize:** YES
