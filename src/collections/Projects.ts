@@ -43,6 +43,9 @@ export const Projects: CollectionConfig = {
     defaultColumns: ['title', 'status', 'workflowState', 'board', 'current_stage'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/FrTranslationWarning'],
+      },
     },
   },
   access: {

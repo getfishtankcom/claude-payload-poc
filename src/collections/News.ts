@@ -43,6 +43,9 @@ export const News: CollectionConfig = {
     defaultColumns: ['title', 'date', 'category', 'workflowState', 'board'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/FrTranslationWarning'],
+      },
     },
   },
   access: {

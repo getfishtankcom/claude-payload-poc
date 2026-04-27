@@ -937,7 +937,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.2: FR gutter icon with language audit
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/admin/components/FrTranslationWarning.tsx (orange flag icon when title_fr is missing or equal to title_en, click navigates to ?locale=fr edit view, aria-label "Missing French translation"). Registered on Pages, News, Projects beforeDocumentControls. tsc clean.
 - **Dependencies:** 0.10 (shared types), 0.14 (error handling)
 - **Skills:** none
 - **Can parallelize:** YES
