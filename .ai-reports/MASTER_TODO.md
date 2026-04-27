@@ -1442,7 +1442,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 5.2: Architecture + security audit
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — produced static-analysis security review at .ai-reports/layer-5-security-audit.md. 7 findings across access control, input validation, SSRF, logging, dependencies. P0 fixes applied in this commit: A1.2 Redirects collection now requires editor-or-above for create/update + admin for delete; A3.2 middleware refuses cross-origin absolute redirect targets (defence against open-redirect via redirect rule). P1/P2 findings (notifications field guards, npm audit, env validation, log stripping) documented for follow-up.
 - **Dependencies:** Layer 4 complete
 - **Skills:** security-audit-orchestrator, security-audit-authentication, security-audit-api-encryption
 - **Acceptance Criteria:**

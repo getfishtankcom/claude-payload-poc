@@ -6,6 +6,7 @@
  * pathnames before any route matching runs.
  */
 import type { CollectionConfig } from 'payload'
+import { isAdmin, isEditorOrAbove } from '@/access/roles'
 
 export const Redirects: CollectionConfig = {
   slug: 'redirects',
@@ -14,6 +15,12 @@ export const Redirects: CollectionConfig = {
     defaultColumns: ['from', 'to', 'type', 'active'],
     group: 'Tools',
     description: 'Old → new URL redirects. Imported from the legacy site.',
+  },
+  access: {
+    read: () => true,
+    create: ({ req: { user } }) => isEditorOrAbove(user as never),
+    update: ({ req: { user } }) => isEditorOrAbove(user as never),
+    delete: ({ req: { user } }) => isAdmin(user as never),
   },
   fields: [
     {

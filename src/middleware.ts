@@ -38,8 +38,23 @@ export default clerkMiddleware(async (auth, req) => {
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? req.nextUrl.origin
   const rule = await findRedirect(req.nextUrl.pathname, serverUrl).catch(() => null)
   if (rule) {
-    const target = rule.to.startsWith('http') ? rule.to : new URL(rule.to, req.nextUrl.origin).toString()
-    return NextResponse.redirect(target, rule.type === '302' ? 302 : 301)
+    const isAbsolute = /^https?:\/\//i.test(rule.to)
+    if (isAbsolute) {
+      // Defence against open-redirect: only follow same-origin absolute URLs.
+      try {
+        const target = new URL(rule.to)
+        const origin = new URL(serverUrl)
+        if (target.host === origin.host) {
+          return NextResponse.redirect(target.toString(), rule.type === '302' ? 302 : 301)
+        }
+        // Cross-origin redirect — refuse silently and continue middleware chain.
+      } catch {
+        // Malformed `to` URL — fall through.
+      }
+    } else {
+      const target = new URL(rule.to, req.nextUrl.origin).toString()
+      return NextResponse.redirect(target, rule.type === '302' ? 302 : 301)
+    }
   }
 
   // Protect member-only routes
