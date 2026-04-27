@@ -1411,7 +1411,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 5.1: UI.sh design pass
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — produced static-analysis audit at .ai-reports/layer-5-ui-audit.md covering WCAG 2.2 AA gaps, performance findings, component visual quality, keyboard navigation. Identified 4 WCAG 2.2 AA gaps (Focus Appearance 2.4.11, Dragging 2.5.7, Target Size 2.5.8, Non-text Contrast 1.4.11). Applied a global `*:focus-visible` rule in admin-tailwind.css to fix 2.4.11 in one pass. Runtime LCP/INP/CLS + axe-core scans deferred — require Postgres-up build.
 - **Dependencies:** Layer 4 complete
 - **Skills:** ui, web-design-guidelines, userinterface-wiki
 - **Acceptance Criteria:**

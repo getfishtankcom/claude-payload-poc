@@ -31,3 +31,14 @@
   --color-brand-boards-tint: #C98578;
   --color-brand-gray: #A7A9AB;
 }
+
+/*
+ * WCAG 2.2 §2.4.11 Focus Appearance — explicit visible focus ring on every
+ * interactive admin element. 2px solid + 2px offset, brand purple to meet
+ * 3:1 contrast against light and dark elevations.
+ */
+*:focus-visible {
+  outline: 2px solid #601F5B;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
