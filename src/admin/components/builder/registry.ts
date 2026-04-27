@@ -869,20 +869,478 @@ const anchorLink: BuilderComponentType = {
 }
 
 // ---------------------------------------------------------------------------
+// New components (Layer 1 expansion — brings registry from 31 → 53)
+// ---------------------------------------------------------------------------
+
+const projectTimeline: BuilderComponentType = {
+  type: 'project-timeline',
+  label: 'Project Timeline',
+  category: 'data',
+  icon: 'CalendarIcon',
+  description: 'Configurable up-to-7-stage project timeline with tri-state per stage',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'stageCount', label: 'Stage Count', type: 'number', defaultValue: 5, min: 1, max: 10 },
+    { name: 'currentStage', label: 'Current Stage', type: 'number', defaultValue: 1 },
+    {
+      name: 'stages',
+      label: 'Stages',
+      type: 'array',
+      fields: [
+        { name: 'label', label: 'Label', type: 'text', required: true },
+        { name: 'date', label: 'Date', type: 'text' },
+        { name: 'description', label: 'Description', type: 'textarea' },
+        { name: 'ctaLabel', label: 'CTA Label', type: 'text' },
+        { name: 'ctaUrl', label: 'CTA URL', type: 'text' },
+      ],
+    },
+  ],
+}
+
+const quickLinks: BuilderComponentType = {
+  type: 'quick-links',
+  label: 'Quick Links',
+  category: 'layout',
+  icon: 'LinkIcon',
+  description: 'Compact list of links for sidebars and call-out blocks',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    {
+      name: 'links',
+      label: 'Links',
+      type: 'array',
+      fields: [
+        { name: 'label', label: 'Label', type: 'text', required: true },
+        { name: 'url', label: 'URL', type: 'text', required: true },
+        { name: 'icon', label: 'Icon (Heroicon name)', type: 'text' },
+      ],
+    },
+  ],
+}
+
+const pageHeader: BuilderComponentType = {
+  type: 'page-header',
+  label: 'Page Header',
+  category: 'layout',
+  icon: 'DocumentIcon',
+  description: 'Page-level header with icon, title, and subtitle',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'icon', label: 'Icon (Heroicon name)', type: 'text' },
+    { name: 'title', label: 'Title', type: 'text', required: true },
+    { name: 'subtitle', label: 'Subtitle', type: 'text' },
+  ],
+}
+
+const newsCardWidget: BuilderComponentType = {
+  type: 'news-card-widget',
+  label: 'News Card Widget',
+  category: 'data',
+  icon: 'NewspaperIcon',
+  description: 'Recent news items as cards, optionally filtered by board',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'boardFilter', label: 'Board', type: 'relationship', relationTo: 'boards' },
+    { name: 'limit', label: 'Limit', type: 'number', defaultValue: 3 },
+    { name: 'showExcerpt', label: 'Show Excerpt', type: 'checkbox', defaultValue: true },
+  ],
+}
+
+const draftsCard: BuilderComponentType = {
+  type: 'drafts-card',
+  label: 'My Drafts',
+  category: 'data',
+  icon: 'PencilIcon',
+  description: 'Lists the current user’s drafts',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text', defaultValue: 'My Drafts' },
+    { name: 'limit', label: 'Limit', type: 'number', defaultValue: 5 },
+  ],
+}
+
+const eventsCard: BuilderComponentType = {
+  type: 'events-card',
+  label: 'Events Card',
+  category: 'data',
+  icon: 'CalendarIcon',
+  description: 'Upcoming events; webinars optionally show start time',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'boardFilter', label: 'Board', type: 'relationship', relationTo: 'boards' },
+    { name: 'limit', label: 'Limit', type: 'number', defaultValue: 3 },
+    { name: 'showStartTime', label: 'Show Start Time (webinars only)', type: 'checkbox', defaultValue: false },
+  ],
+}
+
+const promoCardGrid: BuilderComponentType = {
+  type: 'promo-card-grid',
+  label: 'Promo Card Grid',
+  category: 'layout',
+  icon: 'Squares2X2Icon',
+  description: 'Homepage-only promotional card grid with image + CTA per card',
+  allowedZones: ['main'],
+  propsSchema: [
+    {
+      name: 'cards',
+      label: 'Cards',
+      type: 'array',
+      fields: [
+        { name: 'image', label: 'Image', type: 'media' },
+        { name: 'heading', label: 'Heading', type: 'text', required: true },
+        { name: 'description', label: 'Description', type: 'textarea' },
+        { name: 'ctaLabel', label: 'CTA Label', type: 'text' },
+        { name: 'ctaUrl', label: 'CTA URL', type: 'text' },
+      ],
+    },
+    {
+      name: 'columns',
+      label: 'Columns',
+      type: 'select',
+      defaultValue: '3',
+      options: [
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+      ],
+    },
+  ],
+}
+
+const newsEventsGrid: BuilderComponentType = {
+  type: 'news-events-grid',
+  label: 'News + Events Grid',
+  category: 'data',
+  icon: 'Square2StackIcon',
+  description: 'Combined news + events grid layout',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'newsLimit', label: 'News Limit', type: 'number', defaultValue: 3 },
+    { name: 'eventsLimit', label: 'Events Limit', type: 'number', defaultValue: 3 },
+    { name: 'boardFilter', label: 'Board', type: 'relationship', relationTo: 'boards' },
+  ],
+}
+
+const browseByStandard: BuilderComponentType = {
+  type: 'browse-by-standard',
+  label: 'Browse by Standard',
+  category: 'data',
+  icon: 'BookOpenIcon',
+  description: 'Standards browse grid grouped by section',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'showDescriptions', label: 'Show Descriptions', type: 'checkbox', defaultValue: true },
+  ],
+}
+
+const rightRailEventsList: BuilderComponentType = {
+  type: 'right-rail-events-list',
+  label: 'Right Rail — Events',
+  category: 'data',
+  icon: 'CalendarIcon',
+  description: 'Compact upcoming events list for sidebars',
+  allowedZones: ['sidebar', 'right-rail'],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'boardFilter', label: 'Board', type: 'relationship', relationTo: 'boards' },
+    { name: 'limit', label: 'Limit', type: 'number', defaultValue: 5 },
+  ],
+}
+
+const rightRailResourceList: BuilderComponentType = {
+  type: 'right-rail-resource-list',
+  label: 'Right Rail — Resources',
+  category: 'data',
+  icon: 'ListBulletIcon',
+  description: 'Compact resource list for sidebars',
+  allowedZones: ['sidebar', 'right-rail'],
+  propsSchema: [
+    { name: 'boardFilter', label: 'Board', type: 'relationship', relationTo: 'boards' },
+    {
+      name: 'typeFilter',
+      label: 'Type',
+      type: 'select',
+      defaultValue: 'all',
+      options: [
+        { label: 'All', value: 'all' },
+        { label: 'PDF', value: 'pdf' },
+        { label: 'Link', value: 'link' },
+        { label: 'Video', value: 'video' },
+      ],
+    },
+    { name: 'limit', label: 'Limit', type: 'number', defaultValue: 5 },
+  ],
+}
+
+const subscribeBanner: BuilderComponentType = {
+  type: 'subscribe-banner',
+  label: 'Subscribe Banner',
+  category: 'interactive',
+  icon: 'EnvelopeIcon',
+  description: 'HubSpot-backed newsletter signup banner with optional LinkedIn link',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'description', label: 'Description', type: 'textarea' },
+    { name: 'hubspotFormId', label: 'HubSpot Form ID', type: 'text', required: true },
+    { name: 'linkedinUrl', label: 'LinkedIn URL', type: 'text' },
+  ],
+}
+
+const eventSummaryTable: BuilderComponentType = {
+  type: 'event-summary-table',
+  label: 'Event Summary Table',
+  category: 'data',
+  icon: 'TableCellsIcon',
+  description: 'Decision summaries / meeting topics in a tabular layout',
+  allowedZones: [],
+  propsSchema: [
+    {
+      name: 'source',
+      label: 'Source',
+      type: 'select',
+      defaultValue: 'manual',
+      options: [
+        { label: 'Manual', value: 'manual' },
+        { label: 'Dynamic', value: 'dynamic' },
+      ],
+    },
+    {
+      name: 'rows',
+      label: 'Rows (manual)',
+      type: 'array',
+      fields: [
+        { name: 'date', label: 'Date', type: 'text' },
+        { name: 'topic', label: 'Topic', type: 'text', required: true },
+        { name: 'decision', label: 'Decision', type: 'textarea' },
+      ],
+    },
+    { name: 'boardFilter', label: 'Board (dynamic)', type: 'relationship', relationTo: 'boards' },
+    { name: 'eventId', label: 'Event (dynamic)', type: 'relationship', relationTo: 'events' },
+  ],
+}
+
+const memberActionForm: BuilderComponentType = {
+  type: 'member-action-form',
+  label: 'Member Action Form',
+  category: 'interactive',
+  icon: 'UserPlusIcon',
+  description: 'Member-only forms (attend / observe / volunteer / document comment)',
+  allowedZones: [],
+  propsSchema: [
+    {
+      name: 'formVariant',
+      label: 'Form Variant',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Attend', value: 'attend' },
+        { label: 'Observe', value: 'observe' },
+        { label: 'Volunteer', value: 'volunteer' },
+        { label: 'Document Comment', value: 'document-comment' },
+      ],
+    },
+    { name: 'heading', label: 'Heading', type: 'text' },
+    { name: 'requireAuth', label: 'Require Auth', type: 'checkbox', defaultValue: true },
+  ],
+}
+
+const categoryPills: BuilderComponentType = {
+  type: 'category-pills',
+  label: 'Category Pills',
+  category: 'interactive',
+  icon: 'TagIcon',
+  description: 'Horizontal pills for filtering listings via a query param',
+  allowedZones: [],
+  propsSchema: [
+    {
+      name: 'options',
+      label: 'Options',
+      type: 'array',
+      fields: [
+        { name: 'label', label: 'Label', type: 'text', required: true },
+        { name: 'value', label: 'Value', type: 'text', required: true },
+      ],
+    },
+    { name: 'defaultValue', label: 'Default Value', type: 'text', defaultValue: 'all' },
+    { name: 'paramName', label: 'Query Param Name', type: 'text', required: true },
+  ],
+}
+
+const anchorNav: BuilderComponentType = {
+  type: 'anchor-nav',
+  label: 'On-this-page Nav',
+  category: 'interactive',
+  icon: 'ListBulletIcon',
+  description: 'Auto-generated TOC of H2 anchors on the page',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text', defaultValue: 'On this page' },
+    { name: 'autoDetect', label: 'Auto-detect H2 tags', type: 'checkbox', defaultValue: true },
+  ],
+}
+
+const meetingTopicsTable: BuilderComponentType = {
+  type: 'meeting-topics-table',
+  label: 'Meeting Topics Table',
+  category: 'data',
+  icon: 'TableCellsIcon',
+  description: 'Topics + descriptions + status, manual or dynamic',
+  allowedZones: [],
+  propsSchema: [
+    {
+      name: 'source',
+      label: 'Source',
+      type: 'select',
+      defaultValue: 'manual',
+      options: [
+        { label: 'Manual', value: 'manual' },
+        { label: 'Dynamic', value: 'dynamic' },
+      ],
+    },
+    {
+      name: 'rows',
+      label: 'Rows (manual)',
+      type: 'array',
+      fields: [
+        { name: 'topic', label: 'Topic', type: 'text', required: true },
+        { name: 'description', label: 'Description', type: 'textarea' },
+        { name: 'status', label: 'Status', type: 'text' },
+      ],
+    },
+  ],
+}
+
+const disclaimer: BuilderComponentType = {
+  type: 'disclaimer',
+  label: 'Disclaimer',
+  category: 'content',
+  icon: 'ExclamationTriangleIcon',
+  description: 'Disclaimer / legal / informational notice block',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'content', label: 'Content', type: 'richtext', required: true },
+    {
+      name: 'style',
+      label: 'Style',
+      type: 'select',
+      defaultValue: 'info',
+      options: [
+        { label: 'Info', value: 'info' },
+        { label: 'Warning', value: 'warning' },
+        { label: 'Legal', value: 'legal' },
+      ],
+    },
+  ],
+}
+
+const socialShare: BuilderComponentType = {
+  type: 'social-share',
+  label: 'Social Share',
+  category: 'interactive',
+  icon: 'ShareIcon',
+  description: 'Share-to-social buttons',
+  allowedZones: [],
+  propsSchema: [
+    {
+      name: 'platforms',
+      label: 'Platforms',
+      type: 'array',
+      fields: [
+        {
+          name: 'platform',
+          label: 'Platform',
+          type: 'select',
+          options: [
+            { label: 'LinkedIn', value: 'linkedin' },
+            { label: 'Twitter / X', value: 'twitter' },
+            { label: 'Facebook', value: 'facebook' },
+            { label: 'Email', value: 'email' },
+          ],
+        },
+      ],
+    },
+    { name: 'showCount', label: 'Show Share Count', type: 'checkbox', defaultValue: false },
+  ],
+}
+
+const relatedContent: BuilderComponentType = {
+  type: 'related-content',
+  label: 'Related Content',
+  category: 'data',
+  icon: 'LinkIcon',
+  description: 'Curated related-content rail (cards or list)',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'heading', label: 'Heading', type: 'text', defaultValue: 'Related Content' },
+    { name: 'items', label: 'Related Pages', type: 'relationship', relationTo: 'pages' },
+    {
+      name: 'layout',
+      label: 'Layout',
+      type: 'select',
+      defaultValue: 'cards',
+      options: [
+        { label: 'Cards', value: 'cards' },
+        { label: 'List', value: 'list' },
+      ],
+    },
+  ],
+}
+
+const meetingDetail: BuilderComponentType = {
+  type: 'meeting-detail',
+  label: 'Meeting Detail',
+  category: 'data',
+  icon: 'CalendarDaysIcon',
+  description: 'Full meeting page detail block (topics + documents)',
+  allowedZones: [],
+  propsSchema: [
+    { name: 'meetingId', label: 'Meeting', type: 'relationship', relationTo: 'events', required: true },
+    { name: 'showTopics', label: 'Show Topics', type: 'checkbox', defaultValue: true },
+    { name: 'showDocuments', label: 'Show Documents', type: 'checkbox', defaultValue: true },
+  ],
+}
+
+const rssLink: BuilderComponentType = {
+  type: 'rss-link',
+  label: 'RSS Link',
+  category: 'interactive',
+  icon: 'RssIcon',
+  description: 'Subscribe-via-RSS link (opens in new tab)',
+  allowedZones: ['footer', 'sidebar'],
+  propsSchema: [
+    { name: 'feedUrl', label: 'Feed URL', type: 'text', required: true },
+    { name: 'label', label: 'Label', type: 'text', defaultValue: 'Subscribe via RSS' },
+    { name: 'boardFilter', label: 'Board (filter feed)', type: 'relationship', relationTo: 'boards' },
+  ],
+}
+
+// ---------------------------------------------------------------------------
 // REGISTRY
 // ---------------------------------------------------------------------------
 
-/** All 31 registered component types */
+/** All 53 registered component types */
 export const componentRegistry: BuilderComponentType[] = [
-  // Content Blocks (10)
+  // Content Blocks (11)
   richText, heading, image, video, accordion, tabs, table, blockquote, divider, imageGrid,
-  // Layout Components (7)
+  disclaimer,
+  // Layout Components (10)
   cardGrid, twoColumn, threeColumn, heroBanner, ctaBanner, featureRow, statsBar,
-  // Data-Driven Widgets (9)
+  quickLinks, pageHeader, promoCardGrid,
+  // Data-Driven Widgets (20)
   projectList, newsFeed, eventCalendar, documentTable, contactCard,
   boardMembersGrid, consultationCountdown, standardsList, effectiveDatesTable,
-  // Interactive Elements (5)
+  projectTimeline, newsCardWidget, draftsCard, eventsCard, newsEventsGrid,
+  browseByStandard, rightRailEventsList, rightRailResourceList,
+  eventSummaryTable, meetingTopicsTable, relatedContent, meetingDetail,
+  // Interactive Elements (12)
   searchBar, filterPanel, newsletterSignup, downloadButton, anchorLink,
+  subscribeBanner, memberActionForm, categoryPills, anchorNav, socialShare,
+  rssLink,
 ]
 
 /** Registry indexed by component type slug */

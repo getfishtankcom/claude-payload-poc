@@ -24,20 +24,24 @@ describe('component registry helpers', () => {
     expect(getComponentType('not-a-real-component')).toBeUndefined()
   })
 
-  it("getComponentsByCategory('content') returns 10 items", () => {
-    expect(getComponentsByCategory('content')).toHaveLength(10)
+  it("getComponentsByCategory('content') returns 11 items (post-Layer-1: +disclaimer)", () => {
+    expect(getComponentsByCategory('content')).toHaveLength(11)
   })
 
-  it("getComponentsByCategory('layout') returns 7 items", () => {
-    expect(getComponentsByCategory('layout')).toHaveLength(7)
+  it("getComponentsByCategory('layout') returns 10 items (post-Layer-1: +quick-links, page-header, promo-card-grid)", () => {
+    expect(getComponentsByCategory('layout')).toHaveLength(10)
   })
 
-  it("getComponentsByCategory('data') returns 9 items", () => {
-    expect(getComponentsByCategory('data')).toHaveLength(9)
+  it("getComponentsByCategory('data') returns 21 items (post-Layer-1: +12 new data widgets)", () => {
+    expect(getComponentsByCategory('data')).toHaveLength(21)
   })
 
-  it("getComponentsByCategory('interactive') returns 5 items", () => {
-    expect(getComponentsByCategory('interactive')).toHaveLength(5)
+  it("getComponentsByCategory('interactive') returns 11 items (post-Layer-1: +6 new interactive)", () => {
+    expect(getComponentsByCategory('interactive')).toHaveLength(11)
+  })
+
+  it('total registry size is 53 components (Layer-1 expansion target)', () => {
+    expect(componentRegistry).toHaveLength(53)
   })
 
   it('searchComponents matches by label and description (case-insensitive)', () => {

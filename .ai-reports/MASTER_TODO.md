@@ -745,7 +745,7 @@ test -f src/config/brand.ts  # must exist
 
 ### Task 1.1: Add 22 new components to registry.ts
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 4) — registry now has 53 entries (was 31). 22 new components added: project-timeline, quick-links, page-header, news-card-widget, drafts-card, events-card, promo-card-grid, news-events-grid, browse-by-standard, right-rail-events-list, right-rail-resource-list, subscribe-banner, event-summary-table, member-action-form, category-pills, anchor-nav, meeting-topics-table, disclaimer, social-share, related-content, meeting-detail, rss-link. Used canonical PropField shape (`fields` not `itemSchema` for arrays). Distribution: content 11 / layout 10 / data 21 / interactive 11 = 53. Updated registry.test.ts category-count assertions; 31 tests pass.
 - **Dependencies:** 0.3 (registry bug fixes done first)
 - **Skills:** payload-super
 - **Acceptance Criteria:**
