@@ -19,7 +19,11 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-export const revalidate = 300 // Cache for 5 minutes
+// Force dynamic rendering — the feed reads from Payload at request time,
+// so it must not be prerendered at build time (which would require the
+// database to be reachable during the build).
+export const dynamic = 'force-dynamic'
+export const revalidate = 300 // Cache for 5 minutes at the edge.
 
 function escapeXml(text: string): string {
   return text

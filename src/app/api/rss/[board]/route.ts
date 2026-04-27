@@ -16,6 +16,8 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+// Force dynamic rendering — same reasoning as /api/rss; do not prerender.
+export const dynamic = 'force-dynamic'
 export const revalidate = 300
 
 function escapeXml(text: string): string {
