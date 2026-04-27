@@ -60,6 +60,7 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'workflowState', 'publishedAt'],
     components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
       edit: {
         beforeDocumentControls: [
           '/admin/components/LanguageSwitcher',

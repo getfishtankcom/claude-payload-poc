@@ -39,6 +39,9 @@ export const Events: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'type', 'workflowState', 'status', 'board'],
+    components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
+    },
   },
   access: {
     read: contentRead,

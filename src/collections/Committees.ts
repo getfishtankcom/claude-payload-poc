@@ -34,6 +34,9 @@ export const Committees: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'board', 'workflowState', 'status', 'sortOrder'],
+    components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
+    },
   },
   access: {
     read: contentRead,

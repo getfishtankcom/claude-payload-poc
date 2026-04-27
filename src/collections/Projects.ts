@@ -41,6 +41,9 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'workflowState', 'board', 'current_stage'],
+    components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
+    },
   },
   access: {
     read: contentRead,

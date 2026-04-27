@@ -41,6 +41,9 @@ export const News: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'category', 'workflowState', 'board'],
+    components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
+    },
   },
   access: {
     read: contentRead,

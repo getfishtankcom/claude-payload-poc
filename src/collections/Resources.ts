@@ -36,6 +36,9 @@ export const Resources: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'workflowState', 'resourceType', 'board', 'date'],
+    components: {
+      beforeListTable: ['/admin/components/BoardFilterBar'],
+    },
   },
   access: {
     read: contentRead,

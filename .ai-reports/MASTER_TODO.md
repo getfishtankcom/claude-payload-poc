@@ -910,7 +910,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.1: Board filter in admin collection list views
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 5) — created src/admin/components/BoardFilterBar.tsx (horizontal pills All/AcSB/PSAB/CSSB/AASB/RASOC, reads/writes `where[board][equals]` URL param via next/navigation, clears `page` on filter change so pagination resets, aria-pressed on active button, brand-purple active style). Registered via per-collection `admin.components.beforeListTable` on Pages, Projects, News, Events, Resources, Documents, BoardMembers, Committees, DecisionSummaries (9 total — registered per-collection rather than centrally in payload.config.ts; cleaner pattern). tsc clean.
 - **Dependencies:** 0.1
 - **Skills:** payload-super
 - **Can parallelize:** YES (independent worktree)
