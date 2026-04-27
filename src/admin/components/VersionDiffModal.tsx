@@ -198,9 +198,75 @@ export function VersionDiffModal({ collection, docId, onClose }: VersionDiffModa
         </>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '16px', alignItems: 'center' }}>
+        {versionA && (
+          <RestoreButton
+            collection={collection}
+            docId={docId}
+            versionId={versionA.id}
+            onRestored={onClose}
+          />
+        )}
         <ModalButton label="Close" variant="ghost" onClick={onClose} />
       </div>
     </ModalOverlay>
+  )
+}
+
+function RestoreButton({
+  collection,
+  docId,
+  versionId,
+  onRestored,
+}: {
+  collection: string
+  docId: string | number
+  versionId: string
+  onRestored: () => void
+}) {
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const restore = async () => {
+    if (!window.confirm('Restore this version? The current draft will be replaced.')) return
+    setBusy(true)
+    setError(null)
+    try {
+      // Payload restore endpoint: POST /api/{collection}/versions/{versionId}
+      const res = await fetch(`/api/${collection}/versions/${versionId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      if (!res.ok) {
+        // Fall back: read the version, PATCH the doc with its data.
+        const versionRes = await fetch(`/api/${collection}/versions/${versionId}?depth=0`)
+        if (!versionRes.ok) throw new Error(`Restore failed (${res.status})`)
+        const vData = (await versionRes.json()) as { version?: Record<string, unknown> }
+        const restoredFields = vData.version ?? {}
+        const patchRes = await fetch(`/api/${collection}/${docId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...restoredFields, workflowState: 'draft' }),
+        })
+        if (!patchRes.ok) throw new Error(`Restore PATCH failed (${patchRes.status})`)
+      }
+      onRestored()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Restore failed')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <>
+      {error && <span style={{ fontSize: '11px', color: '#b91c1c', marginRight: '8px' }}>{error}</span>}
+      <ModalButton
+        label={busy ? 'Restoring…' : 'Restore Version A'}
+        variant="warning"
+        disabled={busy}
+        onClick={restore}
+      />
+    </>
   )
 }

@@ -15,6 +15,9 @@ export const Redirects: CollectionConfig = {
     defaultColumns: ['from', 'to', 'type', 'active'],
     group: 'Tools',
     description: 'Old → new URL redirects. Imported from the legacy site.',
+    components: {
+      beforeListTable: ['/admin/components/RedirectsImportButton'],
+    },
   },
   access: {
     read: () => true,

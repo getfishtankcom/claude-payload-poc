@@ -1691,6 +1691,14 @@ export async function seed(_payload?: unknown) {
   console.log('    ✓ Auth config configured')
 
   // -------------------------------------------------------------------------
+  // 22. DICTIONARY (glossary terms)
+  // -------------------------------------------------------------------------
+  console.log('  Seeding dictionary terms...')
+  const { seedDictionary } = await import('./seed-dictionary')
+  const dict = await seedDictionary(payload)
+  console.log(`    ✓ Dictionary: created ${dict.created}/${dict.total} terms`)
+
+  // -------------------------------------------------------------------------
   // Summary
   // -------------------------------------------------------------------------
   console.log('\n✅ Seed complete!')
@@ -1713,6 +1721,7 @@ export async function seed(_payload?: unknown) {
   console.log(`  Form Submissions:    ${formSubmissionsData.length}`)
   console.log(`  Job Postings:        ${jobPostingsData.length}`)
   console.log(`  Standards Sections:  ${standardsSectionsData.length}`)
+  console.log(`  Dictionary terms:    ${dict.created}/${dict.total}`)
   console.log('  Globals:             AuthConfig')
 
 }

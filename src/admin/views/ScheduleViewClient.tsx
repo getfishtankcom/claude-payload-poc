@@ -8,7 +8,8 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ModalOverlay, ModalButton } from '../components/ui/Modal'
 
 type Range = 'today' | 'week' | 'month'
 
@@ -44,6 +45,10 @@ function formatTime(iso: string): string {
 
 export function ScheduleViewClient() {
   const [range, setRange] = useState<Range>('month')
+  const [popover, setPopover] = useState<ScheduleItem | null>(null)
+  const [actionState, setActionState] = useState<'idle' | 'busy' | 'error'>('idle')
+  const [actionError, setActionError] = useState<string | null>(null)
+  const queryClient = useQueryClient()
   const { from, to } = useMemo(() => rangeBounds(range), [range])
 
   const query = useQuery<{ items: ScheduleItem[]; total: number }>({
@@ -54,6 +59,48 @@ export function ScheduleViewClient() {
       return res.json()
     },
   })
+
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ['admin-schedule'] })
+
+  const handleRemoveSchedule = async () => {
+    if (!popover) return
+    setActionState('busy')
+    setActionError(null)
+    try {
+      const res = await fetch(`/api/${popover.collection}/${popover.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ publishOn: null }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setPopover(null)
+      setActionState('idle')
+      refresh()
+    } catch (err) {
+      setActionState('error')
+      setActionError(err instanceof Error ? err.message : 'Failed to remove schedule')
+    }
+  }
+
+  const handlePublishNow = async () => {
+    if (!popover) return
+    setActionState('busy')
+    setActionError(null)
+    try {
+      const res = await fetch(`/api/${popover.collection}/${popover.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ workflowState: 'published', publishOn: null }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setPopover(null)
+      setActionState('idle')
+      refresh()
+    } catch (err) {
+      setActionState('error')
+      setActionError(err instanceof Error ? err.message : 'Failed to publish')
+    }
+  }
 
   const items = query.data?.items ?? []
   const grouped = useMemo(() => {
@@ -127,6 +174,13 @@ export function ScheduleViewClient() {
             {dayItems.map((item) => (
               <li
                 key={`${item.collection}:${item.id}`}
+                onClick={(e) => {
+                  // Don't intercept clicks on the inner edit-link.
+                  if ((e.target as HTMLElement).closest('a')) return
+                  setPopover(item)
+                  setActionState('idle')
+                  setActionError(null)
+                }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -135,6 +189,7 @@ export function ScheduleViewClient() {
                   padding: '8px 12px',
                   background: 'var(--theme-elevation-50)',
                   borderRadius: '4px',
+                  cursor: 'pointer',
                 }}
               >
                 <span
@@ -174,6 +229,43 @@ export function ScheduleViewClient() {
           </ul>
         </section>
       ))}
+
+      {popover && (
+        <ModalOverlay onClose={() => setPopover(null)} ariaLabel="Edit scheduled item">
+          <h2 style={{ fontSize: '15px', fontWeight: 600, margin: '0 0 4px' }}>{popover.title}</h2>
+          <div style={{ fontSize: '12px', color: 'var(--theme-elevation-500)', marginBottom: '14px' }}>
+            {popover.collection}
+            {popover.publishOn && ` · scheduled ${new Date(popover.publishOn).toLocaleString()}`}
+          </div>
+
+          {actionError && (
+            <p role="alert" style={{ fontSize: '12px', color: '#b91c1c', marginTop: 0 }}>
+              {actionError}
+            </p>
+          )}
+
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <a
+              href={`/admin/collections/${popover.collection}/${popover.id}`}
+              style={{ fontSize: '12px', color: '#601F5B', alignSelf: 'center', marginRight: 'auto' }}
+            >
+              Open in editor →
+            </a>
+            <ModalButton
+              label="Remove schedule"
+              variant="ghost"
+              disabled={actionState === 'busy'}
+              onClick={handleRemoveSchedule}
+            />
+            <ModalButton
+              label={actionState === 'busy' ? 'Working…' : 'Publish now'}
+              variant="primary"
+              disabled={actionState === 'busy'}
+              onClick={handlePublishNow}
+            />
+          </div>
+        </ModalOverlay>
+      )}
     </div>
   )
 }

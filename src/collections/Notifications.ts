@@ -4,7 +4,16 @@
  * Created by the workflow afterChange hook on transitions; surfaced via
  * the NotificationBell in the admin header.
  */
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, FieldAccess } from 'payload'
+
+/**
+ * Field-level access guard — only admins may write the field. Recipients
+ * still need broader update access on the `read` field, hence we apply
+ * this only to the message/link/type/recipient fields.
+ */
+const adminOnlyField: FieldAccess = ({ req: { user } }) => {
+  return (user as { role?: string } | null)?.role === 'admin'
+}
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -41,6 +50,7 @@ export const Notifications: CollectionConfig = {
       relationTo: 'users',
       required: true,
       index: true,
+      access: { update: adminOnlyField },
     },
     {
       name: 'type',
@@ -53,9 +63,21 @@ export const Notifications: CollectionConfig = {
         { label: 'System', value: 'system' },
         { label: 'Mention', value: 'mention' },
       ],
+      access: { update: adminOnlyField },
     },
-    { name: 'message', type: 'text', required: true },
-    { name: 'link', type: 'text' },
+    {
+      name: 'message',
+      type: 'text',
+      required: true,
+      access: { update: adminOnlyField },
+    },
+    {
+      name: 'link',
+      type: 'text',
+      access: { update: adminOnlyField },
+    },
+    // `read` intentionally has NO field-level update guard — recipients need
+    // to be able to mark their own notifications as read.
     { name: 'read', type: 'checkbox', defaultValue: false, index: true },
   ],
 }
