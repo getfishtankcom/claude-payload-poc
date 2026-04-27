@@ -628,7 +628,7 @@ npx tsc --noEmit
 
 ### Task 0.12: Extract shared Modal + WorkflowHistoryModal components
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — created src/admin/components/ui/Modal.tsx (ModalOverlay with Escape close + role/aria-modal, ModalButton), src/admin/components/ui/ActionButton.tsx (InlineButton, BulkActionButton with optional icon), src/admin/components/WorkflowHistoryModal.tsx. WorkboxClient now imports these from shared files; local definitions removed (file shrank from 1130 → 969 lines). tsc + 30 tests clean.
 - **Dependencies:** 0.10 (shared types needed)
 - **Skills:** react-best-practices
 - **Acceptance Criteria:**
