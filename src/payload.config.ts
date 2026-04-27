@@ -114,6 +114,10 @@ export default buildConfig({
           Component: '/admin/views/Workbox',
           path: '/workbox',
         },
+        schedule: {
+          Component: '/admin/views/ScheduleView',
+          path: '/schedule',
+        },
       },
     },
   },

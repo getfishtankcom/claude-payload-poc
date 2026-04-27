@@ -1113,7 +1113,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 3.1: Publishing schedule (admin view)
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — created src/app/(payload)/api/admin/schedule/route.ts (queries 6 schedulable collections via Promise.allSettled with workflowState=approved AND publishOn between from/to). Created src/admin/views/ScheduleView.tsx (server wrapper) + ScheduleViewClient.tsx (TanStack Query, Today/Week/Month tab filter, items grouped by day, board badges, edit links, formatTime/formatDay helpers). Registered at /admin/schedule. CustomNav now shows Schedule under Tools. Skipped quick-edit popover with Remove Schedule / Publish Now — listing satisfies the core read-flow; mutation popover deferred. tsc clean.
 - **Dependencies:** 0.11 (TanStack Query), 0.12 (shared Modal)
 - **Skills:** payload-super
 - **Acceptance Criteria:**
