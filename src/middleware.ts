@@ -14,9 +14,11 @@
  * - Clerk runs first, then next-intl handles locale detection/redirect
  * - Protected routes (my-account/*) require sign-in via Clerk
  */
+import { NextResponse } from 'next/server'
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
+import { findRedirect } from './lib/redirects'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
@@ -31,6 +33,15 @@ const isProtectedRoute = createRouteMatcher([
 // These are NOT protected so the page can render before auth redirects
 
 export default clerkMiddleware(async (auth, req) => {
+  // Check redirects collection FIRST so 301/302s short-circuit before
+  // running Clerk/intl middleware. Cached in-memory with a 5-min TTL.
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? req.nextUrl.origin
+  const rule = await findRedirect(req.nextUrl.pathname, serverUrl).catch(() => null)
+  if (rule) {
+    const target = rule.to.startsWith('http') ? rule.to : new URL(rule.to, req.nextUrl.origin).toString()
+    return NextResponse.redirect(target, rule.type === '302' ? 302 : 301)
+  }
+
   // Protect member-only routes
   if (isProtectedRoute(req)) {
     await auth.protect()

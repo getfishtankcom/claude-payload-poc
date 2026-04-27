@@ -1071,7 +1071,7 @@ node -e "const r = require('./src/admin/components/builder/registry'); console.l
 
 ### Task 2.6: Redirect manager
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 6) — Redirects collection (slug 'redirects' under Tools group): from (unique), to, type (301/302), active, note. Registered in payload.config.ts. src/lib/redirects.ts implements module-scope cache with 5-min TTL + inflight-dedup; findRedirect() looks up by pathname. Middleware now intercepts redirects FIRST before Clerk/intl, returns NextResponse.redirect with 301/302 status. CustomNav adds /admin/collections/redirects under Tools. Skipped: CSV import button — leaving as a follow-up. tsc + 31 tests clean.
 - **Dependencies:** 0.1, payload-super skill
 - **Skills:** payload-super
 - **Can parallelize:** YES
