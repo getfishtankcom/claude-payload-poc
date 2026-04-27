@@ -74,5 +74,5 @@ export const config = {
   // - /_vercel (Vercel internals)
   // - /trpc (if used)
   // - Files with extensions (favicon.ico, robots.txt, etc.)
-  matcher: '/((?!api|admin|_next|_vercel|trpc|.*\\..*).*)',
+  matcher: '/((?!api|admin|cms|_next|_vercel|trpc|.*\\..*).*)',
 }

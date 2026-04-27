@@ -16,10 +16,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Opt out of static generation for Payload admin routes
-  experimental: {
-    reactCompiler: false,
-  },
+  // Next.js 16 promoted reactCompiler out of experimental.
+  reactCompiler: false,
   // Redirect root / to default locale /en (middleware can't intercept / with Payload)
   async redirects() {
     return [

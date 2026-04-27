@@ -6,6 +6,10 @@
  * memorising URLs.
  */
 import React from 'react'
+import { headers as nextHeaders } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { getPayload } from 'payload'
+import payloadConfig from '@payload-config'
 import packageJson from '../../../../package.json'
 import { BRAND } from '../../../config/brand'
 
@@ -22,7 +26,16 @@ const QUICK_LINKS: Array<{ label: string; href: string; description: string }> =
   { label: 'Redirects', href: '/admin/collections/redirects', description: 'Manage 301 / 302 redirects.' },
 ]
 
-export default function CmsLandingPage() {
+export default async function CmsLandingPage() {
+  // Auth gate — only signed-in CMS users see the quick-start. Anonymous
+  // visitors are bounced to the Payload admin login.
+  const payload = await getPayload({ config: payloadConfig })
+  const reqHeaders = await nextHeaders()
+  const { user } = await payload.auth({ headers: reqHeaders })
+  if (!user) {
+    redirect('/admin/login?redirect=/cms')
+  }
+
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME ?? 'dev'
   const versions = {
     next: (packageJson.dependencies as Record<string, string>).next ?? 'unknown',
@@ -39,20 +52,41 @@ export default function CmsLandingPage() {
       }}
     >
       <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-        <header style={{ marginBottom: '32px' }}>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: '28px',
-              fontWeight: 700,
-              color: '#601F5B',
-            }}
-          >
-            {BRAND.name}
-          </h1>
-          <p style={{ margin: '4px 0 0', fontSize: '15px', color: '#525252' }}>
-            Content Management
-          </p>
+        <header
+          style={{
+            marginBottom: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <div>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: '28px',
+                fontWeight: 700,
+                color: '#601F5B',
+              }}
+            >
+              {BRAND.name}
+            </h1>
+            <p style={{ margin: '4px 0 0', fontSize: '15px', color: '#525252' }}>
+              Content Management
+            </p>
+          </div>
+          <div style={{ fontSize: '13px', color: '#525252', textAlign: 'right' }}>
+            <div>
+              Signed in as <strong>{(user as { email?: string })?.email}</strong>
+            </div>
+            <div>
+              <a href="/admin/logout" style={{ color: '#601F5B' }}>
+                Sign out
+              </a>
+            </div>
+          </div>
         </header>
 
         <section style={{ marginBottom: '40px' }}>
