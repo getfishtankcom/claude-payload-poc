@@ -70,6 +70,32 @@ import {
   AnchorLinkPreview,
 } from './interactive-previews'
 
+// Layer 1 expansion (22 new components)
+import {
+  DisclaimerPreview,
+  QuickLinksPreview,
+  PageHeaderPreview,
+  PromoCardGridPreview,
+  ProjectTimelinePreview,
+  NewsCardWidgetPreview,
+  DraftsCardPreview,
+  EventsCardPreview,
+  NewsEventsGridPreview,
+  BrowseByStandardPreview,
+  RightRailEventsListPreview,
+  RightRailResourceListPreview,
+  EventSummaryTablePreview,
+  MeetingTopicsTablePreview,
+  RelatedContentPreview,
+  MeetingDetailPreview,
+  SubscribeBannerPreview,
+  MemberActionFormPreview,
+  CategoryPillsPreview,
+  AnchorNavPreview,
+  SocialSharePreview,
+  RssLinkPreview,
+} from './new-previews'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -129,6 +155,30 @@ const previewRegistry: Record<string, PreviewRendererFn> = {
   'newsletter-signup': NewsletterSignupPreview,
   'download-button': DownloadButtonPreview,
   'anchor-link': AnchorLinkPreview,
+
+  // Layer 1 expansion (22 new previews)
+  disclaimer: DisclaimerPreview,
+  'quick-links': QuickLinksPreview,
+  'page-header': PageHeaderPreview,
+  'promo-card-grid': PromoCardGridPreview,
+  'project-timeline': ProjectTimelinePreview,
+  'news-card-widget': NewsCardWidgetPreview,
+  'drafts-card': DraftsCardPreview,
+  'events-card': EventsCardPreview,
+  'news-events-grid': NewsEventsGridPreview,
+  'browse-by-standard': BrowseByStandardPreview,
+  'right-rail-events-list': RightRailEventsListPreview,
+  'right-rail-resource-list': RightRailResourceListPreview,
+  'event-summary-table': EventSummaryTablePreview,
+  'meeting-topics-table': MeetingTopicsTablePreview,
+  'related-content': RelatedContentPreview,
+  'meeting-detail': MeetingDetailPreview,
+  'subscribe-banner': SubscribeBannerPreview,
+  'member-action-form': MemberActionFormPreview,
+  'category-pills': CategoryPillsPreview,
+  'anchor-nav': AnchorNavPreview,
+  'social-share': SocialSharePreview,
+  'rss-link': RssLinkPreview,
 }
 
 // ---------------------------------------------------------------------------
