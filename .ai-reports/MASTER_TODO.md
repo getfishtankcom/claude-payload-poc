@@ -521,7 +521,17 @@ npx tsc --noEmit
 
 ### Task 0.9: Decompose MediaLibraryClient.tsx
 
-- **Status:** [~] Partial (AFK Ralph iteration 3) — extracted to src/admin/views/media/: types.ts (FolderNode/MediaItem/ViewMode/UploadProgress/FlatFolder), helpers.ts (ACCEPTED_MIME_TYPES/EXTENSIONS, STORAGE_KEYS, getFileCategory, formatFileSize, flattenFolders), icons.tsx (FolderIcon/ChevronIcon/FileTypeIcon), FolderTreeItem.tsx, MediaItems.tsx (MediaGridItem + MediaListItem), Breadcrumb.tsx. MediaLibraryClient went 1866 → 1334 lines (-532). Did NOT reach <300 line target — that requires extracting the ~1000-line state machine into a useMediaLibraryState hook plus extracting BulkMove/BulkDelete/RenameFolder dialog components. Punt to follow-up. tsc + 30 tests clean.
+- **Status:** [~] Substantially complete (AFK Ralph iteration 7) — extracted 9 supporting modules from the original 1866-line monolith:
+  - **types** — src/admin/views/media/types.ts (FolderNode, MediaItem, ViewMode, UploadProgress, FlatFolder)
+  - **helpers** — src/admin/views/media/helpers.ts (ACCEPTED_MIME_TYPES, formatFileSize, flattenFolders, etc.)
+  - **icons** — src/admin/views/media/icons.tsx (FolderIcon, ChevronIcon, FileTypeIcon)
+  - **FolderTreeItem** — src/admin/views/media/FolderTreeItem.tsx
+  - **MediaItems** — src/admin/views/media/MediaItems.tsx (Grid + List variants)
+  - **Breadcrumb** — src/admin/views/media/Breadcrumb.tsx
+  - **dialogs** — src/admin/views/media/dialogs.tsx (BulkMoveDialog + BulkDeleteDialog)
+  - **useMediaUpload** — src/admin/hooks/useMediaUpload.ts (XHR upload state + progress + auto-clear)
+  
+  MediaLibraryClient went 1866 → 1145 lines (-721, -39%). Did NOT reach the <300 line target — that requires extracting the ~700-line residual state machine (14 useState calls, fetchFolders/fetchMedia, folder context-menu CRUD, bulk-action wiring, render JSX) into a useMediaLibraryState hook. The hook extraction has subtle prop-drilling and is best done as a focused multi-day refactor rather than during AFK. Marking [~] substantially complete; full <300 target tracked as a follow-up. tsc + 31 tests clean.
 - **Dependencies:** none
 - **Skills:** none
 - **Acceptance Criteria:**

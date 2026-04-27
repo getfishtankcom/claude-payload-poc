@@ -29,19 +29,19 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
 import { MediaDetailPanel } from '../components/MediaDetailPanel'
-import type { FolderNode, MediaItem, ViewMode, UploadProgress } from './media/types'
+import type { FolderNode, MediaItem, ViewMode } from './media/types'
 import {
-  ACCEPTED_MIME_TYPES,
   ACCEPTED_EXTENSIONS,
   STORAGE_KEY_EXPANDED,
   STORAGE_KEY_VIEW,
   formatFileSize,
-  flattenFolders,
 } from './media/helpers'
 import { FileTypeIcon } from './media/icons'
 import { FolderTreeItem } from './media/FolderTreeItem'
 import { MediaGridItem, MediaListItem } from './media/MediaItems'
 import { Breadcrumb } from './media/Breadcrumb'
+import { BulkMoveDialog, BulkDeleteDialog } from './media/dialogs'
+import { useMediaUpload } from '../hooks/useMediaUpload'
 
 // --------------------------------------------------------------------------
 // FolderTreeItem Component
@@ -89,7 +89,6 @@ export function MediaLibraryClient() {
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState<string>('all')
   const [detailItem, setDetailItem] = useState<MediaItem | null>(null)
-  const [uploads, setUploads] = useState<UploadProgress[]>([])
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -273,85 +272,13 @@ export function MediaLibraryClient() {
   }, [])
 
   // ----- Upload a single file via XMLHttpRequest (for progress tracking) -----
-  const uploadFile = useCallback(async (file: File) => {
-    const uploadId = `upload-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-
-    // Validate mime type
-    if (!ACCEPTED_MIME_TYPES.includes(file.type)) {
-      setUploads((prev) => [...prev, {
-        id: uploadId,
-        filename: file.name,
-        progress: 0,
-        status: 'error',
-        error: `Unsupported file type: ${file.type}`,
-      }])
-      return
-    }
-
-    // Add to upload list
-    setUploads((prev) => [...prev, {
-      id: uploadId,
-      filename: file.name,
-      progress: 0,
-      status: 'uploading',
-    }])
-
-    return new Promise<void>((resolve) => {
-      const xhr = new XMLHttpRequest()
-      const formData = new FormData()
-
-      formData.append('file', file)
-      formData.append('alt', file.name.replace(/\.[^.]+$/, ''))
-      if (selectedFolderId) {
-        formData.append('folder', String(selectedFolderId))
-      }
-
-      xhr.upload.addEventListener('progress', (e) => {
-        if (e.lengthComputable) {
-          const pct = Math.round((e.loaded / e.total) * 100)
-          setUploads((prev) =>
-            prev.map((u) => u.id === uploadId ? { ...u, progress: pct } : u),
-          )
-        }
-      })
-
-      xhr.addEventListener('load', () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          setUploads((prev) =>
-            prev.map((u) => u.id === uploadId ? { ...u, progress: 100, status: 'complete' } : u),
-          )
-          // Auto-clear completed uploads after 3 seconds
-          setTimeout(() => {
-            setUploads((prev) => prev.filter((u) => u.id !== uploadId))
-          }, 3000)
-        } else {
-          setUploads((prev) =>
-            prev.map((u) => u.id === uploadId ? { ...u, status: 'error', error: `Upload failed (${xhr.status})` } : u),
-          )
-        }
-        resolve()
-      })
-
-      xhr.addEventListener('error', () => {
-        setUploads((prev) =>
-          prev.map((u) => u.id === uploadId ? { ...u, status: 'error', error: 'Network error' } : u),
-        )
-        resolve()
-      })
-
-      xhr.open('POST', '/api/media')
-      xhr.send(formData)
-    })
-  }, [selectedFolderId])
-
-  // ----- Upload multiple files -----
-  const uploadFiles = useCallback(async (files: FileList | File[]) => {
-    const fileArray = Array.from(files)
-    // Upload all files concurrently
-    await Promise.all(fileArray.map((file) => uploadFile(file)))
-    // Refresh media list and folder counts
-    await Promise.all([fetchMedia(), fetchFolders()])
-  }, [uploadFile, fetchMedia, fetchFolders])
+  // Upload state + handlers come from a shared hook.
+  const { uploads, uploadFiles } = useMediaUpload({
+    selectedFolderId,
+    onUploadComplete: async () => {
+      await Promise.all([fetchMedia(), fetchFolders()])
+    },
+  })
 
   // ----- Handle file input change -----
   const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1197,135 +1124,19 @@ export function MediaLibraryClient() {
 
       {/* ==================== Bulk Move Dialog ==================== */}
       {showBulkMoveDialog && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(0,0,0,0.5)',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            background: 'var(--theme-elevation-0)',
-            borderRadius: '8px',
-            padding: '24px',
-            width: '320px',
-            maxHeight: '400px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-            <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>
-              Move to Folder
-            </div>
-            <div style={{ flex: 1, overflow: 'auto', marginBottom: '16px' }}>
-              {/* Root option */}
-              <div
-                onClick={() => handleBulkMove(null)}
-                style={{
-                  padding: '6px 8px',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  fontSize: '13px',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--theme-elevation-50)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-              >
-                (No folder)
-              </div>
-              {/* Flatten folder tree for the picker */}
-              {flattenFolders(folders).map((f) => (
-                <div
-                  key={String(f.id)}
-                  onClick={() => handleBulkMove(f.id)}
-                  style={{
-                    padding: '6px 8px',
-                    paddingLeft: `${(f.depth || 0) * 16 + 8}px`,
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                    fontSize: '13px',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--theme-elevation-50)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-                >
-                  📁 {f.name}
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowBulkMoveDialog(false)}
-              style={{
-                padding: '6px 16px',
-                border: '1px solid var(--theme-elevation-200)',
-                borderRadius: '6px',
-                background: 'transparent',
-                cursor: 'pointer',
-                fontSize: '13px',
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        <BulkMoveDialog
+          folders={folders}
+          onMove={handleBulkMove}
+          onCancel={() => setShowBulkMoveDialog(false)}
+        />
       )}
 
-      {/* ==================== Bulk Delete Confirmation ==================== */}
       {showBulkDeleteConfirm && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(0,0,0,0.5)',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            background: 'var(--theme-elevation-0)',
-            borderRadius: '8px',
-            padding: '24px',
-            maxWidth: '400px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-          }}>
-            <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
-              Delete {selectedItems.size} Item{selectedItems.size !== 1 ? 's' : ''}
-            </div>
-            <div style={{ fontSize: '13px', color: 'var(--theme-elevation-600)', marginBottom: '16px' }}>
-              Are you sure you want to delete {selectedItems.size} selected media item{selectedItems.size !== 1 ? 's' : ''}? This action cannot be undone.
-            </div>
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-              <button
-                onClick={() => setShowBulkDeleteConfirm(false)}
-                style={{
-                  padding: '6px 16px',
-                  border: '1px solid var(--theme-elevation-200)',
-                  borderRadius: '6px',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleBulkDelete}
-                style={{
-                  padding: '6px 16px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  background: 'var(--theme-error-500)',
-                  color: '#fff',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
+        <BulkDeleteDialog
+          count={selectedItems.size}
+          onConfirm={handleBulkDelete}
+          onCancel={() => setShowBulkDeleteConfirm(false)}
+        />
       )}
     </div>
   )
