@@ -19,11 +19,11 @@ export function OrganizationSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'FRAS Canada',
+    name: 'RAS Canada',
     alternateName: 'Financial Reporting & Assurance Standards Canada',
     url: BASE_URL,
     description:
-      'FRAS Canada serves the public interest by establishing high-quality accounting, auditing, and sustainability standards for Canada.',
+      'RAS Canada serves the public interest by establishing high-quality accounting, auditing, and sustainability standards for Canada.',
     foundingDate: '2010',
     address: {
       '@type': 'PostalAddress',

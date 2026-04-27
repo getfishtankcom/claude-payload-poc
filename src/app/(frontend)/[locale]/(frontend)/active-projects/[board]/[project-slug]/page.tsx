@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return withLocaleMetadata(
     {
-      title: `${project.title} — FRAS Canada`,
+      title: `${project.title} — RAS Canada`,
       description: `Learn about the ${project.title} project and its current status.`,
     },
     `/active-projects/${boardSlugParam}/${slug}`,

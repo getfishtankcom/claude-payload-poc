@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!board) return { title: 'Board Not Found' }
 
   return {
-    title: `${board.name} — FRAS Canada`,
+    title: `${board.name} — RAS Canada`,
     description: board.description || `Learn about the ${board.name} and its standards activities.`,
   }
 }

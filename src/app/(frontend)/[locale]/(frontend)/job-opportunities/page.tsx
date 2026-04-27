@@ -27,8 +27,8 @@ import { JobListings } from '@/components/JobListings'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 export const metadata: Metadata = {
-  title: 'Job Opportunities — FRAS Canada',
-  description: 'Current job openings at FRAS Canada. Browse volunteer and employment opportunities with Canadian accounting standards boards.',
+  title: 'Job Opportunities — RAS Canada',
+  description: 'Current job openings at RAS Canada. Browse volunteer and employment opportunities with Canadian accounting standards boards.',
 }
 
 export default async function JobOpportunitiesPage() {

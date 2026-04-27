@@ -35,7 +35,7 @@ type Props = {
 }
 
 export const metadata: Metadata = {
-  title: 'Documents for Comment — FRAS Canada',
+  title: 'Documents for Comment — RAS Canada',
   description: 'Browse documents currently open for public comment or view closed comment periods.',
 }
 

@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { board: boardSlug } = await params
   const board = await getBoardBySlug(boardSlug)
   return {
-    title: `Decision Summaries — ${board?.name || boardSlug.toUpperCase()} — FRAS Canada`,
+    title: `Decision Summaries — ${board?.name || boardSlug.toUpperCase()} — RAS Canada`,
     description: `Decision summaries from ${board?.name || boardSlug.toUpperCase()} meetings.`,
   }
 }

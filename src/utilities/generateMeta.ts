@@ -51,8 +51,8 @@ export const generateMeta = async (args: { doc: MetaDoc | null }): Promise<Metad
   const ogImage = getImageURL(doc?.meta?.image ?? null)
 
   const title = doc?.meta?.title
-    ? `${doc.meta.title} | FRAS Canada`
-    : 'FRAS Canada — Financial Reporting & Assurance Standards'
+    ? `${doc.meta.title} | RAS Canada`
+    : 'RAS Canada — Financial Reporting & Assurance Standards'
 
   return {
     description: doc?.meta?.description,

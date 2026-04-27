@@ -1,6 +1,6 @@
 /**
  * @description
- * Projects collection for FRAS Canada's active and completed projects.
+ * Projects collection for RAS Canada's active and completed projects.
  * Each project tracks status, timeline stages, badges, and relationships
  * to boards, standards, documents, and contacts.
  *

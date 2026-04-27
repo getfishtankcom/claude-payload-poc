@@ -1,6 +1,6 @@
 /**
  * @description
- * Documents collection for FRAS Canada's published documents.
+ * Documents collection for RAS Canada's published documents.
  * Covers exposure drafts, implementation guides, research reports, and more.
  * Files are uploaded via the media collection.
  *

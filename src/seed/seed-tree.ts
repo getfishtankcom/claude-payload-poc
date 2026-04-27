@@ -85,7 +85,7 @@ export async function seedTree() {
   // ────────────────────────────────────────────
   // Level 0: Root
   // ────────────────────────────────────────────
-  const root = await node(payload, { title: 'FRAS Canada', slug: 'fras-canada-root', contentType: 'folder', sortOrder: 0 })
+  const root = await node(payload, { title: 'RAS Canada', slug: 'fras-canada-root', contentType: 'folder', sortOrder: 0 })
 
   // ────────────────────────────────────────────
   // Level 1: Top-level sections
@@ -261,7 +261,7 @@ export async function seedTree() {
   // ────────────────────────────────────────────
   // Level 2: About section
   // ────────────────────────────────────────────
-  await node(payload, { title: 'About FRAS Canada', slug: 'about-fras', contentType: 'page', parent: aboutF, sortOrder: 0 })
+  await node(payload, { title: 'About RAS Canada', slug: 'about-fras', contentType: 'page', parent: aboutF, sortOrder: 0 })
   await node(payload, { title: 'Strategic Plan', slug: 'about-strategic-plan', contentType: 'page', parent: aboutF, sortOrder: 1 })
   await node(payload, { title: 'Annual Report', slug: 'about-annual-report', contentType: 'page', parent: aboutF, sortOrder: 2 })
   await node(payload, { title: 'History', slug: 'about-history', contentType: 'page', parent: aboutF, sortOrder: 3 })

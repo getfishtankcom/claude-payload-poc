@@ -24,7 +24,7 @@ import { getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
 import { SearchPageClient } from './SearchPageClient'
 
 export const metadata: Metadata = {
-  title: 'Search Results — FRAS Canada',
+  title: 'Search Results — RAS Canada',
   description: 'Search across standards, projects, news, documents, and more.',
 }
 

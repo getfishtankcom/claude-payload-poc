@@ -1,6 +1,6 @@
 /**
  * @description
- * Custom sidebar navigation for FRAS Canada CMS admin panel.
+ * Custom sidebar navigation for RAS Canada CMS admin panel.
  * Replaces Payload's default Nav component via admin.components.Nav.
  *
  * Key features:
@@ -68,7 +68,7 @@ export const CustomNav: React.FC = () => {
     >
       {/* Logo / Brand */}
       <div style={{ padding: '0 16px 16px', borderBottom: '1px solid var(--theme-elevation-150)' }}>
-        <span style={{ fontSize: '14px', fontWeight: 600 }}>FRAS Canada CMS</span>
+        <span style={{ fontSize: '14px', fontWeight: 600 }}>RAS Canada CMS</span>
       </div>
 
       {/* Main Navigation */}

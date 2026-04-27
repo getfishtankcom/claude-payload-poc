@@ -23,7 +23,7 @@ type Props = {
 }
 
 export const metadata: Metadata = {
-  title: 'News — FRAS Canada',
+  title: 'News — RAS Canada',
   description: 'Browse news items for this board.',
 }
 

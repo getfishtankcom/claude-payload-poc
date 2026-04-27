@@ -2,7 +2,7 @@
  * @description
  * Site header component with 3 rows:
  * - Row 1 (Utility bar): Secondary links from CMS navigation global
- * - Row 2 (Main bar): FRAS Canada logo + persistent search input
+ * - Row 2 (Main bar): RAS Canada logo + persistent search input
  * - Row 3 (Primary nav): Primary navigation links from CMS
  *
  * Mobile: Collapses to logo + search icon + hamburger (below lg breakpoint).
@@ -139,7 +139,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
       <Container>
         <div className="flex items-center justify-between gap-4 py-4">
           <Link href="/" className="flex-shrink-0" data-testid="site-logo">
-            <span className="text-xl font-bold text-primary">FRAS Canada</span>
+            <span className="text-xl font-bold text-primary">RAS Canada</span>
           </Link>
 
           <div className="hidden lg:block flex-1 max-w-md ml-auto">

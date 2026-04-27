@@ -45,7 +45,7 @@ export async function subscribeToNewsletter(email: string): Promise<NewsletterRe
           ],
           context: {
             pageUri: process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca',
-            pageName: 'FRAS Canada Newsletter Signup',
+            pageName: 'RAS Canada Newsletter Signup',
           },
         }),
       },

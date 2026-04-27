@@ -32,7 +32,7 @@ import { ActiveProjectsClient } from './ActiveProjectsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
-  title: 'Active Projects — FRAS Canada',
+  title: 'Active Projects — RAS Canada',
   description: 'Browse active standards-setting projects across all boards.',
 }
 

@@ -1,6 +1,6 @@
 /**
  * @description
- * Scheduled publishing system for FRAS Canada CMS.
+ * Scheduled publishing system for RAS Canada CMS.
  * Runs on a 5-minute interval to auto-publish/unpublish content.
  *
  * Key features:

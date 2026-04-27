@@ -1,6 +1,6 @@
 /**
  * @description
- * Events collection for FRAS Canada meetings, webinars, deadlines, and decision summaries.
+ * Events collection for RAS Canada meetings, webinars, deadlines, and decision summaries.
  * Uses canonical name "events" (NOT "meetings" from Phase 2 wireframes).
  *
  * Key features:

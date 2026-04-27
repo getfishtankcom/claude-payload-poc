@@ -1,6 +1,6 @@
 /**
  * @description
- * Navigation global for FRAS Canada site-wide navigation configuration.
+ * Navigation global for RAS Canada site-wide navigation configuration.
  * Manages utility bar links, primary nav, and mega-menu structure.
  *
  * Key features:

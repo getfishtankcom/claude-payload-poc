@@ -149,8 +149,8 @@ export async function GET() {
   const items = await getFeedItems()
   const xml = buildRssXml(
     items,
-    'FRAS Canada — Latest Updates',
-    'News, events, and documents for comment from FRAS Canada',
+    'RAS Canada — Latest Updates',
+    'News, events, and documents for comment from RAS Canada',
     baseUrl,
   )
 

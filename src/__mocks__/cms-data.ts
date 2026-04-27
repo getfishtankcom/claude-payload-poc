@@ -673,7 +673,7 @@ export function mockNavigationData(): Navigation {
         columns: [
           {
             links: [
-              { label: 'About FRAS Canada', url: '/about', id: 'al1' },
+              { label: 'About RAS Canada', url: '/about', id: 'al1' },
               { label: 'Oversight Council', url: '/about/oversight-council', id: 'al2' },
               { label: 'Research Program', url: '/about/research', id: 'al3' },
               { label: 'Jobs', url: '/about/jobs', id: 'al4' },
@@ -744,7 +744,7 @@ export function mockFooterData(): Footer {
     id: 1,
     columns: [
       {
-        heading: 'FRAS Canada',
+        heading: 'RAS Canada',
         id: 'fc1',
         links: [
           { label: 'About Us', url: '/about', id: 'fl1' },
@@ -794,7 +794,7 @@ export function mockTreeNodes(): TreeNode[] {
   return [
     {
       id: 'root-1',
-      title: 'FRAS Canada',
+      title: 'RAS Canada',
       slug: 'fras-canada-root',
       contentType: 'folder',
       workflowState: 'published',
@@ -997,7 +997,7 @@ export function mockMediaItems(): MockMediaItem[] {
     {
       id: 'media-2',
       filename: 'fras-logo-purple.svg',
-      alt: 'FRAS Canada Logo',
+      alt: 'RAS Canada Logo',
       title: 'FRAS Logo Purple',
       mimeType: 'image/svg+xml',
       filesize: 45000,

@@ -28,11 +28,11 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { OrganizationSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
-  title: "FRAS Canada — Canada's Official Hub for Financial Reporting Standards",
+  title: "RAS Canada — Canada's Official Hub for Financial Reporting Standards",
   description:
     'FRAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards. Home of AcSB, PSAB, AASB, and CSSB.',
   openGraph: {
-    title: "FRAS Canada — Canada's Official Hub for Financial Reporting Standards",
+    title: "RAS Canada — Canada's Official Hub for Financial Reporting Standards",
     description:
       'FRAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards.',
     type: 'website',

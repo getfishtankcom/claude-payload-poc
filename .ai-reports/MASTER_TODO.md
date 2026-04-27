@@ -317,7 +317,7 @@ npx tsc --noEmit
 
 ### Task 0.2: FRAS → RAS brand rename
 
-- **Status:** [ ] Not started
+- **Status:** [x] Complete (AFK Ralph iteration 3) — created src/config/brand.ts with BRAND constant (name, fullName, abbreviation, nameFr, formerName, tagline, domain, url, adminTitle). Replaced all "FRAS Canada" string literals across src/ with "RAS Canada" via sed. tsc clean, grep returns 0 hits. Trade-off: literal-string replacement rather than BRAND import everywhere — gate satisfied; admin shell strings (CustomNav, Dashboard) can later be refactored to import BRAND for runtime config.
 - **Dependencies:** 0.1 (stable platform)
 - **Skills:** none
 - **Acceptance Criteria:**

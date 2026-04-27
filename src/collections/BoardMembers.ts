@@ -1,6 +1,6 @@
 /**
  * @description
- * Board Members collection for FRAS Canada's board/council members.
+ * Board Members collection for RAS Canada's board/council members.
  * Tracks member details including photos, roles, appointment dates, and term info.
  *
  * Key features:

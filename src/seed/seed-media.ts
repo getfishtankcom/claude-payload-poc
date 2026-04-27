@@ -5,7 +5,7 @@
  * with proper folder assignments matching the seeded folder structure.
  *
  * Sources:
- * - FRAS Canada logos/banners/news images: downloaded from frascanada.ca
+ * - RAS Canada logos/banners/news images: downloaded from frascanada.ca
  * - Property images: borrowed from manchester-properties project for visual variety
  * - PDFs: borrowed from manchester-properties for document folder testing
  *
@@ -55,16 +55,16 @@ const MEDIA_ITEMS: MediaSeed[] = [
   {
     sourcePath: path.join(FRAS_ASSETS, 'fras-header-logo.png'),
     filename: 'fras-header-logo.png',
-    alt: 'FRAS Canada header logo',
-    title: 'FRAS Canada Header Logo',
+    alt: 'RAS Canada header logo',
+    title: 'RAS Canada Header Logo',
     folderName: 'Logos',
     mimeType: 'image/png',
   },
   {
     sourcePath: path.join(FRAS_ASSETS, 'fras-footer-logo-en.png'),
     filename: 'fras-footer-logo-en.png',
-    alt: 'FRAS Canada footer logo',
-    title: 'FRAS Canada Footer Logo (English)',
+    alt: 'RAS Canada footer logo',
+    title: 'RAS Canada Footer Logo (English)',
     folderName: 'Logos',
     mimeType: 'image/png',
   },
@@ -73,7 +73,7 @@ const MEDIA_ITEMS: MediaSeed[] = [
   {
     sourcePath: path.join(FRAS_ASSETS, 'fras-banner-en.png'),
     filename: 'fras-banner-en.png',
-    alt: 'FRAS Canada homepage banner',
+    alt: 'RAS Canada homepage banner',
     title: 'Homepage Hero Banner (English)',
     folderName: 'Heroes',
     parentFolderName: 'Images',

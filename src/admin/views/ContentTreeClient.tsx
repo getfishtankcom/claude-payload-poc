@@ -1,6 +1,6 @@
 /**
  * @description
- * Client-side Content Tree view for FRAS Canada CMS admin (Epic 23).
+ * Client-side Content Tree view for RAS Canada CMS admin (Epic 23).
  * Sitecore-style unified content tree with expand/collapse, item selection,
  * lazy-loading, type-specific icons, and gutter indicators.
  *

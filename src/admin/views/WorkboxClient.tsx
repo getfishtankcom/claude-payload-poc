@@ -1,6 +1,6 @@
 /**
  * @description
- * Client-side Workbox view for FRAS Canada CMS admin (Epic 27).
+ * Client-side Workbox view for RAS Canada CMS admin (Epic 27).
  * Provides a unified dashboard for managing content workflow across all
  * 12 workflow-enabled collections. Replaces the need to open individual
  * item editors for state transitions.

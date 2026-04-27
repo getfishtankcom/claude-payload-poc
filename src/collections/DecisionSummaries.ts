@@ -1,6 +1,6 @@
 /**
  * @description
- * Decision Summaries collection for FRAS Canada board meeting decisions.
+ * Decision Summaries collection for RAS Canada board meeting decisions.
  * Each summary captures key decisions from a board meeting with rich text body.
  *
  * Key features:

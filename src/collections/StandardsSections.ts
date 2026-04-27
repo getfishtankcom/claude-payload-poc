@@ -1,6 +1,6 @@
 /**
  * @description
- * Standards Sections collection for FRAS Canada's standards overview pages.
+ * Standards Sections collection for RAS Canada's standards overview pages.
  * Each section represents a tabbed standards landing page (IFRS, ASPE, etc.).
  *
  * Key features:

@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const boardData = board as unknown as Record<string, unknown> | null
   const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
   return {
-    title: `${boardAbbr} Members — FRAS Canada`,
+    title: `${boardAbbr} Members — RAS Canada`,
     description: `Current board members of the ${boardAbbr}. View chairs, vice-chairs, and voting members.`,
   }
 }

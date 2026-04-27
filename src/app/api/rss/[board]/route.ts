@@ -125,7 +125,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
 
   const xml = buildRssXml(
     items,
-    `FRAS Canada — ${boardName} Updates`,
+    `RAS Canada — ${boardName} Updates`,
     `News and events from ${boardName}`,
     `${baseUrl}/boards/${boardSlug}`,
     `${baseUrl}/api/rss/${boardSlug}`,

@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const section = await getStandardsSectionBySlug(standardSlug)
   const title = section ? (section.title as string) : standardSlug.toUpperCase()
   return {
-    title: `${title} — FRAS Canada`,
+    title: `${title} — RAS Canada`,
     description: `Overview of ${title} standards including active projects, effective dates, and resources.`,
   }
 }

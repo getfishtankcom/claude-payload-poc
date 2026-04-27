@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const boardData = board as unknown as Record<string, unknown> | null
   const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
   return {
-    title: `${boardAbbr} Committees — FRAS Canada`,
+    title: `${boardAbbr} Committees — RAS Canada`,
     description: `Advisory and standing committees of the ${boardAbbr}. Browse committee mandates and members.`,
   }
 }

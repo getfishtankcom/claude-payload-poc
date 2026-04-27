@@ -1,6 +1,6 @@
 /**
  * @description
- * Seed script for FRAS Canada CMS. Populates all collections and globals
+ * Seed script for RAS Canada CMS. Populates all collections and globals
  * with realistic sample data for development and testing.
  *
  * Creates:
@@ -130,7 +130,7 @@ function daysAgo(days: number): string {
 // ---------------------------------------------------------------------------
 
 export async function seed(_payload?: unknown) {
-  console.log('🌱 Starting FRAS Canada seed...')
+  console.log('🌱 Starting RAS Canada seed...')
 
   const payload = await getPayload({ config })
 
@@ -631,13 +631,13 @@ export async function seed(_payload?: unknown) {
     { title: 'AcSB Publishes Exposure Draft on Crypto Asset Accounting', slug: 'acsb-ed-crypto', date: daysAgo(5), category: 'News' as const, excerpt: 'The AcSB has published an exposure draft proposing amendments to ASPE for the accounting of crypto assets. Comments are due within 90 days.', body: richText('The Accounting Standards Board has published an exposure draft that proposes new guidance on accounting for crypto assets under Accounting Standards for Private Enterprises (ASPE).', 'The proposals address measurement, presentation, and disclosure requirements for entities that hold or transact in crypto assets.'), board: boards.acsb },
     { title: 'CSSB Announces Public Consultation on CSDS 1', slug: 'cssb-csds-1-consultation', date: daysAgo(10), category: 'News' as const, excerpt: 'The CSSB is seeking public input on proposed Canadian Sustainability Disclosure Standard 1, which establishes the core framework for sustainability disclosures in Canada.', body: richText('The Canadian Sustainability Standards Board is pleased to announce a public consultation on the proposed CSDS 1.', 'This standard will establish the foundational requirements for sustainability-related financial disclosures in Canada.'), board: boards.cssb },
     { title: 'PSAB Meeting Summary — March 2026', slug: 'psab-meeting-march-2026', date: daysAgo(3), category: 'Meeting Summary' as const, excerpt: 'Key decisions from the March 2026 PSAB meeting, including progress on revenue recognition and employee benefits projects.', body: richText('The Public Sector Accounting Board met on March 10-11, 2026. Key decisions included approving the exposure draft for PS 3400 Revenue and receiving a progress update on the employee benefits project.'), board: boards.psab },
-    { title: 'New AASB Chair Appointed', slug: 'new-aasb-chair', date: daysAgo(15), category: 'News' as const, excerpt: 'FRAS Canada is pleased to announce the appointment of the new Chair of the Auditing and Assurance Standards Board, effective April 1, 2026.', body: richText('FRAS Canada today announced the appointment of a new Chair of the Auditing and Assurance Standards Board (AASB), effective April 1, 2026.', 'The new Chair brings extensive experience in auditing and assurance standards development.'), board: boards.aasb },
+    { title: 'New AASB Chair Appointed', slug: 'new-aasb-chair', date: daysAgo(15), category: 'News' as const, excerpt: 'RAS Canada is pleased to announce the appointment of the new Chair of the Auditing and Assurance Standards Board, effective April 1, 2026.', body: richText('RAS Canada today announced the appointment of a new Chair of the Auditing and Assurance Standards Board (AASB), effective April 1, 2026.', 'The new Chair brings extensive experience in auditing and assurance standards development.'), board: boards.aasb },
     { title: 'AcSB Approves Improvements to ASPE Disclosure Requirements', slug: 'acsb-aspe-disclosures', date: daysAgo(20), category: 'News' as const, excerpt: 'The AcSB has approved amendments to improve disclosure requirements for private enterprises under ASPE, effective for fiscal years beginning on or after January 1, 2027.', body: richText('The Accounting Standards Board has approved amendments to Accounting Standards for Private Enterprises that improve disclosure requirements for private enterprises.', 'These amendments are effective for fiscal years beginning on or after January 1, 2027.'), board: boards.acsb },
     { title: 'CSSB Releases Climate Disclosure Guidance', slug: 'cssb-climate-guidance', date: daysAgo(25), category: 'News' as const, excerpt: 'The CSSB has released non-authoritative guidance to help Canadian organizations prepare for climate-related disclosures under the proposed CSDS 2.', body: richText('The Canadian Sustainability Standards Board has released non-authoritative guidance material to assist Canadian organizations in preparing for climate-related disclosures.'), board: boards.cssb },
     { title: 'RASOC Annual Report 2025 Published', slug: 'rasoc-annual-report-2025', date: daysAgo(30), category: 'News' as const, excerpt: 'RASOC has published its 2025 annual report, providing an overview of its oversight activities and recommendations for the standard-setting boards.', body: richText('The Regulatory and Accounting Standards Oversight Council has published its 2025 annual report.', 'The report provides an overview of RASOC\'s oversight activities during the year and includes recommendations for the standard-setting boards.'), board: boards.rasoc },
     { title: 'PSAB Seeks Volunteers for Revenue Project Advisory Committee', slug: 'psab-volunteers-revenue', date: daysAgo(7), category: 'News' as const, excerpt: 'PSAB is seeking volunteers to serve on the advisory committee for its Revenue project (PS 3400). Applications are due by April 30, 2026.', body: richText('The Public Sector Accounting Board is seeking volunteers to serve on the advisory committee for its revenue recognition project.', 'Committee members will provide input on the development of the new revenue standard.'), board: boards.psab },
     { title: 'AcSB Meeting Summary — February 2026', slug: 'acsb-meeting-feb-2026', date: daysAgo(35), category: 'Meeting Summary' as const, excerpt: 'Summary of key decisions from the February 2026 AcSB meeting, including discussion of the crypto assets project and NFP improvements.', body: richText('The Accounting Standards Board met on February 24-25, 2026.'), board: boards.acsb },
-    { title: 'FRAS Canada Strategic Plan 2027-2030 Consultation', slug: 'fras-strategic-plan', date: daysAgo(12), category: 'News' as const, excerpt: 'FRAS Canada is developing its strategic plan for 2027-2030 and invites stakeholder input on priorities for the standard-setting boards.', body: richText('FRAS Canada is seeking stakeholder input as it develops its strategic plan for the 2027-2030 period.'), board: boards.acsb },
+    { title: 'RAS Canada Strategic Plan 2027-2030 Consultation', slug: 'fras-strategic-plan', date: daysAgo(12), category: 'News' as const, excerpt: 'RAS Canada is developing its strategic plan for 2027-2030 and invites stakeholder input on priorities for the standard-setting boards.', body: richText('RAS Canada is seeking stakeholder input as it develops its strategic plan for the 2027-2030 period.'), board: boards.acsb },
     { title: 'AASB Issues Implementation Support for CAS 600', slug: 'aasb-cas-600-support', date: daysAgo(40), category: 'News' as const, excerpt: 'The AASB has issued implementation support materials for Canadian Auditing Standard (CAS) 600 — Special Considerations for Group Audits.', body: richText('The Auditing and Assurance Standards Board has released implementation support materials for CAS 600.'), board: boards.aasb },
     { title: 'CSSB Holds First Public Board Meeting', slug: 'cssb-first-meeting', date: daysAgo(45), category: 'News' as const, excerpt: 'The CSSB held its first public board meeting, discussing its strategic direction and priorities for Canadian sustainability disclosure standards.', body: richText('The Canadian Sustainability Standards Board held its inaugural public board meeting, setting the stage for the development of Canadian sustainability disclosure standards.'), board: boards.cssb },
   ]
@@ -750,7 +750,7 @@ export async function seed(_payload?: unknown) {
             {
               heading: 'Organization',
               links: [
-                { label: 'About FRAS Canada', url: '/about' },
+                { label: 'About RAS Canada', url: '/about' },
                 { label: 'Our Mission', url: '/about/mission' },
                 { label: 'Oversight Council (RASOC)', url: '/about/rasoc' },
                 { label: 'Annual Reports', url: '/about/annual-reports' },
@@ -862,7 +862,7 @@ export async function seed(_payload?: unknown) {
         { label: 'Sitemap', url: '/sitemap' },
       ],
       newsletter_heading: 'Stay Informed',
-      newsletter_description: 'Subscribe to receive updates on standards, consultations, and events from FRAS Canada.',
+      newsletter_description: 'Subscribe to receive updates on standards, consultations, and events from RAS Canada.',
     },
   })
   console.log('    ✓ Footer configured')
@@ -880,7 +880,7 @@ export async function seed(_payload?: unknown) {
         richText: richTextWithHeading(
           'h1',
           'Setting the Standards for Financial Reporting in Canada',
-          'FRAS Canada serves the public interest by establishing high-quality accounting, auditing, and sustainability standards.',
+          'RAS Canada serves the public interest by establishing high-quality accounting, auditing, and sustainability standards.',
         ),
         links: [
           {
@@ -910,7 +910,7 @@ export async function seed(_payload?: unknown) {
           blockType: 'cta',
           richText: richTextWithHeading(
             'h2',
-            'New to FRAS Canada?',
+            'New to RAS Canada?',
             'Learn about our boards, standards, and how we serve the Canadian financial reporting ecosystem.',
           ),
           links: [
@@ -918,7 +918,7 @@ export async function seed(_payload?: unknown) {
               link: {
                 type: 'custom',
                 url: '/about',
-                label: 'About FRAS Canada',
+                label: 'About RAS Canada',
                 newTab: false,
                 appearance: 'default',
               },
@@ -1530,7 +1530,7 @@ export async function seed(_payload?: unknown) {
       title: 'Principal, Accounting Standards',
       department: 'Accounting Standards',
       location: 'Toronto, Ontario',
-      description: richTextWithHeading('h2', 'About the Role', 'FRAS Canada is seeking a Principal, Accounting Standards to support the Accounting Standards Board (AcSB) in the development and maintenance of Canadian accounting standards.', 'The successful candidate will lead research and analysis on standards-setting projects, prepare Board meeting materials, and engage with stakeholders including preparers, auditors, and regulators.', 'Qualifications: CPA designation required, minimum 7 years of experience in accounting standards, financial reporting, or auditing. Experience with IFRS and/or ASPE preferred.', 'We offer a competitive salary, comprehensive benefits, and the opportunity to shape the future of financial reporting in Canada.'),
+      description: richTextWithHeading('h2', 'About the Role', 'RAS Canada is seeking a Principal, Accounting Standards to support the Accounting Standards Board (AcSB) in the development and maintenance of Canadian accounting standards.', 'The successful candidate will lead research and analysis on standards-setting projects, prepare Board meeting materials, and engage with stakeholders including preparers, auditors, and regulators.', 'Qualifications: CPA designation required, minimum 7 years of experience in accounting standards, financial reporting, or auditing. Experience with IFRS and/or ASPE preferred.', 'We offer a competitive salary, comprehensive benefits, and the opportunity to shape the future of financial reporting in Canada.'),
       summary: 'Lead research and analysis on standards-setting projects for the AcSB. CPA designation and 7+ years experience required.',
       postedDate: daysAgo(14),
       closingDate: daysFromNow(30),
@@ -1541,7 +1541,7 @@ export async function seed(_payload?: unknown) {
       title: 'Project Manager, Sustainability Standards',
       department: 'Sustainability Standards',
       location: 'Toronto, Ontario (Hybrid)',
-      description: richTextWithHeading('h2', 'About the Role', 'FRAS Canada is seeking a Project Manager to support the Canadian Sustainability Standards Board (CSSB) in the development of Canadian Sustainability Disclosure Standards.', 'The role involves managing project timelines, coordinating stakeholder engagement activities, preparing Board materials, and supporting the development of implementation guidance.', 'Qualifications: Bachelor\'s degree required, project management certification preferred. Experience with sustainability reporting frameworks (ISSB, GRI, TCFD) an asset. Strong written and verbal communication skills in English required; French is an asset.', 'This is a hybrid position with a minimum of three days per week in our Toronto office.'),
+      description: richTextWithHeading('h2', 'About the Role', 'RAS Canada is seeking a Project Manager to support the Canadian Sustainability Standards Board (CSSB) in the development of Canadian Sustainability Disclosure Standards.', 'The role involves managing project timelines, coordinating stakeholder engagement activities, preparing Board materials, and supporting the development of implementation guidance.', 'Qualifications: Bachelor\'s degree required, project management certification preferred. Experience with sustainability reporting frameworks (ISSB, GRI, TCFD) an asset. Strong written and verbal communication skills in English required; French is an asset.', 'This is a hybrid position with a minimum of three days per week in our Toronto office.'),
       summary: 'Support the CSSB in developing Canadian Sustainability Disclosure Standards. Project management experience and sustainability reporting knowledge preferred.',
       postedDate: daysAgo(7),
       closingDate: daysFromNow(45),
@@ -1680,7 +1680,7 @@ export async function seed(_payload?: unknown) {
       registerPrompt: "Don't have an account?",
       registerLinkLabel: 'Register',
       registerUrl: 'https://www.cpacanada.ca/register',
-      cpaExplanation: richText('FRAS Canada uses CPA Canada\'s authentication system. If you are a CPA Canada member, you can log in with your existing CPA Canada credentials.', 'Your CPA Canada account provides access to comment submission forms, event registration, and newsletter preferences.'),
+      cpaExplanation: richText('RAS Canada uses CPA Canada\'s authentication system. If you are a CPA Canada member, you can log in with your existing CPA Canada credentials.', 'Your CPA Canada account provides access to comment submission forms, event registration, and newsletter preferences.'),
       cpaLoginUrl: 'https://www.cpacanada.ca/login',
       supportHeading: 'Need Help?',
       supportEmail: 'support@frascanada.ca',

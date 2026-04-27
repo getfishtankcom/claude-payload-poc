@@ -1,6 +1,6 @@
 /**
  * @description
- * Contacts collection for FRAS Canada staff contact information.
+ * Contacts collection for RAS Canada staff contact information.
  * Used in project detail sidebars and contact pages.
  *
  * Key features:

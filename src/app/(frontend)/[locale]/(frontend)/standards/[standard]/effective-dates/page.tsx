@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const section = await getStandardsSectionBySlug(standardSlug)
   const sectionTitle = section ? (section.title as string) : standardSlug.toUpperCase()
   return {
-    title: `Effective Dates — ${sectionTitle} — FRAS Canada`,
+    title: `Effective Dates — ${sectionTitle} — RAS Canada`,
     description: `Effective dates for ${sectionTitle} standards, amendments, and interpretations.`,
   }
 }

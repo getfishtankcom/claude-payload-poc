@@ -1,6 +1,6 @@
 /**
  * @description
- * Job Postings collection for FRAS Canada career opportunities.
+ * Job Postings collection for RAS Canada career opportunities.
  * Supports draft/published/closed lifecycle with external application URLs.
  *
  * Key features:

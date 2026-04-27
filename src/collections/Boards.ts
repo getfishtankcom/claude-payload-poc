@@ -1,6 +1,6 @@
 /**
  * @description
- * Boards collection for FRAS Canada's organizational structure.
+ * Boards collection for RAS Canada's organizational structure.
  * Represents the 5 boards/councils: AcSB, PSAB, AASB, CSSB, RASOC.
  * Each board has configurable tabs, quick action links, and resource files.
  *

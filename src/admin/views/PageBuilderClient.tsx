@@ -1,6 +1,6 @@
 /**
  * @description
- * Client-side Page Builder view for FRAS Canada CMS admin (Epics 25-26).
+ * Client-side Page Builder view for RAS Canada CMS admin (Epics 25-26).
  * Three-panel layout: Structure Panel (left), Page Canvas (center),
  * Inspector Panel (right, slides out on component selection).
  *

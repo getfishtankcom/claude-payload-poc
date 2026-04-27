@@ -1,6 +1,6 @@
 /**
  * @description
- * Homepage global for FRAS Canada homepage content configuration.
+ * Homepage global for RAS Canada homepage content configuration.
  * Uses tabs: Hero tab + Content tab (blocks layout).
  * Migrated from flat fields to hero group + blocks layout architecture.
  *

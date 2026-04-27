@@ -31,7 +31,7 @@ export const WithDescription: Story = {
 
 export const CustomHeading: Story = {
   args: {
-    heading: 'Subscribe to the FRAS Canada Newsletter',
+    heading: 'Subscribe to the RAS Canada Newsletter',
     description: 'Join 3,000+ finance professionals who trust our updates.',
   },
 }

@@ -1,6 +1,6 @@
 /**
  * @description
- * Global stylesheet for the FRAS Canada frontend.
+ * Global stylesheet for the RAS Canada frontend.
  * Uses Tailwind CSS v4's @theme inline directive to define
  * all design tokens as CSS custom properties that auto-generate
  * utility classes.

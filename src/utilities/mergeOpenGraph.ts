@@ -24,8 +24,8 @@ const defaultOpenGraph: Metadata['openGraph'] = {
       url: `${getServerSideURL()}/og-default.png`,
     },
   ],
-  siteName: 'FRAS Canada',
-  title: 'FRAS Canada',
+  siteName: 'RAS Canada',
+  title: 'RAS Canada',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

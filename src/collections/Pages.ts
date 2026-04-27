@@ -1,6 +1,6 @@
 /**
  * @description
- * Pages collection for FRAS Canada content pages with page builder architecture.
+ * Pages collection for RAS Canada content pages with page builder architecture.
  * Uses tabs: Hero tab + Content tab (blocks layout) + Sidebar tab + SEO tab.
  *
  * Key features:

@@ -1,6 +1,6 @@
 /**
  * @description
- * Client-side dashboard UI for FRAS Canada CMS admin.
+ * Client-side dashboard UI for RAS Canada CMS admin.
  * Rendered by the server-side Dashboard wrapper which strips
  * non-serializable props (locale.toString, etc.) from Payload.
  *

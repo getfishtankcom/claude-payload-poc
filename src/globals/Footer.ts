@@ -1,6 +1,6 @@
 /**
  * @description
- * Footer global for FRAS Canada site-wide footer configuration.
+ * Footer global for RAS Canada site-wide footer configuration.
  * Manages footer columns, board links, quick links, and newsletter section.
  *
  * Key features:

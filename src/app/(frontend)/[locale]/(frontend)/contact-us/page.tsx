@@ -32,8 +32,8 @@ import { submitContactForm } from '@/actions/contact'
 import { getPageBySlug } from '@/lib/payload-helpers'
 
 export const metadata: Metadata = {
-  title: 'Contact Us — FRAS Canada',
-  description: 'Get in touch with FRAS Canada. Send us your questions, comments, or media inquiries.',
+  title: 'Contact Us — RAS Canada',
+  description: 'Get in touch with RAS Canada. Send us your questions, comments, or media inquiries.',
 }
 
 export default async function ContactUsPage() {

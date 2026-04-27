@@ -1,6 +1,6 @@
 /**
  * @description
- * Search Config global for FRAS Canada search page configuration.
+ * Search Config global for RAS Canada search page configuration.
  * Manages popular search tags and default filter settings.
  *
  * Key features:

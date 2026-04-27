@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { docSlug } = await params
   const doc = await getDocumentDetailBySlug(docSlug) as Record<string, unknown> | null
   return {
-    title: doc ? `${doc.title} — FRAS Canada` : 'Document Detail — FRAS Canada',
+    title: doc ? `${doc.title} — RAS Canada` : 'Document Detail — RAS Canada',
     description: 'Exposure draft detail page with comment questions and reply instructions.',
   }
 }

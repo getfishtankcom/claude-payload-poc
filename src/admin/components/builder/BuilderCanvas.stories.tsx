@@ -24,7 +24,7 @@ const mockTemplate: PageTemplate = {
 const mockLayout: BuilderLayout = {
   zones: {
     main: [
-      { id: 'comp-1', type: 'heading', props: { text: 'Welcome to FRAS Canada', level: '1' } },
+      { id: 'comp-1', type: 'heading', props: { text: 'Welcome to RAS Canada', level: '1' } },
       { id: 'comp-2', type: 'rich-text', props: { content: 'Lorem ipsum dolor sit amet...' } },
       { id: 'comp-3', type: 'card-grid', props: { columns: 3, items: [{}, {}, {}] } },
     ],

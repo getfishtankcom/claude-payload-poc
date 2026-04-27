@@ -1,6 +1,6 @@
 /**
  * @description
- * News collection for FRAS Canada news articles, announcements, and press releases.
+ * News collection for RAS Canada news articles, announcements, and press releases.
  * Supports featured images via the media collection and board association.
  *
  * Key features:

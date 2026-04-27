@@ -1,6 +1,6 @@
 /**
  * @description
- * Resources collection for FRAS Canada's articles, guidance, webinars, and other resources.
+ * Resources collection for RAS Canada's articles, guidance, webinars, and other resources.
  * Canonical name: "resources" (replaces "documents" from Phase 1 naming).
  *
  * Key features:

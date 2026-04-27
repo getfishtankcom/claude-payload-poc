@@ -1,6 +1,6 @@
 /**
  * @description
- * Effective Dates collection for FRAS Canada's standards effective date tables.
+ * Effective Dates collection for RAS Canada's standards effective date tables.
  * Complex nested structure: sections → rows, plus footnotes.
  *
  * Key features:

@@ -1,6 +1,6 @@
 /**
  * @description
- * Standards collection for FRAS Canada's accounting/reporting standards.
+ * Standards collection for RAS Canada's accounting/reporting standards.
  * Represents the 11 standards sections organized by category.
  * Each standard belongs to a board and may have sub-parts (for Accounting standards).
  *

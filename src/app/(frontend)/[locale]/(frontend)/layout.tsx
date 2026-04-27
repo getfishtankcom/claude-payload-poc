@@ -51,7 +51,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'FRAS Canada — Financial Reporting & Assurance Standards',
+  title: 'RAS Canada — Financial Reporting & Assurance Standards',
   description:
     'The standard-setting body for all accountants across Canada. Home of AcSB, PSAB, AASB, and CSSB.',
 }

@@ -15,8 +15,8 @@ import { SignIn } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My Account — Login — FRAS Canada',
-  description: 'Log in to your FRAS Canada account to access member-only features.',
+  title: 'My Account — Login — RAS Canada',
+  description: 'Log in to your RAS Canada account to access member-only features.',
 }
 
 export default function LoginPage() {

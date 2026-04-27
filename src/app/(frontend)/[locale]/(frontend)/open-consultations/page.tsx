@@ -33,7 +33,7 @@ import { OpenConsultationsClient } from './OpenConsultationsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
 
 export const metadata: Metadata = {
-  title: 'Open Consultations — FRAS Canada',
+  title: 'Open Consultations — RAS Canada',
   description: 'Review and comment on open consultations from all boards.',
 }
 

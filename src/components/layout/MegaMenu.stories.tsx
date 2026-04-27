@@ -31,7 +31,7 @@ export const AboutUs: Story = {
     trigger: 'About Us',
     variant: 'single-column',
     items: [
-      { label: 'About FRAS Canada', href: '/about' },
+      { label: 'About RAS Canada', href: '/about' },
       { label: 'Oversight Council', href: '/about/oversight-council' },
       { label: 'Research Program', href: '/about/research' },
       { label: 'Jobs', href: '/about/jobs' },
@@ -118,7 +118,7 @@ export const Mobile: Story = {
     trigger: 'About Us',
     variant: 'single-column',
     items: [
-      { label: 'About FRAS Canada', href: '/about' },
+      { label: 'About RAS Canada', href: '/about' },
       { label: 'Oversight Council', href: '/about/oversight-council' },
     ],
   },

@@ -32,7 +32,7 @@ type Props = {
 }
 
 export const metadata: Metadata = {
-  title: 'Meetings & Events — FRAS Canada',
+  title: 'Meetings & Events — RAS Canada',
   description: 'Browse upcoming and past meetings and events.',
 }
 

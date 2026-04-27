@@ -1,6 +1,6 @@
 /**
  * @description
- * Role-based access control utilities for FRAS Canada CMS.
+ * Role-based access control utilities for RAS Canada CMS.
  * Implements 3-role RBAC: author, editor, admin per PRD Section 2.2.
  *
  * Key features:

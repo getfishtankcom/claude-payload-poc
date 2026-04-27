@@ -1,6 +1,6 @@
 /**
  * @description
- * Committees collection for FRAS Canada's board advisory committees.
+ * Committees collection for RAS Canada's board advisory committees.
  * Each committee belongs to a board and has an embedded list of members.
  *
  * Key features:

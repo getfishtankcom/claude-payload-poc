@@ -44,6 +44,6 @@ export const Mobile: Story = {
 export const LongText: Story = {
   args: {
     heading: 'Canada\'s Official Hub for Financial Reporting Standards, Auditing Standards, Sustainability Standards, and Public Sector Accounting Standards',
-    subtitle: 'FRAS provides comprehensive resources, guidance documents, exposure drafts, consultation papers, and educational materials to help professionals navigate the complex landscape of Canadian accounting, auditing, sustainability, and public sector standards. Join thousands of finance professionals who rely on FRAS Canada for authoritative standards information.',
+    subtitle: 'FRAS provides comprehensive resources, guidance documents, exposure drafts, consultation papers, and educational materials to help professionals navigate the complex landscape of Canadian accounting, auditing, sustainability, and public sector standards. Join thousands of finance professionals who rely on RAS Canada for authoritative standards information.',
   },
 }

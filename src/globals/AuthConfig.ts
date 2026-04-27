@@ -1,6 +1,6 @@
 /**
  * @description
- * Auth Config global for FRAS Canada's login page CMS-editable content.
+ * Auth Config global for RAS Canada's login page CMS-editable content.
  * Stores all labels, URLs, and support information for the authentication page.
  *
  * Key features:

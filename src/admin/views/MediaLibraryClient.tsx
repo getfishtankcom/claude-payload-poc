@@ -1,6 +1,6 @@
 /**
  * @description
- * Client-side Media Library view for FRAS Canada CMS admin (Epic 24).
+ * Client-side Media Library view for RAS Canada CMS admin (Epic 24).
  * Folder-based media browser with Sitecore-style folder tree + thumbnail grid.
  *
  * Key features:

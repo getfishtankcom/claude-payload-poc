@@ -21,7 +21,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { NewsListingClient } from './NewsListingClient'
 
 export const metadata: Metadata = {
-  title: 'News — FRAS Canada',
+  title: 'News — RAS Canada',
   description: 'Browse the latest news, meeting summaries, and announcements.',
 }
 
