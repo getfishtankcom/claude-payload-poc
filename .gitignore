@@ -36,3 +36,21 @@ Thumbs.db
 sitecore-dump.zip
 # clerk configuration (can include secrets)
 /.clerk/
+
+# Dogfood crawl output
+dogfood-output/
+
+# Ralph Wiggum loop artifacts
+ralph-logs/
+ralph-prompts/
+ralph-worktrees/
+ralph-worktrees-*/
+
+# Local media uploads
+media/
+
+# Editor
+.vscode/
+
+# Claude Code agent worktrees
+.claude/worktrees/
