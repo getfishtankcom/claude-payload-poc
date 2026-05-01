@@ -39,6 +39,10 @@ export const SYSTEM_FIELDS = new Set([
   'category',
   'group',
   'type',
+  'resourceType',
+  'badge_type',
+  'badges', // array of {label, badge_type} — badge_type is a non-localized enum nested in array
+  'projectType',
   'status',
   'role',
   'frasIdNumber',
