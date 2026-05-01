@@ -973,7 +973,109 @@ export async function seed(_payload?: unknown) {
       ],
     },
   })
-  console.log('    ✓ Homepage configured')
+  // FR translation of localized fields. URLs kept 1:1 with EN — per
+  // CLAUDE.md, FR slug mapping is per-content, not per-route. The acronym
+  // "RAS Canada" is left untranslated (proper noun, FR brand TBD).
+  await payload.updateGlobal({
+    slug: 'homepage',
+    locale: 'fr',
+    data: {
+      hero: {
+        type: 'highImpact',
+        richText: richTextWithHeading(
+          'h1',
+          'Établir les normes d’information financière au Canada',
+          'RAS Canada sert l’intérêt public en établissant des normes de qualité élevée en comptabilité, en certification et en durabilité.',
+        ),
+        links: [
+          {
+            link: {
+              type: 'custom',
+              url: '/active-projects',
+              label: 'Voir les projets en cours',
+              newTab: false,
+              appearance: 'default',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              url: '/open-consultations',
+              label: 'Consultations ouvertes',
+              newTab: false,
+              appearance: 'outline',
+            },
+          },
+        ],
+        search_enabled: true,
+      },
+      layout: [
+        {
+          blockType: 'cta',
+          richText: richTextWithHeading(
+            'h2',
+            'Nouveau à RAS Canada?',
+            'Découvrez nos conseils, nos normes et notre rôle dans l’écosystème canadien de l’information financière.',
+          ),
+          links: [
+            {
+              link: {
+                type: 'custom',
+                url: '/about',
+                label: 'À propos de RAS Canada',
+                newTab: false,
+                appearance: 'default',
+              },
+            },
+          ],
+          variant: 'light',
+        },
+        {
+          blockType: 'newsGrid',
+          heading: 'Nouvelles et mises à jour',
+          news_count: 3,
+          show_view_all: true,
+          populateBy: 'collection',
+        },
+        {
+          blockType: 'browseByStandard',
+          heading: 'Parcourir par norme',
+          categories: [
+            {
+              name: 'Durabilité',
+              links: [
+                { label: 'Normes canadiennes d’information sur la durabilité', url: '/standards/csds' },
+              ],
+            },
+            {
+              name: 'Comptabilité',
+              links: [
+                { label: 'Normes comptables internationales (IFRS)', url: '/standards/ifrs' },
+                { label: 'NCECF', url: '/standards/aspe' },
+                { label: 'Organismes sans but lucratif', url: '/standards/nfpo' },
+                { label: 'Régimes de retraite', url: '/standards/pension-plans' },
+              ],
+            },
+            {
+              name: 'Secteur public',
+              links: [
+                { label: 'Normes comptables pour le secteur public', url: '/standards/psas' },
+                { label: 'Directives du secteur public', url: '/standards/ps-guidelines' },
+              ],
+            },
+            {
+              name: 'Certification',
+              links: [
+                { label: 'Normes canadiennes d’audit', url: '/standards/cas' },
+                { label: 'Gestion de la qualité', url: '/standards/csqm' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  })
+  console.log('    ✓ Homepage configured (EN + FR)')
 
   // -------------------------------------------------------------------------
   // 11. SEARCH CONFIG GLOBAL

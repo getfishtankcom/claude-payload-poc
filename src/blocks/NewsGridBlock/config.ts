@@ -32,6 +32,7 @@ export const NewsGridBlock: Block = {
     {
       name: 'heading',
       type: 'text',
+      localized: true,
       label: 'Heading',
     },
     {

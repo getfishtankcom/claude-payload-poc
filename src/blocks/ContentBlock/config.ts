@@ -58,6 +58,7 @@ export const ContentBlock: Block = {
         {
           name: 'richText',
           type: 'richText',
+          localized: true,
           editor: lexicalEditor({
             features: ({ rootFeatures }) => [
               ...rootFeatures,
