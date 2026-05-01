@@ -25,6 +25,11 @@ export const Boards: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'abbreviation', 'slug'],
+    components: {
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
+    },
   },
   fields: [
     {

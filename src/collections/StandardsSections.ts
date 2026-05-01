@@ -27,6 +27,11 @@ export const StandardsSections: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'boardName', 'board'],
+    components: {
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
+    },
   },
   fields: [
     {

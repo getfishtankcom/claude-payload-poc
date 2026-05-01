@@ -38,6 +38,9 @@ export const Resources: CollectionConfig = {
     defaultColumns: ['title', 'category', 'workflowState', 'resourceType', 'board', 'date'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
     },
   },
   access: {

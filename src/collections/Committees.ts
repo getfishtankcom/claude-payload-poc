@@ -36,6 +36,9 @@ export const Committees: CollectionConfig = {
     defaultColumns: ['name', 'board', 'workflowState', 'status', 'sortOrder'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
     },
   },
   access: {

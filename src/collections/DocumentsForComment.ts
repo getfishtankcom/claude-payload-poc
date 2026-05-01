@@ -35,6 +35,11 @@ export const DocumentsForComment: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'group', 'workflowState', 'status', 'board', 'publishedDate'],
+    components: {
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
+    },
   },
   access: {
     read: contentRead,

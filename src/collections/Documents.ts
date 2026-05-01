@@ -42,6 +42,9 @@ export const Documents: CollectionConfig = {
     defaultColumns: ['title', 'type', 'workflowState', 'board'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
     },
   },
   access: {

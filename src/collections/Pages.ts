@@ -69,6 +69,7 @@ export const Pages: CollectionConfig = {
           '/admin/components/LanguageSwitcher',
           '/admin/components/LockIndicator',
           '/admin/components/WorkflowActionBarField',
+          '/admin/components/TranslateButton',
         ],
       },
     },

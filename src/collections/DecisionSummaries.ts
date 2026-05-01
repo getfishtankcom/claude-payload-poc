@@ -24,6 +24,9 @@ export const DecisionSummaries: CollectionConfig = {
     defaultColumns: ['title', 'date', 'board'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
     },
   },
   fields: [

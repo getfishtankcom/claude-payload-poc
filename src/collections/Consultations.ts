@@ -40,6 +40,11 @@ export const Consultations: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'workflowState', 'deadline_date', 'board'],
+    components: {
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
+    },
   },
   access: {
     read: contentRead,

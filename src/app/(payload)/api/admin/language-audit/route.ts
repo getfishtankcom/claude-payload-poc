@@ -1,8 +1,16 @@
 /**
- * GET /api/admin/language-audit?collection=...&board=...&status=...
+ * GET /api/admin/language-audit?collection=...&board=...&status=...&translationStatus=...
  *
  * Returns translation status for content items across pages, news, and
- * projects. Each item has FR status: translated / partial / missing.
+ * projects. Each item has:
+ *   - frStatus: derived from comparing EN/FR field contents
+ *     (translated / partial / missing) — heuristic, content-based
+ *   - translationStatus: explicit reviewer-set state from the doc itself
+ *     (untranslated / pending_review / changes_requested / approved)
+ *
+ * The two are orthogonal — frStatus tells you whether FR fields are
+ * populated; translationStatus tells you whether someone has reviewed
+ * the AI output (PRD §13.G).
  */
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
@@ -11,6 +19,11 @@ import config from '@payload-config'
 const AUDITED_COLLECTIONS = ['pages', 'news', 'projects'] as const
 type AuditCollection = typeof AUDITED_COLLECTIONS[number]
 type FrStatus = 'translated' | 'partial' | 'missing'
+type TranslationReviewStatus =
+  | 'untranslated'
+  | 'pending_review'
+  | 'changes_requested'
+  | 'approved'
 
 interface AuditItem {
   id: string | number
@@ -18,6 +31,7 @@ interface AuditItem {
   collection: AuditCollection
   board?: { title?: string; slug?: string } | null
   frStatus: FrStatus
+  translationStatus: TranslationReviewStatus
   updatedAt?: string
 }
 
@@ -51,6 +65,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl
     const collectionFilter = searchParams.get('collection') as AuditCollection | null
     const statusFilter = searchParams.get('status') as FrStatus | 'all' | null
+    const translationStatusFilter = searchParams.get('translationStatus') as
+      | TranslationReviewStatus
+      | 'all'
+      | null
     const boardFilter = searchParams.get('board')
 
     const collections = collectionFilter
@@ -79,6 +97,8 @@ export async function GET(request: NextRequest) {
             collection: slug,
             board: (en.board as { title?: string; slug?: string } | null) ?? null,
             frStatus: statusFor(en, fr),
+            translationStatus:
+              ((en.translationStatus as TranslationReviewStatus) ?? 'untranslated'),
             updatedAt: (en.updatedAt as string) ?? undefined,
           }
           return item
@@ -87,19 +107,44 @@ export async function GET(request: NextRequest) {
     )
 
     const items = fetched.flatMap((r) => (r.status === 'fulfilled' ? r.value : []))
-    const filtered = statusFilter && statusFilter !== 'all'
-      ? items.filter((i) => i.frStatus === statusFilter)
-      : items
+    let filtered = items
+    if (statusFilter && statusFilter !== 'all') {
+      filtered = filtered.filter((i) => i.frStatus === statusFilter)
+    }
+    if (translationStatusFilter && translationStatusFilter !== 'all') {
+      filtered = filtered.filter((i) => i.translationStatus === translationStatusFilter)
+    }
 
     // Build summary counts per collection.
-    const summary: Record<string, { total: number; translated: number; partial: number; missing: number }> = {}
+    const summary: Record<
+      string,
+      {
+        total: number
+        translated: number
+        partial: number
+        missing: number
+        translationStatus: Record<TranslationReviewStatus, number>
+      }
+    > = {}
     for (const c of AUDITED_COLLECTIONS) {
-      summary[c] = { total: 0, translated: 0, partial: 0, missing: 0 }
+      summary[c] = {
+        total: 0,
+        translated: 0,
+        partial: 0,
+        missing: 0,
+        translationStatus: {
+          untranslated: 0,
+          pending_review: 0,
+          changes_requested: 0,
+          approved: 0,
+        },
+      }
     }
     for (const item of items) {
       const s = summary[item.collection]
       s.total++
       s[item.frStatus]++
+      s.translationStatus[item.translationStatus]++
     }
 
     return NextResponse.json({ items: filtered, summary, total: filtered.length })

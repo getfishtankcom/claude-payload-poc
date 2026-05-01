@@ -11,6 +11,12 @@ import React, { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 type FrStatus = 'translated' | 'partial' | 'missing' | 'all'
+type TranslationReviewStatus =
+  | 'untranslated'
+  | 'pending_review'
+  | 'changes_requested'
+  | 'approved'
+type ReviewFilter = TranslationReviewStatus | 'all'
 
 interface AuditItem {
   id: string | number
@@ -18,12 +24,22 @@ interface AuditItem {
   collection: 'pages' | 'news' | 'projects'
   board?: { title?: string; slug?: string } | null
   frStatus: 'translated' | 'partial' | 'missing'
+  translationStatus: TranslationReviewStatus
   updatedAt?: string
 }
 
 interface AuditResponse {
   items: AuditItem[]
-  summary: Record<string, { total: number; translated: number; partial: number; missing: number }>
+  summary: Record<
+    string,
+    {
+      total: number
+      translated: number
+      partial: number
+      missing: number
+      translationStatus: Record<TranslationReviewStatus, number>
+    }
+  >
   total: number
 }
 
@@ -33,18 +49,34 @@ const STATUS_COLORS: Record<AuditItem['frStatus'], string> = {
   missing: '#dc2626',
 }
 
+const REVIEW_COLORS: Record<TranslationReviewStatus, string> = {
+  untranslated: '#6b7280',
+  pending_review: '#2563eb',
+  changes_requested: '#ca8a04',
+  approved: '#16a34a',
+}
+
+const REVIEW_LABELS: Record<TranslationReviewStatus, string> = {
+  untranslated: 'Untranslated',
+  pending_review: 'Pending Review',
+  changes_requested: 'Changes Requested',
+  approved: 'Approved',
+}
+
 export function LanguageAuditViewClient() {
   const [collection, setCollection] = useState<'all' | AuditItem['collection']>('all')
   const [status, setStatus] = useState<FrStatus>('all')
+  const [translationStatus, setTranslationStatus] = useState<ReviewFilter>('all')
   const [board, setBoard] = useState<string>('')
 
   const params = useMemo(() => {
     const usp = new URLSearchParams()
     if (collection !== 'all') usp.set('collection', collection)
     if (status !== 'all') usp.set('status', status)
+    if (translationStatus !== 'all') usp.set('translationStatus', translationStatus)
     if (board) usp.set('board', board)
     return usp.toString()
-  }, [collection, status, board])
+  }, [collection, status, translationStatus, board])
 
   const query = useQuery<AuditResponse>({
     queryKey: ['language-audit', params],
@@ -101,7 +133,7 @@ export function LanguageAuditViewClient() {
           <option value="news">News</option>
           <option value="projects">Projects</option>
         </select>
-        <label style={{ fontSize: '12px', color: 'var(--theme-elevation-600)' }}>Status:</label>
+        <label style={{ fontSize: '12px', color: 'var(--theme-elevation-600)' }}>FR Status:</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as FrStatus)}
@@ -111,6 +143,18 @@ export function LanguageAuditViewClient() {
           <option value="translated">Translated</option>
           <option value="partial">Partial</option>
           <option value="missing">Missing</option>
+        </select>
+        <label style={{ fontSize: '12px', color: 'var(--theme-elevation-600)' }}>Review:</label>
+        <select
+          value={translationStatus}
+          onChange={(e) => setTranslationStatus(e.target.value as ReviewFilter)}
+          style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '3px', border: '1px solid var(--theme-elevation-200)' }}
+        >
+          <option value="all">All</option>
+          <option value="untranslated">Untranslated</option>
+          <option value="pending_review">Pending Review</option>
+          <option value="changes_requested">Changes Requested</option>
+          <option value="approved">Approved</option>
         </select>
         <label style={{ fontSize: '12px', color: 'var(--theme-elevation-600)' }}>Board ID:</label>
         <input
@@ -138,6 +182,7 @@ export function LanguageAuditViewClient() {
             <tr style={{ borderBottom: '1px solid var(--theme-elevation-200)' }}>
               <th style={{ textAlign: 'left', padding: '8px' }}>Title (EN)</th>
               <th style={{ textAlign: 'left', padding: '8px' }}>FR Status</th>
+              <th style={{ textAlign: 'left', padding: '8px' }}>Review</th>
               <th style={{ textAlign: 'left', padding: '8px' }}>Collection</th>
               <th style={{ textAlign: 'left', padding: '8px' }}>Board</th>
               <th style={{ textAlign: 'left', padding: '8px' }}>Updated</th>
@@ -165,6 +210,21 @@ export function LanguageAuditViewClient() {
                     }}
                   >
                     {item.frStatus}
+                  </span>
+                </td>
+                <td style={{ padding: '8px' }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      padding: '2px 8px',
+                      borderRadius: '12px',
+                      background: REVIEW_COLORS[item.translationStatus] + '22',
+                      color: REVIEW_COLORS[item.translationStatus],
+                      fontSize: '11px',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {REVIEW_LABELS[item.translationStatus]}
                   </span>
                 </td>
                 <td style={{ padding: '8px', color: 'var(--theme-elevation-600)' }}>{item.collection}</td>

@@ -36,6 +36,11 @@ export const DocumentDetails: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'workflowState', 'board', 'replyDeadline'],
+    components: {
+      edit: {
+        beforeDocumentControls: ['/admin/components/TranslateButton'],
+      },
+    },
   },
   access: {
     read: contentRead,
