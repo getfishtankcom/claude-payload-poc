@@ -1,633 +1,227 @@
 /**
  * @description
- * Client-side Page Builder view for RAS Canada CMS admin (Epics 25-26).
- * Three-panel layout: Structure Panel (left), Page Canvas (center),
- * Inspector Panel (right, slides out on component selection).
+ * Client-side Page Builder view (Puck-based) for the RAS Canada CMS admin.
+ * Replaces the previous @dnd-kit-based builder which had drag-drop reliability
+ * issues (the Layer 0 spike findings — see spike-admin-platform-layer-0.md
+ * §13 G2 + G10).
  *
- * Key features:
- * - Loads page data + template on mount
- * - Toolbar: Save, Undo, Redo, Preview, Breakpoint toggles
- * - Left panel: StructurePanel (zone tree, click-to-select, reorder)
- * - Center panel: BuilderCanvas (zone rendering, visual previews, DnD)
- * - Right panel: InspectorPanel (live preview + props form)
- * - DnD via @dnd-kit/core for toolbox-to-canvas and reorder
- * - Keyboard shortcuts: Ctrl+Z undo, Ctrl+Shift+Z redo, Ctrl+S save
- * - DragOverlay shows visual preview at 50% opacity
+ * Architecture (per spike §7.3 revised 2026-05-01 once verified Puck has
+ * no external-URL iframe API):
+ * - LEFT/CENTER: Puck inline (`iframe.enabled: false`) — drag/drop, drop
+ *   zones, prop drawer. Uses real `@/components/ui` primitives so editor
+ *   surface matches FRAS branding.
+ * - RIGHT (drawer): a Live Preview iframe loading the existing
+ *   `/api/preview` route. Saves propagate via `postMessage` (the existing
+ *   feat preview-route stub) → Live Preview re-renders.
  *
- * @dependencies
- * - useBuilderState: state management
- * - templates: zone configs
- * - registry: component types
- * - @dnd-kit/core: drag-and-drop
- * - StructurePanel: left panel
- * - BuilderCanvas: center panel
- * - InspectorPanel: right panel
- * - PreviewRenderer: visual previews in drag overlay
+ * Data model:
+ * - Reads from / writes to `pages.builderLayout` (Payload JSON field).
+ *   This matches feat's existing collection schema; do NOT use `layout`.
+ * - Page id is parsed from `window.location.pathname` (`/admin/builder/:id`)
+ *   matching feat's existing PageBuilderClient pattern.
  *
- * @notes
- * - Page ID extracted from URL path: /admin/builder/:id
- * - Saves builderLayout JSON to Payload via PATCH /api/pages/:id
- * - data-testid="page-builder" on main container
- * - data-testid="builder-toolbar" on toolbar
+ * Note: storybook stories for the Puck components (PuckComponents.stories.tsx)
+ * were left out of this swap because feat is on Storybook 8 and the
+ * worktree authored them against Storybook 10. Bring them in once the
+ * Storybook major bump is on the table.
  */
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragStartEvent,
-  type DragEndEvent,
-  type DragOverEvent,
-} from '@dnd-kit/core'
-import { useBuilderState, generateId, type Breakpoint } from '../components/builder/useBuilderState'
-import { getTemplate, type PageTemplate } from '../templates'
-import { getComponentType, type BuilderComponentType } from '../components/builder/registry'
-import { StructurePanel } from '../components/builder/StructurePanel'
-import { BuilderCanvas } from '../components/builder/BuilderCanvas'
-import { InspectorPanel } from '../components/builder/InspectorPanel'
-import { AddComponentModal } from '../components/builder/AddComponentModal'
-import { PreviewRenderer } from '../components/builder/previews'
-import type { BuilderLayout, ComponentInstance } from '../templates/types'
+import * as React from 'react'
+import { Puck, type Data } from '@measured/puck'
+import '@measured/puck/puck.css'
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { buildPuckConfig } from '../builder/puckConfig'
+import { FRASActionBar } from '../builder/FRASActionBar'
 
-/** Minimal page data shape from Payload API */
-interface PageData {
+const AUTOSAVE_DEBOUNCE_MS = 5_000
+
+type PageData = {
   id: string | number
   title: string
   slug: string
-  template?: string
-  builderLayout?: BuilderLayout | null
+  builderLayout?: Data | null
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Extract page ID from current URL path: /admin/builder/:id */
 function getPageIdFromUrl(): string | null {
   if (typeof window === 'undefined') return null
   const match = window.location.pathname.match(/\/admin\/builder\/([^/]+)/)
   return match ? match[1] : null
 }
 
-// ---------------------------------------------------------------------------
-// Breakpoint widths
-// ---------------------------------------------------------------------------
-
-const BREAKPOINT_WIDTHS: Record<Breakpoint, number> = {
-  desktop: 1440,
-  tablet: 768,
-  mobile: 375,
-}
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 export function PageBuilderClient() {
-  // Page data
-  const [pageData, setPageData] = useState<PageData | null>(null)
-  const [template, setTemplate] = useState<PageTemplate | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [pageData, setPageData] = React.useState<PageData | null>(null)
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState<string | null>(null)
 
-  // Builder state
-  const builder = useBuilderState()
+  const [locale, setLocale] = React.useState<'en' | 'fr'>('en')
+  const [saving, setSaving] = React.useState(false)
+  const [lastSavedAt, setLastSavedAt] = React.useState<number | null>(null)
+  const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Add Component modal state
-  const [addComponentZone, setAddComponentZone] = useState<string | null>(null)
+  const config = React.useMemo(() => buildPuckConfig(locale), [locale])
 
-  // Live preview iframe — postMessage bridge.
-  const previewIframeRef = useRef<HTMLIFrameElement | null>(null)
+  // Load page on mount.
+  React.useEffect(() => {
+    const id = getPageIdFromUrl()
+    if (!id) {
+      setError('No page id in URL.')
+      setLoading(false)
+      return
+    }
+    fetch(`/api/pages/${id}?draft=true`, { credentials: 'same-origin' })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed to load page (${r.status})`)
+        return r.json()
+      })
+      .then((data: PageData) => setPageData(data))
+      .catch((e) => setError(String(e)))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const data: Data =
+    (pageData?.builderLayout as Data | null | undefined) ??
+    ({ content: [], root: { props: {} } } as unknown as Data)
+
+  const persistDraft = React.useCallback(
+    (newData: Data) => {
+      const id = pageData?.id
+      if (!id) return
+      setSaving(true)
+      fetch(`/api/pages/${id}?draft=true&autosave=true`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ builderLayout: newData, _status: 'draft' }),
+      })
+        .then(() => setLastSavedAt(Date.now()))
+        .finally(() => setSaving(false))
+    },
+    [pageData?.id]
+  )
+
+  const handleChange = React.useCallback(
+    (newData: Data) => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current)
+      debounceTimer.current = setTimeout(
+        () => persistDraft(newData),
+        AUTOSAVE_DEBOUNCE_MS
+      )
+    },
+    [persistDraft]
+  )
+
   const previewSecret = process.env.NEXT_PUBLIC_PREVIEW_SECRET ?? ''
   const previewUrl =
     pageData?.id && previewSecret
       ? `/api/preview?id=${pageData.id}&secret=${previewSecret}`
       : null
 
-  // Re-post the latest layout to the preview iframe whenever it changes.
-  useEffect(() => {
-    if (!previewIframeRef.current?.contentWindow) return
-    previewIframeRef.current.contentWindow.postMessage(
-      { type: 'LAYOUT_UPDATE', payload: builder.layout },
-      '*',
-    )
-  }, [builder.layout])
-
-  // Listen for the iframe's signals: PREVIEW_READY (replay layout),
-  // SELECT_ELEMENT (open the inspector for that component), HOVER_ELEMENT
-  // (no-op for now — iframe handles its own outline). FIELD_UPDATE patches
-  // the named prop directly so contenteditable rich-text edits flow back.
-  useEffect(() => {
-    const onMessage = (e: MessageEvent) => {
-      const data = e.data as
-        | { type?: string; componentId?: string; zone?: string; field?: string; value?: unknown }
-        | null
-      if (!data?.type) return
-      if (data.type === 'PREVIEW_READY' && previewIframeRef.current?.contentWindow) {
-        previewIframeRef.current.contentWindow.postMessage(
-          { type: 'LAYOUT_UPDATE', payload: builder.layout },
-          '*',
-        )
-      } else if (data.type === 'SELECT_ELEMENT' && data.componentId && data.zone) {
-        builder.selectComponent(data.componentId, data.zone)
-      } else if (data.type === 'FIELD_UPDATE' && data.componentId && data.zone && data.field) {
-        builder.updateComponentProps(data.zone, data.componentId, {
-          [data.field]: data.value,
-        })
-      }
-    }
-    window.addEventListener('message', onMessage)
-    return () => window.removeEventListener('message', onMessage)
-  }, [builder])
-
-  // DnD state
-  const [activeDrag, setActiveDrag] = useState<{
-    type: 'toolbox' | 'canvas'
-    componentType?: string
-    componentId?: string
-    sourceZone?: string
-  } | null>(null)
-  const [dragOverZone, setDragOverZone] = useState<string | null>(null)
-
-  // DnD sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 },
-    }),
-  )
-
-  // --- Load page data ---
-  useEffect(() => {
-    const pageId = getPageIdFromUrl()
-    if (!pageId) {
-      setError('No page ID found in URL')
-      setLoading(false)
-      return
-    }
-
-    async function loadPage() {
-      try {
-        const res = await fetch(`/api/pages/${pageId}?depth=0`)
-        if (!res.ok) throw new Error(`Failed to load page: ${res.status}`)
-        const data = await res.json()
-        setPageData(data)
-
-        // Set template
-        if (data.template) {
-          const tmpl = getTemplate(data.template)
-          if (tmpl) setTemplate(tmpl)
-        }
-
-        // Set layout
-        if (data.builderLayout && typeof data.builderLayout === 'object') {
-          builder.setLayout(data.builderLayout as BuilderLayout)
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load page')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadPage()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // Save error toast state (separate from fatal page-load error)
-  const [saveError, setSaveError] = useState<string | null>(null)
-
-  // --- Save handler ---
-  const handleSave = useCallback(async () => {
-    if (!pageData) return
-    setSaving(true)
-    setSaveError(null)
-    try {
-      const res = await fetch(`/api/pages/${pageData.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ builderLayout: builder.layout }),
-      })
-      if (!res.ok) throw new Error(`Save failed: ${res.status}`)
-      builder.markSaved()
-    } catch (err) {
-      // Show toast error instead of replacing the entire page
-      setSaveError(err instanceof Error ? err.message : 'Save failed')
-      // Auto-dismiss after 5 seconds
-      setTimeout(() => setSaveError(null), 5000)
-    } finally {
-      setSaving(false)
-    }
-  }, [pageData, builder])
-
-  // --- Keyboard shortcuts ---
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      // Ctrl+Z / Cmd+Z = undo
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        e.preventDefault()
-        builder.undo()
-      }
-      // Ctrl+Shift+Z / Cmd+Shift+Z = redo
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
-        e.preventDefault()
-        builder.redo()
-      }
-      // Ctrl+S / Cmd+S = save
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault()
-        handleSave()
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [builder, handleSave])
-
-  // --- DnD handlers ---
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    const { active } = event
-    const data = active.data.current
-    if (data?.source === 'toolbox') {
-      setActiveDrag({ type: 'toolbox', componentType: data.componentType })
-    } else if (data?.source === 'canvas') {
-      setActiveDrag({ type: 'canvas', componentId: data.componentId, sourceZone: data.zone })
-    }
-  }, [])
-
-  const handleDragOver = useCallback((event: DragOverEvent) => {
-    const { over } = event
-    if (over?.data.current?.zone) {
-      setDragOverZone(over.data.current.zone)
-    } else {
-      setDragOverZone(null)
-    }
-  }, [])
-
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event
-      setActiveDrag(null)
-      setDragOverZone(null)
-
-      if (!over) return
-
-      const activeData = active.data.current
-      const overData = over.data.current
-
-      if (!activeData || !overData) return
-
-      const targetZone = overData.zone as string
-      if (!targetZone) return
-
-      // Validate zone exists in template
-      if (!template) return
-      const zoneConfig = template.zones.find((z) => z.name === targetZone)
-      if (!zoneConfig || zoneConfig.type !== 'editable') return
-
-      if (activeData.source === 'toolbox') {
-        // Drag from toolbox -> create new component
-        const componentType = activeData.componentType as string
-        const compDef = getComponentType(componentType)
-        if (!compDef) return
-
-        // Check zone allows this component
-        if (
-          zoneConfig.allowedComponents &&
-          zoneConfig.allowedComponents.length > 0 &&
-          !zoneConfig.allowedComponents.includes(componentType)
-        ) {
-          return // Invalid drop
-        }
-
-        // Check max components
-        const currentCount = builder.layout.zones[targetZone]?.length ?? 0
-        if (zoneConfig.maxComponents && zoneConfig.maxComponents > 0 && currentCount >= zoneConfig.maxComponents) {
-          return // Zone full
-        }
-
-        // Build default props from schema
-        const defaultProps: Record<string, unknown> = {}
-        for (const field of compDef.propsSchema) {
-          if (field.defaultValue !== undefined) {
-            defaultProps[field.name] = field.defaultValue
-          }
-        }
-
-        const newComponent: ComponentInstance = {
-          id: generateId(),
-          type: componentType,
-          props: defaultProps,
-        }
-
-        // Determine insert index
-        const insertIndex = overData.index !== undefined ? (overData.index as number) : undefined
-        builder.addComponent(targetZone, newComponent, insertIndex)
-      } else if (activeData.source === 'canvas') {
-        // Drag within canvas — move/reorder
-        const componentId = activeData.componentId as string
-        const sourceZone = activeData.zone as string
-        const newIndex = overData.index !== undefined ? (overData.index as number) : 0
-
-        if (sourceZone === targetZone) {
-          // Reorder within same zone
-          builder.moveComponent(sourceZone, targetZone, componentId, newIndex)
-        } else {
-          // Move between zones — validate target allows this component
-          const comp = builder.layout.zones[sourceZone]?.find((c) => c.id === componentId)
-          if (!comp) return
-          if (
-            zoneConfig.allowedComponents &&
-            zoneConfig.allowedComponents.length > 0 &&
-            !zoneConfig.allowedComponents.includes(comp.type)
-          ) {
-            return
-          }
-          builder.moveComponent(sourceZone, targetZone, componentId, newIndex)
-        }
-      }
-    },
-    [template, builder],
-  )
-
-  // --- Active drag component info (for overlay) ---
-  const activeDragComponent = useMemo<{ def: BuilderComponentType; instance?: ComponentInstance } | null>(() => {
-    if (!activeDrag) return null
-    if (activeDrag.type === 'toolbox' && activeDrag.componentType) {
-      const def = getComponentType(activeDrag.componentType)
-      return def ? { def } : null
-    }
-    if (activeDrag.type === 'canvas' && activeDrag.componentId && activeDrag.sourceZone) {
-      const zone = builder.layout.zones[activeDrag.sourceZone]
-      const comp = zone?.find((c) => c.id === activeDrag.componentId)
-      if (comp) {
-        const def = getComponentType(comp.type)
-        return def ? { def, instance: comp } : null
-      }
-    }
-    return null
-  }, [activeDrag, builder.layout])
-
-  // --- Render ---
-
   if (loading) {
-    return (
-      <div data-testid="page-builder" className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="text-gray-500">Loading page builder...</div>
-      </div>
-    )
+    return <div style={{ padding: 24 }}>Loading page…</div>
   }
-
   if (error) {
     return (
-      <div data-testid="page-builder" className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="text-red-600 bg-red-50 px-6 py-4 rounded-lg border border-red-200">
-          <strong>Error:</strong> {error}
-        </div>
+      <div style={{ padding: 24, color: '#a8071a' }}>
+        Failed to load page: {error}
       </div>
     )
   }
-
-  if (!pageData || !template) {
-    return (
-      <div data-testid="page-builder" className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="text-gray-500">
-          {!pageData ? 'Page not found' : 'No template assigned to this page. Please select a template first.'}
-        </div>
-      </div>
-    )
+  if (!pageData) {
+    return <div style={{ padding: 24 }}>No page data.</div>
   }
-
-  const canvasWidth = BREAKPOINT_WIDTHS[builder.breakpoint]
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
+    <div
+      data-testid="page-builder"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: previewUrl ? 'minmax(0, 1fr) 480px' : 'minmax(0, 1fr)',
+        height: 'calc(100vh - 60px)',
+      }}
     >
-      <div
-        data-testid="page-builder"
-        className="flex flex-col h-screen bg-gray-100"
-        style={{ overflow: 'hidden' }}
-      >
-        {/* --- Toolbar --- */}
-        <div
-          data-testid="builder-toolbar"
-          className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 shadow-sm"
-          style={{ minHeight: 48 }}
-        >
-          {/* Left: page info + back */}
-          <div className="flex items-center gap-3">
-            <a
-              href={`/admin/collections/pages/${pageData.id}`}
-              className="text-sm text-blue-600 hover:text-blue-800"
-            >
-              &larr; Back to editor
-            </a>
-            <span className="text-sm text-gray-500">|</span>
-            <span className="text-sm font-medium text-gray-700">{pageData.title}</span>
-            <span className="text-xs text-gray-400">({template.label})</span>
-            {builder.isDirty && (
-              <span className="text-xs text-orange-500 font-medium">Unsaved changes</span>
-            )}
-          </div>
-
-          {/* Center: actions */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleSave}
-              disabled={saving || !builder.isDirty}
-              className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saving ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              data-testid="undo-button"
-              onClick={builder.undo}
-              disabled={!builder.canUndo}
-              className="px-2 py-1.5 text-sm text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-              title="Undo (Ctrl+Z)"
-            >
-              &#x21A9;
-            </button>
-            <button
-              data-testid="redo-button"
-              onClick={builder.redo}
-              disabled={!builder.canRedo}
-              className="px-2 py-1.5 text-sm text-gray-600 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
-              title="Redo (Ctrl+Shift+Z)"
-            >
-              &#x21AA;
-            </button>
-
-            {previewUrl && (
-              <a
-                href={previewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 text-xs text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
-                title="Open live preview in a new tab"
-              >
-                Open preview ↗
-              </a>
-            )}
-
-            <span className="mx-1 text-gray-300">|</span>
-
-            {/* Breakpoint toggles */}
-            {(['desktop', 'tablet', 'mobile'] as Breakpoint[]).map((bp) => (
-              <button
-                key={bp}
-                data-testid={`breakpoint-${bp}`}
-                onClick={() => builder.setBreakpoint(bp)}
-                className={`px-2 py-1.5 text-xs rounded ${
-                  builder.breakpoint === bp
-                    ? 'bg-blue-100 text-blue-700 font-medium'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}
-              >
-                {bp === 'desktop' ? '🖥' : bp === 'tablet' ? '📱' : '📲'}
-                <span className="ml-1">{BREAKPOINT_WIDTHS[bp]}px</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Right: preview link */}
-          <div className="flex items-center gap-2">
-            <a
-              href={`/${pageData.slug}?preview=true`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
-            >
-              Preview
-            </a>
-          </div>
-        </div>
-
-        {/* Save error toast — non-destructive notification */}
-        {saveError && (
-          <div className="absolute top-14 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
-            <span>Save failed: {saveError}</span>
-            <button onClick={() => setSaveError(null)} className="text-white/80 hover:text-white ml-2">✕</button>
-          </div>
-        )}
-
-        {/* --- Main 3-panel layout --- */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* Left: Structure Panel */}
-          <StructurePanel
-            template={template}
-            layout={builder.layout}
-            selectedComponentId={builder.selectedComponentId}
-            selectedZone={builder.selectedZone}
-            onSelectComponent={(componentId, zone) => builder.selectComponent(componentId, zone)}
-            onRemoveComponent={(zone, componentId) => builder.removeComponent(zone, componentId)}
-            onAddComponent={(zone) => setAddComponentZone(zone)}
+      <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+        <FRASActionBar
+          saving={saving}
+          lastSavedAt={lastSavedAt}
+          readOnly={false}
+          onSubmitForReview={() => {
+            // Wired by Epic 22 (workflow transitions).
+            // eslint-disable-next-line no-console
+            console.log('[FRAS] Submit for Review (stub)')
+          }}
+          onPublish={() => {
+            // eslint-disable-next-line no-console
+            console.log('[FRAS] Publish (stub)')
+          }}
+          onPreview={() => {
+            if (previewUrl)
+              window.open(previewUrl, '_blank', 'noopener,noreferrer')
+          }}
+          onLocaleChange={setLocale}
+          locale={locale}
+          lockedByOther={false}
+        />
+        <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
+          <Puck
+            config={config}
+            data={data}
+            iframe={{ enabled: false }}
+            onChange={handleChange}
+            permissions={{
+              delete: true,
+              drag: true,
+              duplicate: true,
+              edit: true,
+              insert: true,
+            }}
+            overrides={{
+              header: () => <></>,
+              headerActions: () => <></>,
+            }}
           />
-
-          {/* Center: Canvas (schematic) + optional live-preview iframe overlay */}
-          <BuilderCanvas
-            template={template}
-            layout={builder.layout}
-            selectedComponentId={builder.selectedComponentId}
-            canvasWidth={canvasWidth}
-            dragOverZone={dragOverZone}
-            onSelectComponent={(componentId, zone) => builder.selectComponent(componentId, zone)}
-            onRemoveComponent={(zone, componentId) => builder.removeComponent(zone, componentId)}
-            onDuplicateComponent={(zone, componentId) => builder.duplicateComponent(zone, componentId)}
-            onCopyComponent={(zone, componentId) => builder.copyComponent(zone, componentId)}
-            onPasteComponent={(zone) => builder.pasteComponent(zone)}
-            onAddComponent={(zone) => setAddComponentZone(zone)}
-            clipboard={builder.clipboard}
-          />
-          {previewUrl && (
-            <iframe
-              ref={previewIframeRef}
-              src={previewUrl}
-              title="Live preview"
-              data-testid="builder-preview-iframe"
-              style={{
-                width: canvasWidth,
-                height: '100%',
-                border: '1px solid var(--theme-elevation-200)',
-                marginLeft: '12px',
-                background: 'white',
-              }}
-            />
-          )}
-
-          {/* Right: Inspector Panel */}
-          {builder.selectedComponent && builder.selectedZone && (
-            <InspectorPanel
-              component={builder.selectedComponent}
-              zone={builder.selectedZone}
-              onApply={(props) => {
-                if (builder.selectedComponentId && builder.selectedZone) {
-                  builder.updateComponentProps(builder.selectedZone, builder.selectedComponentId, props)
-                }
-              }}
-              onClose={() => builder.selectComponent(null, null)}
-            />
-          )}
         </div>
       </div>
 
-      {/* Drag overlay — visual preview instead of plain text */}
-      <DragOverlay>
-        {activeDragComponent && (
-          <div className="bg-white border border-blue-300 rounded-lg shadow-lg overflow-hidden opacity-80 max-w-[200px]">
-            <div className="px-2 py-1 bg-blue-50 border-b border-blue-200 text-xs font-medium text-blue-700">
-              {activeDragComponent.def.label}
-            </div>
-            <div className="px-2 py-1.5">
-              <PreviewRenderer
-                type={activeDragComponent.def.type}
-                props={activeDragComponent.instance?.props ?? {}}
-                compact={true}
-              />
-            </div>
-          </div>
-        )}
-      </DragOverlay>
-
-      {/* Add Component modal */}
-      {addComponentZone && template && (
-        <AddComponentModal
-          allowedComponents={
-            template.zones.find((z) => z.name === addComponentZone)?.allowedComponents
-          }
-          onSelect={(componentType) => {
-            const compDef = getComponentType(componentType)
-            if (!compDef) return
-            const defaultProps: Record<string, unknown> = {}
-            for (const field of compDef.propsSchema) {
-              if (field.defaultValue !== undefined) {
-                defaultProps[field.name] = field.defaultValue
-              }
-            }
-            const newComponent: ComponentInstance = {
-              id: generateId(),
-              type: componentType,
-              props: defaultProps,
-            }
-            builder.addComponent(addComponentZone, newComponent)
-            setAddComponentZone(null)
+      {previewUrl ? (
+        <aside
+          style={{
+            borderLeft: '1px solid var(--theme-elevation-100, #ddd)',
+            display: 'flex',
+            flexDirection: 'column',
+            background: '#fff',
           }}
-          onClose={() => setAddComponentZone(null)}
-        />
-      )}
-    </DndContext>
+        >
+          <div
+            style={{
+              padding: '8px 12px',
+              borderBottom: '1px solid var(--theme-elevation-100, #ddd)',
+              fontSize: 12,
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <span>Live Preview</span>
+            <span style={{ color: '#666', fontWeight: 400, fontSize: 11 }}>
+              /{locale}/{pageData.slug}
+            </span>
+            <span style={{ flex: 1 }} />
+            <span style={{ fontSize: 10, color: '#999' }}>
+              Refreshes on save · {pageData.title}
+            </span>
+          </div>
+          <iframe
+            key={`${locale}-${pageData.slug}`}
+            src={previewUrl}
+            title="Live Preview"
+            style={{ flex: 1, width: '100%', border: 'none' }}
+          />
+        </aside>
+      ) : null}
+    </div>
   )
 }
+
+export default PageBuilderClient
