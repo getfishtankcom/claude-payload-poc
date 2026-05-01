@@ -1,30 +1,47 @@
 /**
  * AI translator for the FRAS Canada bilingual workflow (PRD §13.D).
  *
- * Wraps the Anthropic SDK with:
- *   - A frozen system prompt (glossary + slug map + style rules) that
- *     leverages prompt caching — every call after the first reads the
- *     ~5KB system prompt at ~10% of full input cost.
- *   - Cost tracking with a configurable USD ceiling. Each call updates
- *     a running total; calls past the ceiling throw before hitting the
- *     API.
- *   - Slug-aware translation (slug fields use the mapping glossary;
- *     content slugs fall back to slugify(frTitle)).
+ * Wraps the Anthropic SDK with multiple cost safeguards. Defaults are
+ * deliberately conservative for the validation phase — set higher
+ * limits via env vars or constructor options once you trust the
+ * pipeline.
  *
- * Model: claude-sonnet-4-6 (per PRD §13.5).
+ * Safeguards (in order of activation):
+ *   1. Kill switch — TRANSLATION_DISABLED=true short-circuits before
+ *      any work.
+ *   2. Cumulative-cost ceiling — hard cap, throws before the SDK call.
+ *      Default $10 USD. Set via TRANSLATION_COST_CEILING_USD.
+ *   3. Per-call max_tokens — caps the model's output. Default 4096.
+ *      Set via TRANSLATION_MAX_TOKENS_PER_REQUEST.
+ *   4. Pre-flight input token check — uses the free messages.countTokens
+ *      endpoint to refuse oversized inputs before they hit billing.
+ *      Default 20K input tokens. Set via TRANSLATION_MAX_INPUT_TOKENS.
+ *   5. Per-call cost estimate — computes a worst-case cost (full
+ *      input + max_tokens) and refuses if it exceeds 80% of remaining
+ *      budget.
+ *   6. Min delay between calls — paces the batch script. Default
+ *      500ms. Set via TRANSLATION_MIN_DELAY_MS.
+ *   7. Persistent cost log — every call appends a line to
+ *      .ai-reports/translation-cost.log so you can audit spend.
+ *
+ * Prompt caching is on (single ephemeral cache_control on the
+ * ~5KB system prompt). Calls 2..N read the cached prefix at ~10% of
+ * full input price.
  *
  * Used by:
- *   - POST /api/translate (per-doc trigger, PRD §13.E)
+ *   - POST /api/admin/translate (per-doc trigger, PRD §13.E)
  *   - scripts/batch-translate.mjs (bulk run, PRD §13.H)
  */
 import Anthropic from '@anthropic-ai/sdk'
+import { appendFile, mkdir } from 'node:fs/promises'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import glossary from './glossary.json' with { type: 'json' }
 import slugMapping from '../../../data/fr-slug-mapping.json' with { type: 'json' }
 
 const MODEL = 'claude-sonnet-4-6'
 
 // Sonnet 4.6 pricing — see https://platform.claude.com/docs/en/pricing
-// (validate against the live source if numbers change)
 const PRICING = {
   inputPerMillion: 3.0,
   outputPerMillion: 15.0,
@@ -32,6 +49,31 @@ const PRICING = {
   cacheReadPerMillion: 0.3,
   cacheCreationPerMillion: 3.75,
 } as const
+
+// Conservative defaults for the validation phase. Override via env or
+// constructor options once you trust the pipeline.
+const DEFAULTS = {
+  costCeilingUsd: 10.0,
+  maxTokensPerRequest: 4096,
+  maxInputTokens: 20_000,
+  minDelayMs: 500,
+} as const
+
+// Resolve the cost log path relative to repo root. Works whether this
+// module is loaded by Next.js, a Node script, or tsx.
+function resolveLogPath(): string {
+  // import.meta.url points at .../src/lib/translation/translator.ts
+  // (or its compiled equivalent). Walk up to repo root.
+  try {
+    const here = dirname(fileURLToPath(import.meta.url))
+    // .../src/lib/translation → up 3 → repo root
+    return resolve(here, '..', '..', '..', '.ai-reports', 'translation-cost.log')
+  } catch {
+    return resolve(process.cwd(), '.ai-reports', 'translation-cost.log')
+  }
+}
+
+const COST_LOG_PATH = resolveLogPath()
 
 export type TranslationCost = {
   inputTokens: number
@@ -44,9 +86,17 @@ export type TranslationCost = {
 export type TranslatorOptions = {
   /** Anthropic API key. Defaults to ANTHROPIC_API_KEY env var. */
   apiKey?: string
-  /** Hard cost ceiling in USD. Calls past this throw. Default $50 (PRD §13.5). */
+  /** Hard cost ceiling in USD. Calls past this throw. Default $10. */
   costCeilingUsd?: number
-  /** Optional callback fired after every successful call with the cumulative cost. */
+  /** Output token cap per call. Default 4096. */
+  maxTokensPerRequest?: number
+  /** Pre-flight: refuse if input exceeds this. Default 20000. */
+  maxInputTokens?: number
+  /** Minimum ms between calls (rate-limit). Default 500ms. */
+  minDelayMs?: number
+  /** Disable cost log writing (for tests). */
+  disableCostLog?: boolean
+  /** Optional callback fired after every successful call. */
   onCostUpdate?: (cumulativeUsd: number, lastCall: TranslationCost) => void
   /** Override the model. Default 'claude-sonnet-4-6'. */
   model?: string
@@ -59,6 +109,8 @@ export type TranslateInput = {
   collection?: string
   /** Field names that contain URL slugs — handled with the mapping glossary. */
   slugFields?: string[]
+  /** Doc id for cost log audit trail (optional). */
+  docId?: string | number
 }
 
 export type TranslateOutput = {
@@ -74,17 +126,40 @@ export class CostCeilingExceededError extends Error {
   constructor(public ceiling: number, public spent: number) {
     super(
       `Translation cost ceiling exceeded: spent $${spent.toFixed(4)} of $${ceiling.toFixed(2)} ceiling. ` +
-        `Increase the ceiling or stop the batch.`,
+        `Increase TRANSLATION_COST_CEILING_USD or stop the batch.`,
     )
     this.name = 'CostCeilingExceededError'
   }
 }
 
-/**
- * Builds the system prompt blocks. The glossary + slug map + rules are
- * everything before the last `cache_control` marker — these bytes are
- * frozen across calls, so prompt caching takes effect from call #2 onward.
- */
+export class TranslationDisabledError extends Error {
+  constructor() {
+    super('Translation disabled (TRANSLATION_DISABLED=true)')
+    this.name = 'TranslationDisabledError'
+  }
+}
+
+export class InputTooLargeError extends Error {
+  constructor(public inputTokens: number, public limit: number) {
+    super(
+      `Translation input too large: ${inputTokens} tokens > ${limit} cap. ` +
+        `Either split the doc, raise TRANSLATION_MAX_INPUT_TOKENS, or skip this item.`,
+    )
+    this.name = 'InputTooLargeError'
+  }
+}
+
+export class CallEstimateExceedsRemainingBudgetError extends Error {
+  constructor(public estimateUsd: number, public remainingUsd: number) {
+    super(
+      `Single-call worst-case estimate ($${estimateUsd.toFixed(4)}) > 80% of remaining budget ` +
+        `($${remainingUsd.toFixed(4)}). Refusing to risk overshooting the ceiling. ` +
+        `Increase TRANSLATION_COST_CEILING_USD or shrink the input.`,
+    )
+    this.name = 'CallEstimateExceedsRemainingBudgetError'
+  }
+}
+
 function buildSystemBlocks(): Anthropic.TextBlockParam[] {
   const lines: string[] = []
   lines.push(
@@ -121,7 +196,6 @@ function buildSystemBlocks(): Anthropic.TextBlockParam[] {
     '- Otherwise generate the FR slug from the translated title using lowercase letters, hyphens between words, no accents (à→a, é→e, etc.), no punctuation.',
     '- Path-segment mappings (English → French):',
   )
-  // Flatten all known mappings so the model has a single lookup table.
   const allMappings: Array<{ en: string; fr: string }> = []
   for (const group of Object.values(slugMapping)) {
     if (Array.isArray(group)) {
@@ -138,10 +212,6 @@ function buildSystemBlocks(): Anthropic.TextBlockParam[] {
     'OUTPUT FORMAT:',
     'Return ONLY valid JSON — a single object whose keys exactly match the input keys, with French translations as values. No prose, no code fences, no commentary. The JSON must parse with JSON.parse().',
   )
-  // Prompt-caching pattern: one breakpoint at the end of the frozen
-  // prefix (everything above). Per PRD §13.5, this is reused across the
-  // whole batch run; from call #2 on, ~5KB system prompt reads at ~10%
-  // of input cost via the 5-minute ephemeral cache.
   return [
     {
       type: 'text',
@@ -181,13 +251,37 @@ function priceCall(usage: Anthropic.Usage): TranslationCost {
   return { inputTokens, outputTokens, cacheReadTokens, cacheCreationTokens, usd }
 }
 
+/** Worst-case per-call cost = full input at uncached rate + full max_tokens output. */
+export function estimateWorstCaseCostUsd(
+  inputTokens: number,
+  maxTokensOutput: number,
+): number {
+  return (
+    (inputTokens * PRICING.inputPerMillion) / 1_000_000 +
+    (maxTokensOutput * PRICING.outputPerMillion) / 1_000_000
+  )
+}
+
 function extractJsonObject(text: string): Record<string, unknown> {
-  // Strip a markdown fence if the model added one (defensive — system
-  // prompt forbids it but Sonnet occasionally still wraps).
   const fenceMatch = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/)
   const jsonText = fenceMatch ? fenceMatch[1] : text
-  const trimmed = jsonText.trim()
-  return JSON.parse(trimmed) as Record<string, unknown>
+  return JSON.parse(jsonText.trim()) as Record<string, unknown>
+}
+
+async function appendCostLog(line: string): Promise<void> {
+  try {
+    await mkdir(dirname(COST_LOG_PATH), { recursive: true })
+    await appendFile(COST_LOG_PATH, line + '\n', 'utf8')
+  } catch {
+    // Don't break translation on a logging failure.
+  }
+}
+
+function envNum(name: string, fallback: number): number {
+  const raw = process.env[name]
+  if (!raw) return fallback
+  const n = Number(raw)
+  return Number.isFinite(n) && n > 0 ? n : fallback
 }
 
 export class Translator {
@@ -195,43 +289,111 @@ export class Translator {
   private systemBlocks: Anthropic.TextBlockParam[]
   private model: string
   private costCeilingUsd: number
+  private maxTokensPerRequest: number
+  private maxInputTokens: number
+  private minDelayMs: number
+  private disableCostLog: boolean
   private cumulativeUsd = 0
+  private callCount = 0
+  private lastCallAt = 0
   private onCostUpdate?: (cumulativeUsd: number, lastCall: TranslationCost) => void
 
   constructor(opts: TranslatorOptions = {}) {
+    if (process.env.TRANSLATION_DISABLED === 'true') {
+      throw new TranslationDisabledError()
+    }
     this.client = new Anthropic({ apiKey: opts.apiKey })
     this.systemBlocks = buildSystemBlocks()
     this.model = opts.model ?? MODEL
-    this.costCeilingUsd = opts.costCeilingUsd ?? 50.0
+    this.costCeilingUsd =
+      opts.costCeilingUsd ?? envNum('TRANSLATION_COST_CEILING_USD', DEFAULTS.costCeilingUsd)
+    this.maxTokensPerRequest =
+      opts.maxTokensPerRequest ??
+      envNum('TRANSLATION_MAX_TOKENS_PER_REQUEST', DEFAULTS.maxTokensPerRequest)
+    this.maxInputTokens =
+      opts.maxInputTokens ?? envNum('TRANSLATION_MAX_INPUT_TOKENS', DEFAULTS.maxInputTokens)
+    this.minDelayMs =
+      opts.minDelayMs ?? envNum('TRANSLATION_MIN_DELAY_MS', DEFAULTS.minDelayMs)
+    this.disableCostLog = !!opts.disableCostLog
     this.onCostUpdate = opts.onCostUpdate
   }
 
-  /** Cumulative USD spent so far on this Translator. */
   getCumulativeCost(): number {
     return this.cumulativeUsd
   }
 
-  /** Translate a field map. Throws CostCeilingExceededError before exceeding the cap. */
+  getCostCeiling(): number {
+    return this.costCeilingUsd
+  }
+
+  getCallCount(): number {
+    return this.callCount
+  }
+
   async translate(input: TranslateInput): Promise<TranslateOutput> {
+    // Safeguard 1: kill switch
+    if (process.env.TRANSLATION_DISABLED === 'true') {
+      throw new TranslationDisabledError()
+    }
+
+    // Safeguard 2: cumulative-cost ceiling
     if (this.cumulativeUsd >= this.costCeilingUsd) {
       throw new CostCeilingExceededError(this.costCeilingUsd, this.cumulativeUsd)
     }
 
+    // Safeguard 6: rate limit
+    if (this.minDelayMs > 0 && this.lastCallAt > 0) {
+      const elapsed = Date.now() - this.lastCallAt
+      if (elapsed < this.minDelayMs) {
+        await new Promise((r) => setTimeout(r, this.minDelayMs - elapsed))
+      }
+    }
+
     const userPrompt = buildUserPrompt(input)
+
+    // Safeguard 4: pre-flight input-token check via the free countTokens endpoint
+    const tokenCount = await this.client.messages.countTokens({
+      model: this.model,
+      system: this.systemBlocks,
+      messages: [{ role: 'user', content: userPrompt }],
+    })
+    if (tokenCount.input_tokens > this.maxInputTokens) {
+      throw new InputTooLargeError(tokenCount.input_tokens, this.maxInputTokens)
+    }
+
+    // Safeguard 5: refuse if a single call's worst case eats >80% of remaining budget
+    const remainingBudget = this.costCeilingUsd - this.cumulativeUsd
+    const worstCase = estimateWorstCaseCostUsd(tokenCount.input_tokens, this.maxTokensPerRequest)
+    if (worstCase > remainingBudget * 0.8) {
+      throw new CallEstimateExceedsRemainingBudgetError(worstCase, remainingBudget)
+    }
 
     const response = await this.client.messages.create({
       model: this.model,
-      max_tokens: 8192,
+      max_tokens: this.maxTokensPerRequest,
       system: this.systemBlocks,
       messages: [{ role: 'user', content: userPrompt }],
     })
 
     const cost = priceCall(response.usage)
     this.cumulativeUsd += cost.usd
+    this.callCount += 1
+    this.lastCallAt = Date.now()
     this.onCostUpdate?.(this.cumulativeUsd, cost)
 
-    // The first text block holds the JSON. Be tolerant of multiple text
-    // blocks (Sonnet sometimes splits long outputs).
+    // Safeguard 7: persistent cost log
+    if (!this.disableCostLog) {
+      const ts = new Date().toISOString()
+      const docRef = `${input.collection ?? '?'}#${input.docId ?? '?'}`
+      const fieldNames = Object.keys(input.fields).join(',')
+      void appendCostLog(
+        `${ts}\t$${cost.usd.toFixed(6)}\tcum=$${this.cumulativeUsd.toFixed(4)}\t` +
+          `in=${cost.inputTokens}\tout=${cost.outputTokens}\t` +
+          `cacheR=${cost.cacheReadTokens}\tcacheW=${cost.cacheCreationTokens}\t` +
+          `${docRef}\tfields=[${fieldNames}]`,
+      )
+    }
+
     const textParts: string[] = []
     for (const block of response.content) {
       if (block.type === 'text') textParts.push(block.text)

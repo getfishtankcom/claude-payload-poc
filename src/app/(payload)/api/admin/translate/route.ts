@@ -19,11 +19,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Translator } from '@/lib/translation/translator'
+import {
+  Translator,
+  CostCeilingExceededError,
+  TranslationDisabledError,
+  InputTooLargeError,
+  CallEstimateExceedsRemainingBudgetError,
+} from '@/lib/translation/translator'
 import { pickTranslatableFields, SLUG_FIELDS } from '@/lib/translation/field-picker'
 
 export async function POST(request: NextRequest) {
   try {
+    if (process.env.TRANSLATION_DISABLED === 'true') {
+      return NextResponse.json(
+        { error: 'Translation is disabled (TRANSLATION_DISABLED=true)' },
+        { status: 503 },
+      )
+    }
     const payload = await getPayload({ config })
     const { user } = await payload.auth({ headers: request.headers })
     if (!user) {
@@ -89,6 +101,7 @@ export async function POST(request: NextRequest) {
       fields: enFields,
       collection: collectionSlug,
       slugFields: SLUG_FIELDS,
+      docId,
     })
 
     // Save FR locale + flip translationStatus to pending_review.
@@ -118,6 +131,19 @@ export async function POST(request: NextRequest) {
       updated: { id: updated.id, translationStatus: updated.translationStatus },
     })
   } catch (err) {
+    // Surface the safeguard errors as 4xx/5xx with a useful message.
+    if (err instanceof TranslationDisabledError) {
+      return NextResponse.json({ error: err.message }, { status: 503 })
+    }
+    if (err instanceof CostCeilingExceededError) {
+      return NextResponse.json({ error: err.message }, { status: 429 })
+    }
+    if (err instanceof InputTooLargeError) {
+      return NextResponse.json({ error: err.message }, { status: 413 })
+    }
+    if (err instanceof CallEstimateExceedsRemainingBudgetError) {
+      return NextResponse.json({ error: err.message }, { status: 429 })
+    }
     const msg = err instanceof Error ? err.message : String(err)
     const stack = err instanceof Error ? err.stack : undefined
     if (process.env.NODE_ENV !== 'production') {
