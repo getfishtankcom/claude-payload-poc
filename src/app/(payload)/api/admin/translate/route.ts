@@ -25,6 +25,7 @@ import {
   TranslationDisabledError,
   InputTooLargeError,
   CallEstimateExceedsRemainingBudgetError,
+  CallExceedsPerCallCapError,
 } from '@/lib/translation/translator'
 import { pickTranslatableFields, SLUG_FIELDS } from '@/lib/translation/field-picker'
 
@@ -142,6 +143,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: err.message }, { status: 413 })
     }
     if (err instanceof CallEstimateExceedsRemainingBudgetError) {
+      return NextResponse.json({ error: err.message }, { status: 429 })
+    }
+    if (err instanceof CallExceedsPerCallCapError) {
       return NextResponse.json({ error: err.message }, { status: 429 })
     }
     const msg = err instanceof Error ? err.message : String(err)

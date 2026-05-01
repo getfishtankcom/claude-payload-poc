@@ -34,6 +34,7 @@
  */
 import Anthropic from '@anthropic-ai/sdk'
 import { appendFile, mkdir } from 'node:fs/promises'
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import glossary from './glossary.json' with { type: 'json' }
@@ -57,23 +58,56 @@ const DEFAULTS = {
   maxTokensPerRequest: 4096,
   maxInputTokens: 20_000,
   minDelayMs: 500,
+  perCallUsdCap: 1.0, // Absolute single-call ceiling, independent of remaining-budget %
+  budgetWarnPct: 80, // Log a warning when cumulative crosses this % of ceiling
 } as const
 
 // Resolve the cost log path relative to repo root. Works whether this
-// module is loaded by Next.js, a Node script, or tsx.
+// module is loaded by Next.js, a Node script, or tsx. Override via
+// TRANSLATION_COST_LOG_PATH if needed.
 function resolveLogPath(): string {
-  // import.meta.url points at .../src/lib/translation/translator.ts
-  // (or its compiled equivalent). Walk up to repo root.
+  if (process.env.TRANSLATION_COST_LOG_PATH) {
+    return resolve(process.env.TRANSLATION_COST_LOG_PATH)
+  }
   try {
     const here = dirname(fileURLToPath(import.meta.url))
-    // .../src/lib/translation → up 3 → repo root
     return resolve(here, '..', '..', '..', '.ai-reports', 'translation-cost.log')
   } catch {
     return resolve(process.cwd(), '.ai-reports', 'translation-cost.log')
   }
 }
 
-const COST_LOG_PATH = resolveLogPath()
+function getCostLogPath(): string {
+  return resolveLogPath()
+}
+
+/**
+ * Sum every $X.XXXXXX value in the cost log. Used to seed cumulativeUsd
+ * at constructor time so the cost ceiling is **truly cumulative across
+ * all calls** (route invocations, batch runs, etc.) until the log is
+ * rotated/truncated.
+ *
+ * Synchronous + best-effort: returns 0 if the log doesn't exist or is
+ * unreadable. We don't want to block the constructor on file I/O nor
+ * fail-closed on a missing log file.
+ */
+function readLifetimeCostFromLogSync(): number {
+  try {
+    const path = getCostLogPath()
+    if (!existsSync(path)) return 0
+    const content = readFileSync(path, 'utf8')
+    let total = 0
+    for (const line of content.split('\n')) {
+      // Each line: "<iso>\t$0.012345\tcum=$X.XXXX\t..."
+      // Match the FIRST $X.XXXXXX (per-call cost), not cum=$.
+      const m = line.match(/\t\$(\d+\.\d+)\tcum=/)
+      if (m) total += Number(m[1])
+    }
+    return total
+  } catch {
+    return 0
+  }
+}
 
 export type TranslationCost = {
   inputTokens: number
@@ -86,19 +120,27 @@ export type TranslationCost = {
 export type TranslatorOptions = {
   /** Anthropic API key. Defaults to ANTHROPIC_API_KEY env var. */
   apiKey?: string
-  /** Hard cost ceiling in USD. Calls past this throw. Default $10. */
+  /** Hard cumulative ceiling in USD. Calls past this throw. Default $10. */
   costCeilingUsd?: number
+  /** Absolute per-call worst-case USD cap, independent of cumulative. Default $1.00. */
+  perCallUsdCap?: number
   /** Output token cap per call. Default 4096. */
   maxTokensPerRequest?: number
   /** Pre-flight: refuse if input exceeds this. Default 20000. */
   maxInputTokens?: number
   /** Minimum ms between calls (rate-limit). Default 500ms. */
   minDelayMs?: number
+  /** Warn (don't block) when cumulative crosses this % of ceiling. Default 80. */
+  budgetWarnPct?: number
+  /** Skip the SDK call; return synthetic FR for testing the flow with $0 spend. */
+  dryRun?: boolean
   /** Disable cost log writing (for tests). */
   disableCostLog?: boolean
+  /** Skip seeding cumulativeUsd from the existing cost log. Default false. */
+  skipLifetimeBudget?: boolean
   /** Optional callback fired after every successful call. */
   onCostUpdate?: (cumulativeUsd: number, lastCall: TranslationCost) => void
-  /** Override the model. Default 'claude-sonnet-4-6'. */
+  /** Override the model. Default 'claude-sonnet-4-6'. Honors TRANSLATION_MODEL env. */
   model?: string
 }
 
@@ -157,6 +199,16 @@ export class CallEstimateExceedsRemainingBudgetError extends Error {
         `Increase TRANSLATION_COST_CEILING_USD or shrink the input.`,
     )
     this.name = 'CallEstimateExceedsRemainingBudgetError'
+  }
+}
+
+export class CallExceedsPerCallCapError extends Error {
+  constructor(public estimateUsd: number, public capUsd: number) {
+    super(
+      `Single-call worst-case estimate ($${estimateUsd.toFixed(4)}) > absolute per-call cap ` +
+        `($${capUsd.toFixed(4)}). Increase TRANSLATION_PER_CALL_USD_CAP or shrink the input.`,
+    )
+    this.name = 'CallExceedsPerCallCapError'
   }
 }
 
@@ -270,8 +322,9 @@ function extractJsonObject(text: string): Record<string, unknown> {
 
 async function appendCostLog(line: string): Promise<void> {
   try {
-    await mkdir(dirname(COST_LOG_PATH), { recursive: true })
-    await appendFile(COST_LOG_PATH, line + '\n', 'utf8')
+    const path = getCostLogPath()
+    await mkdir(dirname(path), { recursive: true })
+    await appendFile(path, line + '\n', 'utf8')
   } catch {
     // Don't break translation on a logging failure.
   }
@@ -289,10 +342,14 @@ export class Translator {
   private systemBlocks: Anthropic.TextBlockParam[]
   private model: string
   private costCeilingUsd: number
+  private perCallUsdCap: number
   private maxTokensPerRequest: number
   private maxInputTokens: number
   private minDelayMs: number
+  private budgetWarnPct: number
+  private dryRun: boolean
   private disableCostLog: boolean
+  private warnFired = false
   private cumulativeUsd = 0
   private callCount = 0
   private lastCallAt = 0
@@ -304,9 +361,11 @@ export class Translator {
     }
     this.client = new Anthropic({ apiKey: opts.apiKey })
     this.systemBlocks = buildSystemBlocks()
-    this.model = opts.model ?? MODEL
+    this.model = opts.model ?? process.env.TRANSLATION_MODEL ?? MODEL
     this.costCeilingUsd =
       opts.costCeilingUsd ?? envNum('TRANSLATION_COST_CEILING_USD', DEFAULTS.costCeilingUsd)
+    this.perCallUsdCap =
+      opts.perCallUsdCap ?? envNum('TRANSLATION_PER_CALL_USD_CAP', DEFAULTS.perCallUsdCap)
     this.maxTokensPerRequest =
       opts.maxTokensPerRequest ??
       envNum('TRANSLATION_MAX_TOKENS_PER_REQUEST', DEFAULTS.maxTokensPerRequest)
@@ -314,8 +373,22 @@ export class Translator {
       opts.maxInputTokens ?? envNum('TRANSLATION_MAX_INPUT_TOKENS', DEFAULTS.maxInputTokens)
     this.minDelayMs =
       opts.minDelayMs ?? envNum('TRANSLATION_MIN_DELAY_MS', DEFAULTS.minDelayMs)
+    this.budgetWarnPct =
+      opts.budgetWarnPct ?? envNum('TRANSLATION_BUDGET_WARN_PCT', DEFAULTS.budgetWarnPct)
+    this.dryRun = opts.dryRun ?? process.env.TRANSLATION_DRY_RUN === 'true'
     this.disableCostLog = !!opts.disableCostLog
     this.onCostUpdate = opts.onCostUpdate
+
+    // Seed cumulativeUsd from the persistent cost log so the ceiling
+    // enforces *across* HTTP requests + batch runs, not just within
+    // one Translator instance. Set TRANSLATION_SKIP_LIFETIME_BUDGET=true
+    // to start fresh (e.g. after intentionally rotating the log).
+    if (
+      !opts.skipLifetimeBudget &&
+      process.env.TRANSLATION_SKIP_LIFETIME_BUDGET !== 'true'
+    ) {
+      this.cumulativeUsd = readLifetimeCostFromLogSync()
+    }
   }
 
   getCumulativeCost(): number {
@@ -361,11 +434,42 @@ export class Translator {
       throw new InputTooLargeError(tokenCount.input_tokens, this.maxInputTokens)
     }
 
-    // Safeguard 5: refuse if a single call's worst case eats >80% of remaining budget
-    const remainingBudget = this.costCeilingUsd - this.cumulativeUsd
+    // Safeguard 5a: absolute per-call USD cap (independent of remaining budget)
     const worstCase = estimateWorstCaseCostUsd(tokenCount.input_tokens, this.maxTokensPerRequest)
+    if (worstCase > this.perCallUsdCap) {
+      throw new CallExceedsPerCallCapError(worstCase, this.perCallUsdCap)
+    }
+
+    // Safeguard 5b: refuse if a single call's worst case eats >80% of remaining budget
+    const remainingBudget = this.costCeilingUsd - this.cumulativeUsd
     if (worstCase > remainingBudget * 0.8) {
       throw new CallEstimateExceedsRemainingBudgetError(worstCase, remainingBudget)
+    }
+
+    // Safeguard 8: dry-run mode — skip the SDK entirely, return synthetic FR
+    if (this.dryRun) {
+      const synthFields: Record<string, unknown> = {}
+      for (const [k, v] of Object.entries(input.fields)) {
+        synthFields[k] = typeof v === 'string' ? `[FR-DRY] ${v}` : v
+      }
+      const cost: TranslationCost = {
+        inputTokens: tokenCount.input_tokens,
+        outputTokens: 0,
+        cacheReadTokens: 0,
+        cacheCreationTokens: 0,
+        usd: 0,
+      }
+      this.callCount += 1
+      this.lastCallAt = Date.now()
+      if (!this.disableCostLog) {
+        const ts = new Date().toISOString()
+        const docRef = `${input.collection ?? '?'}#${input.docId ?? '?'}`
+        void appendCostLog(
+          `${ts}\t$0.000000\tcum=$${this.cumulativeUsd.toFixed(4)}\t` +
+            `in=${tokenCount.input_tokens}\tout=0\tcacheR=0\tcacheW=0\t${docRef}\tDRY_RUN`,
+        )
+      }
+      return { fields: synthFields, cost, cumulativeUsd: this.cumulativeUsd }
     }
 
     const response = await this.client.messages.create({
@@ -381,6 +485,18 @@ export class Translator {
     this.lastCallAt = Date.now()
     this.onCostUpdate?.(this.cumulativeUsd, cost)
 
+    // Safeguard 9: budget warning (one-shot — fires the first time we cross the threshold)
+    const pct = (this.cumulativeUsd / this.costCeilingUsd) * 100
+    if (!this.warnFired && pct >= this.budgetWarnPct) {
+      this.warnFired = true
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[translation] cumulative spend $${this.cumulativeUsd.toFixed(4)} ` +
+          `(${pct.toFixed(0)}% of $${this.costCeilingUsd.toFixed(2)} ceiling) — ` +
+          `${this.callCount} calls so far. Adjust TRANSLATION_COST_CEILING_USD if you need more.`,
+      )
+    }
+
     // Safeguard 7: persistent cost log
     if (!this.disableCostLog) {
       const ts = new Date().toISOString()
@@ -390,7 +506,7 @@ export class Translator {
         `${ts}\t$${cost.usd.toFixed(6)}\tcum=$${this.cumulativeUsd.toFixed(4)}\t` +
           `in=${cost.inputTokens}\tout=${cost.outputTokens}\t` +
           `cacheR=${cost.cacheReadTokens}\tcacheW=${cost.cacheCreationTokens}\t` +
-          `${docRef}\tfields=[${fieldNames}]`,
+          `${docRef}\tmodel=${this.model}\tfields=[${fieldNames}]`,
       )
     }
 
