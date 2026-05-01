@@ -44,6 +44,10 @@ function statusFor(en: Record<string, unknown>, fr: Record<string, unknown>): Fr
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayload({ config })
+    const { user } = await payload.auth({ headers: request.headers })
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
     const { searchParams } = request.nextUrl
     const collectionFilter = searchParams.get('collection') as AuditCollection | null
     const statusFilter = searchParams.get('status') as FrStatus | 'all' | null

@@ -95,6 +95,10 @@ async function fetchFolderLevel(
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayload({ config })
+    const { user } = await payload.auth({ headers: request.headers })
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
     const { searchParams } = request.nextUrl
     const parentId = searchParams.get('parentId')
 
