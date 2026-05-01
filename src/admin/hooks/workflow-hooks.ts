@@ -221,7 +221,8 @@ export const createLogWorkflowTransition = (
         ),
       )
     } catch (err) {
-      req.payload.logger.error(`Failed to create workflow notifications for ${doc.id}: ${err}`)
+      const msg = err instanceof Error ? err.message : String(err)
+      req.payload.logger.error(`Failed to create workflow notifications for ${doc.id}: ${msg}`)
     }
 
     return doc

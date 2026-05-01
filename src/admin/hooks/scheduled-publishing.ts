@@ -92,7 +92,8 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
           })
           payload.logger.info(`Auto-published ${collection}/${docId}`)
         } catch (err) {
-          payload.logger.error(`Failed to auto-publish ${collection}/${docId}: ${err}`)
+          const msg = err instanceof Error ? err.message : String(err)
+          payload.logger.error(`Failed to auto-publish ${collection}/${docId}: ${msg}`)
         }
       }
 
@@ -136,12 +137,14 @@ async function runScheduledPublishing(payload: Payload): Promise<void> {
           })
           payload.logger.info(`Auto-unpublished ${collection}/${docId}`)
         } catch (err) {
-          payload.logger.error(`Failed to auto-unpublish ${collection}/${docId}: ${err}`)
+          const msg = err instanceof Error ? err.message : String(err)
+          payload.logger.error(`Failed to auto-unpublish ${collection}/${docId}: ${msg}`)
         }
       }
     } catch (err) {
       // Collection may not exist yet — skip silently
-      payload.logger.warn(`Scheduled publishing skipped ${collection}: ${err}`)
+      const msg = err instanceof Error ? err.message : String(err)
+      payload.logger.warn(`Scheduled publishing skipped ${collection}: ${msg}`)
     }
   }
 }

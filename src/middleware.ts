@@ -35,7 +35,21 @@ const isProtectedRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   // Check redirects collection FIRST so 301/302s short-circuit before
   // running Clerk/intl middleware. Cached in-memory with a 5-min TTL.
-  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? req.nextUrl.origin
+  // A5.1: validate NEXT_PUBLIC_SERVER_URL parses as a real URL before
+  // using it as the fetch target — falls back to the request origin if
+  // the env var is missing, malformed, or has stray whitespace.
+  const rawServerUrl = process.env.NEXT_PUBLIC_SERVER_URL?.trim()
+  let serverUrl = req.nextUrl.origin
+  if (rawServerUrl) {
+    try {
+      const parsed = new URL(rawServerUrl)
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        serverUrl = parsed.origin
+      }
+    } catch {
+      // malformed env var — keep request origin
+    }
+  }
   const rule = await findRedirect(req.nextUrl.pathname, serverUrl).catch(() => null)
   if (rule) {
     const isAbsolute = /^https?:\/\//i.test(rule.to)
