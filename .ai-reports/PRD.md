@@ -362,7 +362,7 @@ These must be resolved before or during implementation:
 |---|----------|--------|---------------------|
 | 1 | ~~How do users access 11 Standards sections without top-level nav?~~ | High | **RESOLVED:** Three access paths: (1) Homepage "Browse by Standard" card grid linking to standards overview pages, (2) Board Detail sidebar tabs linking to per-board standards, (3) Search with "Standard" facet filter. No dedicated top-level nav item needed. |
 | 2 | ~~What is the bilingual (EN/FR) strategy?~~ | High | **RESOLVED:** Payload CMS i18n plugin (`localization: { locales: ['en', 'fr'], defaultLocale: 'en' }`) + Next.js App Router `[locale]` segment (`app/[locale]/...`). All text/richtext fields localized. FR URL routing via locale prefix. Translation strings in `messages/en.json` and `messages/fr.json`. |
-| 3 | ~~What is the authentication strategy?~~ | High | **RESOLVED:** Aptify DB API — direct API calls to Aptify database, simple True/False membership check, form submissions trigger emails, no storage required. Phase 2 implementation. |
+| 3 | ~~What is the authentication strategy?~~ | High | **RESOLVED (revised 2026-05-01):** **Clerk** (`@clerk/nextjs`). The original PRD direction was Aptify DB API but the project does not have Aptify access. Clerk handles login, sessions, and member True/False check. Form submissions still trigger emails, no member-data storage required. |
 | 4 | ~~What happens to ~694 uncovered pages during transition?~~ | High | **RESOLVED:** Next.js middleware redirect map. Create `redirects.ts` config file mapping ~694 old Sitecore URLs to new routes. Use `next.config.js` `redirects()` for static mappings, middleware for pattern-based redirects (e.g., `/en/acsb/*` → `/acsb/*`). 301 permanent redirects for SEO. |
 | 5 | ~~Is "Save Search Alert" functional or placeholder?~~ | Medium | **RESOLVED:** Does not exist on live site. Wireframe invention — defer to Phase 2+ as new feature if desired. Requires email service + user accounts. Tracked as potential Phase 2+ feature — not in current build plans. |
 | 6 | ~~How will 1,010+ news items be browsed outside search?~~ | Medium | **RESOLVED:** Phase 1 provides basic news listing on Board Detail pages (3 recent items + "View All" link to search with board filter). Phase 2 T12 provides full filtered news listing with server-side pagination via API routes, category pills, sort/date controls. 1,010+ items handled server-side. |
@@ -392,7 +392,7 @@ These must be resolved before or during implementation:
 | Integration | Solution | Details |
 |---|---|---|
 | Search | Meilisearch (self-hosted Docker, MIT license) | React InstantSearch via `instant-meilisearch` adapter. Separate EN/FR indexes. PDF/Word text extraction via `pdf-parse`/`mammoth`. Payload sync via `payload-meilisearch` plugin. |
-| Auth | Aptify DB API | Next.js ↔ Aptify direct API calls. Simple member True/False check. Form submissions trigger emails, no storage required. |
+| Auth | **Clerk** (`@clerk/nextjs`) | Aptify access not available; Clerk is canonical (revised 2026-05-01). Member True/False = Clerk authenticated session. Form submissions trigger emails, no member-data storage required. |
 | Newsletter | HubSpot CRM | HubSpot API integration for newsletter subscription. |
 | CAPTCHA | ReCaptcha | Used on Contact Form and other form submissions. Not image CAPTCHA. |
 | Cookie Consent | OneTrust | Cookie consent manager, existing integration from current site. |

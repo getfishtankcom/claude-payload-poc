@@ -631,7 +631,7 @@ A doc can be `workflowState: 'published'` AND `translationStatus: 'pending_revie
 
 ### 13.10 Reviewer identity
 
-Stays Clerk-based for now (Clerk is what's wired up). Reviewer = whoever is logged into the Payload admin via Clerk. If/when Aptify migration happens, reviewer identity migrates with it — no PRD change required.
+**Clerk (canonical, 2026-05-01).** Aptify access was the original PRD direction but the project does not have Aptify access available to it. Clerk is the auth system end-to-end. Reviewer = whoever is logged into the Payload admin via Clerk. No further migration planned.
 
 ### 13.11 Implementation Plan (May 2026 demo)
 

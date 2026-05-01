@@ -133,7 +133,7 @@ During Ralph loops, the payload-super skill auto-triggers when building collecti
 - **Official name:** Reporting and Assurance Standards (RAS) Canada
 - **Live site:** frascanada.ca (Sitecore CMS, ASP.NET WebForms, PostBack pagination)
 - **Bilingual:** EN/FR with language switcher
-- **Auth:** Aptify DB API (NOT OAuth/SAML — direct API calls, simple member True/False)
+- **Auth:** Clerk (Aptify access not available to this project; updated 2026-05-01). Member True/False check still simple — Clerk session = authenticated user.
 - **Search:** Meilisearch (MIT, self-hosted Docker, `payload-meilisearch` plugin, React InstantSearch)
 - **Newsletter:** HubSpot Forms API integration
 - **CAPTCHA:** ReCaptcha v3 (invisible, `react-google-recaptcha-v3`)
@@ -156,7 +156,7 @@ During Ralph loops, the payload-super skill auto-triggers when building collecti
 - **Testing:** Vitest (unit/integration), Storybook (components), Playwright (E2E), axe-core (WCAG 2.2 AA)
 - **Diff rendering:** @pierre/diffs (text fields), diff-match-patch (Lexical rich text)
 - **DnD:** @dnd-kit/core + @dnd-kit/sortable
-- **Auth:** Aptify direct API (not Clerk, not OAuth/SAML)
+- **Auth:** Clerk (`@clerk/nextjs`). Aptify direct API was the original intent but the project does not have Aptify access; Clerk is canonical.
 - **Analytics:** GA4 via @next/third-parties
 - **Cookie consent:** OneTrust
 - **i18n:** next-intl + Payload localization (en/fr)
@@ -224,7 +224,7 @@ These are confirmed design decisions from the Fishtank Notion specs. Do not devi
 ### Members & Auth
 - **3 member-only forms** share identical UI: Document For Comment Submission, Event Registration, Volunteer Registration
 - All 3 are form → email with attachment. **No storage, no logs.**
-- Member check is **simple True/False** via Aptify API. No usergroups, no geo-restrictions, no content gating beyond these 3 forms.
+- Member check is **simple True/False** via Clerk session (Aptify access not available; updated 2026-05-01). No usergroups, no geo-restrictions, no content gating beyond these 3 forms.
 - All other content is freely available to members and non-members alike.
 - Login is for: (1) submitting comments to Document for Comment, (2) newsletter preferences management (linked to HubSpot CRM). Login location should stay as-is (users are familiar).
 
