@@ -15,6 +15,7 @@
  * - Decision summaries are distinct from meeting events — they capture outcomes, not scheduling
  */
 import type { CollectionConfig } from 'payload'
+import { translationStatusField } from '@/fields/workflow'
 
 export const DecisionSummaries: CollectionConfig = {
   slug: 'decision-summaries',
@@ -63,5 +64,6 @@ export const DecisionSummaries: CollectionConfig = {
       required: true,
       label: 'Board',
     },
+    translationStatusField,
   ],
 }

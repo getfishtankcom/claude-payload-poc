@@ -17,6 +17,7 @@
  * - Parts are primarily used by Accounting category standards
  */
 import type { CollectionConfig } from 'payload'
+import { translationStatusField } from '@/fields/workflow'
 
 export const Standards: CollectionConfig = {
   slug: 'standards',
@@ -85,5 +86,6 @@ export const Standards: CollectionConfig = {
       required: true,
       label: 'Board',
     },
+    translationStatusField,
   ],
 }

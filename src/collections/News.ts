@@ -47,6 +47,7 @@ export const News: CollectionConfig = {
         beforeDocumentControls: [
           '/admin/components/FrTranslationWarning',
           '/admin/components/VersionDiffButton',
+          '/admin/components/TranslateButton',
         ],
       },
     },

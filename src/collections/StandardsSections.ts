@@ -20,6 +20,7 @@
  * - This powers Template 5 (Standards Overview)
  */
 import type { CollectionConfig } from 'payload'
+import { translationStatusField } from '@/fields/workflow'
 
 export const StandardsSections: CollectionConfig = {
   slug: 'standards-sections',
@@ -160,5 +161,6 @@ export const StandardsSections: CollectionConfig = {
         description: 'Projects displayed in the Active Projects table on this page',
       },
     },
+    translationStatusField,
   ],
 }

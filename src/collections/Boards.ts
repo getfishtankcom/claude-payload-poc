@@ -18,6 +18,7 @@
  * - Slug is used for URL routing (e.g., /boards/acsb)
  */
 import type { CollectionConfig } from 'payload'
+import { translationStatusField } from '@/fields/workflow'
 
 export const Boards: CollectionConfig = {
   slug: 'boards',
@@ -152,5 +153,6 @@ export const Boards: CollectionConfig = {
         },
       ],
     },
+    translationStatusField,
   ],
 }

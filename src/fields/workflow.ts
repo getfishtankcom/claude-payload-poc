@@ -121,6 +121,27 @@ export const createdByField: Field = {
   },
 }
 
+/**
+ * FR translation review state. Orthogonal to workflowState (PRD §13.9):
+ * a doc can be workflowState='published' AND translationStatus='pending_review'.
+ * Set by /api/translate (PRD §13.E) and the batch script (§13.H).
+ */
+export const translationStatusField: Field = {
+  name: 'translationStatus',
+  type: 'select',
+  defaultValue: 'untranslated',
+  options: [
+    { label: 'Untranslated', value: 'untranslated' },
+    { label: 'AI Draft (Pending Review)', value: 'pending_review' },
+    { label: 'Changes Requested', value: 'changes_requested' },
+    { label: 'Approved', value: 'approved' },
+  ],
+  admin: {
+    position: 'sidebar',
+    description: 'FR translation review state — orthogonal to workflowState.',
+  },
+}
+
 /** All workflow fields as an array — spread into collection fields */
 export const workflowFields: Field[] = [
   workflowStateField,
@@ -128,4 +149,5 @@ export const workflowFields: Field[] = [
   publishOnField,
   unpublishOnField,
   createdByField,
+  translationStatusField,
 ]
