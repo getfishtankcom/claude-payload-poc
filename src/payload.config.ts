@@ -82,7 +82,7 @@ export default buildConfig({
   localization: {
     locales: [
       { label: 'English', code: 'en' },
-      { label: 'Francais', code: 'fr' },
+      { label: 'Français', code: 'fr' },
     ],
     defaultLocale: 'en',
     fallback: true,

@@ -14,7 +14,7 @@
  *
  * @notes
  * - Used for promotional banners and action sections
- * - Replaces hardcoded NewToFras component with CMS-editable content
+ * - Replaces hardcoded NewToRas component with CMS-editable content
  * - interfaceName generates TypeScript type in payload-types.ts
  */
 import type { Block } from 'payload'

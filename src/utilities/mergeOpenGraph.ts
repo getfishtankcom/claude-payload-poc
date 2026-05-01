@@ -8,7 +8,7 @@
  *
  * @notes
  * - Adapted from Payload website template
- * - Default OG description/title use FRAS branding
+ * - Default OG description/title use RAS branding
  * - Image falls back to a default OG image (to be added in public/)
  */
 import type { Metadata } from 'next'

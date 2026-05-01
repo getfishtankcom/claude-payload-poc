@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "FRAS Canada PoC — Next.js 15 + Payload CMS 3.x + Tailwind CSS v4",
+  "description": "RAS Canada PoC — Next.js 16 + Payload CMS 3.x + Tailwind CSS v4",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

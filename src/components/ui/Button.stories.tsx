@@ -68,7 +68,7 @@ export const Dark: Story = {
 export const AsLink: Story = {
   args: {
     variant: 'primary',
-    children: 'Visit FRAS',
+    children: 'Visit RAS',
     href: 'https://frascanada.ca',
   },
 }

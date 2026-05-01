@@ -5,7 +5,7 @@
  * preserving the current page path.
  *
  * Key features:
- * - Shows alternate language label ("Francais" when on EN, "English" when on FR)
+ * - Shows alternate language label ("Français" when on EN, "English" when on FR)
  * - Preserves current page path when switching locales
  * - Uses next-intl's Link and usePathname for locale-aware navigation
  * - Compact variant for utility bar, inline variant for mobile menu
@@ -35,7 +35,7 @@ type LanguageSwitcherProps = {
 /** Maps locale codes to display labels */
 const localeLabels: Record<Locale, string> = {
   en: 'English',
-  fr: 'Francais',
+  fr: 'Français',
 }
 
 export function LanguageSwitcher({ variant = 'compact', onSwitch }: LanguageSwitcherProps) {

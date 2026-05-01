@@ -15,7 +15,7 @@ test.describe('Bilingual Navigation', () => {
     await page.goto('/en')
     const switcher = page.locator('[data-testid="language-switcher"]')
     await expect(switcher).toBeVisible()
-    await expect(switcher).toContainText('Francais')
+    await expect(switcher).toContainText('Français')
   })
 
   test('switching from EN to FR changes URL locale prefix', async ({ page }) => {

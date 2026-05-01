@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "FRAS Canada",
+    "siteName": "RAS Canada",
     "siteDescription": "Financial Reporting & Assurance Standards",
     "loading": "Loading...",
     "error": "An error occurred",
@@ -99,7 +99,7 @@
   "boards": {
     "title": "Boards",
     "overview": "Overview",
-    "boardDetail": "{board} — FRAS Canada",
+    "boardDetail": "{board} — RAS Canada",
     "quickActions": "Quick Actions",
     "upcomingEvents": "Upcoming Events",
     "resources": "Resources",
@@ -132,7 +132,7 @@
     "invalidEmail": "Please enter a valid email address."
   },
   "footer": {
-    "copyright": "\u00a9 {year} FRAS Canada. All rights reserved.",
+    "copyright": "\u00a9 {year} RAS Canada. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfUse": "Terms of Use",
     "accessibility": "Accessibility",

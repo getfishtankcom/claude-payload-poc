@@ -8,6 +8,6 @@
  * - All are homepage-specific (not reused on other pages)
  */
 export { HeroSection } from './HeroSection'
-export { NewToFras } from './NewToFras'
+export { NewToRas } from './NewToRas'
 export { NewsEventsGrid } from './NewsEventsGrid'
 export { BrowseByStandard } from './BrowseByStandard'

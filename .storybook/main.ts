@@ -1,6 +1,6 @@
 /**
  * @description
- * Storybook main configuration for FRAS Canada.
+ * Storybook main configuration for RAS Canada.
  * Uses @storybook/react-vite framework to avoid conflicts with
  * Payload CMS's withPayload Next.js wrapper.
  *

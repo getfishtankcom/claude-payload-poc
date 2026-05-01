@@ -32,7 +32,7 @@ type HeroSectionProps = {
 
 export function HeroSection({
   heading = "Canada's Official Hub for Financial Reporting Standards",
-  subtitle = 'FRAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards.',
+  subtitle = 'RAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards.',
 }: HeroSectionProps) {
   const [searchModalOpen, setSearchModalOpen] = useState(false)
 

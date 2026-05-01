@@ -85,20 +85,20 @@ test.describe('Phase 2 SEO Metadata', () => {
     await page.goto('/en/acsb/about/members')
     const title = await page.title()
     expect(title).toContain('Members')
-    expect(title).toContain('FRAS')
+    expect(title).toContain('RAS')
   })
 
   test('committees page has title metadata', async ({ page }) => {
     await page.goto('/en/acsb/committees')
     const title = await page.title()
     expect(title).toContain('Committees')
-    expect(title).toContain('FRAS')
+    expect(title).toContain('RAS')
   })
 
   test('standards page has title metadata', async ({ page }) => {
     await page.goto('/en/standards/ifrs')
     const title = await page.title()
-    expect(title).toContain('FRAS')
+    expect(title).toContain('RAS')
   })
 
   test('job opportunities page has title metadata', async ({ page }) => {

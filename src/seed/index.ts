@@ -905,7 +905,7 @@ export async function seed(_payload?: unknown) {
         search_enabled: true,
       },
       layout: [
-        // CTA Block (New to FRAS)
+        // CTA Block (New to RAS)
         {
           blockType: 'cta',
           richText: richTextWithHeading(

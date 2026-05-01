@@ -1,22 +1,18 @@
 /**
- * @description
- * Stories for NewToFras CTA section — compact banner with heading, text, and action button.
- *
- * @dependencies
- * - NewToFras: Component under test
- * - @storybook/react: Meta/StoryObj types
+ * Stories for NewToRas CTA section — compact banner with heading, text,
+ * and action button.
  */
 import type { Meta, StoryObj } from '@storybook/react'
-import { NewToFras } from './NewToFras'
+import { NewToRas } from './NewToRas'
 
 const meta = {
-  title: 'Homepage/NewToFras',
-  component: NewToFras,
+  title: 'Homepage/NewToRas',
+  component: NewToRas,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof NewToFras>
+} satisfies Meta<typeof NewToRas>
 
 export default meta
 type Story = StoryObj<typeof meta>

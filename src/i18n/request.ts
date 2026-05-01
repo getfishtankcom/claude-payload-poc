@@ -16,7 +16,7 @@
  * @notes
  * - Message files live at project root: messages/en.json, messages/fr.json
  * - This runs server-side only via React cache
- * - timeZone set to America/Toronto (FRAS is Canadian)
+ * - timeZone set to America/Toronto (RAS Canada)
  */
 import { hasLocale } from 'next-intl'
 import { getRequestConfig } from 'next-intl/server'

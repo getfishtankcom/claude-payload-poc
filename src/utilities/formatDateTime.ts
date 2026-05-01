@@ -6,7 +6,7 @@
  * @notes
  * - Adapted from Payload website template
  * - Uses Intl.DateTimeFormat for locale-aware formatting
- * - FRAS site is bilingual (EN/FR) — locale param supports both
+ * - RAS site is bilingual (EN/FR) — locale param supports both
  */
 
 export const formatDateTime = (
