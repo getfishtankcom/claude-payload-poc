@@ -183,7 +183,7 @@ function AccordionSection({
                   type="checkbox"
                   checked={activeValues.includes(option.value)}
                   onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary-bright"
+                  className="h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary-bright"
                 />
               ) : (
                 <input
@@ -191,7 +191,7 @@ function AccordionSection({
                   name={section.id}
                   checked={activeValues.includes(option.value)}
                   onChange={() => handleRadioChange(option.value)}
-                  className="h-4 w-4 border-gray-300 text-primary focus:ring-primary-bright"
+                  className="h-6 w-6 border-gray-300 text-primary focus:ring-primary-bright"
                 />
               )}
               <span className="min-w-0 break-words">{option.label}</span>
