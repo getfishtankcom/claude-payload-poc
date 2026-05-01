@@ -57,6 +57,7 @@ export const DocumentsForComment: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
+      localized: true,
       required: true,
       unique: true,
       label: 'Slug',
