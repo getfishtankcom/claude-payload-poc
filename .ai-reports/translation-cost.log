@@ -1,0 +1,6 @@
+2026-05-01T20:43:43.027Z	$0.025287	cum=$0.0253	in=509	out=552	cacheR=0	cacheW=4128	news#49	fields=[title,slug,excerpt,body]
+2026-05-01T20:51:18.004Z	$0.024405	cum=$0.0244	in=495	out=496	cacheR=0	cacheW=4128	news#50	model=claude-sonnet-4-6	fields=[title,slug,excerpt,body]
+2026-05-01T21:04:07.797Z	$0.024468	cum=$0.0742	in=486	out=502	cacheR=0	cacheW=4128	news#56	model=claude-sonnet-4-6	fields=[title,slug,excerpt,body]
+2026-05-01T21:05:10.248Z	$0.007658	cum=$0.0818	in=335	out=361	cacheR=4128	cacheW=0	news#60	model=claude-sonnet-4-6	fields=[title,slug,excerpt,body]
+2026-05-01T21:58:45.287Z	$0.000000	cum=$0.0818	in=4463	out=0	cacheR=0	cacheW=0	news#60	DRY_RUN
+2026-05-01T21:58:46.189Z	$0.000000	cum=$0.0818	in=4475	out=0	cacheR=0	cacheW=0	news#59	DRY_RUN
