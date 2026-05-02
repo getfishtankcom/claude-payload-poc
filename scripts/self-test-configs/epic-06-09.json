@@ -1,0 +1,41 @@
+{
+  "epic": "epic-06-09",
+  "pages": [
+    {
+      "url": "/boards/acsb",
+      "name": "board-detail-acsb",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-board-detail']", "severity": "warn" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "warn" },
+        { "selector": "[data-testid='main-content']", "severity": "warn" },
+        { "selector": "[data-testid='right-rail']", "severity": "warn" },
+        { "selector": "[data-testid='quick-actions']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    },
+    {
+      "url": "/active-projects",
+      "name": "active-projects-listing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-active-projects']", "severity": "block" },
+        { "selector": "[data-testid='project-card']", "severity": "warn" },
+        { "selector": "[data-testid='board-filter-tabs']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    },
+    {
+      "url": "/open-consultations",
+      "name": "open-consultations-listing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-open-consultations']", "severity": "block" },
+        { "selector": "[data-testid='consultation-card']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

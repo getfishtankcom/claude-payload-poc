@@ -25,7 +25,32 @@ data/batches/
 
 # Screenshots from dogfooding
 .ai-reports/dogfood-frascanada/screenshots/
+.ai-reports/ralph-logs/
+
+# Storybook
+storybook-static/
 
 # OS
 .DS_Store
 Thumbs.db
+sitecore-dump.zip
+# clerk configuration (can include secrets)
+/.clerk/
+
+# Dogfood crawl output
+dogfood-output/
+
+# Ralph Wiggum loop artifacts
+ralph-logs/
+ralph-prompts/
+ralph-worktrees/
+ralph-worktrees-*/
+
+# Local media uploads
+media/
+
+# Editor
+.vscode/
+
+# Claude Code agent worktrees
+.claude/worktrees/

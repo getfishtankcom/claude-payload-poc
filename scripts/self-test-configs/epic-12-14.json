@@ -1,0 +1,48 @@
+{
+  "epic": "epic-12-14",
+  "pages": [
+    {
+      "url": "/news",
+      "name": "news-listing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-news']", "severity": "block" },
+        { "selector": "[data-testid='news-card']", "severity": "warn" },
+        { "selector": "[data-testid='search-pagination']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/about/members",
+      "name": "board-members",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-members']", "severity": "block" },
+        { "selector": "[data-testid='member-card']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/standards",
+      "name": "standards-landing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-standards']", "severity": "block" },
+        { "selector": "[data-testid='standards-section']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/about/contacts",
+      "name": "contacts",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-contacts']", "severity": "block" },
+        { "selector": "[data-testid='contact-card']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

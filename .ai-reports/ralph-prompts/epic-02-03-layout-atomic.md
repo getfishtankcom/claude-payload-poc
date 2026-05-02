@@ -22,7 +22,7 @@ Build in `src/components/layout/`:
 - Row 2: Logo + persistent search input
 - Row 3: Primary nav (Active Projects ▾, Open Consultations, News)
 - Mobile: collapse to logo + search icon + hamburger
-- Wire to `navigation` global via Payload API
+- **Accept `navigation` data as props. Do NOT fetch inside this component — data comes from root layout (wired in Epic 5.4)**
 - Use Headless UI for dropdown menus
 
 ### 2.2 `<SiteFooter />`
@@ -30,7 +30,7 @@ Build in `src/components/layout/`:
 - Newsletter CTA row: heading + email input + Subscribe button
 - Copyright bar with policy links + LinkedIn icon
 - Mobile: stack to single column
-- Wire to `footer` global
+- **Accept `footer` data as props from root layout (wired in Epic 5.5). Do NOT fetch inside this component.**
 
 ### 2.3 `<MobileMenu />`
 - Full-screen overlay with close (X) button
@@ -56,6 +56,7 @@ Build in `src/components/layout/`:
 - Inter font loading via `next/font/google`
 - Default metadata
 - Import globals.css with theme
+- **Data fetching for nav + footer globals will be wired in Epic 5.4-5.5. For now, pass mock data as props to SiteHeader/SiteFooter**
 
 ## Epic 3: Atomic Components (tasks 3.1–3.6)
 
@@ -82,13 +83,14 @@ Build in `src/components/`:
 - Purple H1 using text-heading color
 
 ### 3.5 `<NewsletterCTA />`
-- "Trusted by 3,000+..." heading
+- **Accept content text (heading, description) as props. No default text values.**
 - Email input + Subscribe button
 - LinkedIn CTA link
 - Wire submit to HubSpot Forms API (or placeholder action for now)
 
 ### 3.6 `<NewsItem />`
 - Date + title + excerpt + "Read More →"
+- **Accept `news` object typed to match Payload `news` collection fields**
 - Props: `news` object `{ date, title, excerpt, slug }`
 
 ## Validation
@@ -118,6 +120,36 @@ Layout components specifically:
 <promise>EPICS 2 AND 3 COMPLETE</promise>
 ```
 
+## CMS Data Pattern (MANDATORY)
+
+All page content MUST come from Payload CMS. Follow this pattern:
+
+1. **Page route (server component):** Fetch data via typed helpers from `src/lib/payload-helpers.ts` or direct `payload.find()` / `payload.findGlobal()` calls
+2. **Pass data as props:** Never fetch CMS data inside presentational components
+3. **No hardcoded content:** Component props must NOT have default values for user-facing text. The only acceptable defaults are empty states ("No items found")
+4. **Typed props:** Component interfaces must match Payload collection/global field shapes (use generated types from `payload-types.ts`)
+5. **Empty states:** Handle missing CMS data with fallback UI (skeleton or "No data" message), NOT fallback text
+6. **Canonical names:** Use `document-for-comment` (not consultations), `resources` (not documents), `events` (not meetings)
+7. **Exception:** Form field labels, button labels like "Submit", and structural UI text ("Showing X of Y") are acceptable hardcoded strings — these are UI chrome, not CMS content
+
+Example:
+```tsx
+// Page route (server component)
+import { getHomepage, getLatestNews } from '@/lib/payload-helpers'
+
+export default async function HomePage() {
+  const [homepage, news] = await Promise.all([getHomepage(), getLatestNews(3)])
+  return <HeroCTA heading={homepage.hero_heading} description={homepage.hero_subtitle} />
+}
+
+// Presentational component — NO default content values
+interface HeroCTAProps {
+  heading: string
+  description: string
+}
+export function HeroCTA({ heading, description }: HeroCTAProps) { ... }
+```
+
 ## IMPORTANT
 
 - Use design tokens — NEVER hardcode colors, spacing, or font sizes
@@ -127,3 +159,116 @@ Layout components specifically:
 - All components must be responsive (mobile-first)
 - Server Components by default; add `'use client'` only where interactivity requires it
 - Refer to wireframe-specs.md for exact layout specs
+
+### Data Test IDs
+
+Add `data-testid` attributes to key structural elements for automated self-testing:
+- Page containers: `data-testid="page-<name>"`
+- Sections: `data-testid="section-<name>"`
+- Interactive elements: `data-testid="<element-name>"`
+- Layout regions: `data-testid="sidebar-nav"`, `data-testid="main-content"`, `data-testid="right-rail"`
+
+### Self-Test
+
+After all tasks pass, run the automated self-test before outputting `<promise>`:
+
+```bash
+node scripts/self-test.mjs --epic epic-02-03
+```
+
+Config: `scripts/self-test-configs/epic-02-03.json`
+See exit protocol for handling failures vs warnings.
+
+### Storybook Stories
+
+For EVERY component built in this epic, create a co-located story file:
+
+- File: `ComponentName.stories.tsx` next to `ComponentName.tsx`
+- Format: CSF3 with `satisfies Meta<typeof Component>` and `tags: ['autodocs']`
+- Title hierarchy: `Category/ComponentName` (e.g., `Layout/SiteHeader`, `UI/Button`, `Board/SectionNav`)
+- Required stories per component:
+  - Default (all default props)
+  - Each variant (if component has variants)
+  - Mobile viewport (`parameters: { viewport: { defaultViewport: 'mobile' } }`)
+  - Edge case (empty data, long text, error state)
+- Use mock data from `src/__mocks__/cms-data.ts` for CMS-driven components — extend the mock file if needed
+- For compound components (e.g., Card with Card.Header, Card.Body), show all slot combinations
+
+**Validation:** `npx storybook build --quiet` must exit 0
+
+---
+
+## EXIT PROTOCOL (MANDATORY — applies to every Ralph loop)
+
+### Per-Task Completion
+
+A task is DONE when ALL of these pass. Do not skip any.
+
+1. Every acceptance criteria checkbox in MASTER_TODO.md is satisfied
+2. Every validation command listed for the task exits with code 0
+3. `npx tsc --noEmit` passes (zero TypeScript errors)
+4. Task status updated to `[x]` in MASTER_TODO.md
+5. Git commit created: `feat(epic-N): task N.M — [short description]`
+
+### Per-Task Failure (3-strike rule)
+
+If a task fails validation:
+1. First attempt: diagnose root cause, fix, re-validate
+2. Second attempt: try alternative approach, re-validate
+3. Third attempt: mark task `[!]` with reason, move to next task
+4. Do NOT loop endlessly — 3 attempts max per task
+
+### Per-Epic Completion
+
+When ALL tasks in the epic are `[x]`:
+
+1. Run full validation suite:
+   ```bash
+   npx tsc --noEmit
+   npm run build
+   ```
+2. If both pass:
+   - Update `.ai-reports/AUDIT_LOG.md` with:
+     - Date (run `date '+%Y-%m-%d'`)
+     - Type: BUILD
+     - Epic number and name
+     - All tasks completed
+     - Files created/modified (list them)
+     - Any deviations from spec
+   - Create summary git commit: `feat(epic-N): [epic description] — all tasks complete`
+   - Output EXACTLY this (the runner script watches for it):
+     ```
+     <promise>EPIC N COMPLETE</promise>
+     ```
+3. If build fails: treat as a task failure, apply 3-strike rule to the build fix
+
+### Blocked Exit
+
+When you cannot proceed:
+
+1. Mark current task `[!]` in MASTER_TODO.md with reason
+2. Try remaining tasks in the epic (skip blocked ones)
+3. When no more tasks can be attempted, output EXACTLY:
+   ```
+   <promise>EPIC N BLOCKED: [one-line reason]</promise>
+   ```
+
+### HARD STOPS (abort the entire loop immediately)
+
+Output `<promise>EPIC N ABORTED: [reason]</promise>` if ANY of these occur:
+- Dev server won't start after 3 fix attempts
+- Unresolvable dependency conflict (e.g., peer dep hell)
+- Task requires output from a GATE epic not yet approved
+- More than 5 structural TypeScript errors (not typos — architectural issues)
+- Database connection fails and cannot be recovered
+- You detect you're in an infinite loop (same error 3+ times)
+
+### What NOT To Do
+
+- Do NOT output `<promise>` until ALL tasks are verified
+- Do NOT mark tasks `[x]` before validation passes
+- Do NOT skip reading MASTER_TODO.md at the start — always check current state
+- Do NOT retry the same failing approach more than 3 times
+- Do NOT install packages not specified in the build plan without documenting why
+- Do NOT modify `.env` — only `.env.example`
+- Do NOT run `git push` — the runner script handles that after human review

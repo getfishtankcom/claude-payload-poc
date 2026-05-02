@@ -1,5 +1,9 @@
 /**
+ * @description
  * Custom styles for the Payload CMS admin panel.
- * Add overrides here to customize the admin UI appearance.
- * This file is imported by the (payload) layout.tsx.
+ * This file is imported by the (payload) layout.tsx AFTER '@payloadcms/next/css'.
+ *
+ * The main Payload admin stylesheet (layout, nav, sidebar, colors, typography)
+ * is provided by `@payloadcms/next/css` — imported in layout.tsx.
+ * This file is for project-specific admin panel style overrides only.
  */

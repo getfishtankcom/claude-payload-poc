@@ -2,19 +2,19 @@
 
 ## Project Overview
 Greenfield rebuild of frascanada.ca (currently Sitecore ASP.NET WebForms).
-**Target stack:** Next.js 15 (App Router) + Payload CMS 3.x + PostgreSQL + Tailwind CSS v4 + Meilisearch
+**Target stack:** Next.js 16.x (App Router) + Payload CMS 3.84.x + PostgreSQL + Tailwind CSS v4 + Meilisearch
 
-**Current phase:** Discovery & planning COMPLETE. Phase 1 implementation starting.
+**Current phase:** Admin Platform build (Layers 0-5). Phase 1+2 implementation complete.
 
 ### What is FRAS?
-**Financial Reporting and Standards** — the standard-setting body for all accountants across Canada. Organizationally it has 2 boards (AcSB, AASB) + 2 councils (PSAB, CSSB) + 1 oversight council (RASOC). FRAS is the umbrella for all of them. The site is being rebranded from FRAS to **RAS** (Regulatory and Accounting Standards).
+**Reporting and Assurance Standards (RAS) Canada** — the standard-setting body for all accountants across Canada. Organizationally it has 2 boards (AcSB, AASB) + 2 councils (PSAB, CSSB) + 1 oversight council (RASOC). FRAS is the umbrella for all of them. The site is being rebranded from FRAS to **RAS**.
 
 ### Project Goals
 - **Reduce homepage bounce rate** — currently massive. Homepage needs to drive traffic to resources & stories.
 - **Content author flexibility** — CMS editors should be able to curate what appears on the homepage and board pages.
 - **Highlight top news/content** — flexible approach to featuring content. Carousel component is a nice-to-have.
 - **Better content discoverability** — centralized listing pages with faceted filtering replace board-siloed navigation.
-- **WCAG 2.1 AA** compliance required.
+- **WCAG 2.2 AA** compliance required.
 - **No major brand deviations** — stay consistent with current brand standards.
 - **Brand font:** Official is **Arial** (2017 brand guidelines), live site uses **Roboto**, wireframes use **Inter**. Design team decides.
 - **Board-specific colors:** Purple #601F5B (FRAS), Blue #00438C (councils), Red-Brown #983232 (boards). See `sitecore-dump-analysis.md` Section 4.2.
@@ -51,9 +51,13 @@ Most traffic comes from **direct links** (social media, newsletters) — not org
 ### Planning
 - **Phase 1 PRD:** `.ai-reports/PRD.md` — 6 wireframed page types + search + global nav/footer
 - **Phase 2 PRD:** `.ai-reports/PRD-phase2.md` — 13 gap templates (standards, documents, news, meetings, members, committees, contact, auth, jobs)
-- **Phase 1 Build Plan:** `.ai-reports/BUILD_PLAN.md` — 11 epics (0-10), 58 tasks
-- **Phase 2 Build Plan:** `.ai-reports/BUILD_PLAN-phase2.md` — 9 epics (11-18, 20-21; Epic 19 reserved), 73 tasks
-- **Master TODO:** `.ai-reports/MASTER_TODO.md` — spec-driven task list with acceptance criteria, validation commands, Ralph loop stop conditions
+- **Phase 1 Build Plan:** `.ai-reports/archive/BUILD_PLAN-phase1-COMPLETE.md` — 11 epics (0-10), 58 tasks (archived)
+- **Phase 2 Build Plan:** `.ai-reports/archive/BUILD_PLAN-phase2-COMPLETE.md` — 9 epics (11-18, 20-21; Epic 19 reserved), 73 tasks (archived)
+- **Admin Platform Build Plan:** `.ai-reports/BUILD_PLAN.md` — 5 layers, ~47 tasks, admin modules + custom CMS shell
+- **Admin Platform TODO:** `.ai-reports/MASTER_TODO.md` — task checklist with acceptance criteria for Ralph loops
+- **Discovery Sanity Check:** `.ai-reports/discovery-sanity-check-2026-04-27.md` — cross-reference of all source materials
+- **Detail Page Structures:** `.ai-reports/dogfood-frascanada/detail-page-structures.md`
+- **Board Sub-Pages Audit:** `.ai-reports/board-subpages-content-audit.md`
 - **Content Migration:** `.ai-reports/dogfood-frascanada/content-migration-strategy.md` — Phase 3 extraction, transformation, redirect strategy
 
 ### Research (Notion-sourced)
@@ -82,17 +86,54 @@ Most traffic comes from **direct links** (social media, newsletters) — not org
 - **Claude in Chrome** — Browser automation (preferred for verification tasks)
 - **Context7** — Documentation lookups (use before web search)
 
+## Payload CMS Skills (Installed)
+
+Four Payload-specific skills are installed and auto-trigger on Payload work. **Use these instead of guessing patterns.**
+
+| Skill | When It Triggers | What It Provides |
+|-------|-----------------|------------------|
+| `payload-super` | Collections, fields, hooks, access control, queries, endpoints, plugins | Full reference library: FIELDS.md, COLLECTIONS.md, HOOKS.md, ACCESS-CONTROL.md, QUERIES.md, ENDPOINTS.md, ADAPTERS.md, ADVANCED.md, PLUGIN-DEVELOPMENT.md. Includes Decision Framework + Quality Checks. |
+| `payload` | Same triggers as payload-super (official Payload skill) | Subset of payload-super. Both load automatically — payload-super is preferred. |
+| `payload-migrate` | Database migrations, schema changes | Creating, running, rolling back Payload + PostgreSQL migrations |
+| `generate-translations` | Adding translation keys to Payload packages | **For Payload repo contributions only** — NOT for our EN/FR content. Ignore for FRAS project work. |
+
+### Key Payload Patterns to Follow (from payload-super)
+- **Local API:** Always use `overrideAccess: false` when operating on behalf of a user
+- **Hooks:** Always pass `req` to nested operations for transaction integrity
+- **Recursive hooks:** Use `context` flags to prevent infinite loops
+- **Types:** Import from `payload-types.ts`, use `Access` type for access control functions
+- **Collections:** Set meaningful `admin.useAsTitle` on every collection
+- **Localization:** Use `localized: true` on text fields that need EN/FR (our i18n approach)
+
+### Ralph Loop Skill Usage
+During Ralph loops, the payload-super skill auto-triggers when building collections, hooks, access control, or custom admin views. The skill's reference docs (`~/.claude/skills/payload-super/reference/`) contain authoritative patterns for:
+- Collection definitions with drafts/versions (`COLLECTIONS.md`)
+- All field types including blocks, arrays, joins (`FIELDS.md`)
+- Hook lifecycle patterns with context guards (`HOOKS.md`)
+- Row-level access control and RBAC (`ACCESS-CONTROL.md`, `ACCESS-CONTROL-ADVANCED.md`)
+- Custom endpoints and API routes (`ENDPOINTS.md`)
+- Plugin architecture for reusable extensions (`PLUGIN-DEVELOPMENT.md`)
+
+**Priority order for Payload docs:** payload-super skill reference > Context7 MCP > payloadcms.com/llms-full.txt
+
 ## Conventions
 - All AI-generated reports, analysis, and documentation go in `.ai-reports/`
 - Never modify `.env` files — only `.env.example`
 - Use Context7 MCP for documentation queries before web search
 - Use Claude in Chrome MCP for browser automation and verification (NOT chrome-devtools)
 - Always update `.ai-reports/AUDIT_LOG.md` after significant changes
+- Use TanStack Query for all admin data fetching — no raw `fetch()` in admin views
+- Use Tailwind + CSS variables bridge for admin styling — no inline styles in new code
+- All admin shared types go in `src/admin/types/`
+- All admin shared UI primitives go in `src/admin/components/ui/`
+- Always invoke `/ui` skill when building UI components
+- Brand constants imported from `src/config/brand.ts` — never hardcode org name
 
 ## Key Facts
+- **Official name:** Reporting and Assurance Standards (RAS) Canada
 - **Live site:** frascanada.ca (Sitecore CMS, ASP.NET WebForms, PostBack pagination)
 - **Bilingual:** EN/FR with language switcher
-- **Auth:** Aptify DB API (NOT OAuth/SAML — direct API calls, simple member True/False)
+- **Auth:** Clerk (Aptify access not available to this project; updated 2026-05-01). Member True/False check still simple — Clerk session = authenticated user.
 - **Search:** Meilisearch (MIT, self-hosted Docker, `payload-meilisearch` plugin, React InstantSearch)
 - **Newsletter:** HubSpot Forms API integration
 - **CAPTCHA:** ReCaptcha v3 (invisible, `react-google-recaptcha-v3`)
@@ -101,8 +142,56 @@ Most traffic comes from **direct links** (social media, newsletters) — not org
 - **5 boards/councils:** AcSB, PSAB, AASB, CSSB, RASOC — each with unique tab/content variations
 - **11 standards sections** under IFRS, Sustainability, ASPE (not 12)
 - **5 live site bugs documented** in verified report Section 6
-- **Total scope:** 131 implementation tasks across 20 epics (Phase 1: 58 tasks, Phase 2: 73 tasks)
+- **WCAG:** 2.2 AA compliance required
+- **Total scope:** Phase 1+2 complete (131 tasks, 20 epics). Admin platform: ~47 tasks, 5 layers.
 - **Content migration:** ~2,700+ content items across 13 types, 894 URL redirects needed
+
+## Technology Stack
+- **Framework:** Next.js 16.x (App Router)
+- **CMS:** Payload CMS 3.84.x
+- **Database:** PostgreSQL
+- **Styling:** Tailwind CSS v4 + CSS variables bridge for admin theme
+- **Data Fetching (admin):** TanStack Query (React Query)
+- **Search:** Meilisearch (self-hosted Docker, react-instantsearch)
+- **Testing:** Vitest (unit/integration), Storybook (components), Playwright (E2E), axe-core (WCAG 2.2 AA)
+- **Diff rendering:** @pierre/diffs (text fields), diff-match-patch (Lexical rich text)
+- **DnD:** @dnd-kit/core + @dnd-kit/sortable
+- **Auth:** Clerk (`@clerk/nextjs`). Aptify direct API was the original intent but the project does not have Aptify access; Clerk is canonical.
+- **Analytics:** GA4 via @next/third-parties
+- **Cookie consent:** OneTrust
+- **i18n:** next-intl + Payload localization (en/fr)
+
+## Admin Platform Architecture
+The admin has two entry points:
+- `/cms` — Primary editor experience (custom shell, all custom views)
+- `/admin` — Developer backdoor (Payload's built-in admin, role-gated to admin users only)
+
+### Custom Admin Views (built)
+- Content Tree (`/admin/tree`) — Sitecore-style hierarchical browser with DnD, context menu, search
+- Workbox (`/admin/workbox`) — Cross-collection workflow dashboard with inline approve/reject/publish
+- Page Builder (`/admin/builder/:id`) — Visual page builder with 53 component types, DnD, undo/redo
+- Media Library (`/admin/media`) — Folder-based media browser with upload, search, detail panel
+- Dashboard (`/admin`) — 4-widget dashboard with workflow queue, quick actions, recent items, publishing schedule
+
+### Planned Admin Views (Layers 2-4)
+- Command Palette (Cmd+K) — global search + quick actions
+- Favorites — bookmarked items
+- Redirect Manager — 301/302 redirect CRUD
+- Publishing Schedule — full calendar/list view
+- Language Audit — EN/FR translation completeness grid
+- Version Comparison — @pierre/diffs for text, diff-match-patch for Lexical
+- Notification Center — in-app notification bell + panel
+- Dictionary Manager — i18n string key/value management
+- Live WYSIWYG Preview — PostMessage iframe with editing chrome
+- Native Field Editing — @payloadcms/ui components in tree panel
+
+### Information Architecture
+Content-type-first centralized listings:
+- `/en/projects` — all projects, faceted by board + standard
+- `/en/documents-for-comment` — all documents
+- `/en/news` — all news
+- `/en/events` — all events
+Board pages (`/en/acsb`, etc.) are navigation hubs linking to centralized listings with `?board=` filter.
 
 ## RASOC Rules
 RASOC is an **oversight council**, NOT a standards board. It behaves differently from the 4 boards:
@@ -135,7 +224,7 @@ These are confirmed design decisions from the Fishtank Notion specs. Do not devi
 ### Members & Auth
 - **3 member-only forms** share identical UI: Document For Comment Submission, Event Registration, Volunteer Registration
 - All 3 are form → email with attachment. **No storage, no logs.**
-- Member check is **simple True/False** via Aptify API. No usergroups, no geo-restrictions, no content gating beyond these 3 forms.
+- Member check is **simple True/False** via Clerk session (Aptify access not available; updated 2026-05-01). No usergroups, no geo-restrictions, no content gating beyond these 3 forms.
 - All other content is freely available to members and non-members alike.
 - Login is for: (1) submitting comments to Document for Comment, (2) newsletter preferences management (linked to HubSpot CRM). Login location should stay as-is (users are familiar).
 
@@ -167,16 +256,16 @@ This project uses **Ralph Wiggum loops** for iterative, spec-driven development.
 
 ### How Ralph Loops Work Here
 
-1. **Pick an epic** from `MASTER_TODO.md`
-2. **Run the Ralph prompt** for that epic (stored in `.ai-reports/ralph-prompts/`)
+1. **Pick a layer** from `MASTER_TODO.md`
+2. **Run the Ralph prompt** for that layer (stored in `.ai-reports/ralph-prompts/`). Phase 1+2 prompts are archived in `.ai-reports/ralph-prompts/archive/`. Active prompts: `layer-00-foundation.md` through `layer-05-polish.md`.
 3. **Each iteration:** Claude reads the prompt, checks MASTER_TODO.md for current status, works on the next incomplete task, validates against acceptance criteria
-4. **Stop condition:** When all tasks in the epic pass validation, output `<promise>EPIC N COMPLETE</promise>`
-5. **Human approval gate:** User reviews the completed epic before marking it done
+4. **Stop condition:** When all tasks in the layer pass validation, output `<promise>LAYER N COMPLETE</promise>`
+5. **Human approval gate:** User reviews the completed layer before marking it done
 
 ### Rules for Ralph Loop Sessions
 
 **BEFORE doing any work:**
-1. Read `MASTER_TODO.md` — find the first `[ ]` task in your assigned epic
+1. Read `MASTER_TODO.md` — find the first `[ ]` task in your assigned layer
 2. Read the relevant BUILD_PLAN section for full task details
 3. Read relevant wireframe specs (`.ai-reports/wireframe-specs.md` or `wireframe-specs-phase2.md`)
 4. Read design tokens (`.ai-reports/dogfood-frascanada/design-tokens.md`) if building UI
@@ -188,40 +277,41 @@ This project uses **Ralph Wiggum loops** for iterative, spec-driven development.
 3. Run validation commands listed in the task
 4. If validation passes: mark `[x]` in MASTER_TODO.md
 5. If validation fails: fix the issue, re-validate. Do NOT mark complete until passing.
-6. Move to next `[ ]` task in the epic
+6. Move to next `[ ]` task in the layer
 
-**AFTER completing an epic:**
-1. Run ALL validation commands for every task in the epic
+**AFTER completing a layer:**
+1. Run ALL validation commands for every task in the layer
 2. Verify no TypeScript errors: `npx tsc --noEmit`
 3. Verify dev server runs: `npm run dev`
 4. Update AUDIT_LOG.md with summary of what was built
-5. Output `<promise>EPIC N COMPLETE</promise>`
+5. Output `<promise>LAYER N COMPLETE</promise>`
 
 ### Stop Conditions (when to output `<promise>`)
 
 - **Task-level:** All acceptance criteria checkboxes are checked AND validation commands pass
-- **Epic-level:** ALL tasks in the epic are `[x]` AND full epic validation passes
-- **Blocked:** If you hit a real blocker (missing dependency, unclear spec), mark task `[!]`, add a note, and move on. Output `<promise>EPIC N BLOCKED: [reason]</promise>` if no more tasks are available.
+- **Layer-level:** ALL tasks in the layer are `[x]` AND full layer validation passes
+- **Blocked:** If you hit a real blocker (missing dependency, unclear spec), mark task `[!]`, add a note, and move on. Output `<promise>LAYER N BLOCKED: [reason]</promise>` if no more tasks are available.
 
 ### Approval Gates
 
-These epics require **human review before proceeding** to dependent epics:
-- **Epic 0** (Design System) — foundation for everything. User must approve tokens, primitives, Tailwind config.
-- **Epic 1** (CMS Collections) — data model for all content. User must approve field structures.
-- **Epic 5** (Meilisearch) — search infrastructure. User must approve index configuration.
-- **Epic 17** (Auth) — security-critical. User must approve Aptify integration approach.
-- **Epic 18** (i18n) — affects all pages. User must approve locale routing strategy.
+These layers require **human review before proceeding** to dependent layers:
+- **Layer 0** (Foundation) — admin shell, routing, design tokens. User must approve before building any views.
+- **Layer 1** (Core Views) — Content Tree, Workbox, Page Builder, Media Library, Dashboard. User must approve UX + data model.
+- **Layer 2** (Tooling) — Command Palette, Favorites, Redirect Manager. User must approve before Layer 3.
+- **Layer 3** (Publishing) — Publishing Schedule, Language Audit, Version Comparison. User must approve completeness.
+- **Layer 4** (Platform) — Notification Center, Dictionary Manager, Preview, Field Editing. User must approve before Layer 5.
+- **Layer 5** (Polish) — Performance, WCAG audit, E2E tests, production hardening. Final sign-off before launch.
 
 ### Audit Log Recording
 
-After every Ralph loop session (whether completing an epic or hitting a blocker):
+After every Ralph loop session (whether completing a layer or hitting a blocker):
 1. Update `.ai-reports/AUDIT_LOG.md` with:
    - Date (use `date '+%Y-%m-%d'`)
    - Type: `BUILD`, `FIX`, `BLOCKED`, or `REVIEW`
-   - Epic and tasks completed
+   - Layer and tasks completed
    - Files created/modified
    - Any issues or deviations from spec
-2. Git commit all changes with message: `feat(epic-N): [description]`
+2. Git commit all changes with message: `feat(layer-N): [description]`
 
 ### Spec-Driven Design Rules
 

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__google_workspace__list_drive_items",
+      "mcp__google_workspace__get_drive_file_content",
+      "mcp__google_workspace__get_drive_file_download_url",
+      "mcp__google_workspace__get_spreadsheet_info",
+      "mcp__google_workspace__inspect_doc_structure",
+      "mcp__google_workspace__search_drive_files",
+      "mcp__google_workspace__list_document_comments",
+      "mcp__claude_ai_Slack__slack_search_public_and_private",
+      "mcp__claude_ai_Slack__slack_search_public",
+      "mcp__claude_ai_Slack__slack_search_users",
+      "mcp__claude_ai_Slack__slack_search_channels",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__read_console_messages"
+    ]
+  }
+}

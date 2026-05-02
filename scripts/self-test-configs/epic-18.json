@@ -1,0 +1,41 @@
+{
+  "epic": "epic-18",
+  "pages": [
+    {
+      "url": "/fr",
+      "name": "homepage-fr",
+      "structuralChecks": [
+        { "selector": "[data-testid='site-header']", "severity": "warn" },
+        { "selector": "[data-testid='site-footer']", "severity": "warn" },
+        { "selector": "[data-testid='hero-section']", "severity": "warn" },
+        { "selector": "[data-testid='language-switcher']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='language-switcher']", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": true
+    },
+    {
+      "url": "/fr/search",
+      "name": "search-fr",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-search']", "severity": "warn" },
+        { "selector": "[data-testid='search-input']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    },
+    {
+      "url": "/fr/boards/acsb",
+      "name": "board-detail-fr",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-board-detail']", "severity": "warn" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

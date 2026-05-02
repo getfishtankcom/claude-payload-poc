@@ -1,0 +1,26 @@
+{
+  "epic": "epic-02-03",
+  "pages": [
+    {
+      "url": "/",
+      "name": "layout-header-footer",
+      "structuralChecks": [
+        { "selector": "[data-testid='site-header']", "severity": "block" },
+        { "selector": "[data-testid='site-footer']", "severity": "block" },
+        { "selector": "[data-testid='utility-bar']", "severity": "block" },
+        { "selector": "[data-testid='primary-nav']", "severity": "block" },
+        { "selector": "[data-testid='footer-newsletter']", "severity": "warn" },
+        { "selector": "[data-testid='footer-copyright']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='mobile-menu-toggle']", "severity": "warn" },
+        { "action": "keyboard", "key": "Escape", "severity": "warn" },
+        { "action": "focus", "selector": "[data-testid='primary-nav'] a", "severity": "warn" },
+        { "action": "keyboard", "key": "Enter", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

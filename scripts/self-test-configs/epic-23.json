@@ -1,0 +1,21 @@
+{
+  "epic": "epic-23",
+  "pages": [
+    {
+      "url": "/admin",
+      "name": "admin-content-tree",
+      "structuralChecks": [
+        { "selector": "[data-testid='content-tree-panel']", "severity": "block" },
+        { "selector": "[data-testid='tree-node']", "severity": "warn" },
+        { "selector": "[data-testid='tree-drag-handle']", "severity": "warn" },
+        { "selector": "[data-testid='tree-context-menu']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='tree-node']", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}

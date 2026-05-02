@@ -11,12 +11,14 @@
 import type { ServerFunctionClient } from 'payload'
 
 import config from '@payload-config'
+import '@payloadcms/next/css'
 import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 
 import './admin-tailwind.css'
 import './custom.scss'
 import { importMap } from './admin/importMap.js'
+import { QueryProvider } from '../../admin/providers/QueryProvider'
 
 type Args = {
   children: React.ReactNode
@@ -33,7 +35,7 @@ const serverFunction: ServerFunctionClient = async function (args) {
 
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    {children}
+    <QueryProvider>{children}</QueryProvider>
   </RootLayout>
 )
 

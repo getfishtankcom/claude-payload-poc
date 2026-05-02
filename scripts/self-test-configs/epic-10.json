@@ -1,0 +1,58 @@
+{
+  "epic": "epic-10",
+  "pages": [
+    {
+      "url": "/",
+      "name": "homepage-integration",
+      "structuralChecks": [
+        { "selector": "[data-testid='site-header']", "severity": "block" },
+        { "selector": "[data-testid='site-footer']", "severity": "block" },
+        { "selector": "[data-testid='hero-section']", "severity": "block" },
+        { "selector": "[data-testid='section-news-events']", "severity": "block" },
+        { "selector": "[data-testid='section-browse-by-standard']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/search",
+      "name": "search-integration",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-search']", "severity": "block" },
+        { "selector": "[data-testid='search-results-container']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/boards/acsb",
+      "name": "board-detail-integration",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-board-detail']", "severity": "block" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/active-projects",
+      "name": "active-projects-integration",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-active-projects']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/open-consultations",
+      "name": "open-consultations-integration",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-open-consultations']", "severity": "block" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": true
+}

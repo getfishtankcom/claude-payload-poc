@@ -13,6 +13,9 @@
  *   neutral signal colors so the meaning stays portable across themes.
  * - Source paths register every admin TSX file so the Tailwind JIT picks up
  *   utility class usage from src/admin/**.
+ * - Legacy alias `--color-brand-gray` is preserved for v1 admin components
+ *   that already shipped with that utility name; new code should use
+ *   `--color-brand-neutral`.
  */
 
 @import 'tailwindcss';
@@ -87,6 +90,8 @@
   --color-brand-boards: var(--brand-boards);
   --color-brand-boards-tint: var(--brand-boards-tint);
   --color-brand-neutral: var(--brand-neutral);
+  /* Legacy alias — v1 admin components reference `bg-brand-gray` directly. */
+  --color-brand-gray: var(--brand-neutral);
 
   /* Surfaces */
   --color-surface-page: var(--surface-page);

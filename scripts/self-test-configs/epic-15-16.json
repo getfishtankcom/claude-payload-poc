@@ -1,0 +1,29 @@
+{
+  "epic": "epic-15-16",
+  "pages": [
+    {
+      "url": "/resources",
+      "name": "resources-listing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-resources']", "severity": "block" },
+        { "selector": "[data-testid='resource-card']", "severity": "warn" },
+        { "selector": "[data-testid='facet-sidebar']", "severity": "warn" },
+        { "selector": "[data-testid='search-pagination']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    },
+    {
+      "url": "/open-consultations",
+      "name": "document-for-comment-listing",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-open-consultations']", "severity": "block" },
+        { "selector": "[data-testid='consultation-card']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": false
+    }
+  ],
+  "breakpoints": [390, 768, 1440],
+  "a11y": false
+}

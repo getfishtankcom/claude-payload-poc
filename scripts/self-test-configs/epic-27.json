@@ -1,0 +1,19 @@
+{
+  "epic": "epic-27",
+  "pages": [
+    {
+      "url": "/admin",
+      "name": "admin-workbox",
+      "structuralChecks": [
+        { "selector": "[data-testid='workbox']", "severity": "block" },
+        { "selector": "[data-testid='workbox-notification-list']", "severity": "warn" },
+        { "selector": "[data-testid='workbox-scheduling']", "severity": "warn" },
+        { "selector": "[data-testid='workbox-filters']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}

@@ -17,7 +17,7 @@
  * - Polymorphic: renders as <a> when `href` is provided, <button> otherwise
  * - All variants use border-radius: 5px (--radius-sm) per design tokens Section 8.1
  * - Ghost variant has no padding or border — acts as an inline text link with arrow
- * - Focus ring uses --color-primary-bright for WCAG 2.1 AA compliance
+ * - Focus ring uses --color-primary-bright for WCAG 2.2 AA compliance
  */
 import React from 'react'
 

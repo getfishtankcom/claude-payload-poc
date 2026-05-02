@@ -1,0 +1,188 @@
+/**
+ * @description
+ * Global stylesheet for the RAS Canada frontend.
+ * Uses Tailwind CSS v4's @theme inline directive to define
+ * all design tokens as CSS custom properties that auto-generate
+ * utility classes.
+ *
+ * Token sources:
+ * - Brand colors: .ai-reports/dogfood-frascanada/design-tokens.md Section 1
+ * - Typography: design-tokens.md Section 2 + wireframe (Inter)
+ * - Spacing: design-tokens.md Section 3 (4px base)
+ * - Borders/Shadows: design-tokens.md Sections 4-5
+ * - Breakpoints: design-tokens.md Section 6.4
+ *
+ * @notes
+ * - Badge colors are approximate — exact hex values NEED REVIEW from design team
+ * - Hover/focus state colors use derived values until design confirmation
+ * - Hero gradient is a custom utility class (not a Tailwind theme token)
+ */
+
+@import 'tailwindcss';
+
+/* ── Design Tokens ──────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* ── Brand Colors ── */
+  --color-primary: #601F5B;
+  --color-primary-bright: #A53B9D;
+  --color-primary-medium: #8E3387;
+  --color-primary-vivid: #800080;
+
+  /* ── Hero Gradient Stops ── */
+  --color-gradient-stop-1: #9F2528;
+  --color-gradient-stop-2: #8A2339;
+  --color-gradient-stop-3: #60205B;
+  --color-gradient-stop-4: #243E90;
+
+  /* ── Neutral Palette ── */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-gray-900: #333333;
+  --color-gray-800: #303030;
+  --color-gray-600: #525252;
+  --color-gray-500: #696969;
+  --color-gray-400: #555555;
+  --color-gray-300: #F0F0F0;
+  --color-gray-200: #EEEEEE;
+  --color-gray-100: #F5F5F5;
+  --color-gray-50: #F8F8F8;
+
+  /* ── Semantic: Text ── */
+  --color-text-primary: #333333;
+  --color-text-secondary: #303030;
+  --color-text-muted: #696969;
+  --color-text-light: #555555;
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-muted: rgba(255, 255, 255, 0.82);
+
+  /* ── Semantic: Background ── */
+  --color-page: #FFFFFF;
+  --color-footer: #EEEEEE;
+  --color-alt: #F5F5F5;
+  --color-surface-light: #F8F8F8;
+  --color-dark: #333333;
+  --color-disclaimer: #000000;
+  --color-feature: #601F5B;
+  --color-row-alt: #F8F8F8;
+  --color-group-header: #F0F0F0;
+
+  /* ── Semantic: Links ── */
+  --color-link: #601F5B;
+  --color-link-hover: #800080;
+
+  /* ── Badge Colors (approximate — NEEDS REVIEW) ── */
+  --color-badge-standard: #601F5B;
+  --color-badge-news: #333333;
+  --color-badge-webinar: #0F766E;
+  --color-badge-meeting: #696969;
+  --color-badge-guidance: #555555;
+  --color-badge-consultation: #A53B9D;
+  --color-badge-decision: #243E90;
+  --color-badge-deadline: #9F2528;
+  --color-badge-resource: #8E3387;
+
+  /* ── Board-Specific Colors ── */
+  --color-board-fras: #601F5B;
+  --color-board-councils: #00438C;
+  --color-board-boards: #983232;
+
+  /* ── Typography ── */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.3125rem;
+  --font-size-3xl: 2.125rem;
+  --font-size-4xl: 2.875rem;
+
+  --line-height-tight: 1.13;
+  --line-height-snug: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  /* ── Spacing (4px base) ── */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+
+  /* ── Border Radius ── */
+  --radius-none: 0;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* ── Breakpoints ── */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+}
+
+/* ── Hero Gradient Utility ─────────────────────────────────────────────── */
+/* Cannot be a theme token (gradients aren't supported in @theme inline).
+   Applied as a custom utility class: class="hero-gradient" */
+.hero-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--color-gradient-stop-1) 12%,
+    var(--color-gradient-stop-2) 32%,
+    var(--color-gradient-stop-3) 49%,
+    var(--color-gradient-stop-4) 86%
+  );
+}
+
+/* ── Base Styles ───────────────────────────────────────────────────────── */
+@layer base {
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Default link styling */
+  a {
+    color: var(--color-link);
+  }
+  a:hover {
+    color: var(--color-link-hover);
+  }
+
+  /* Focus ring for accessibility (WCAG 2.2 AA) */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-bright);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Print Styles ──────────────────────────────────────────────────────── */
+@media print {
+  [data-testid="effective-dates-table"] table {
+    break-inside: avoid;
+  }
+  [data-testid="effective-dates-table"] tr {
+    break-inside: avoid;
+  }
+}

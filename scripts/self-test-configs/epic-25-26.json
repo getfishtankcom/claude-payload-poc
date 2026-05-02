@@ -1,0 +1,16 @@
+{
+  "epic": "epic-25-26",
+  "pages": [
+    {
+      "url": "/admin",
+      "name": "admin-dashboard",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-dashboard']", "severity": "warn" }
+      ],
+      "interactions": [],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}

@@ -1,0 +1,1009 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-01T19:24:17.910Z",
+    "sourcePairCount": 89,
+    "titlePairsExtracted": 77,
+    "h1PairsExtracted": 0,
+    "stubTermCount": 19,
+    "slugMappingTermCount": 53,
+    "finalTermCount": 121
+  },
+  "doNotTranslate": [
+    "RAS Canada",
+    "CPA Canada",
+    "IFRS",
+    "IASB",
+    "ISSB",
+    "IPSASB",
+    "IAASB"
+  ],
+  "terms": [
+    {
+      "en": "Accounting Standards Board",
+      "fr": "Conseil des normes comptables",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "AcSB",
+      "abbr_fr": "CNC"
+    },
+    {
+      "en": "Accounting Standards for Private Enterprises",
+      "fr": "Normes comptables pour les entreprises à capital fermé",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "ASPE",
+      "abbr_fr": "NCECF"
+    },
+    {
+      "en": "Auditing and Assurance Standards Board",
+      "fr": "Conseil des normes d'audit et de certification",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "AASB",
+      "abbr_fr": "CNAC"
+    },
+    {
+      "en": "Canadian Auditing Standards",
+      "fr": "Normes canadiennes d'audit",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "CAS",
+      "abbr_fr": "NCA"
+    },
+    {
+      "en": "Canadian Standards on Quality Management",
+      "fr": "Normes canadiennes de contrôle de la qualité",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "CSQM",
+      "abbr_fr": "NCCQ"
+    },
+    {
+      "en": "Canadian Sustainability Standards Board",
+      "fr": "Conseil canadien des normes d'information sur la durabilité",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "CSSB",
+      "abbr_fr": "CCNID"
+    },
+    {
+      "en": "Chair",
+      "fr": "Président(e)",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Consultation Paper",
+      "fr": "Document de consultation",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Discussion Paper",
+      "fr": "Document de travail",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Document for Comment",
+      "fr": "Document de consultation",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Effective Date",
+      "fr": "Date d'entrée en vigueur",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Exposure Draft",
+      "fr": "Exposé-sondage",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "IFRS Accounting Standards",
+      "fr": "Normes IFRS de comptabilité",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Not-for-Profit Organizations",
+      "fr": "Organismes sans but lucratif",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "NFPOs",
+      "abbr_fr": "OSBLSP"
+    },
+    {
+      "en": "Public Sector Accounting Board",
+      "fr": "Conseil sur la comptabilité dans le secteur public",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "PSAB",
+      "abbr_fr": "CCSP"
+    },
+    {
+      "en": "Public Sector Accounting Standards",
+      "fr": "Normes comptables pour le secteur public",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "PSAS"
+    },
+    {
+      "en": "Regulatory and Assurance Standards Oversight Council",
+      "fr": "Conseil de surveillance de la normalisation en information et en certification",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10,
+      "abbr_en": "RASOC",
+      "abbr_fr": "CSNIC"
+    },
+    {
+      "en": "Vice-Chair",
+      "fr": "Vice-président(e)",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Voting Member",
+      "fr": "Membre votant(e)",
+      "contexts": [
+        "stub"
+      ],
+      "frequency": 10
+    },
+    {
+      "en": "Meetings and Events",
+      "fr": "Réunions et événements",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 5
+    },
+    {
+      "en": "Contact Us",
+      "fr": "Pour nous joindre",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 4
+    },
+    {
+      "en": "Overview",
+      "fr": "Aperçu",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 4
+    },
+    {
+      "en": "Project Listing",
+      "fr": "Liste de projets",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 4
+    },
+    {
+      "en": "Resources",
+      "fr": "Ressources complémentaires",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 4
+    },
+    {
+      "en": "Documents for Comment",
+      "fr": "Documents de consultation",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 3
+    },
+    {
+      "en": "Members",
+      "fr": "Membres",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 3
+    },
+    {
+      "en": "News Listings",
+      "fr": "Listes de nouvelles",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 3
+    },
+    {
+      "en": "About",
+      "fr": "À propos de nous",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 2
+    },
+    {
+      "en": "Appointments, Reappointments, and Retirements – AcSOC",
+      "fr": "Nominations, reconductions et départs – CSNC",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 2
+    },
+    {
+      "en": "Committees",
+      "fr": "Comités",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 2
+    },
+    {
+      "en": "Cookie policy",
+      "fr": "Politique sur l’utilisation des témoins",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 2
+    },
+    {
+      "en": "Volunteer Opportunities",
+      "fr": "Bénévoles recherchés",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 2
+    },
+    {
+      "en": "2019-comprehensive-review-of-ifrs-for-smes",
+      "fr": "revue-globale-2019-ifrs-pme",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2020 Changes to Part I – AcSB Due Process – Endorsement Activities",
+      "fr": "Modifications apportées à la Partie I en 2020 – Procédure officielle du CNC – Activités d’approbation",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2020-changes-to-part-i-acsb-due-process-endorsement-activities",
+      "fr": "modifications-partie-i-activites-approbation-2020",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2021 Annual Improvements",
+      "fr": "Am&eacute;liorations annuelles 2021",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2021-05-03-ed-disclosure-requirements-ifrs-standards-pilot-approach",
+      "fr": "obligations-information-ifrs-13-ias-19",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2021-aip",
+      "fr": "ameliorations-annuelles-2021",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2022-02-23",
+      "fr": "reunion-fev-2022",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2023-acsoc-appointments",
+      "fr": "nominations-reconductions-departs-csnc",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "2024-04-01-rasoc-announcement",
+      "fr": "2024-04-01-csnic-communique",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasb",
+      "fr": "cnac",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASB Consultation Paper – 2026-2029 Strategic Plan",
+      "fr": "Document de consultation du CNAC – Plan stratégique 2026-2029",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASB Decision Summary – April 5, 2023",
+      "fr": "Résumé des décisions du CNAC – Le 5 avril 2023",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASB Exposure Draft – Proposed Amendments to Canadian Auditing Standard (CAS) 240, The Auditor's Responsibilities Relating to Fraud in an Audit of Financial Statements",
+      "fr": "Exposé-sondage du CNAC sur le projet de modification de la Norme canadienne d’audit (NCA) 240, Responsabilités de l’auditeur concernant les fraudes lors d’un audit d’états financiers",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASB Strategic Plan",
+      "fr": "Plan stratégique du CNAC",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasb-cas-240-fraud",
+      "fr": "es-nca-240-fraude-2024",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasb-strategic-plan",
+      "fr": "plan-strategique-cnac",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasb-strategic-plan-consultation",
+      "fr": "plan-strategique-cnac-2026-2029",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasoc",
+      "fr": "csnac",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASOC Activities",
+      "fr": "Activités du CSNAC",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AASOC Meeting Minutes – June 13, 2024",
+      "fr": "Procès-verbal de la réunion du CSNAC – Le 13 juin 2024",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasoc-activities",
+      "fr": "activites-csnac",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aasoc-june-2024",
+      "fr": "csnac-reunion-juin-2024",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "about",
+      "fr": "a-propos",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "About AcSOC",
+      "fr": "À propos de nous",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "About the AcSB",
+      "fr": "À propos de nous",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "About the Reporting & Assurance Standards Oversight Council",
+      "fr": "À propos du Conseil de surveillance des normes d’information et de certification",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Accounting Standards Oversight Council",
+      "fr": "Conseil de surveillance de la normalisation comptable",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "acsb",
+      "fr": "cnc",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AcSB Decision Summary – February 23, 2022",
+      "fr": "Résumé des décisions du CNC – Le 23 février 2022",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AcSB Exposure Draft – Disclosure Requirements in IFRS Standards — A Pilot Approach",
+      "fr": "Exposé-sondage du CNC – Obligations d’information dans les normes IFRS — Une approche pilote (projet de modification d’IFRS 13 et d’IAS 19)",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AcSB Strategic Plan",
+      "fr": "Plan stratégique du CNC",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "acsb-strategic-plan",
+      "fr": "plan-strategique-cnc",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "acsoc",
+      "fr": "csnc",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AcSOC Meeting Minutes – February 23, 2023",
+      "fr": "Procès-verbal de la réunion du CSNC – Le 23 février 2023",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "AcSOC Meeting Minutes – June 1, 2023",
+      "fr": "Procès-verbal de la réunion du CSNC – Le 1er juin 2023",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Agricultural inventories and productive biological assets",
+      "fr": "Stocks agricoles et actifs biologiques producteurs",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "agricultural-inventories",
+      "fr": "stocks-agricoles",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Amendments to IAS 1 and the Impact on the CASs: Disclosure of Material Accounting Policy Information",
+      "fr": "Fourniture d’informations significatives sur les méthodes comptables – Modifications apportées à IAS 1 et incidence sur les NCA",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "amendments-ias-1-impact-on-cass",
+      "fr": "modifications-ias-1-incidence-nca",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "appointments-reappointments-retirements-aasoc",
+      "fr": "nominations-departs-reconductions-csnac",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Appointments, Reappointments, and Retirements – AASOC",
+      "fr": "Nominations, départs et reconductions – CSNAC",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "apr-5-2023",
+      "fr": "reunion-avril-2023",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "aspe",
+      "fr": "ncecf",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Audit Evidence & Risk Response",
+      "fr": "Éléments probants et réponse aux risques",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "audit-evidence",
+      "fr": "elements-probants",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Auditing and Assurance Standards Oversight Council",
+      "fr": "Conseil de surveillance de la normalisation en audit et certification",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Audits of Less Complex Entities – Our Progress Toward a Solution",
+      "fr": "Audits d’entités peu complexes – Les progrès réalisés",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "audits-lces-progress-report",
+      "fr": "audits-epc-progres-realises",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Canadian Standard Setting Changes Ahead – Independent Review Committee recommendations are moving forward",
+      "fr": "Changements à venir dans l’écosystème normatif au Canada – Un pas de plus vers la mise en œuvre des recommandations formulées par le Comité d’examen indépendant de la normalisation au Canada",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "canadian-standard-setting-changes-ahead",
+      "fr": "changements-venir-dans-ecosysteme-normatif-au-canada",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "cass",
+      "fr": "nca",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "climate-related-risks-and-opportunities-aspe",
+      "fr": "possibilites-risques-changements-climatiques",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Close Call Going Concern Assessments",
+      "fr": "&Eacute;valuation de la continuit&eacute; de l&rsquo;exploitation : cas limites",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "close-call-going-concern-assessment",
+      "fr": "evaluation-continuite-exploitation",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "committees",
+      "fr": "comites",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "committes",
+      "fr": "comites",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "contact-us",
+      "fr": "nous-joindre",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "cookie-policy",
+      "fr": "politique-temoins",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "cookie-policy-2024",
+      "fr": "politique-temoins-2024",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "copyright",
+      "fr": "droits-auteur",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Copyright",
+      "fr": "Droit d'auteur",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "csqc",
+      "fr": "nccq",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "cssb",
+      "fr": "ccnid",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Effective Dates – Canadian Auditing Standards",
+      "fr": "Dates d’entrée en vigueur – Normes canadiennes d’audit",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Effective Dates – Canadian Standards on Quality Management",
+      "fr": "Dates d’entrée en vigueur – Normes canadiennes de gestion de la qualité",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Effective Dates – IFRS Accounting Standards",
+      "fr": "Dates d’entrée en vigueur – Normes IFRS de comptabilité",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "effective-dates",
+      "fr": "dates-entree-vigueur",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "en",
+      "fr": "fr",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "february-23-2023",
+      "fr": "reunion-fev-2023",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "governance",
+      "fr": "gouvernance",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Governance Committee",
+      "fr": "Comité de la gouvernance",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "ifrsstandards",
+      "fr": "normes-ifrs",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Independent Review Committee on Standard Setting issues Final Recommendations",
+      "fr": "Recommandations finales du Comité d’examen indépendant de la normalisation au Canada",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "ircss-final-recommendations",
+      "fr": "recommandations-finales-cein",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "june-1-2023",
+      "fr": "reunion-juin-2023",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "meetings-and-events",
+      "fr": "reunions-evenements",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "members",
+      "fr": "membres",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "News Listings",
+      "fr": "Actualités",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "news-listings",
+      "fr": "nouvelles",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "other",
+      "fr": "autres",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "projects",
+      "fr": "projets",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "rasoc",
+      "fr": "csnic",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "resources",
+      "fr": "ressources",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Second Comprehensive Review of the IFRS for SMEs Accounting Standard",
+      "fr": "Seconde revue globale de la norme IFRS de comptabilité pour les PME",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "The Oversight Council",
+      "fr": "Le Conseil de surveillance des normes d’information et de certification",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "Top 5 FAQs: IRCSS Final Report Recommendations",
+      "fr": "Les cinq questions les plus courantes : recommandations du rapport final du CEIN",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "top-faqs",
+      "fr": "questions-courantes",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "volunteer-opportunities",
+      "fr": "benevoles-recherches",
+      "contexts": [
+        "slug-mapping"
+      ],
+      "frequency": 1
+    },
+    {
+      "en": "What You Need to Know about Effects of Climate-related Risks and Opportunities on ASPE Financial Statements: Awareness Document",
+      "fr": "Ce que vous devez savoir au sujet des incidences des possibilités et risques liés aux changements climatiques sur les états financiers préparés selon les NCECF : document de sensibilisation",
+      "contexts": [
+        "title"
+      ],
+      "frequency": 1
+    }
+  ]
+}

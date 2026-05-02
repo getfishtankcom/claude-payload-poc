@@ -1,0 +1,21 @@
+{
+  "epic": "epic-24",
+  "pages": [
+    {
+      "url": "/admin/media",
+      "name": "admin-media-library",
+      "structuralChecks": [
+        { "selector": "[data-testid='page-media-library']", "severity": "block" },
+        { "selector": "[data-testid='sidebar-nav']", "severity": "warn" },
+        { "selector": "[data-testid='media-grid']", "severity": "warn" },
+        { "selector": "[data-testid='upload-button']", "severity": "warn" }
+      ],
+      "interactions": [
+        { "action": "click", "selector": "[data-testid='sidebar-nav'] [data-testid^='folder-tree-item']", "severity": "warn" }
+      ],
+      "consoleErrorsAllowed": true
+    }
+  ],
+  "breakpoints": [1440],
+  "a11y": false
+}

@@ -389,14 +389,14 @@ Content migration of ~2,090 URLs (1,069 EN + 1,015 FR), 1,010+ news items, 100+ 
    - "Forgot your Password?" link
    - "Log in" button — full-width purple filled. Note: "Log in" (two words, not "Login")
 2. **Registration CTA** — "Not registered yet?" text + "Create My account" link. Note: capital "M", lowercase "a".
-3. **CPA Canada Explanation** — rich text paragraph explaining authentication via Aptify DB API (member verification), includes link to cpacanada.ca/en/login
+3. **CPA Canada Explanation** — rich text paragraph explaining authentication (member verification via Clerk session — was Aptify in the original PRD; updated 2026-05-01 because the project does not have Aptify access), includes link to cpacanada.ca/en/login
 4. **Support Contact Block** — email: customerservice@cpacanada.ca, toll-free: 1 (800) 268-3793, international: +1 (416) 977-0748
 
 **Design constraints:** No CAPTCHA on login. No "Remember me" checkbox.
 
 **Auth implementation (application-level, not CMS):**
 - Session management: Custom JWT session management (HTTP-only cookie)
-- Aptify DB API integration — direct API calls for member verification (True/False membership check), session validation, and profile management. Replicates existing CPA solution (Next.js ↔ Aptify).
+- Clerk (`@clerk/nextjs`) — handles session, login, and member verification. Aptify direct API was the original PRD direction but the project does not have Aptify access (decision: 2026-05-01). Member True/False = authenticated Clerk session. Profile management via Clerk's built-in user object.
 - Member privileges: protected form submissions only (Volunteer Registration, Document Comment Submission, Event Registration). All other content is freely available.
 - Rate limiting: 5 attempts per 15 min
 - CSRF: Next.js built-in via server actions
@@ -464,7 +464,7 @@ The following forms were identified in the Notion research and are missing from 
 **Key implementation notes for member-only forms:**
 - All use the same UI pattern (form → email with optional attachment)
 - "No logs or info or storage is required" — form submissions trigger emails only
-- Must be logged in (Aptify DB API member verification) before accessing the form
+- Must be logged in (Clerk session — was Aptify in original PRD; updated 2026-05-01) before accessing the form
 - All member content access is freely available — only these form submissions require auth
 
 ### 3.16 Additional Components (from Notion Cross-Reference)
@@ -706,7 +706,7 @@ Phase 2 introduces additional design tokens that must align with Phase 1:
 | 1 | ~~How do users navigate to specific standards pages without top-level Standards nav?~~ | **Critical** | **RESOLVED:** (Same as PRD.md Q1.) Three access paths: (1) Homepage "Browse by Standard" card grid linking to standards overview pages, (2) Board Detail sidebar tabs linking to per-board standards, (3) Search with "Standard" facet filter. No dedicated top-level nav item needed. |
 | 2 | ~~Should `document-for-comment` and `document-detail` be separate collections or a single collection with different views?~~ | **Medium** | **RESOLVED: Keep as two separate collections.** `document-for-comment` for listing data (title, slug, standard, group, status, deadline) and `document-detail` for full page content (body, highlights, replyInfo, supportMaterials, staffContacts). This avoids field bloat in the listing collection and simplifies admin panel UX. Listing pages query `document-for-comment`, detail pages query `document-detail` with a relationship to the listing item. |
 | 3 | ~~What replaces the image CAPTCHA on the contact form?~~ | **Medium** | **RESOLVED:** ReCaptcha. Confirmed via Notion research — current site uses ReCaptcha, not image CAPTCHA. Keep CMS toggle (`formConfig.captchaEnabled`) for flexibility. |
-| 4 | ~~What is the CPA Canada SSO integration method?~~ | **High** | **RESOLVED:** Aptify DB API — direct API calls to Aptify database (Next.js ↔ Aptify). Simple True/False membership check. No OAuth/SAML. Replicates existing CPA solution while CPA adopts SSO via Okta separately. |
+| 4 | ~~What is the CPA Canada SSO integration method?~~ | **High** | **RESOLVED (revised 2026-05-01):** **Clerk** (`@clerk/nextjs`). The original answer was Aptify DB API but the project does not have Aptify access. Clerk is canonical: handles sessions, login, and member True/False. CPA Canada's separate SSO (Okta) initiative is independent and not coupled to this project. |
 | 5 | ~~Are the 5 tabs in standards-sections configurable per standard, or are they fixed?~~ | **Medium** | **RESOLVED:** Configurable tab array in CMS via `standards-sections.tabs` field. IFRS gets 6 tabs, all others get 5. Content editors can add/remove/reorder tabs per standard section. |
 | 6 | ~~How should the effective dates table handle the non-chronological ordering (2018 before 2019)?~~ | **Low** | **RESOLVED:** Use `sortOrder` number field (not date) for section ordering within effective dates tables. Preserves intentional editorial non-chronological ordering. |
 | 7 | ~~Where does the volunteer opportunities page live in the new IA?~~ | **Medium** | **RESOLVED:** Reuse T12 (Filtered News/Event Listing) with `isVolunteerOpportunity` pre-filter. Route: `/volunteer-opportunities`. Linked from utility bar "Volunteer" link and footer Quick Links. |
@@ -721,12 +721,12 @@ Phase 2 introduces additional design tokens that must align with Phase 1:
 All Phase 1 NFRs apply, plus:
 
 - **Performance:** Core Web Vitals passing (LCP < 2.5s, INP < 200ms, CLS < 0.1). Effective dates tables and meeting archives (180+ items) must use server-side pagination and/or virtual scrolling.
-- **Accessibility:** WCAG 2.1 AA compliance. Specific concerns: form field labels and error messages (T15), CAPTCHA alternative for screen readers (T15), keyboard navigation for scroll-spy anchor nav (T14), focus management on tab toggles (T8, T13).
+- **Accessibility:** WCAG 2.2 AA compliance. Specific concerns: form field labels and error messages (T15), CAPTCHA alternative for screen readers (T15), keyboard navigation for scroll-spy anchor nav (T14), focus management on tab toggles (T8, T13).
 - **SEO:** Server-rendered pages, semantic HTML, structured data. Standards pages need `BreadcrumbList` and potentially `FAQPage` schema for comment questions (T9). Job postings need `JobPosting` schema (T17).
 - **Responsive:** 390px (mobile) to 1440px (desktop), fluid breakpoints. Key adaptation patterns: sidebar drops below content (T3, T4, T9, T14), pills collapse to `<select>` (T11, T12), tables collapse to stacked cards (T5, T10).
 - **Browser support:** Latest 2 versions of Chrome, Firefox, Safari, Edge
 - **Bilingual (i18n):** All Phase 2 CMS collections support locale field. FR routing planned. Content model must accommodate parallel EN/FR content from Day 1.
-- **Authentication integration:** Aptify DB API (direct API calls, member True/False). Session management via custom JWT session management (HTTP-only cookie). Rate limiting on login (5 attempts/15 min). CSRF protection via Next.js server actions.
+- **Authentication integration:** **Clerk** (`@clerk/nextjs`) — was Aptify direct API in the original PRD; revised 2026-05-01 because the project does not have Aptify access. Clerk handles session management (Clerk-managed JWT, HTTP-only cookies), rate limiting, password reset, and CSRF. Member True/False = authenticated Clerk session.
 - **Form security:** Contact form ReCaptcha. Server-side validation. XSS prevention on form submission storage. Email notification on new submissions.
 - **Print support:** Effective dates tables (T10) should be print-friendly with `@media print` styles to avoid breaking rows across pages.
 
