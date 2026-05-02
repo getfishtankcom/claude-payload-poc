@@ -1,0 +1,136 @@
+/**
+ * @description
+ * Brand + semantic design tokens for the custom Admin Shell v2.
+ * Lifts FRAS Canada brand colors into CSS custom properties on :root and
+ * exposes them to Tailwind v4 via the `@theme inline` directive.
+ *
+ * @notes
+ * - All tokens are defined as CSS variables so they can be themed at runtime
+ *   and consumed from JS/TS without re-importing constants.
+ * - Per-board accent colors mirror src/config/brand.ts intent (FRAS purple,
+ *   councils blue, boards red-brown).
+ * - Workflow + lock + language tokens are semantic, not brand — they wrap
+ *   neutral signal colors so the meaning stays portable across themes.
+ * - Source paths register every admin TSX file so the Tailwind JIT picks up
+ *   utility class usage from src/admin/**.
+ */
+
+@import 'tailwindcss';
+
+@source "../../admin/**/*.{ts,tsx}";
+@source "../../app/(payload)/**/*.{ts,tsx}";
+
+/* ── Raw tokens on :root ────────────────────────────────────────────────── */
+:root {
+  /* Brand — board / council accents */
+  --brand-fras: #601F5B;
+  --brand-fras-tint: #8E3387;
+  --brand-fras-shade: #4A1746;
+  --brand-councils: #00438C;
+  --brand-councils-tint: #7986B9;
+  --brand-boards: #983232;
+  --brand-boards-tint: #C98578;
+  --brand-neutral: #A7A9AB;
+
+  /* Surfaces */
+  --surface-page: #FFFFFF;
+  --surface-elevated: #F8F8F8;
+  --surface-sunken: #F0F0F0;
+  --surface-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Text */
+  --text-primary: #1F1F1F;
+  --text-secondary: #525252;
+  --text-muted: #696969;
+  --text-on-brand: #FFFFFF;
+
+  /* Borders */
+  --border-default: #E5E5E5;
+  --border-strong: #C4C4C4;
+  --border-focus: var(--brand-fras);
+
+  /* Semantic — workflow states */
+  --workflow-draft: #696969;
+  --workflow-draft-bg: #F0F0F0;
+  --workflow-review: #B97500;
+  --workflow-review-bg: #FFF4E5;
+  --workflow-revision: #C72C2C;
+  --workflow-revision-bg: #FDECEC;
+  --workflow-approved: #1F7A3F;
+  --workflow-approved-bg: #E8F5EE;
+  --workflow-published: #00438C;
+  --workflow-published-bg: #E5EEF7;
+
+  /* Semantic — lock state */
+  --lock-locked: #B97500;
+  --lock-locked-bg: #FFF4E5;
+  --lock-unlocked: #696969;
+
+  /* Semantic — language warning */
+  --lang-missing: #C72C2C;
+  --lang-missing-bg: #FDECEC;
+  --lang-complete: #1F7A3F;
+  --lang-complete-bg: #E8F5EE;
+
+  /* Focus ring (WCAG 2.2 §2.4.11) */
+  --focus-ring: var(--brand-fras);
+}
+
+/* ── Tailwind theme bridge ──────────────────────────────────────────────── */
+@theme inline {
+  /* Brand */
+  --color-brand-fras: var(--brand-fras);
+  --color-brand-fras-tint: var(--brand-fras-tint);
+  --color-brand-fras-shade: var(--brand-fras-shade);
+  --color-brand-councils: var(--brand-councils);
+  --color-brand-councils-tint: var(--brand-councils-tint);
+  --color-brand-boards: var(--brand-boards);
+  --color-brand-boards-tint: var(--brand-boards-tint);
+  --color-brand-neutral: var(--brand-neutral);
+
+  /* Surfaces */
+  --color-surface-page: var(--surface-page);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-sunken: var(--surface-sunken);
+
+  /* Text */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-brand: var(--text-on-brand);
+
+  /* Borders */
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-border-focus: var(--border-focus);
+
+  /* Workflow */
+  --color-workflow-draft: var(--workflow-draft);
+  --color-workflow-draft-bg: var(--workflow-draft-bg);
+  --color-workflow-review: var(--workflow-review);
+  --color-workflow-review-bg: var(--workflow-review-bg);
+  --color-workflow-revision: var(--workflow-revision);
+  --color-workflow-revision-bg: var(--workflow-revision-bg);
+  --color-workflow-approved: var(--workflow-approved);
+  --color-workflow-approved-bg: var(--workflow-approved-bg);
+  --color-workflow-published: var(--workflow-published);
+  --color-workflow-published-bg: var(--workflow-published-bg);
+
+  /* Lock */
+  --color-lock-locked: var(--lock-locked);
+  --color-lock-locked-bg: var(--lock-locked-bg);
+  --color-lock-unlocked: var(--lock-unlocked);
+
+  /* Language */
+  --color-lang-missing: var(--lang-missing);
+  --color-lang-missing-bg: var(--lang-missing-bg);
+  --color-lang-complete: var(--lang-complete);
+  --color-lang-complete-bg: var(--lang-complete-bg);
+}
+
+/* ── WCAG 2.2 §2.4.11 focus ring ─────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
