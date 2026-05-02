@@ -164,7 +164,7 @@ export const UploadField: React.FC<UploadFieldProps> = ({
           >
             {value ? 'Replace' : 'Choose…'}
           </button>
-          {value && (
+          {!!value && (
             <button
               type="button"
               disabled={isReadOnly}

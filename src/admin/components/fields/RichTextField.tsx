@@ -19,7 +19,7 @@
 
 import * as React from 'react'
 
-import { LinkNode, $createLinkNode } from '@lexical/link'
+import { LinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import {
   ListItemNode,
@@ -55,6 +55,7 @@ import {
   UNDO_COMMAND,
   type EditorState,
   type LexicalEditor,
+  type SerializedEditorState,
 } from 'lexical'
 import { $setBlocksType } from '@lexical/selection'
 
@@ -196,12 +197,7 @@ const Toolbar: React.FC<{ pickImage?: RichTextFieldProps['pickImage'] }> = ({ pi
   const insertLink = () => {
     const href = window.prompt('Link URL')
     if (!href) return
-    editor.update(() => {
-      const sel = $getSelection()
-      if (!$isRangeSelection(sel) || sel.isCollapsed()) return
-      const link = $createLinkNode(href)
-      sel.insertNodes([link])
-    })
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, href)
   }
 
   const insertImage = () => {
@@ -211,10 +207,8 @@ const Toolbar: React.FC<{ pickImage?: RichTextFieldProps['pickImage'] }> = ({ pi
         const sel = $getSelection()
         if (!$isRangeSelection(sel)) return
         // Without a custom ImageNode, store the image as a Markdown-
-        // style link until the visual page builder swaps in a real
+        // style fallback until the visual page builder swaps in a real
         // ImageNode in the follow-on.
-        const link = $createLinkNode(url)
-        link.append({ ...({} as never) } as never)
         sel.insertText(`![${alt || 'image'}](${url})`)
       })
     })
@@ -345,7 +339,9 @@ export const RichTextField: React.FC<RichTextFieldProps> = ({
         value && typeof value === 'object'
           ? (editor: LexicalEditor) => {
               try {
-                editor.setEditorState(editor.parseEditorState(value as object))
+                editor.setEditorState(
+                  editor.parseEditorState(value as SerializedEditorState),
+                )
               } catch {
                 editor.update(() => {
                   $getRoot().clear()
