@@ -18,9 +18,10 @@
 import * as React from 'react'
 
 import { AdminShell } from '../../../admin/components/shell/AdminShell'
+import { TreeSpineDefault } from '../../../admin/components/tree/TreeSpineDefault'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <AdminShell>{children}</AdminShell>
+  <AdminShell leftRail={<TreeSpineDefault />}>{children}</AdminShell>
 )
 
 export default Layout
