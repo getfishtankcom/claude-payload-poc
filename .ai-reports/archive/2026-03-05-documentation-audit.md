@@ -1,3 +1,7 @@
+---
+archived-on: 2026-05-01
+archived-reason: historical
+---
 # FRAS Canada — Documentation Audit Report
 
 **Date:** 2026-03-05

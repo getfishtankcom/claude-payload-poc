@@ -1,3 +1,7 @@
+---
+archived-on: 2026-05-01
+archived-reason: historical
+---
 # Self-Test Report: epic-06-09
 Generated: 2026-03-05T18:46:30.046Z
 

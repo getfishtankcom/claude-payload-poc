@@ -1,3 +1,8 @@
+---
+archived-on: 2026-05-01
+archived-reason: superseded
+replaces: .ai-reports/consolidated-gaps-report.md
+---
 # FRAS Canada — Research Resolution: 7 Open Questions
 
 **Date:** 2026-03-04

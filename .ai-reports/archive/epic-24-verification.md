@@ -1,3 +1,7 @@
+---
+archived-on: 2026-05-01
+archived-reason: historical
+---
 # Self-Test Report: epic-24
 Generated: 2026-03-06T19:11:37.066Z
 

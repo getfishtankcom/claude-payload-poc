@@ -285,3 +285,4 @@
 2026-05-01T22:35:23.603Z	$0.014240	cum=$2.3526	in=724	out=722	cacheR=4128	cacheW=0	projects#44	model=claude-sonnet-4-6	fields=[title,slug,summary,timeline_stages]
 2026-05-01T22:35:31.969Z	$0.012869	cum=$2.3654	in=632	out=649	cacheR=4128	cacheW=0	projects#43	model=claude-sonnet-4-6	fields=[title,slug,summary,timeline_stages]
 2026-05-01T22:35:39.958Z	$0.012812	cum=$2.3783	in=643	out=643	cacheR=4128	cacheW=0	projects#42	model=claude-sonnet-4-6	fields=[title,slug,summary,timeline_stages]
+2026-05-01T22:50:50.133Z	$0.016494	cum=$2.3947	in=93	out=49	cacheR=0	cacheW=4128	events#245	model=claude-sonnet-4-6	fields=[title,slug]

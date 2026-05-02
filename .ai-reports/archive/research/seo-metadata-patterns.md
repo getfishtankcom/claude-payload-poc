@@ -1,3 +1,7 @@
+---
+archived-on: 2026-05-01
+archived-reason: historical
+---
 # FRAS Canada — SEO Metadata Patterns
 
 **Source:** 90 inspected pages across 35 page types (from `page-inspections.json`)
