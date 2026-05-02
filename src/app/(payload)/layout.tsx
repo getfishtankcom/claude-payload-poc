@@ -15,8 +15,8 @@ import '@payloadcms/next/css'
 import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 
-import './custom.scss'
 import './admin-tailwind.css'
+import './custom.scss'
 import { importMap } from './admin/importMap.js'
 import { QueryProvider } from '../../admin/providers/QueryProvider'
 
