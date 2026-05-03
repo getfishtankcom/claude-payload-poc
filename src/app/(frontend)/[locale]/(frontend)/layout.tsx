@@ -94,7 +94,7 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
               popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined}
             />
             <main data-testid="main-content">{children}</main>
-            <SiteFooter footer={footer} />
+            <SiteFooter footer={footer} locale={locale} />
           </NextIntlClientProvider>
         </ClerkProvider>
       </body>

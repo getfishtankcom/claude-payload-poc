@@ -161,7 +161,9 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfUse": "Terms of Use",
     "accessibility": "Accessibility",
-    "cookiePolicy": "Cookie Policy"
+    "cookiePolicy": "Cookie Policy",
+    "legal": "Legal",
+    "notConfigured": "Footer not configured."
   },
   "forms": {
     "required": "Required",
