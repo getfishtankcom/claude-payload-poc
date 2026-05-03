@@ -23,6 +23,7 @@
  * - Page content (title, intro, media inquiries) comes from CMS
  */
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import { Container } from '@/components/ui/Container'
 import { ContactFormWrapper } from '@/components/ContactFormWrapper'
@@ -31,14 +32,29 @@ import { RichText } from '@/components/RichText'
 import { submitContactForm } from '@/actions/contact'
 import { getPageBySlug } from '@/lib/payload-helpers'
 
-export const metadata: Metadata = {
-  title: 'Contact Us — RAS Canada',
-  description: 'Get in touch with RAS Canada. Send us your questions, comments, or media inquiries.',
+type PageProps = {
+  params: Promise<{ locale: string }>
 }
 
-export default async function ContactUsPage() {
-  // Fetch page content from CMS
-  const page = await getPageBySlug('contact-us')
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'contact' })
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+  }
+}
+
+export default async function ContactUsPage({ params }: PageProps) {
+  const { locale } = await params
+  // Fetch page content + i18n strings in parallel. We pass `locale`
+  // explicitly to getTranslations because the project does not call
+  // setRequestLocale anywhere (see PR #143).
+  const [page, tNav, tContact] = await Promise.all([
+    getPageBySlug('contact-us'),
+    getTranslations({ locale, namespace: 'nav' }),
+    getTranslations({ locale, namespace: 'contact' }),
+  ])
 
   // Extract media inquiries data from page (group fields, may not exist on Page type yet)
   const mediaInquiries = (page as unknown as Record<string, unknown>)?.mediaInquiries as {
@@ -54,7 +70,7 @@ export default async function ContactUsPage() {
       <div data-testid="page-contact-us" className="flex flex-col gap-10">
         {/* Page Title */}
         <h1 className="text-3xl font-bold text-text-primary md:text-4xl">
-          {page?.title || 'Contact Us'}
+          {page?.title || tNav('contactUs')}
         </h1>
 
         {/* Intro Text — prefer CMS-authored richText, fall back to a default
@@ -65,9 +81,7 @@ export default async function ContactUsPage() {
           </div>
         ) : (
           <p className="text-base text-text-secondary md:text-lg">
-            Send us a question, comment, or media inquiry. Submissions are
-            routed to the relevant team and we typically respond within five
-            business days. For media inquiries, see the contact details below.
+            {tContact('introFallback')}
           </p>
         )}
 
@@ -77,7 +91,7 @@ export default async function ContactUsPage() {
         {/* Media Inquiries Block */}
         {mediaInquiries?.contactName && (
           <MediaInquiriesBlock
-            heading={mediaInquiries.heading || 'Media Inquiries'}
+            heading={mediaInquiries.heading || tContact('mediaInquiriesHeading')}
             contactName={mediaInquiries.contactName}
             contactTitle={mediaInquiries.contactTitle || ''}
             contactEmail={mediaInquiries.contactEmail || ''}
