@@ -22,6 +22,7 @@
  * - Policy links are UI chrome (hardcoded structural links)
  */
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { Container } from '@/components/ui'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
@@ -30,10 +31,19 @@ import type { Footer } from '@/payload-types'
 
 type SiteFooterProps = {
   footer?: Footer | null
+  /** Forwarded by the layout so server-side translations resolve to the
+      request locale (see PR #143). Defaults to 'en' if a legacy caller
+      hasn't passed it through yet. */
+  locale?: string
 }
 
-export function SiteFooter({ footer }: SiteFooterProps) {
+export async function SiteFooter({ footer, locale }: SiteFooterProps) {
   const currentYear = new Date().getFullYear()
+  const resolvedLocale = locale ?? 'en'
+  const [tFooter, tNav] = await Promise.all([
+    getTranslations({ locale: resolvedLocale, namespace: 'footer' }),
+    getTranslations({ locale: resolvedLocale, namespace: 'nav' }),
+  ])
 
   const columns = footer?.columns || []
   const boardsLinks = footer?.boards_links || []
@@ -82,7 +92,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
             {hasBoards && (
               <div>
                 <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                  Boards
+                  {tNav('boards')}
                 </p>
                 <ul className="mt-3 space-y-2">
                   {boardsLinks.map((board, i) => (
@@ -108,7 +118,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
             {hasQuickLinks && (
               <div>
                 <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                  Legal
+                  {tFooter('legal')}
                 </p>
                 <ul className="mt-3 space-y-2">
                   {quickLinks.map((link, i) => (
@@ -132,7 +142,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
       {!hasAnyContent && (
         <Container>
           <div className="py-8 text-center text-sm text-text-muted">
-            Footer not configured.
+            {tFooter('notConfigured')}
           </div>
         </Container>
       )}

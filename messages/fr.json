@@ -161,7 +161,9 @@
     "privacyPolicy": "Politique de confidentialite",
     "termsOfUse": "Conditions d'utilisation",
     "accessibility": "Accessibilite",
-    "cookiePolicy": "Politique relative aux temoins"
+    "cookiePolicy": "Politique relative aux temoins",
+    "legal": "Mentions legales",
+    "notConfigured": "Pied de page non configure."
   },
   "forms": {
     "required": "Obligatoire",
