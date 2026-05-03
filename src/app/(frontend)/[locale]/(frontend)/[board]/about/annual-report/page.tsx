@@ -95,7 +95,7 @@ export default async function AnnualReportPage({ params }: PageProps) {
         </aside>
 
         {/* Main Content */}
-        <main data-testid="main-content" className="flex flex-col gap-6">
+        <div data-testid="main-content" className="flex flex-col gap-6">
           <h1 className="text-3xl font-bold text-text-primary">
             {page?.title || 'Annual Report'}
           </h1>
@@ -111,7 +111,7 @@ export default async function AnnualReportPage({ params }: PageProps) {
               Annual report content is not yet available. Please check back soon.
             </p>
           )}
-        </main>
+        </div>
       </div>
     </Container>
   )

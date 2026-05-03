@@ -53,19 +53,19 @@ export default async function HomePage({ params }: PageProps) {
   // Empty state when homepage global is not configured
   if (!homepage) {
     return (
-      <main data-testid="page-homepage" className="min-h-screen">
+      <div data-testid="page-homepage" className="min-h-screen">
         <div className="flex items-center justify-center py-24">
           <p className="text-text-muted">Homepage content not configured.</p>
         </div>
-      </main>
+      </div>
     )
   }
 
   return (
-    <main data-testid="page-homepage" className="min-h-screen">
+    <div data-testid="page-homepage" className="min-h-screen">
       <OrganizationSchema />
       <RenderHero {...homepage.hero} />
       <RenderBlocks blocks={homepage.layout} />
-    </main>
+    </div>
   )
 }

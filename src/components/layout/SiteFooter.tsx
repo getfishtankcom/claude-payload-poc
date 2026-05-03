@@ -138,8 +138,8 @@ export function SiteFooter({ footer }: SiteFooterProps) {
           <Container>
             <div className="py-8">
               <NewsletterCTA
-                heading={newsletterHeading || ''}
-                description={newsletterDescription || ''}
+                heading={newsletterHeading || undefined}
+                description={newsletterDescription || undefined}
               />
             </div>
           </Container>
