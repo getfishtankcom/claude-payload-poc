@@ -6,6 +6,14 @@ import type { CollectionConfig } from 'payload'
 
 export const Dictionary: CollectionConfig = {
   slug: 'dictionary',
+  // Explicit labels keep the list-view H1 ("Dictionary entries") and the
+  // breadcrumb in sync. Without these, Payload's auto-pluralizer turned the
+  // singular slug "dictionary" into "Dictionaries" for the H1 while the
+  // breadcrumb resolved to "Dictionary" — see issue #93 (QA-023).
+  labels: {
+    singular: 'Dictionary entry',
+    plural: 'Dictionary entries',
+  },
   admin: {
     useAsTitle: 'term',
     defaultColumns: ['term', 'category', 'status'],
