@@ -19,6 +19,13 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }))
 
+// `<Breadcrumb>` is a child client component that calls useTranslations.
+// Without a NextIntlClientProvider in the test tree, the call throws —
+// stub the client API to return the key.
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}))
+
 import { BoardLanding } from './BoardLanding'
 import type { Board } from '@/payload-types'
 
