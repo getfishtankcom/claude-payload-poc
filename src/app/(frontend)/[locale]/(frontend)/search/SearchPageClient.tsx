@@ -383,6 +383,19 @@ export function SearchPageClient({ popularTags }: SearchPageClientProps) {
   const meilisearchHost = process.env.NEXT_PUBLIC_MEILISEARCH_HOST || 'http://localhost:7700'
   const meilisearchKey = process.env.NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY || ''
 
+  // Dev-only console warning when the search key is missing, so the
+  // resilient client's silent "no results" empty state doesn't trap
+  // anyone debugging a fresh clone. Pre-checked the key in
+  // `.env.example`; this is defensive for local installs that copied
+  // an older example or stripped the value. (#160 / QA-112)
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !meilisearchKey) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[FRAS] NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY is empty. Search will return 0 results. ' +
+        'Copy `.env.example` → `.env` (or fill in the existing key from .env.example) and restart.',
+    )
+  }
+
   // Wrap Meilisearch client in a proxy that catches connection errors gracefully.
   // Without this, a missing Meilisearch instance throws a noisy console error.
   const { searchClient } = useMemo(() => {
