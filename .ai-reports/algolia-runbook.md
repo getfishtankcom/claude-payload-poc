@@ -114,7 +114,21 @@ If Algolia is misbehaving (downtime, cost spike, relevance regression), flip the
 3. Verify the homepage search input + `/en/search` work against Meilisearch.
 4. Open an incident report at `.ai-reports/incidents/`.
 
-The Meilisearch instance stays parallel-indexed for 30 days post-cutover (Slice 8 / #179) specifically for this scenario. After day 30, rollback requires re-indexing first — `node scripts/reindex-meilisearch.mjs`.
+The Meilisearch instance stays parallel-indexed for 30 days post-cutover (Slice 8 / #179) specifically for this scenario. After day 30, rollback requires re-indexing first — see "Recovery procedure (post-deprecation)" below.
+
+### Recovery procedure (post-deprecation)
+
+After Slice 8 / #179 decommissions the Meilisearch container, recovery requires standing it back up + re-indexing the time gap. The Meilisearch provider code stays in the codebase intentionally — it's the rollback path.
+
+1. **Stand up a fresh Meilisearch container** matching the previous prod config (`docker-compose.yml` or equivalent). Wait for `/health` → `available`.
+2. **Confirm env vars are populated** — `MEILISEARCH_HOST`, `MEILISEARCH_API_KEY`, `NEXT_PUBLIC_MEILISEARCH_HOST`, `NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY`.
+3. **Backfill all collections** — `node scripts/reindex-meilisearch.mjs`. This walks every searchable collection from Payload and pushes to Meilisearch. ~5 min for the current corpus.
+4. **Flip the provider** — `SEARCH_PROVIDER=meilisearch` in production env, re-deploy.
+5. **Smoke test** — `/en/search?q=crypto` should return hits within seconds of the deploy.
+6. **Investigate the Algolia incident** — keep Algolia receiving writes (don't unset `SEARCH_DUAL_WRITE`) so a second cutover attempt is faster.
+7. **Document the rollback** — incident report at `.ai-reports/incidents/<date>-algolia-rollback.md` covering: trigger, time-to-detect, time-to-rollback, root cause, fix-forward plan.
+
+The conformance test suite at `src/search/__tests__/provider-conformance.test.ts` keeps both providers green in CI so bit-rot doesn't break the rollback path.
 
 ---
 
