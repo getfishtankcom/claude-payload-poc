@@ -120,6 +120,13 @@ export default buildConfig({
           Component: '/admin/views/PageBuilder',
           path: '/builder/:id',
         },
+        // Bare `/admin/builder` (no `:id`) used to hit Payload's 404.
+        // This redirect view bounces to the Pages collection so direct
+        // URL typing lands somewhere sensible. (#162 / QA-114)
+        pageBuilderIndex: {
+          Component: '/admin/views/PageBuilderIndex',
+          path: '/builder',
+        },
         workbox: {
           Component: '/admin/views/Workbox',
           path: '/workbox',
