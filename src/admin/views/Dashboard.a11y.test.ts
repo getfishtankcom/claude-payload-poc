@@ -69,6 +69,25 @@ describe('Dashboard a11y guards (#100)', () => {
     },
   )
 
+  it('pins min-width:0 on WidgetCard so grid items can shrink under nowrap text (#72)', () => {
+    // QA-002: dashboard grid columns overlapped because nowrap titles in the
+    // recent-items / pinned-items widgets blew the grid track wider than its
+    // 1fr share. The fix is a `min-width: 0` on WidgetCard's section style.
+    // This assertion prevents a future style sweep from quietly removing it.
+    const src = read('components/widgets/WidgetCard.tsx')
+    expect(src).toMatch(/minWidth:\s*0/)
+  })
+
+  it('pins min-width:0 on the nowrap flex children inside item-list widgets (#72)', () => {
+    // The grid-item fix is only half the story — flex items also default
+    // to `min-width: auto`, so the title spans/links inside RecentItems +
+    // PinnedItems still resist shrinking unless they declare it too.
+    const recent = read('components/widgets/RecentItemsWidget.tsx')
+    const pinned = read('components/widgets/PinnedItemsWidget.tsx')
+    expect(recent).toMatch(/minWidth:\s*0/)
+    expect(pinned).toMatch(/minWidth:\s*0/)
+  })
+
   it('uses brand workflow tokens (not literal hex) for the queue state colors', () => {
     const src = read('components/widgets/WorkflowQueueWidget.tsx')
     // The state-color lookup must point at admin-shell workflow tokens.

@@ -53,6 +53,12 @@ export function PinnedItemsWidget() {
                   color: 'var(--text-primary)',
                   textDecoration: 'none',
                   flex: 1,
+                  // Without `min-width: 0` the flex item refuses to shrink
+                  // under its nowrap title, which lets long titles push the
+                  // entire grid column wider than its `1fr` share (#72 /
+                  // QA-002). Pairs with the `min-width: 0` on WidgetCard's
+                  // section.
+                  minWidth: 0,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',

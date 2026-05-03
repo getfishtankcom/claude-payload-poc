@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 }
 
 export default function LoginPage() {
+  // The "Sign in to <App>" title override lives on <ClerkProvider>
+  // (Clerk v7 only accepts `localization` at the provider level). See
+  // src/lib/clerk-localization.ts for the override (#88 / QA-018).
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
       <SignIn />

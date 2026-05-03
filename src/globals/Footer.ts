@@ -81,7 +81,13 @@ export const Footer: GlobalConfig = {
     {
       name: 'quick_links',
       type: 'array',
-      label: 'Quick Links',
+      // Field renders the legal/utility column in the footer (Privacy /
+      // Terms / Accessibility / Sitemap). Display label is "Legal" so the
+      // CMS edit form doesn't surface "Quick Links" twice — the
+      // CMS-driven `columns[]` array already supports a "Quick Links"
+      // navigation column (#91 / QA-021). Field name stays `quick_links`
+      // to avoid a destructive schema migration.
+      label: 'Legal',
       fields: [
         {
           name: 'label',

@@ -6,6 +6,16 @@ import type { CollectionConfig } from 'payload'
 
 export const Dictionary: CollectionConfig = {
   slug: 'dictionary',
+  // QA-023: the slug is singular ('dictionary') so the breadcrumb renders
+  // "Dictionary", but Payload pluralises the slug for `labels.plural` and
+  // shows "Dictionaries" in the H1. Declare both forms explicitly so the
+  // list-view H1 + breadcrumb agree, and so the singular "Term" label
+  // surfaces on the Add button + edit-view breadcrumb (each row is a
+  // term/definition pair, not a whole dictionary).
+  labels: {
+    singular: 'Term',
+    plural: 'Dictionary',
+  },
   admin: {
     useAsTitle: 'term',
     defaultColumns: ['term', 'category', 'status'],
