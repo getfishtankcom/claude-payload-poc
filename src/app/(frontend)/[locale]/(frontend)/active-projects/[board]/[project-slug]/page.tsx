@@ -25,6 +25,7 @@ import { notFound } from 'next/navigation'
 import { withLocaleMetadata } from '@/lib/i18n-metadata'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { ProjectTimeline } from '@/components/board/ProjectTimeline'
+import { RichText } from '@/components/RichText'
 import {
   SectionNav,
   QuickActions,
@@ -157,11 +158,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           {project.summary && (
             <section data-testid="section-summary">
               <h2 className="mb-4 text-xl font-bold text-text-heading">Summary</h2>
-              <div className="prose max-w-none text-text-primary">
-                <p className="text-text-muted">
-                  Rich text content will render here when Lexical serializer is configured.
-                </p>
-              </div>
+              <RichText
+                content={project.summary}
+                className="prose max-w-none text-text-primary"
+              />
             </section>
           )}
 
@@ -169,11 +169,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           {project.key_proposals && (
             <section data-testid="section-key-proposals">
               <h2 className="mb-4 text-xl font-bold text-text-heading">Key Proposals</h2>
-              <div className="prose max-w-none text-text-primary">
-                <p className="text-text-muted">
-                  Rich text content will render here when Lexical serializer is configured.
-                </p>
-              </div>
+              <RichText
+                content={project.key_proposals}
+                className="prose max-w-none text-text-primary"
+              />
             </section>
           )}
 

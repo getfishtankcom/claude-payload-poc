@@ -22,6 +22,11 @@ type RichTextProps = {
 export function RichText({ content, className }: RichTextProps) {
   if (!content) return null
 
+  const root = (content as { root?: { children?: unknown[] } }).root
+  if (!root || !Array.isArray(root.children) || root.children.length === 0) {
+    return null
+  }
+
   return (
     <div className={className}>
       <PayloadRichText data={content as SerializedEditorState} />
