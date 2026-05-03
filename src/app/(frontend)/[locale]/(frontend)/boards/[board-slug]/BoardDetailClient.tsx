@@ -80,7 +80,7 @@ export function BoardDetailClient({
       </aside>
 
       {/* Main content area */}
-      <main data-testid="main-content">
+      <div data-testid="main-content">
         {/* Active tab content placeholder */}
         {tabs.map((tab) => (
           <section
@@ -113,7 +113,7 @@ export function BoardDetailClient({
             <p>No content sections configured for this board.</p>
           </div>
         )}
-      </main>
+      </div>
 
       {/* Right sidebar */}
       <aside className="space-y-8" data-testid="right-rail">
