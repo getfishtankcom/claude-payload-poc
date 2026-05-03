@@ -43,7 +43,10 @@ export const Documents: CollectionConfig = {
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
       edit: {
-        beforeDocumentControls: ['/admin/components/TranslateButton'],
+        beforeDocumentControls: [
+          '/admin/components/WorkflowActionBarField',
+          '/admin/components/TranslateButton',
+        ],
       },
     },
   },

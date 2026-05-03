@@ -69,24 +69,53 @@ export const WorkflowActionBar: React.FC<WorkflowActionBarProps> = ({
     if (!docId) return
     setTransitioning(true)
     setError(null)
+    // Issue #83 (QA-013): comment travels as a top-level body field — Payload's
+    // REST router can't forward body context into hook context, so the
+    // previous `_context: { workflowComment }` shape never reached
+    // `validateWorkflowTransition` and every Reject silently 400'd. The hook
+    // now reads from data.workflowComment OR context.workflowComment.
+    const body: Record<string, unknown> = { workflowState: newState }
+    if (comment && comment.trim().length > 0) {
+      body.workflowComment = comment
+    }
     try {
       const res = await fetch(`/api/${collectionSlug}/${docId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workflowState: newState,
-          _context: { workflowComment: comment || undefined },
-        }),
+        credentials: 'same-origin',
+        body: JSON.stringify(body),
       })
       if (!res.ok) {
-        const data = await res.json()
-        setError(data.errors?.[0]?.message || `Transition failed: ${res.status}`)
+        // Best-effort error extraction: JSON errors[0].message → JSON message
+        // → plain text → status fallback. A non-JSON 400 (Next.js dev-mode
+        // HTML, empty body, etc.) used to throw inside the .json() call and
+        // bypass the toast entirely — now we always surface something.
+        const cloned = res.clone()
+        let msg = `Transition failed (status ${res.status})`
+        try {
+          const data = (await res.json()) as {
+            errors?: Array<{ message?: string }>
+            message?: string
+          }
+          const fromArray = data.errors?.[0]?.message
+          if (typeof fromArray === 'string' && fromArray.length > 0) msg = fromArray
+          else if (typeof data.message === 'string' && data.message.length > 0) msg = data.message
+        } catch {
+          try {
+            const text = await cloned.text()
+            const stripped = text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+            if (stripped.length > 0) msg = stripped.slice(0, 200)
+          } catch {
+            // fall through to status fallback
+          }
+        }
+        setError(msg)
       } else {
         // Refresh the page to show new state
         window.location.reload()
       }
     } catch (err) {
-      setError(`Network error: ${err}`)
+      setError(err instanceof Error ? err.message : 'Network request failed')
     } finally {
       setTransitioning(false)
     }

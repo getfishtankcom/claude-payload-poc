@@ -37,7 +37,10 @@ export const DocumentsForComment: CollectionConfig = {
     defaultColumns: ['title', 'group', 'workflowState', 'status', 'board', 'publishedDate'],
     components: {
       edit: {
-        beforeDocumentControls: ['/admin/components/TranslateButton'],
+        beforeDocumentControls: [
+          '/admin/components/WorkflowActionBarField',
+          '/admin/components/TranslateButton',
+        ],
       },
     },
   },
