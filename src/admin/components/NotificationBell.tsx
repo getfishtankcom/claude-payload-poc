@@ -97,7 +97,7 @@ export function NotificationBell() {
           border: 'none',
           cursor: 'pointer',
           padding: '6px',
-          color: 'var(--theme-elevation-700)',
+          color: 'var(--text-primary)',
           position: 'relative',
         }}
       >
@@ -128,20 +128,33 @@ export function NotificationBell() {
 
       {open && (
         <div
+          data-testid="notification-panel"
           role="dialog"
           aria-label="Notifications"
           style={{
             position: 'absolute',
             top: '34px',
-            right: '0',
+            // The bell sits in the top-left of the Payload chrome; anchor
+            // the panel to the bell's LEFT edge so it extends rightward
+            // into the viewport. The previous `right: 0` aligned the
+            // panel's right edge with the bell's right edge, pushing the
+            // 320px panel off the left side of the viewport (#86 / QA-016).
+            left: '0',
+            right: 'auto',
             width: '320px',
             maxHeight: '420px',
             overflow: 'auto',
-            background: 'var(--theme-elevation-0)',
-            border: '1px solid var(--theme-elevation-200)',
+            // Admin-shell tokens — opaque even when Payload's elevation
+            // vars aren't in scope (same root cause as #87).
+            background: 'var(--surface-page)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-default)',
             borderRadius: '6px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-            zIndex: 100,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+            // Bumped from 100 → 5000 so dashboard widgets, sticky toolbars,
+            // and locked-card shadows can never paint on top of the panel.
+            // The Cmd+K palette at 10001 still wins if both are open.
+            zIndex: 5000,
           }}
         >
           <div
@@ -150,7 +163,7 @@ export function NotificationBell() {
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '8px 12px',
-              borderBottom: '1px solid var(--theme-elevation-150)',
+              borderBottom: '1px solid var(--border-default)',
             }}
           >
             <strong style={{ fontSize: '13px' }}>Notifications</strong>
@@ -162,7 +175,7 @@ export function NotificationBell() {
                   background: 'transparent',
                   border: 'none',
                   fontSize: '11px',
-                  color: '#601F5B',
+                  color: 'var(--brand-fras)',
                   cursor: 'pointer',
                 }}
               >
@@ -172,7 +185,7 @@ export function NotificationBell() {
           </div>
 
           {items.length === 0 ? (
-            <p style={{ padding: '14px', fontSize: '12px', color: 'var(--theme-elevation-500)', margin: 0 }}>
+            <p style={{ padding: '14px', fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
               No notifications yet.
             </p>
           ) : (
@@ -182,27 +195,27 @@ export function NotificationBell() {
                   key={n.id}
                   style={{
                     padding: '8px 12px',
-                    borderBottom: '1px solid var(--theme-elevation-100)',
-                    background: n.read ? 'transparent' : 'var(--theme-elevation-50)',
+                    borderBottom: '1px solid var(--border-default)',
+                    background: n.read ? 'transparent' : 'var(--surface-elevated)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
                   }}
                 >
-                  <div style={{ fontSize: '12px', color: 'var(--theme-elevation-800)' }}>{n.message}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-primary)' }}>{n.message}</div>
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       fontSize: '11px',
-                      color: 'var(--theme-elevation-500)',
+                      color: 'var(--text-muted)',
                     }}
                   >
                     <span>{new Date(n.createdAt).toLocaleString()}</span>
                     <span style={{ display: 'flex', gap: '8px' }}>
                       {n.link && (
-                        <a href={n.link} style={{ color: '#601F5B', textDecoration: 'none' }}>
+                        <a href={n.link} style={{ color: 'var(--brand-fras)', textDecoration: 'none' }}>
                           Go to item
                         </a>
                       )}
@@ -210,7 +223,7 @@ export function NotificationBell() {
                         <button
                           type="button"
                           onClick={() => markAsRead(n.id)}
-                          style={{ background: 'transparent', border: 'none', color: '#601F5B', cursor: 'pointer', fontSize: '11px' }}
+                          style={{ background: 'transparent', border: 'none', color: 'var(--brand-fras)', cursor: 'pointer', fontSize: '11px' }}
                         >
                           Mark read
                         </button>
