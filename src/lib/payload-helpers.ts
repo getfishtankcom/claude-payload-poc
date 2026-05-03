@@ -575,17 +575,34 @@ export async function getStandardsSectionBySlug(
 
 /**
  * Fetches a document detail by slug with full depth for relationships.
+ *
+ * The `documents-for-comment` listing pages link by their own slug (e.g.
+ * `ed-crypto-assets-dfc`). A paired `document-details` record may live
+ * under that same slug (post-fix seed) OR under a legacy `dd-X` slug.
+ * When the direct lookup misses, fall back to finding the paired record
+ * via its `howToReply.ctaHref`, which embeds the dfc slug — stripped of
+ * its trailing `-dfc` so closed-document ctaHrefs (which point at the
+ * comments PDF, not /submit-comment/...) still match.
  */
 export async function getDocumentDetailBySlug(slug: string): Promise<unknown | null> {
   try {
     const payload = await getPayload({ config })
-    const result = await payload.find({
+    const direct = await payload.find({
       collection: 'document-details',
       where: { slug: { equals: slug } },
       limit: 1,
       depth: 2,
     })
-    return result.docs[0] || null
+    if (direct.docs[0]) return direct.docs[0]
+
+    const stripped = slug.replace(/-dfc$/, '')
+    const fallback = await payload.find({
+      collection: 'document-details',
+      where: { 'howToReply.ctaHref': { contains: stripped } },
+      limit: 1,
+      depth: 2,
+    })
+    return fallback.docs[0] || null
   } catch {
     return null
   }

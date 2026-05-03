@@ -1422,7 +1422,7 @@ export async function seed(_payload?: unknown) {
   const documentDetailsData = [
     {
       title: 'Crypto Assets — Proposed Amendments to ASPE',
-      slug: 'dd-crypto-assets',
+      slug: 'ed-crypto-assets-dfc',
       highlights: richText('The AcSB proposes amendments to ASPE to address the accounting for crypto assets held by private enterprises.', 'Key proposals include measurement at fair value through profit or loss and enhanced disclosure requirements.'),
       bodyContent: richTextWithHeading('h2', 'Background', 'The rapid growth of crypto assets has created a need for specific accounting guidance under ASPE. Currently, private enterprises holding crypto assets must apply existing standards that were not designed for these instruments.', 'The AcSB has developed proposed amendments to address measurement, classification, and disclosure of crypto assets.', 'These proposals are based on feedback received from stakeholders and align with international developments.'),
       commentQuestions: [
@@ -1453,7 +1453,7 @@ export async function seed(_payload?: unknown) {
     },
     {
       title: 'Revenue PS 3400 — Proposed New Section',
-      slug: 'dd-ps-3400',
+      slug: 'ed-ps-3400-dfc',
       highlights: richText('PSAB proposes a new Section PS 3400, Revenue, to replace Section PS 3100, Government Transfers.', 'The proposed standard introduces a performance obligation approach to revenue recognition in the public sector.'),
       bodyContent: richTextWithHeading('h2', 'Overview', 'The proposed revenue standard represents a significant change to how public sector entities recognize revenue. The performance obligation approach provides a more comprehensive framework for recognizing revenue from exchange and non-exchange transactions.', 'The proposed standard applies to all public sector entities that prepare financial statements in accordance with PSAS.', 'Key changes include distinguishing between revenue with and without performance obligations, measurement of revenue at transaction price, and timing of revenue recognition.'),
       commentQuestions: [
@@ -1482,7 +1482,7 @@ export async function seed(_payload?: unknown) {
     },
     {
       title: 'CSDS 1 — Re-exposure: General Requirements',
-      slug: 'dd-csds-1',
+      slug: 'red-csds-1-dfc',
       highlights: richText('The CSSB re-exposes proposed CSDS 1 incorporating feedback from the initial exposure draft.', 'Key changes include clarified transition provisions and modified proportionality mechanisms.'),
       bodyContent: richTextWithHeading('h2', 'What Changed', 'Based on feedback received during the initial comment period, the CSSB has made several changes to the proposed standard. The re-exposure draft incorporates clarified transition provisions, modified proportionality mechanisms for smaller entities, and enhanced guidance on materiality.', 'The CSSB received over 100 comment letters on the original exposure draft, representing a broad cross-section of Canadian stakeholders.'),
       commentQuestions: [
@@ -1512,7 +1512,7 @@ export async function seed(_payload?: unknown) {
     },
     {
       title: 'CSSA 5000 — Sustainability Assurance',
-      slug: 'dd-cssa-5000',
+      slug: 'ed-cssa-5000-dfc',
       highlights: richText('The AASB proposes a Canadian Standard on Sustainability Assurance aligned with ISSA 5000.', 'The proposed standard establishes requirements for assurance engagements on sustainability information.'),
       bodyContent: richTextWithHeading('h2', 'Purpose', 'As Canadian sustainability disclosure requirements evolve, there is a need for assurance standards to provide confidence in the quality and reliability of sustainability information. The proposed CSSA 5000 addresses this need.', 'The proposed standard is based on the IAASB\'s International Standard on Sustainability Assurance (ISSA) 5000, with Canadian-specific modifications.'),
       commentQuestions: [
@@ -1543,7 +1543,7 @@ export async function seed(_payload?: unknown) {
     },
     {
       title: 'NFP Contributions Revenue — Discussion Paper',
-      slug: 'dd-nfp-contributions',
+      slug: 'dp-nfp-contributions',
       highlights: richText('The AcSB invites input on the accounting for contributions revenue by not-for-profit organizations.', 'The discussion paper explores alternative approaches to recognizing contributions with conditions or restrictions.'),
       bodyContent: richTextWithHeading('h2', 'Background', 'Not-for-profit organizations often receive contributions with various conditions or restrictions. The current guidance on recognizing these contributions has been the subject of ongoing questions from stakeholders.', 'This discussion paper explores the issues and presents possible approaches for the AcSB to consider in developing improved guidance.'),
       commentQuestions: [
@@ -1571,7 +1571,7 @@ export async function seed(_payload?: unknown) {
     },
     {
       title: 'Employee Benefits PS 3250 (Closed)',
-      slug: 'dd-ps-3250',
+      slug: 'ed-ps-3250-dfc',
       highlights: richText('PSAB sought input on proposed amendments to PS 3250 Employee Benefits.', 'The comment period for this document has closed.'),
       bodyContent: richTextWithHeading('h2', 'Summary', 'The proposed amendments to PS 3250 address the accounting for employee benefits in the public sector, including pensions, other retirement benefits, and compensated absences.', 'The comment period has closed and the feedback is being analyzed by the Board.'),
       commentQuestions: [
