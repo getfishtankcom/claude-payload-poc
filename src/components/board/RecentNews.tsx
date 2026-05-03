@@ -19,7 +19,7 @@
  * - Extends/reuses the existing NewsItem component from src/components/
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { NewsItem } from '@/components/NewsItem'
 
 export type RecentNewsItem = {

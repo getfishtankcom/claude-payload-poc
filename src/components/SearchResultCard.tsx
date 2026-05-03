@@ -23,7 +23,7 @@
  * - Description is truncated with line-clamp-2
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui'
 
 type ContentType =
