@@ -13,6 +13,10 @@ import type { WorkflowState } from './types'
 
 const SIZE = 12
 
+// SVG `fill` attributes do not resolve CSS `var(--…)` — the value has to flow
+// through a real CSS property. Setting `color` on the SVG and using
+// `fill="currentColor"` on the circle is what lets workflow tokens reach the
+// pixels (mirrors the pattern in LockGutterIcon below).
 const Dot: React.FC<{ color: string; title: string }> = ({ color, title }) => (
   <svg
     width={SIZE}
@@ -20,10 +24,10 @@ const Dot: React.FC<{ color: string; title: string }> = ({ color, title }) => (
     viewBox="0 0 12 12"
     aria-label={title}
     role="img"
-    style={{ flexShrink: 0 }}
+    style={{ flexShrink: 0, color }}
   >
     <title>{title}</title>
-    <circle cx="6" cy="6" r="4" fill={color} />
+    <circle cx="6" cy="6" r="4" fill="currentColor" />
   </svg>
 )
 
