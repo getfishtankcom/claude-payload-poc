@@ -203,7 +203,8 @@
     "activeProjects": "Projets actifs",
     "openConsultations": "Consultations ouvertes",
     "boards": "Conseils",
-    "search": "Recherche"
+    "search": "Recherche",
+    "ariaLabel": "Fil d'Ariane"
   },
   "a11y": {
     "skipToContent": "Passer au contenu principal",

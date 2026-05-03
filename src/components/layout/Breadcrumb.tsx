@@ -22,6 +22,7 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { usePathname } from 'next/navigation'
 
@@ -31,7 +32,12 @@ export type BreadcrumbItem = {
 }
 
 type BreadcrumbProps = {
-  /** Optional manual breadcrumb items (overrides auto-generation) */
+  /** Optional manual breadcrumb items (overrides auto-generation).
+      Callers should NOT include a leading Home entry — the component
+      always prepends a localized Home crumb. Legacy callers passing
+      `{ label: 'Home', href: '/' }` as the first item are tolerated:
+      that entry is stripped and replaced with the localized version
+      so we don't render two Home crumbs. */
   items?: BreadcrumbItem[]
   className?: string
 }
@@ -48,12 +54,12 @@ function slugToLabel(slug: string): string {
 }
 
 /**
- * Auto-generates breadcrumb items from a URL pathname.
- * Always starts with "Home" -> "/" and builds from path segments.
+ * Auto-generates breadcrumb items from a URL pathname (without Home —
+ * the component prepends the localized Home crumb itself).
  */
 function generateFromPath(pathname: string): BreadcrumbItem[] {
   const segments = pathname.split('/').filter(Boolean)
-  const items: BreadcrumbItem[] = [{ label: 'Home', href: '/' }]
+  const items: BreadcrumbItem[] = []
 
   segments.forEach((segment, index) => {
     const href = '/' + segments.slice(0, index + 1).join('/')
@@ -69,14 +75,23 @@ function generateFromPath(pathname: string): BreadcrumbItem[] {
 }
 
 export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
+  const t = useTranslations('breadcrumb')
   const pathname = usePathname()
-  const breadcrumbItems = items ?? generateFromPath(pathname)
+  const provided = items ?? generateFromPath(pathname)
+
+  // Strip a leading Home entry from legacy callers so we never double-render.
+  const trail = provided[0]?.label === 'Home' ? provided.slice(1) : provided
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: t('home'), href: '/' },
+    ...trail,
+  ]
 
   // Don't render breadcrumb on homepage
   if (breadcrumbItems.length <= 1) return null
 
   return (
-    <nav aria-label="Breadcrumb" className={`text-sm ${className}`.trim()} data-testid="breadcrumb">
+    <nav aria-label={t('ariaLabel')} className={`text-sm ${className}`.trim()} data-testid="breadcrumb">
       <ol className="flex flex-wrap items-center gap-1">
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1

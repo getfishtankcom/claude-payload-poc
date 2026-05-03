@@ -203,7 +203,8 @@
     "activeProjects": "Active Projects",
     "openConsultations": "Open Consultations",
     "boards": "Boards",
-    "search": "Search"
+    "search": "Search",
+    "ariaLabel": "Breadcrumb"
   },
   "a11y": {
     "skipToContent": "Skip to main content",
