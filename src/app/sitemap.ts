@@ -17,7 +17,7 @@
  * - Each URL includes alternates for both EN and FR locales
  */
 import type { MetadataRoute } from 'next'
-import { getAllBoards, getAllActiveProjects, getAllStandardsSections } from '@/lib/payload-helpers'
+import { getActiveBoards, getAllActiveProjects, getAllStandardsSections } from '@/lib/payload-helpers'
 import { locales } from '@/i18n/routing'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'
@@ -54,9 +54,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   )
 
-  // Dynamic board pages (exclude RASOC — no board detail page)
-  const boards = await getAllBoards()
-  const nonOversightBoards = boards.filter((b) => b.slug !== 'rasoc')
+  // Dynamic board pages (exclude RASOC — no board detail page; #78).
+  const nonOversightBoards = await getActiveBoards()
 
   const boardRoutes: MetadataRoute.Sitemap = nonOversightBoards.flatMap((board) => {
     const path = `/boards/${board.slug}`
