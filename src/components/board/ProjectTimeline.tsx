@@ -21,7 +21,10 @@
  * - Stages with phase_number === current_stage are in-progress
  * - Stages with phase_number > current_stage are not-started
  */
+'use client'
+
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { CheckIcon } from '@heroicons/react/24/solid'
 
 export type TimelineStage = {
@@ -58,11 +61,13 @@ function getStageStatus(phaseNumber: number, currentStage: number): StageStatus 
 }
 
 export function ProjectTimeline({ stages, currentStage, className = '' }: ProjectTimelineProps) {
+  const t = useTranslations('projects')
+
   if (stages.length === 0) return null
 
   return (
     <div className={`${className}`.trim()} data-testid="project-timeline">
-      <h2 className="mb-6 text-xl font-bold text-text-heading">Project Timeline</h2>
+      <h2 className="mb-6 text-xl font-bold text-text-heading">{t('timeline')}</h2>
       <div className="relative">
         {stages.map((stage, index) => {
           const status = getStageStatus(stage.phase_number, currentStage)
@@ -109,7 +114,7 @@ export function ProjectTimeline({ stages, currentStage, className = '' }: Projec
                       status === 'future' ? 'text-text-muted' : 'text-primary'
                     }`}
                   >
-                    Stage {stage.phase_number}
+                    {t('stage')} {stage.phase_number}
                   </span>
                   {stage.date && (
                     <time

@@ -65,7 +65,7 @@ export default async function HomePage({ params }: PageProps) {
     <div data-testid="page-homepage" className="min-h-screen">
       <OrganizationSchema />
       <RenderHero {...homepage.hero} />
-      <RenderBlocks blocks={homepage.layout} />
+      <RenderBlocks blocks={homepage.layout} locale={locale} />
     </div>
   )
 }

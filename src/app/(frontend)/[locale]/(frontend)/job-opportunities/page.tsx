@@ -31,7 +31,12 @@ export const metadata: Metadata = {
   description: 'Current job openings at RAS Canada. Browse volunteer and employment opportunities with Canadian accounting standards boards.',
 }
 
-export default async function JobOpportunitiesPage() {
+type PageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function JobOpportunitiesPage({ params }: PageProps) {
+  const { locale } = await params
   const page = await getPageBySlug('job-opportunities')
 
   // Extract page fields with fallbacks for when CMS data isn't seeded
@@ -49,7 +54,7 @@ export default async function JobOpportunitiesPage() {
       {/* Rich text intro content (body paragraphs) */}
       {layout.length > 0 && (
         <div className="prose prose-lg max-w-none prose-headings:text-primary prose-a:text-link mb-6">
-          <RenderBlocks blocks={layout as Array<{ blockType: string; [key: string]: unknown }>} />
+          <RenderBlocks blocks={layout as Array<{ blockType: string; [key: string]: unknown }>} locale={locale} />
         </div>
       )}
 

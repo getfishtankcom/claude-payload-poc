@@ -101,7 +101,8 @@
     "summary": "Resume",
     "keyProposals": "Propositions cles",
     "contacts": "Personnes-ressources",
-    "relatedDocuments": "Documents connexes"
+    "relatedDocuments": "Documents connexes",
+    "stage": "Etape"
   },
   "consultations": {
     "title": "Consultations ouvertes",
