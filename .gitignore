@@ -54,3 +54,9 @@ media/
 
 # Claude Code agent worktrees
 .claude/worktrees/
+
+# Claude Code scheduled-task lock (per-session state)
+.claude/scheduled_tasks.lock
+
+# Ralph WIP scratchpad (per-loop state, not source)
+.ralph-wip/
