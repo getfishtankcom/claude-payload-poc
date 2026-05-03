@@ -53,7 +53,17 @@
     "filterBy": "Filter by",
     "clearFilters": "Clear all filters",
     "ariaLabel": "Search",
-    "queryLabel": "Search query"
+    "queryLabel": "Search query",
+    "filters": "Filters",
+    "filtersAriaLabel": "Search filters",
+    "noResultsFound": "No results found",
+    "tryAdjusting": "Try adjusting your search terms or filters.",
+    "resultsFound": "{count} result{plural} found",
+    "popularPrefix": "Popular:",
+    "sortBy": "Sort by:",
+    "sortRelevance": "Relevance",
+    "sortDate": "Date (newest first)",
+    "searchInputPlaceholder": "Projects, meetings, documents, and more."
   },
   "filters": {
     "board": "Board",
@@ -66,7 +76,11 @@
     "allStandards": "All Standards",
     "allTypes": "All Types",
     "searchPlaceholder": "Search...",
-    "noOptions": "No options available"
+    "noOptions": "No options available",
+    "byBoard": "By Board",
+    "byStandard": "By Standard",
+    "filesMedia": "Files & Media",
+    "contentType": "Content Type"
   },
   "pagination": {
     "previous": "Previous",

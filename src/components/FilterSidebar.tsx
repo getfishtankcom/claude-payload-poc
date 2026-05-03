@@ -26,6 +26,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 type FilterOption = {
@@ -51,7 +52,22 @@ type FilterSidebarProps = {
   className?: string
 }
 
-/** Default filter sections matching the wireframe spec */
+/**
+ * Section IDs are stable (used as filter keys + accordion-open state).
+ * Section header labels are looked up against the `filters` namespace at
+ * render time so they translate; option labels remain content-side and
+ * are not translated in this PR (tracked as a follow-up — they're values
+ * the user sends back to Meilisearch and would need a value-vs-label
+ * split to translate safely).
+ */
+const SECTION_HEADER_KEYS: Record<string, string> = {
+  board: 'byBoard',
+  standard: 'byStandard',
+  file_type: 'filesMedia',
+  content_type: 'contentType',
+  date: 'date',
+}
+
 const DEFAULT_SECTIONS: FilterSection[] = [
   {
     id: 'board',
@@ -124,12 +140,14 @@ function AccordionSection({
   isOpen,
   onToggle,
   onFilterChange,
+  headerLabel,
 }: {
   section: FilterSection
   activeValues: string[]
   isOpen: boolean
   onToggle: () => void
   onFilterChange: (sectionId: string, values: string[]) => void
+  headerLabel: string
 }) {
   const activeCount = activeValues.length
 
@@ -158,7 +176,7 @@ function AccordionSection({
         data-testid={`filter-toggle-${section.id}`}
       >
         <span>
-          {section.label}
+          {headerLabel}
           {activeCount > 0 && (
             <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">
               {activeCount}
@@ -221,6 +239,10 @@ export function FilterSidebar({
   onClearAll,
   className = '',
 }: FilterSidebarProps) {
+  const tSearch = useTranslations('search')
+  const tFilters = useTranslations('filters')
+  const tCommon = useTranslations('common')
+
   // Track which accordion sections are open (all open by default)
   const [openSections, setOpenSections] = useState<Set<string>>(
     new Set(DEFAULT_SECTIONS.map((s) => s.id)),
@@ -251,11 +273,11 @@ export function FilterSidebar({
     <aside
       className={`rounded-sm border border-gray-200 bg-white ${className}`.trim()}
       data-testid="filter-sidebar"
-      aria-label="Search filters"
+      aria-label={tSearch('filtersAriaLabel')}
     >
       {/* Header with Clear All */}
       <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-        <h2 className="text-sm font-bold text-text-heading">Filters</h2>
+        <h2 className="text-sm font-bold text-text-heading">{tSearch('filters')}</h2>
         {totalActiveFilters > 0 && (
           <button
             type="button"
@@ -263,7 +285,7 @@ export function FilterSidebar({
             className="text-sm text-primary hover:text-primary-vivid cursor-pointer"
             data-testid="filter-clear-all"
           >
-            Clear All
+            {tCommon('clearAll')}
           </button>
         )}
       </div>
@@ -277,6 +299,7 @@ export function FilterSidebar({
           isOpen={openSections.has(section.id)}
           onToggle={() => toggleSection(section.id)}
           onFilterChange={handleFilterChange}
+          headerLabel={tFilters(SECTION_HEADER_KEYS[section.id] ?? 'category')}
         />
       ))}
     </aside>
