@@ -53,7 +53,17 @@
     "filterBy": "Filtrer par",
     "clearFilters": "Effacer tous les filtres",
     "ariaLabel": "Recherche",
-    "queryLabel": "Requete de recherche"
+    "queryLabel": "Requete de recherche",
+    "filters": "Filtres",
+    "filtersAriaLabel": "Filtres de recherche",
+    "noResultsFound": "Aucun resultat trouve",
+    "tryAdjusting": "Essayez d'ajuster vos termes de recherche ou vos filtres.",
+    "resultsFound": "{count} resultat{plural} trouve{plural}",
+    "popularPrefix": "Populaires :",
+    "sortBy": "Trier par :",
+    "sortRelevance": "Pertinence",
+    "sortDate": "Date (plus recent d'abord)",
+    "searchInputPlaceholder": "Projets, reunions, documents et plus."
   },
   "filters": {
     "board": "Conseil",
@@ -66,7 +76,11 @@
     "allStandards": "Toutes les normes",
     "allTypes": "Tous les types",
     "searchPlaceholder": "Rechercher...",
-    "noOptions": "Aucune option disponible"
+    "noOptions": "Aucune option disponible",
+    "byBoard": "Par conseil",
+    "byStandard": "Par norme",
+    "filesMedia": "Fichiers et medias",
+    "contentType": "Type de contenu"
   },
   "pagination": {
     "previous": "Precedent",

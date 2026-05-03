@@ -30,6 +30,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import {
   InstantSearch,
@@ -95,6 +96,7 @@ function formatDate(dateStr: unknown): string {
 
 /** Custom search box that syncs with URL */
 function SearchInput() {
+  const t = useTranslations('search')
   const { query, refine } = useSearchBox()
   const searchParams = useSearchParams()
   const [inputValue, setInputValue] = useState(query)
@@ -126,10 +128,10 @@ function SearchInput() {
           setInputValue(e.target.value)
           refine(e.target.value)
         }}
-        placeholder="Projects, meetings, documents, and more."
+        placeholder={t('searchInputPlaceholder')}
         className="w-full rounded-sm border border-gray-300 bg-white py-3 pl-12 pr-4 text-base placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30"
         data-testid="search-page-input"
-        aria-label="Search"
+        aria-label={t('ariaLabel')}
       />
     </form>
   )
@@ -137,21 +139,25 @@ function SearchInput() {
 
 /** Results stats display */
 function ResultsStats() {
+  const t = useTranslations('search')
   const { nbHits } = useStats()
   return (
     <p className="text-sm text-text-muted" data-testid="search-results-count">
-      {nbHits} result{nbHits !== 1 ? 's' : ''} found
+      {t('resultsFound', { count: nbHits, plural: nbHits !== 1 ? 's' : '' })}
     </p>
   )
 }
 
 /** Sort dropdown — hidden when there are no hits, since sort is a no-op against an empty result set */
 function SortControl() {
+  const t = useTranslations('search')
   const { nbHits } = useStats()
+  // Sort option labels rebuild from translations on every render so they
+  // re-evaluate on locale change; values stay stable (Meilisearch index keys).
   const { currentRefinement, options, refine } = useSortBy({
     items: [
-      { label: 'Relevance', value: 'news_en' },
-      { label: 'Date (newest first)', value: 'news_en:date:desc' },
+      { label: t('sortRelevance'), value: 'news_en' },
+      { label: t('sortDate'), value: 'news_en:date:desc' },
     ],
   })
 
@@ -160,7 +166,7 @@ function SortControl() {
   return (
     <div className="flex items-center gap-2">
       <label htmlFor="sort-select" className="text-sm text-text-muted">
-        Sort by:
+        {t('sortBy')}
       </label>
       <select
         id="sort-select"
@@ -181,15 +187,14 @@ function SortControl() {
 
 /** Hits list rendering */
 function HitsList() {
+  const t = useTranslations('search')
   const { hits } = useHits()
 
   if (hits.length === 0) {
     return (
       <div className="py-12 text-center" data-testid="search-no-results">
-        <p className="text-lg font-medium text-text-heading">No results found</p>
-        <p className="mt-2 text-sm text-text-muted">
-          Try adjusting your search terms or filters.
-        </p>
+        <p className="text-lg font-medium text-text-heading">{t('noResultsFound')}</p>
+        <p className="mt-2 text-sm text-text-muted">{t('tryAdjusting')}</p>
       </div>
     )
   }
@@ -216,6 +221,7 @@ function HitsList() {
 
 /** Pagination controls */
 function SearchPagination() {
+  const tPagination = useTranslations('pagination')
   const { currentRefinement, nbPages, refine } = usePagination()
 
   if (nbPages <= 1) return null
@@ -232,15 +238,15 @@ function SearchPagination() {
   const pages = Array.from({ length: end - start }, (_, i) => start + i)
 
   return (
-    <nav className="mt-8 flex items-center justify-center gap-1" aria-label="Pagination" data-testid="search-pagination">
+    <nav className="mt-8 flex items-center justify-center gap-1" aria-label={tPagination('previous')} data-testid="search-pagination">
       <button
         type="button"
         onClick={() => refine(currentRefinement - 1)}
         disabled={currentRefinement === 0}
         className="rounded-sm px-3 py-2 text-sm text-text-muted hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
-        aria-label="Previous page"
+        aria-label={tPagination('previous')}
       >
-        ← Prev
+        ← {tPagination('previous')}
       </button>
 
       {pages.map((page) => (
@@ -265,9 +271,9 @@ function SearchPagination() {
         onClick={() => refine(currentRefinement + 1)}
         disabled={currentRefinement >= nbPages - 1}
         className="rounded-sm px-3 py-2 text-sm text-text-muted hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
-        aria-label="Next page"
+        aria-label={tPagination('next')}
       >
-        Next →
+        {tPagination('next')} →
       </button>
     </nav>
   )
@@ -275,6 +281,8 @@ function SearchPagination() {
 
 /** Main search page content (must be inside InstantSearch) */
 function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
+  const tSearch = useTranslations('search')
+  const tBreadcrumb = useTranslations('breadcrumb')
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
   const { refine } = useSearchBox()
 
@@ -311,14 +319,14 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
   return (
     <Container>
       {/* Breadcrumb */}
-      <nav className="py-4 text-sm text-text-muted" aria-label="Breadcrumb">
+      <nav className="py-4 text-sm text-text-muted" aria-label={tBreadcrumb('home')}>
         <Link href="/" className="underline decoration-1 underline-offset-2 hover:text-primary">
-          Home
+          {tBreadcrumb('home')}
         </Link>
         <span className="mx-2" aria-hidden="true">
           /
         </span>
-        <span className="text-text-heading">Search Results</span>
+        <span className="text-text-heading">{tSearch('title')}</span>
       </nav>
 
       {/* Search input */}
@@ -327,7 +335,7 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
       {/* Popular tags */}
       {popularTags && popularTags.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center gap-2">
-          <span className="text-sm text-text-muted">Popular:</span>
+          <span className="text-sm text-text-muted">{tSearch('popularPrefix')}</span>
           {popularTags.map((tag) => (
             <TagChip
               key={tag.id || tag.query}
