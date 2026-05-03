@@ -139,3 +139,17 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ── Suppress unresolved Payload Localizer chrome (QA-001 / #71) ───────────
+ * Payload's `LocalizerLabel` renders `Locale: ${locale.label}` in the top
+ * bar. On routes without a document/locale context (the /admin dashboard,
+ * our custom views) the locale is unresolved and the label literally reads
+ * "Locale: undefined". The component sets `data-locale` only when a code
+ * is in scope, so the absence of the attribute is a reliable signal that
+ * we're in the broken state — hide it there. When a locale resolves
+ * normally (e.g. inside a localized doc edit view) the chip renders as
+ * usual. Long-term this disappears entirely with Layer 8 cutover.
+ */
+.localizer-button:not([data-locale]) {
+  display: none !important;
+}
