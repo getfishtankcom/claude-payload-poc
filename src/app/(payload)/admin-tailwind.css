@@ -153,3 +153,30 @@
 .localizer-button:not([data-locale]) {
   display: none !important;
 }
+
+/* ── FRAS-branded auth pages (login / forgot / reset) — issue #40 ──────────
+ * Payload's auth views share a `.template-minimal` wrapper class that
+ * scopes only to the unauthenticated auth screens. Override Payload's
+ * default theme accent (which is teal) with brand purple so the primary
+ * submit button + accent links read as RAS Canada. The form itself stays
+ * Payload's so we keep the e2e + axe coverage that already ships with
+ * it. (`.template-default` is the authenticated-shell wrapper — would
+ * leak the purple to every admin view; do not target that here.)
+ */
+.template-minimal .btn--style-primary,
+.template-minimal button[type='submit'] {
+  background-color: var(--brand-fras);
+  border-color: var(--brand-fras);
+  color: var(--text-on-brand, #fff);
+}
+
+.template-minimal .btn--style-primary:hover,
+.template-minimal button[type='submit']:hover {
+  background-color: var(--brand-fras-tint, #8E3387);
+  border-color: var(--brand-fras-tint, #8E3387);
+}
+
+.template-minimal a {
+  color: var(--brand-fras);
+}
+
