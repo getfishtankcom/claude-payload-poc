@@ -166,7 +166,8 @@
     "accessibility": "Accessibilite",
     "cookiePolicy": "Politique relative aux temoins",
     "legal": "Mentions legales",
-    "notConfigured": "Pied de page non configure."
+    "notConfigured": "Pied de page non configure.",
+    "allRightsReserved": "Tous droits reserves."
   },
   "forms": {
     "required": "Obligatoire",
