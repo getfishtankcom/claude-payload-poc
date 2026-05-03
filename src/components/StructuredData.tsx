@@ -20,7 +20,11 @@ export function OrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'RAS Canada',
-    alternateName: 'Financial Reporting & Assurance Standards Canada',
+    // Schema.org `alternateName` lists names the org also goes by. Use
+    // the canonical full name (Reporting and Assurance Standards (RAS)
+    // Canada) — the legacy "Financial Reporting" string is retired.
+    // (#149 / QA-101)
+    alternateName: 'Reporting and Assurance Standards (RAS) Canada',
     url: BASE_URL,
     description:
       'RAS Canada serves the public interest by establishing high-quality accounting, auditing, and sustainability standards for Canada.',

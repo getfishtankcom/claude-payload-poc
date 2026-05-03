@@ -16,6 +16,7 @@ import type { Metadata } from 'next'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { BRAND } from '@/config/brand'
 
 type MetaImage = {
   url?: string | null
@@ -50,9 +51,12 @@ export const generateMeta = async (args: { doc: MetaDoc | null }): Promise<Metad
 
   const ogImage = getImageURL(doc?.meta?.image ?? null)
 
+  // Title falls back to the canonical brand string from BRAND so the
+  // legacy "Financial Reporting & Assurance Standards" copy can't
+  // sneak back through this code path. (#149 / QA-101)
   const title = doc?.meta?.title
-    ? `${doc.meta.title} | RAS Canada`
-    : 'RAS Canada — Financial Reporting & Assurance Standards'
+    ? `${doc.meta.title} | ${BRAND.name}`
+    : `${BRAND.name} — ${BRAND.tagline}`
 
   return {
     description: doc?.meta?.description,

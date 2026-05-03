@@ -14,18 +14,23 @@
 import type { Metadata } from 'next'
 
 import { getServerSideURL } from './getURL'
+import { BRAND } from '@/config/brand'
 
+// Default OG metadata applied by `mergeOpenGraph` when a page-level
+// override doesn't provide its own. Brand string is the canonical
+// `BRAND.fullName` — never the legacy "Financial Reporting &
+// Assurance Standards" copy. (#149 / QA-101)
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
   description:
-    'Financial Reporting & Assurance Standards Canada — the standard-setting body for all accountants across Canada.',
+    `${BRAND.fullName} — the standard-setting body for all accountants across Canada.`,
   images: [
     {
       url: `${getServerSideURL()}/og-default.png`,
     },
   ],
-  siteName: 'RAS Canada',
-  title: 'RAS Canada',
+  siteName: BRAND.name,
+  title: BRAND.name,
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
