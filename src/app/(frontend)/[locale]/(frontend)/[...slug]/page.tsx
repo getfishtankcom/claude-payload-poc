@@ -24,6 +24,7 @@
  * - notFound() for missing pages
  * - Staff contacts populated via relationship
  */
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import {
   getPageByFullSlug,
@@ -46,6 +47,39 @@ type PageProps = {
 // CLAUDE.md "RASOC Rules". Fall through to the pages-collection lookup so any
 // existing /en/rasoc Page (e.g. an "About RASOC" page) still renders.
 const RASOC_SLUGS = new Set(['rasoc'])
+
+/**
+ * Per-page metadata for board landings. Without this, all 4 boards
+ * inherited the locale layout's generic title — bad for SEO + browser
+ * tabs / bookmarks. (#150 / QA-102)
+ *
+ * For non-board single-segment URLs and multi-segment slugs we fall
+ * back to the layout default (or any nested route's own
+ * generateMetadata).
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale, slug } = await params
+
+  if (slug.length === 1 && !RASOC_SLUGS.has(slug[0])) {
+    const board = await getBoardBySlug(slug[0], toPayloadLocale(locale))
+    if (board) {
+      // Return JUST the title segment — the layout's
+      // `metadata.title.template` appends " — RAS Canada" so we
+      // don't double-suffix. (#150 / QA-102)
+      const title = board.abbreviation
+        ? `${board.abbreviation} — ${board.name}`
+        : board.name
+      return {
+        title,
+        description: board.description ?? undefined,
+      }
+    }
+  }
+
+  // No override — let the layout default + any deeper route metadata
+  // flow through.
+  return {}
+}
 
 export default async function CatchAllPage({ params }: PageProps) {
   const { locale, slug } = await params
