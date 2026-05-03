@@ -50,11 +50,16 @@ type ProjectCardProps = {
 }
 
 /** Map badge type string to Badge component variant */
-function badgeTypeToVariant(type: string): 'standard' | 'consultation' | 'news' | 'webinar' | 'resource' | 'meeting' | 'guidance' {
-  const mapping: Record<string, 'standard' | 'consultation' | 'news' | 'webinar' | 'resource' | 'meeting' | 'guidance'> = {
+function badgeTypeToVariant(
+  type: string,
+): 'standard' | 'consultation' | 'news' | 'survey' | 'resource' | 'meeting' | 'guidance' {
+  const mapping: Record<
+    string,
+    'standard' | 'consultation' | 'news' | 'survey' | 'resource' | 'meeting' | 'guidance'
+  > = {
     'Exposure Draft': 'standard',
     'Public Comment': 'consultation',
-    'Survey': 'webinar',
+    'Survey': 'survey',
     'Research': 'resource',
     'Re-exposure Draft': 'guidance',
   }

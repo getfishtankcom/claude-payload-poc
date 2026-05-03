@@ -34,6 +34,7 @@ type BadgeVariant =
   | 'decision'
   | 'deadline'
   | 'resource'
+  | 'survey'
 
 type BadgeProps = {
   variant: BadgeVariant
@@ -51,6 +52,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   decision: 'bg-badge-decision text-white',
   deadline: 'bg-badge-deadline text-white',
   resource: 'bg-badge-resource text-white',
+  survey: 'bg-badge-survey text-white',
 }
 
 export function Badge({ variant, children, className = '' }: BadgeProps) {
