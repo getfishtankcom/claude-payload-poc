@@ -24,7 +24,7 @@
 
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { LanguageSwitcher } from './LanguageSwitcher'

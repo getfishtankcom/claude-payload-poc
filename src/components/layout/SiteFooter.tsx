@@ -22,7 +22,7 @@
  * - Policy links are UI chrome (hardcoded structural links)
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Container } from '@/components/ui'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
 import { BRAND } from '@/config/brand'

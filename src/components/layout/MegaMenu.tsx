@@ -20,7 +20,7 @@
 'use client'
 
 import React, { useRef, useCallback } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 

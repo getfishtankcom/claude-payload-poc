@@ -19,7 +19,7 @@
  * - Board slug needed for constructing detail URL: /active-projects/[board]/[project-slug]
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui/Badge'
 
 type ProjectBadge = {

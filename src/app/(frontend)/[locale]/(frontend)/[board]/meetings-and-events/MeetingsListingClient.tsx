@@ -22,7 +22,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { TabToggle } from '@/components/TabToggle'
 import { Pagination } from '@/components/Pagination'
 

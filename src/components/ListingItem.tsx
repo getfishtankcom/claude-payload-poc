@@ -18,7 +18,7 @@
  * - Server component — no interactivity
  * - Date uses Intl.DateTimeFormat for locale-aware formatting
  */
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 type ListingItemProps = {
   /** Item data */

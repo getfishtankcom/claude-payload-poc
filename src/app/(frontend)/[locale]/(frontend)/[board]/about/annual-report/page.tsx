@@ -22,7 +22,7 @@
  */
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 import { Container } from '@/components/ui/Container'
 import { RichText } from '@/components/RichText'

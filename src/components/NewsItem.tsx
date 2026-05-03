@@ -14,7 +14,7 @@
  * - Excerpt can be hidden with showExcerpt=false for compact listings
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 type NewsItemData = {
   title: string

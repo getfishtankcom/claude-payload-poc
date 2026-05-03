@@ -40,7 +40,7 @@ import {
   useStats,
   Configure,
 } from 'react-instantsearch'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { FilterSidebar } from '@/components/FilterSidebar'
