@@ -96,6 +96,14 @@ export default buildConfig({
     },
     components: {
       Nav: '/admin/components/CustomNav',
+      // Auth pages (login / forgot / reset) — FRAS-branded surround.
+      // Issue #40: Logo replaces Payload's default mark; LoginIntro drops
+      // the "Sign in to <full brand name>" headline above the form. Keeps
+      // Payload's auth form (which carries the e2e + axe coverage) intact.
+      graphics: {
+        Logo: '/admin/components/BrandLogo',
+      },
+      beforeLogin: ['/admin/components/LoginIntro'],
       views: {
         dashboard: {
           Component: '/admin/views/Dashboard',
