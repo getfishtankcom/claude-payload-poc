@@ -42,7 +42,10 @@ export const Consultations: CollectionConfig = {
     defaultColumns: ['title', 'type', 'workflowState', 'deadline_date', 'board'],
     components: {
       edit: {
-        beforeDocumentControls: ['/admin/components/TranslateButton'],
+        beforeDocumentControls: [
+          '/admin/components/WorkflowActionBarField',
+          '/admin/components/TranslateButton',
+        ],
       },
     },
   },
