@@ -145,14 +145,17 @@ function ResultsStats() {
   )
 }
 
-/** Sort dropdown */
+/** Sort dropdown — hidden when there are no hits, since sort is a no-op against an empty result set */
 function SortControl() {
+  const { nbHits } = useStats()
   const { currentRefinement, options, refine } = useSortBy({
     items: [
       { label: 'Relevance', value: 'news_en' },
       { label: 'Date (newest first)', value: 'news_en:date:desc' },
     ],
   })
+
+  if (nbHits === 0) return null
 
   return (
     <div className="flex items-center gap-2">
