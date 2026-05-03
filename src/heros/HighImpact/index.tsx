@@ -61,12 +61,20 @@ export const HighImpactHero = async ({
             </div>
           )}
 
-          {/* CTA links */}
+          {/* CTA links — override the outline/secondary purple chrome
+              so the secondary CTA actually reads against the gradient.
+              Primary buttons keep the default purple fill (already
+              visible). Outline gets a glass-effect (white border + 15%
+              white hover) for AA contrast on every gradient stop. (QA-204) */}
           {Array.isArray(links) && links.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-4">
-              {links.map(({ link }, i) => (
-                <CMSLink key={i} {...link} className="text-white" />
-              ))}
+              {links.map(({ link }, i) => {
+                const onDark =
+                  link?.appearance === 'outline'
+                    ? 'text-white border-white/70 hover:bg-white/15 hover:border-white hover:text-white'
+                    : 'text-white'
+                return <CMSLink key={i} {...link} className={onDark} />
+              })}
             </div>
           )}
 
