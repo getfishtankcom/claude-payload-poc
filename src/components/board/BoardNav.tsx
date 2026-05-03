@@ -65,10 +65,10 @@ export function BoardNav({
             <button
               type="button"
               onClick={() => onBoardSelect(null)}
-              className={`block w-full text-left rounded-md px-4 py-2.5 text-sm transition-colors cursor-pointer ${
+              className={`block w-full rounded-r-md py-2.5 text-left text-sm transition-colors cursor-pointer ${
                 activeBoard === null
-                  ? 'bg-primary text-white font-semibold'
-                  : 'text-text-primary hover:bg-gray-50 hover:text-primary'
+                  ? 'border-l-4 border-primary bg-primary/5 pl-3 pr-4 text-primary font-semibold'
+                  : 'border-l-4 border-transparent pl-4 pr-4 text-text-primary hover:border-primary/30 hover:bg-gray-50 hover:text-primary'
               }`}
               aria-current={activeBoard === null ? 'true' : undefined}
               data-testid="board-nav-all"
@@ -81,10 +81,10 @@ export function BoardNav({
               <button
                 type="button"
                 onClick={() => onBoardSelect(board.slug)}
-                className={`block w-full text-left rounded-md px-4 py-2.5 text-sm transition-colors cursor-pointer ${
+                className={`block w-full rounded-r-md py-2.5 text-left text-sm transition-colors cursor-pointer ${
                   activeBoard === board.slug
-                    ? 'bg-primary text-white font-semibold'
-                    : 'text-text-primary hover:bg-gray-50 hover:text-primary'
+                    ? 'border-l-4 border-primary bg-primary/5 pl-3 pr-4 text-primary font-semibold'
+                    : 'border-l-4 border-transparent pl-4 pr-4 text-text-primary hover:border-primary/30 hover:bg-gray-50 hover:text-primary'
                 }`}
                 aria-current={activeBoard === board.slug ? 'true' : undefined}
                 data-testid={`board-nav-${board.slug}`}
