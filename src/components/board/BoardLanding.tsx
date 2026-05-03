@@ -50,6 +50,30 @@ function formatDate(value: string, locale: string): string {
   })
 }
 
+/**
+ * Per CLAUDE.md "Board-specific colors": each board surface gets a tinted
+ * accent so AcSB/AASB (red-brown), PSAB/CSSB (blue), and the FRAS umbrella
+ * (purple) read as visually distinct.
+ *
+ * Returned class names are static so Tailwind v4 picks them up at build time
+ * — never compose the slug into the class string at runtime.
+ */
+function boardAccent(slug: string): { border: string; heading: string } {
+  switch (slug) {
+    case 'acsb':
+    case 'aasb':
+      // Standard-setting boards
+      return { border: 'border-board-boards', heading: 'text-board-boards' }
+    case 'psab':
+    case 'cssb':
+      // Councils
+      return { border: 'border-board-councils', heading: 'text-board-councils' }
+    default:
+      // FRAS umbrella + RASOC oversight + any future record
+      return { border: 'border-board-fras', heading: 'text-board-fras' }
+  }
+}
+
 export async function BoardLanding({ board, locale }: BoardLandingProps) {
   const payloadLocale: PayloadLocale = toPayloadLocale(locale)
   const [news, allProjects] = await Promise.all([
@@ -73,12 +97,18 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
     (a): a is NonNullable<typeof a> => Boolean(a),
   )
 
+  const accent = boardAccent(board.slug)
+
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-board-detail">
       <Breadcrumb items={breadcrumbItems} />
 
-      <header className="mt-4 border-b border-gray-200 pb-6">
-        <h1 className="text-3xl font-bold text-primary md:text-4xl">
+      <header
+        className={`mt-4 border-b-4 ${accent.border} pb-6`}
+        data-testid="board-landing-header"
+        data-board-accent={board.slug}
+      >
+        <h1 className={`text-3xl font-bold ${accent.heading} md:text-4xl`}>
           {board.abbreviation ? `${board.abbreviation} — ${board.name}` : board.name}
         </h1>
         {board.description && (
