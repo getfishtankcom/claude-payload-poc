@@ -7,7 +7,7 @@
  * - Valid RSS 2.0 XML output
  * - Includes news items, events, documents for comment
  * - Content-Type: application/rss+xml
- * - Bilingual metadata in feed title
+ * - Locale-aware: ?lang=fr serves the French feed; defaults to 'en'
  *
  * @dependencies
  * - Payload CMS local API
@@ -15,9 +15,17 @@
  * @notes
  * - Per-board feeds at /api/rss/[board]
  * - Cached for 5 minutes (ISR-like behavior)
+ * - All <link> URLs are prefixed with /<locale>/ and point at routes
+ *   that actually exist (no /meetings-and-events/<slug> detail page yet —
+ *   we link to the per-board listing until that route lands).
  */
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import {
+  buildFeedItemsForLocale,
+  buildRssXml,
+  type FeedLocale,
+} from './feed-builder'
 
 // Force dynamic rendering — the feed reads from Payload at request time,
 // so it must not be prerendered at build time (which would require the
@@ -25,138 +33,29 @@ import config from '@payload-config'
 export const dynamic = 'force-dynamic'
 export const revalidate = 300 // Cache for 5 minutes at the edge.
 
-function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;')
+function resolveLocale(value: string | null): FeedLocale {
+  return value === 'fr' ? 'fr' : 'en'
 }
 
-type FeedItem = {
-  title: string
-  link: string
-  description: string
-  pubDate: string
-  category: string
-}
+export async function GET(request: Request) {
+  const url = new URL(request.url)
+  const locale = resolveLocale(url.searchParams.get('lang'))
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'
 
-async function getFeedItems(boardSlug?: string): Promise<FeedItem[]> {
   const payload = await getPayload({ config })
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'
-  const items: FeedItem[] = []
+  const items = await buildFeedItemsForLocale(payload, baseUrl, locale)
 
-  // Build board filter
-  const boardFilter = boardSlug
-    ? { 'board.slug': { equals: boardSlug } }
-    : undefined
-
-  // Fetch news
-  try {
-    const news = await payload.find({
-      collection: 'news',
-      limit: 20,
-      sort: '-publishedDate',
-      where: boardFilter || {},
-      depth: 1,
-    })
-    for (const item of news.docs) {
-      const doc = item as unknown as Record<string, unknown>
-      items.push({
-        title: (doc.title as string) || '',
-        link: `${baseUrl}/news/${doc.slug}`,
-        description: (doc.summary as string) || '',
-        pubDate: new Date((doc.publishedDate as string) || Date.now()).toUTCString(),
-        category: 'News',
-      })
-    }
-  } catch { /* collection may not exist yet */ }
-
-  // Fetch events
-  try {
-    const events = await payload.find({
-      collection: 'events',
-      limit: 20,
-      sort: '-date',
-      where: boardFilter || {},
-      depth: 1,
-    })
-    for (const item of events.docs) {
-      const doc = item as unknown as Record<string, unknown>
-      items.push({
-        title: (doc.title as string) || '',
-        link: `${baseUrl}/meetings-and-events/${doc.slug}`,
-        description: (doc.summary as string) || '',
-        pubDate: new Date((doc.date as string) || Date.now()).toUTCString(),
-        category: 'Events',
-      })
-    }
-  } catch { /* collection may not exist yet */ }
-
-  // Fetch documents for comment
-  try {
-    const docs = await payload.find({
-      collection: 'documents-for-comment',
-      limit: 20,
-      sort: '-publishedDate',
-      where: boardFilter || {},
-      depth: 1,
-    })
-    for (const item of docs.docs) {
-      const doc = item as unknown as Record<string, unknown>
-      items.push({
-        title: (doc.title as string) || '',
-        link: `${baseUrl}/open-for-comment/${doc.slug}`,
-        description: (doc.summary as string) || '',
-        pubDate: new Date((doc.publishedDate as string) || Date.now()).toUTCString(),
-        category: 'Documents for Comment',
-      })
-    }
-  } catch { /* collection may not exist yet */ }
-
-  // Sort by date descending
-  items.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
-
-  return items
-}
-
-function buildRssXml(items: FeedItem[], title: string, description: string, link: string): string {
-  const itemsXml = items
-    .map(
-      (item) => `    <item>
-      <title>${escapeXml(item.title)}</title>
-      <link>${escapeXml(item.link)}</link>
-      <description>${escapeXml(item.description)}</description>
-      <pubDate>${item.pubDate}</pubDate>
-      <category>${escapeXml(item.category)}</category>
-    </item>`,
-    )
-    .join('\n')
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${escapeXml(title)}</title>
-    <description>${escapeXml(description)}</description>
-    <link>${escapeXml(link)}</link>
-    <language>en-CA</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${escapeXml(link)}/api/rss" rel="self" type="application/rss+xml" />
-${itemsXml}
-  </channel>
-</rss>`
-}
-
-export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'
-  const items = await getFeedItems()
-  const xml = buildRssXml(
+  const xml = buildRssXml({
     items,
-    'RAS Canada — Latest Updates',
-    'News, events, and documents for comment from RAS Canada',
-    baseUrl,
-  )
+    title: locale === 'fr' ? 'NIFC Canada — Dernières mises à jour' : 'RAS Canada — Latest Updates',
+    description:
+      locale === 'fr'
+        ? 'Nouvelles, événements et documents pour commentaires de NIFC Canada'
+        : 'News, events, and documents for comment from RAS Canada',
+    link: `${baseUrl}/${locale}`,
+    selfLink: `${baseUrl}/api/rss${locale === 'fr' ? '?lang=fr' : ''}`,
+    language: locale === 'fr' ? 'fr-CA' : 'en-CA',
+  })
 
   return new Response(xml, {
     headers: {
