@@ -23,10 +23,11 @@ const COLLECTIONS_DIR = join(process.cwd(), 'src/collections')
 const COMPONENT_PATH = '/admin/components/WorkflowActionBarField'
 
 /**
- * Every collection that ships workflow fields AND already has a
- * `beforeDocumentControls` block. Boards-Members and Job-Postings import
- * workflowFields but don't have a controls block at all — that's a wider
- * refactor and intentionally out of scope here (noted in the PR body).
+ * Every collection that ships workflow fields. The 10 with an existing
+ * `beforeDocumentControls` block were wired in the original #83 PR; the
+ * follow-up adds BoardMembers (had `components.beforeListTable` only)
+ * and JobPostings (no `components` block at all). All 12 workflow-enabled
+ * collections now show the action bar in their per-doc edit view.
  */
 const COLLECTIONS_WITH_CONTROLS = [
   'Pages.ts',
@@ -39,6 +40,8 @@ const COLLECTIONS_WITH_CONTROLS = [
   'Committees.ts',
   'DocumentsForComment.ts',
   'DocumentDetails.ts',
+  'BoardMembers.ts',
+  'JobPostings.ts',
 ] as const
 
 describe('WorkflowActionBarField registration', () => {
