@@ -74,7 +74,7 @@ export async function submitContactForm(
     }
   }
 
-  // Store submission in Payload CMS
+  // Store submission in Payload CMS — public form, so we explicitly bypass collection access control
   try {
     const payload = await getPayload({ config })
     await payload.create({
@@ -89,6 +89,7 @@ export async function submitContactForm(
         status: 'new',
         submittedAt: new Date().toISOString(),
       },
+      overrideAccess: true,
     })
 
     return {
