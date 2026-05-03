@@ -128,10 +128,30 @@ export const validateWorkflowTransition: CollectionBeforeChangeHook = ({
     )
   }
 
+  // The transition comment can arrive two ways:
+  //   - Local API:  passed via the `context` arg (e.g. scheduled-publish cron)
+  //   - REST API:   sent as a top-level `workflowComment` on the body, since
+  //                 the REST router has no clean way to carry `context`.
+  // Read whichever is present, then strip the body field so it doesn't try
+  // to persist (it's not a real collection column).
+  // Issue #85 (QA-015): the previous code only read `context.workflowComment`
+  // — REST clients had no way to satisfy it, so every Reject 400'd with
+  // "A comment is required when rejecting content".
+  const bodyComment = (data as { workflowComment?: unknown }).workflowComment
+  const ctxComment = context?.workflowComment
+  const transitionComment =
+    typeof bodyComment === 'string' && bodyComment.length > 0
+      ? bodyComment
+      : typeof ctxComment === 'string' && ctxComment.length > 0
+        ? ctxComment
+        : undefined
+  if ('workflowComment' in (data as Record<string, unknown>)) {
+    delete (data as Record<string, unknown>).workflowComment
+  }
+
   // Rejection requires mandatory comment
   if (newState === 'needs_revision') {
-    const comment = context?.workflowComment as string | undefined
-    if (!comment || comment.trim().length === 0) {
+    if (!transitionComment || transitionComment.trim().length === 0) {
       throw new Error('A comment is required when rejecting content')
     }
   }
@@ -146,7 +166,7 @@ export const validateWorkflowTransition: CollectionBeforeChangeHook = ({
       to: newState,
       user: req.user?.id ?? null,
       date: new Date().toISOString(),
-      comment: (context?.workflowComment as string) || null,
+      comment: transitionComment ?? null,
     }
     data.workflowHistory = [...incoming, historyEntry]
   }

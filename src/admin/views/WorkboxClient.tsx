@@ -39,6 +39,7 @@ import type { UserWithRole, WorkflowState } from '../types/workflow'
 import { STATE_LABELS as SHARED_STATE_LABELS, STATE_COLORS as SHARED_STATE_COLORS } from '../types/workflow'
 import { ModalOverlay, ModalButton } from '../components/ui/Modal'
 import { InlineButton, BulkActionButton } from '../components/ui/ActionButton'
+import { transitionWorkflowState } from '../lib/workflow-transition'
 
 type WorkboxTab = 'all' | 'in_review' | 'needs_revision' | 'approved' | 'scheduled'
 type SortField = 'date' | 'author' | 'type'
@@ -293,6 +294,12 @@ export function WorkboxClient() {
   }, [items])
 
   // --- Workflow transition ---
+  // Issue #85 (QA-015): the row stays in the list while the PATCH is in
+  // flight (just dimmed via `transitioningIds`). We only remove it after
+  // the API confirms success. Previously we removed optimistically and
+  // tried to roll back inside the catch — a 400 left the row gone from the
+  // UI even though the DB never changed, and counts drifted. Never
+  // optimistically remove on failure.
   const performTransition = useCallback(async (
     item: WorkboxItem,
     newState: WorkflowState,
@@ -302,46 +309,32 @@ export function WorkboxClient() {
     setTransitioningIds((prev) => new Set(prev).add(itemKey))
     setToastError(null)
 
-    // Optimistic: remove from list functionally so rapid transitions don't
-    // capture a stale `items` snapshot. Keep the removed item so we can
-    // restore it on failure.
-    let removed: WorkboxItem | undefined
-    setItems((prev) => {
-      const idx = prev.findIndex(
-        (i) => i.id === item.id && i._collection === item._collection,
-      )
-      if (idx < 0) return prev
-      removed = prev[idx]
-      return [...prev.slice(0, idx), ...prev.slice(idx + 1)]
+    const result = await transitionWorkflowState({
+      collection: item._collection,
+      docId: item.id,
+      newState,
+      comment,
     })
 
-    try {
-      const body: Record<string, unknown> = { workflowState: newState }
-      if (comment) {
-        body._context = { workflowComment: comment }
-      }
-      const res = await fetch(`/api/${item._collection}/${item.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.errors?.[0]?.message || `Transition failed: ${res.status}`)
-      }
-      // Successful — item stays removed from list (it moved states)
-    } catch (err) {
-      // Rollback optimistic update functionally — re-insert the removed item.
-      setItems((prev) => (removed ? [...prev, removed] : prev))
-      setToastError(err instanceof Error ? err.message : 'Transition failed')
+    if (result.ok) {
+      // Remove only after the DB confirms. The row was visibly dimmed
+      // during the request; now it disappears because it moved states.
+      setItems((prev) =>
+        prev.filter((i) => !(i.id === item.id && i._collection === item._collection)),
+      )
+    } else {
+      // Failure path: list stays unchanged; surface the error so the user
+      // knows nothing happened. setTimeout keeps the toast from sticking
+      // forever if the user navigates away.
+      setToastError(result.error)
       setTimeout(() => setToastError(null), 5000)
-    } finally {
-      setTransitioningIds((prev) => {
-        const next = new Set(prev)
-        next.delete(itemKey)
-        return next
-      })
     }
+
+    setTransitioningIds((prev) => {
+      const next = new Set(prev)
+      next.delete(itemKey)
+      return next
+    })
   }, [])
 
   // --- Reject handler ---

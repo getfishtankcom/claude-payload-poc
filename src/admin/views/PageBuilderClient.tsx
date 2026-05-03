@@ -33,6 +33,7 @@ import '@measured/puck/puck.css'
 
 import { buildPuckConfig } from '../builder/puckConfig'
 import { FRASActionBar } from '../builder/FRASActionBar'
+import { transitionPage, type PageWorkflowAction } from '../builder/page-builder-workflow'
 
 const AUTOSAVE_DEBOUNCE_MS = 5_000
 
@@ -58,6 +59,14 @@ export function PageBuilderClient() {
   const [saving, setSaving] = React.useState(false)
   const [lastSavedAt, setLastSavedAt] = React.useState<number | null>(null)
   const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Issue #96 (QA-026): Submit for Review / Publish were `console.log` stubs.
+  // Track which workflow action is in flight so the action bar can disable
+  // both buttons during the request, plus a banner for success / failure.
+  const [workflowAction, setWorkflowAction] = React.useState<PageWorkflowAction | null>(null)
+  const [workflowBanner, setWorkflowBanner] = React.useState<
+    { kind: 'success' | 'error'; text: string } | null
+  >(null)
 
   const config = React.useMemo(() => buildPuckConfig(locale), [locale])
 
@@ -117,6 +126,30 @@ export function PageBuilderClient() {
       ? `/api/preview?id=${pageData.id}&secret=${previewSecret}`
       : null
 
+  const runWorkflowAction = React.useCallback(
+    async (newState: PageWorkflowAction, successText: string) => {
+      const id = pageData?.id
+      if (!id || workflowAction !== null) return
+      setWorkflowAction(newState)
+      setWorkflowBanner(null)
+      const result = await transitionPage(id, newState)
+      if (result.ok) {
+        setWorkflowBanner({ kind: 'success', text: successText })
+      } else {
+        setWorkflowBanner({ kind: 'error', text: result.error })
+      }
+      setWorkflowAction(null)
+    },
+    [pageData?.id, workflowAction],
+  )
+
+  // Auto-clear the banner so it doesn't linger forever.
+  React.useEffect(() => {
+    if (!workflowBanner) return
+    const t = setTimeout(() => setWorkflowBanner(null), 6000)
+    return () => clearTimeout(t)
+  }, [workflowBanner])
+
   if (loading) {
     return <div style={{ padding: 24 }}>Loading page…</div>
   }
@@ -144,16 +177,9 @@ export function PageBuilderClient() {
         <FRASActionBar
           saving={saving}
           lastSavedAt={lastSavedAt}
-          readOnly={false}
-          onSubmitForReview={() => {
-            // Wired by Epic 22 (workflow transitions).
-            // eslint-disable-next-line no-console
-            console.log('[FRAS] Submit for Review (stub)')
-          }}
-          onPublish={() => {
-            // eslint-disable-next-line no-console
-            console.log('[FRAS] Publish (stub)')
-          }}
+          readOnly={workflowAction !== null}
+          onSubmitForReview={() => runWorkflowAction('in_review', 'Submitted for review')}
+          onPublish={() => runWorkflowAction('published', 'Published')}
           onPreview={() => {
             if (previewUrl)
               window.open(previewUrl, '_blank', 'noopener,noreferrer')
@@ -162,6 +188,42 @@ export function PageBuilderClient() {
           locale={locale}
           lockedByOther={false}
         />
+        {workflowBanner && (
+          <div
+            data-testid="page-builder-workflow-banner"
+            role={workflowBanner.kind === 'error' ? 'alert' : 'status'}
+            style={{
+              padding: '8px 16px',
+              fontSize: 13,
+              fontWeight: 500,
+              background: workflowBanner.kind === 'error' ? '#fef2f2' : '#f0fdf4',
+              color: workflowBanner.kind === 'error' ? '#b91c1c' : '#166534',
+              borderBottom: `1px solid ${
+                workflowBanner.kind === 'error' ? '#fecaca' : '#bbf7d0'
+              }`,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span>{workflowBanner.text}</span>
+            <button
+              type="button"
+              onClick={() => setWorkflowBanner(null)}
+              aria-label="Dismiss"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'inherit',
+                fontSize: 14,
+                lineHeight: 1,
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
         <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
           <Puck
             config={config}
