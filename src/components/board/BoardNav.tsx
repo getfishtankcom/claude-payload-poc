@@ -1,7 +1,7 @@
 /**
  * @description
  * Board navigation sidebar for Active Projects listing page.
- * Vertical list of board full names with active state highlighting.
+ * Vertical list of board abbreviations (AcSB / PSAB / etc.) with active state highlighting.
  * On mobile (< 1024px), renders as a dropdown selector.
  *
  * Key features:
@@ -84,7 +84,7 @@ export function BoardNav({
                 aria-current={activeBoard === board.slug ? 'true' : undefined}
                 data-testid={`board-nav-${board.slug}`}
               >
-                {board.name}
+                {board.abbreviation || board.name}
               </button>
             </li>
           ))}
