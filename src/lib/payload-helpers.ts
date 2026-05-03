@@ -312,6 +312,26 @@ export async function getProjectBySlug(projectSlug: string, locale: PayloadLocal
 }
 
 /**
+ * Fetches a single news item by slug. Used by the /news/[slug] detail route.
+ * Returns null if no published item with that slug exists.
+ */
+export async function getNewsBySlug(slug: string, locale: PayloadLocale = 'en'): Promise<News | null> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'news',
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 2,
+      locale,
+    })
+    return (result.docs[0] as unknown as News) || null
+  } catch {
+    return null
+  }
+}
+
+/**
  * Fetches news items filtered by board, sorted newest first.
  */
 export async function getNewsByBoard(boardId: number, limit = 4, locale: PayloadLocale = 'en'): Promise<News[]> {
