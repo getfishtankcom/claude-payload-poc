@@ -30,8 +30,9 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import { useLocale, useTranslations } from 'next-intl'
+import { getSearchProvider } from '@/search'
+import type { ProviderLocale } from '@/search/types'
 import {
   InstantSearch,
   useSearchBox,
@@ -380,14 +381,12 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
 }
 
 export function SearchPageClient({ popularTags }: SearchPageClientProps) {
-  const meilisearchHost = process.env.NEXT_PUBLIC_MEILISEARCH_HOST || 'http://localhost:7700'
-  const meilisearchKey = process.env.NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY || ''
+  const locale = useLocale() as ProviderLocale
 
-  // Dev-only console warning when the search key is missing, so the
-  // resilient client's silent "no results" empty state doesn't trap
-  // anyone debugging a fresh clone. Pre-checked the key in
-  // `.env.example`; this is defensive for local installs that copied
-  // an older example or stripped the value. (#160 / QA-112)
+  // Dev-only console warning when the Meilisearch search key is missing
+  // (the active default provider). Once Slice 2+ ships Algolia behind a
+  // flag this check moves into the provider itself. (#160 / QA-112)
+  const meilisearchKey = process.env.NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY || ''
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !meilisearchKey) {
     // eslint-disable-next-line no-console
     console.warn(
@@ -396,36 +395,14 @@ export function SearchPageClient({ popularTags }: SearchPageClientProps) {
     )
   }
 
-  // Wrap Meilisearch client in a proxy that catches connection errors gracefully.
-  // Without this, a missing Meilisearch instance throws a noisy console error.
-  const { searchClient } = useMemo(() => {
-    const { searchClient: rawClient } = instantMeiliSearch(meilisearchHost, meilisearchKey)
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const resilientClient = {
-      ...rawClient,
-      search: async (requests: any) => {
-        try {
-          return await (rawClient as any).search(requests)
-        } catch {
-          // Meilisearch unavailable — return empty results instead of throwing
-          return { results: (requests as Array<{ indexName: string }>).map((req) => ({
-            hits: [],
-            nbHits: 0,
-            page: 0,
-            nbPages: 0,
-            hitsPerPage: 20,
-            exhaustiveNbHits: true,
-            query: '',
-            params: '',
-            processingTimeMs: 0,
-            index: req.indexName,
-          })) }
-        }
-      },
-    }
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-    return { searchClient: resilientClient }
-  }, [meilisearchHost, meilisearchKey])
+  // Provider-agnostic search client — `getSearchProvider()` reads the
+  // SEARCH_PROVIDER env var and dispatches to the right adapter
+  // (Meilisearch today; Algolia per #173+). The locale is forwarded for
+  // when FR indexes come online in Slice 3. (#172 / Algolia Slice 1)
+  const searchClient = useMemo(
+    () => getSearchProvider().getSearchClient(locale),
+    [locale],
+  )
 
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') || ''
