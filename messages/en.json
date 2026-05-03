@@ -159,7 +159,24 @@
     "sending": "Sending...",
     "success": "Form submitted successfully.",
     "error": "An error occurred. Please try again.",
-    "validationError": "Please fix the errors below."
+    "validationError": "Please fix the errors below.",
+    "fullName": "Full Name *",
+    "titleField": "Title",
+    "emailAddress": "Email Address *",
+    "businessPhone": "Business Phone",
+    "comments": "Comments *",
+    "fullNameRequired": "Full Name is required.",
+    "emailRequired": "Email Address is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "commentsRequired": "Comments are required.",
+    "submitting": "Submitting...",
+    "correctErrors": "Please correct {count} error{plural} in the form."
+  },
+  "contact": {
+    "introFallback": "Send us a question, comment, or media inquiry. Submissions are routed to the relevant team and we typically respond within five business days. For media inquiries, see the contact details below.",
+    "metaTitle": "Contact Us — RAS Canada",
+    "metaDescription": "Get in touch with RAS Canada. Send us your questions, comments, or media inquiries.",
+    "mediaInquiriesHeading": "Media Inquiries"
   },
   "breadcrumb": {
     "home": "Home",

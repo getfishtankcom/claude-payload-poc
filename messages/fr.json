@@ -159,7 +159,24 @@
     "sending": "Envoi en cours...",
     "success": "Formulaire soumis avec succes.",
     "error": "Une erreur est survenue. Veuillez reessayer.",
-    "validationError": "Veuillez corriger les erreurs ci-dessous."
+    "validationError": "Veuillez corriger les erreurs ci-dessous.",
+    "fullName": "Nom complet *",
+    "titleField": "Titre",
+    "emailAddress": "Adresse courriel *",
+    "businessPhone": "Telephone professionnel",
+    "comments": "Commentaires *",
+    "fullNameRequired": "Le nom complet est obligatoire.",
+    "emailRequired": "L'adresse courriel est obligatoire.",
+    "emailInvalid": "Veuillez entrer une adresse courriel valide.",
+    "commentsRequired": "Les commentaires sont obligatoires.",
+    "submitting": "Envoi en cours...",
+    "correctErrors": "Veuillez corriger {count} erreur{plural} dans le formulaire."
+  },
+  "contact": {
+    "introFallback": "Envoyez-nous une question, un commentaire ou une demande des medias. Les soumissions sont acheminees a l'equipe concernee et nous repondons habituellement dans un delai de cinq jours ouvrables. Pour les demandes des medias, consultez les coordonnees ci-dessous.",
+    "metaTitle": "Nous joindre — NIFC Canada",
+    "metaDescription": "Communiquez avec NIFC Canada. Envoyez-nous vos questions, commentaires ou demandes des medias.",
+    "mediaInquiriesHeading": "Demandes des medias"
   },
   "breadcrumb": {
     "home": "Accueil",

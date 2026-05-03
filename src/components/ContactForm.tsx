@@ -23,6 +23,7 @@
 'use client'
 
 import React, { useActionState, useRef, useEffect, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 
@@ -46,23 +47,29 @@ const initialState: ContactFormState = {
   message: '',
 }
 
-function validateField(name: string, value: string): string {
-  switch (name) {
-    case 'fullName':
-      return value.trim() ? '' : 'Full Name is required.'
-    case 'email': {
-      if (!value.trim()) return 'Email Address is required.'
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return emailRegex.test(value) ? '' : 'Please enter a valid email address.'
+type Validator = (name: string, value: string) => string
+
+function makeValidator(t: (key: string) => string): Validator {
+  return (name, value) => {
+    switch (name) {
+      case 'fullName':
+        return value.trim() ? '' : t('fullNameRequired')
+      case 'email': {
+        if (!value.trim()) return t('emailRequired')
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(value) ? '' : t('emailInvalid')
+      }
+      case 'comments':
+        return value.trim() ? '' : t('commentsRequired')
+      default:
+        return ''
     }
-    case 'comments':
-      return value.trim() ? '' : 'Comments are required.'
-    default:
-      return ''
   }
 }
 
 export function ContactForm({ action, getRecaptchaToken, ...props }: ContactFormProps) {
+  const t = useTranslations('forms')
+  const validateField = React.useMemo(() => makeValidator(t), [t])
   const [state, formAction, isActionPending] = useActionState(action, initialState)
   const [isTransitionPending, startTransition] = useTransition()
   const isPending = isActionPending || isTransitionPending
@@ -156,14 +163,17 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       {/* Error announcement for screen readers */}
       {Object.keys(errors).length > 0 && (
         <div role="alert" className="sr-only">
-          Please correct {Object.keys(errors).length} error{Object.keys(errors).length > 1 ? 's' : ''} in the form.
+          {t('correctErrors', {
+            count: Object.keys(errors).length,
+            plural: Object.keys(errors).length > 1 ? 's' : '',
+          })}
         </div>
       )}
 
       <Input
         id="fullName"
         name="fullName"
-        label="Full Name *"
+        label={t('fullName')}
         type="text"
         required
         error={errors?.fullName}
@@ -173,7 +183,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       <Input
         id="title"
         name="title"
-        label="Title"
+        label={t('titleField')}
         type="text"
         onBlur={handleBlur}
       />
@@ -181,7 +191,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       <Input
         id="organization"
         name="organization"
-        label="Organization"
+        label={t('organization')}
         type="text"
         onBlur={handleBlur}
       />
@@ -189,7 +199,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       <Input
         id="email"
         name="email"
-        label="Email Address *"
+        label={t('emailAddress')}
         type="email"
         required
         error={errors?.email}
@@ -199,7 +209,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       <Input
         id="businessPhone"
         name="businessPhone"
-        label="Business Phone"
+        label={t('businessPhone')}
         type="tel"
         onBlur={handleBlur}
       />
@@ -207,7 +217,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       <Input
         id="comments"
         name="comments"
-        label="Comments *"
+        label={t('comments')}
         type="textarea"
         required
         rows={6}
@@ -234,7 +244,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
         disabled={isPending}
         data-testid="contact-form-submit"
       >
-        {isPending ? 'Submitting...' : 'Submit'}
+        {isPending ? t('submitting') : t('submit')}
       </Button>
     </form>
   )
