@@ -22,9 +22,10 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
 import { FolderOpenIcon } from '@heroicons/react/24/outline'
+import { getTranslations } from 'next-intl/server'
 import {
   getAllActiveProjects,
-  getAllBoards,
+  getActiveBoards,
   getAllStandards,
   toPayloadLocale,
 } from '@/lib/payload-helpers'
@@ -45,22 +46,21 @@ type PageProps = {
 
 export default async function ActiveProjectsPage({ params }: PageProps) {
   const { locale } = await params
-  // Fetch data in parallel
-  const [projects, boards, standards] = await Promise.all([
+  // Fetch data + i18n strings in parallel
+  const [projects, boards, standards, tProjects] = await Promise.all([
     getAllActiveProjects(toPayloadLocale(locale)),
-    getAllBoards(toPayloadLocale(locale)),
+    getActiveBoards(toPayloadLocale(locale)),
     getAllStandards(toPayloadLocale(locale)),
+    getTranslations('projects'),
   ])
 
-  // Filter out RASOC from board nav
-  const navBoards = boards
-    .filter((b) => b.slug !== 'rasoc')
-    .map((b) => ({
-      id: String(b.id),
-      name: b.name,
-      slug: b.slug,
-      abbreviation: b.abbreviation,
-    }))
+  // RASOC is excluded at the data layer via getActiveBoards (#78).
+  const navBoards = boards.map((b) => ({
+    id: String(b.id),
+    name: b.name,
+    slug: b.slug,
+    abbreviation: b.abbreviation,
+  }))
 
   // Transform standards for filter dropdown
   const standardOptions = standards.map((s) => ({
@@ -107,8 +107,8 @@ export default async function ActiveProjectsPage({ params }: PageProps) {
         <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8">
           <PageHeader
             icon={<FolderOpenIcon />}
-            title="Active Projects"
-            subtitle="Browse active standards-setting projects across all boards."
+            title={tProjects('title')}
+            subtitle={tProjects('subtitle')}
           />
         </div>
       </div>

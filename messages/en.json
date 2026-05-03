@@ -1,7 +1,7 @@
 {
   "common": {
     "siteName": "RAS Canada",
-    "siteDescription": "Financial Reporting & Assurance Standards",
+    "siteDescription": "Reporting and Assurance Standards Canada",
     "loading": "Loading...",
     "error": "An error occurred",
     "notFound": "Page not found",
@@ -79,6 +79,9 @@
     "title": "Active Projects",
     "subtitle": "Browse active standards-setting projects across all boards.",
     "noProjects": "No active projects found.",
+    "noProjectsForFilters": "No projects found matching your filters.",
+    "filterByName": "Filter projects by name...",
+    "filterByStandard": "Filter by standard",
     "currentStage": "Current Stage",
     "timeline": "Project Timeline",
     "summary": "Summary",
@@ -105,7 +108,9 @@
     "resources": "Resources",
     "recentNews": "Recent News",
     "viewAllNews": "View all news",
-    "viewAllEvents": "View all events"
+    "viewAllEvents": "View all events",
+    "filterByBoard": "Filter by Board",
+    "boardNavLabel": "Filter by board"
   },
   "news": {
     "title": "News",

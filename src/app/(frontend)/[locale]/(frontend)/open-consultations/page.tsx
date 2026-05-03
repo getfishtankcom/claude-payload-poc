@@ -25,7 +25,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import {
   getOpenConsultations,
-  getAllBoards,
+  getActiveBoards,
   getAllStandards,
   toPayloadLocale,
 } from '@/lib/payload-helpers'
@@ -48,14 +48,12 @@ export default async function OpenConsultationsPage({ params }: PageProps) {
   const { locale } = await params
   const [consultations, boards, standards] = await Promise.all([
     getOpenConsultations(toPayloadLocale(locale)),
-    getAllBoards(toPayloadLocale(locale)),
+    getActiveBoards(toPayloadLocale(locale)),
     getAllStandards(toPayloadLocale(locale)),
   ])
 
-  // Filter RASOC from board filter
-  const boardOptions = boards
-    .filter((b) => b.slug !== 'rasoc')
-    .map((b) => ({ id: String(b.id), name: b.name, slug: b.slug }))
+  // RASOC is excluded at the data layer via getActiveBoards (#78).
+  const boardOptions = boards.map((b) => ({ id: String(b.id), name: b.name, slug: b.slug }))
 
   const standardOptions = standards.map((s) => ({
     id: String(s.id),

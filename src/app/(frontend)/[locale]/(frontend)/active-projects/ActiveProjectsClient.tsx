@@ -23,6 +23,7 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { BoardNav } from '@/components/board/BoardNav'
 import { ProjectCard } from '@/components/board/ProjectCard'
@@ -52,6 +53,9 @@ export function ActiveProjectsClient({
   projects,
   standards,
 }: ActiveProjectsClientProps) {
+  const tProjects = useTranslations('projects')
+  const tFilters = useTranslations('filters')
+
   const [activeBoard, setActiveBoard] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStandard, setSelectedStandard] = useState<string>('')
@@ -112,7 +116,7 @@ export function ActiveProjectsClient({
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden="true" />
             <input
               type="text"
-              placeholder="Filter projects by name..."
+              placeholder={tProjects('filterByName')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-md border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-muted focus:border-primary focus:ring-1 focus:ring-primary"
@@ -122,11 +126,11 @@ export function ActiveProjectsClient({
           <select
             value={selectedStandard}
             onChange={(e) => setSelectedStandard(e.target.value)}
-            aria-label="Filter by standard"
+            aria-label={tProjects('filterByStandard')}
             className="rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary"
             data-testid="standard-filter"
           >
-            <option value="">All Standards</option>
+            <option value="">{tFilters('allStandards')}</option>
             {standards.map((s) => (
               <option key={s.id} value={String(s.id)}>
                 {s.name}
@@ -138,7 +142,7 @@ export function ActiveProjectsClient({
         {/* Grouped project list */}
         {Object.keys(groupedProjects).length === 0 ? (
           <div className="py-12 text-center text-text-muted">
-            <p>No projects found matching your filters.</p>
+            <p>{tProjects('noProjectsForFilters')}</p>
           </div>
         ) : (
           <div className="space-y-6">
