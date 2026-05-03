@@ -217,7 +217,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
           </section>
         </main>
 
-        <aside className="space-y-6 lg:sticky lg:top-8 lg:self-start" data-testid="right-rail">
+        <aside className="space-y-8 lg:sticky lg:top-8 lg:self-start" data-testid="right-rail">
           {quickActions.length > 0 && (
             <div className="rounded-md border border-surface-card-border bg-surface-card p-4 shadow-card">
               <QuickActions
