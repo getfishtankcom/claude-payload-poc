@@ -165,18 +165,22 @@ export async function SiteFooter({ footer, locale }: SiteFooterProps) {
       <div className="border-t border-gray-300 bg-gray-200" data-testid="footer-copyright">
         <Container>
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+            {/* Copyright string is split: BRAND.fullName stays interpolated
+                so we keep the full org name (per PR #98) on both locales,
+                but the trailing "All rights reserved." now translates via
+                `footer.allRightsReserved`. (#188 / dogfood-2026-05-03) */}
             <p className="text-xs text-text-muted">
-              &copy; {currentYear} {BRAND.fullName}. All rights reserved.
+              &copy; {currentYear} {BRAND.fullName}. {tFooter('allRightsReserved')}
             </p>
             <div className="flex items-center gap-4">
               <Link href="/privacy" className="text-xs text-text-muted hover:text-primary hover:underline">
-                Privacy Policy
+                {tFooter('privacyPolicy')}
               </Link>
               <Link href="/cookies" className="text-xs text-text-muted hover:text-primary hover:underline">
-                Cookie Policy
+                {tFooter('cookiePolicy')}
               </Link>
               <Link href="/terms" className="text-xs text-text-muted hover:text-primary hover:underline">
-                Terms of Use
+                {tFooter('termsOfUse')}
               </Link>
             </div>
           </div>

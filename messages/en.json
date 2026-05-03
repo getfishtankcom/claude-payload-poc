@@ -166,7 +166,8 @@
     "accessibility": "Accessibility",
     "cookiePolicy": "Cookie Policy",
     "legal": "Legal",
-    "notConfigured": "Footer not configured."
+    "notConfigured": "Footer not configured.",
+    "allRightsReserved": "All rights reserved."
   },
   "forms": {
     "required": "Required",
