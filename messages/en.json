@@ -40,6 +40,9 @@
     "contactUs": "Contact Us",
     "careers": "Careers"
   },
+  "homepage": {
+    "findActiveProject": "Find an active project"
+  },
   "search": {
     "title": "Search Results",
     "placeholder": "Projects, standards, and more...",

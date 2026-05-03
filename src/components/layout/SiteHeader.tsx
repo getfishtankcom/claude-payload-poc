@@ -24,6 +24,7 @@
 
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
@@ -94,6 +95,8 @@ function buildFlatMenuItems(
 }
 
 export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
+  const tSearch = useTranslations('search')
+  const tNav = useTranslations('nav')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
 
@@ -160,7 +163,8 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
               />
               <input
                 type="search"
-                placeholder="Projects, standards, and more..."
+                placeholder={tSearch('placeholder')}
+                aria-label={tSearch('ariaLabel')}
                 className="w-full rounded-sm border border-gray-300 bg-white py-2 pl-10 pr-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30 cursor-pointer"
                 data-testid="header-search"
                 readOnly
@@ -175,7 +179,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
               type="button"
               onClick={() => setSearchModalOpen(true)}
               className="rounded-sm p-2 text-text-muted hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-bright cursor-pointer"
-              aria-label="Search"
+              aria-label={tSearch('ariaLabel')}
               data-testid="mobile-search-toggle"
             >
               <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
@@ -184,7 +188,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
               type="button"
               onClick={() => setMobileMenuOpen(true)}
               className="rounded-sm p-2 text-text-muted hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-bright cursor-pointer"
-              aria-label="Open navigation menu"
+              aria-label={tNav('openMenu')}
               data-testid="mobile-menu-toggle"
             >
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
