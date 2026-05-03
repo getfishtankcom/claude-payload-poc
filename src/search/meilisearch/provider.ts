@@ -1,12 +1,24 @@
 /**
  * @description
- * `MeilisearchProvider` — the default `SearchProvider` implementation,
- * conforming to `src/search/types.ts`. Wraps the Meilisearch client +
- * sync helpers + InstantSearch frontend connector.
+ * `MeilisearchProvider` — `SearchProvider` implementation conforming to
+ * `src/search/types.ts`. Wraps the Meilisearch client + sync helpers +
+ * InstantSearch frontend connector.
  *
  * Introduced in #172 / Algolia migration Slice 1 as part of the
- * provider-agnostic abstraction. No behavior change vs the pre-refactor
- * code — `SEARCH_PROVIDER=meilisearch` (or unset) is the default.
+ * provider-agnostic abstraction.
+ *
+ * @deprecated since Slice 8 (#179). Algolia is the production search
+ * provider after the cutover (Slice 6 / #177). This implementation
+ * stays for the documented recovery path:
+ *
+ *   1. Set `SEARCH_PROVIDER=meilisearch` in production env
+ *   2. Re-deploy
+ *   3. Run `node scripts/reindex-meilisearch.mjs` to backfill any time
+ *      gap from when Meilisearch stopped receiving dual-writes
+ *
+ * Do NOT add new features here; non-trivial changes belong in the
+ * Algolia provider. Keeping the adapter (and its conformance tests)
+ * in the codebase is intentional — it is the rollback path.
  */
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 
@@ -52,6 +64,7 @@ function buildResilientClient(host: string, key: string): SearchClient {
   /* eslint-enable @typescript-eslint/no-explicit-any */
 }
 
+/** @deprecated since Slice 8 (#179) — kept as recovery path. See module-level comment. */
 export const meilisearchProvider: SearchProvider = {
   name: 'meilisearch',
 
