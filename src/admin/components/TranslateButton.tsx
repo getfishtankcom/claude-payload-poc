@@ -16,6 +16,8 @@ import React, { useCallback, useState } from 'react'
 import { useDocumentInfo, useLocale, toast } from '@payloadcms/ui'
 import { useRouter } from 'next/navigation'
 
+import { emitFrTranslationCompleted } from '../lib/fr-translation-events'
+
 type ApiResponse = {
   success?: boolean
   error?: string
@@ -50,6 +52,10 @@ export const TranslateButton: React.FC = () => {
       toast.success(
         `Translated ${fields} fields → FR ($${cost}). Review on the FR locale tab.`,
       )
+      // Issue #84 (QA-014): tell the FR-translation warning to re-evaluate
+      // its "is FR missing?" check against the live DB. Without this it
+      // keeps rendering the orange flag even though the translate landed.
+      emitFrTranslationCompleted({ collectionSlug: String(collectionSlug), docId: id })
       router.refresh()
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e)
