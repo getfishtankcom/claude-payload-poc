@@ -27,13 +27,13 @@
  */
 import type { CollectionConfig } from 'payload'
 
-import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { getSearchProvider } from '@/search'
 import { extractDocumentText } from '@/search/document-extraction'
 import { workflowFields } from '@/fields/workflow'
 import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
 import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 
-const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'documents' })
+const { afterChange: searchSyncAfterChange, afterDelete } = getSearchProvider().getSyncHooks({ indexName: 'documents' })
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
@@ -58,7 +58,7 @@ export const Documents: CollectionConfig = {
   },
   hooks: {
     beforeChange: [validateWorkflowTransition],
-    afterChange: [createLogWorkflowTransition('documents'), meilisearchAfterChange, extractDocumentText],
+    afterChange: [createLogWorkflowTransition('documents'), searchSyncAfterChange, extractDocumentText],
     afterDelete: [afterDelete],
   },
   fields: [

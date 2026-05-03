@@ -45,14 +45,14 @@ import type { CollectionConfig } from 'payload'
 
 import { hero } from '@/heros/config'
 import { blocks } from '@/blocks'
-import { syncToMeilisearch } from '@/search/meilisearch-sync'
+import { getSearchProvider } from '@/search'
 import { workflowFields } from '@/fields/workflow'
 import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
 import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
 import { clearExpiredLock } from '@/admin/hooks/locking-hooks'
 import { templateOptions } from '@/admin/templates'
 
-const { afterChange: meilisearchAfterChange, afterDelete } = syncToMeilisearch({ indexName: 'pages' })
+const { afterChange: searchSyncAfterChange, afterDelete } = getSearchProvider().getSyncHooks({ indexName: 'pages' })
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -82,7 +82,7 @@ export const Pages: CollectionConfig = {
   },
   hooks: {
     beforeChange: [clearExpiredLock, validateWorkflowTransition],
-    afterChange: [createLogWorkflowTransition('pages'), meilisearchAfterChange],
+    afterChange: [createLogWorkflowTransition('pages'), searchSyncAfterChange],
     afterDelete: [afterDelete],
   },
   fields: [
