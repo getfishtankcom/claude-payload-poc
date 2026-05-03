@@ -89,7 +89,9 @@ export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = async ({
             {newsItems.slice(0, news_count || 3).map((item) => (
               <li key={item.id} className="border-b border-gray-200 pb-4 last:border-0">
                 {item.board?.abbreviation && (
-                  <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  // No `uppercase` — board.abbreviation is brand-cased
+                  // (AcSB / AASB) and CSS uppercase mangles it. (#158)
+                  <p className="text-xs font-bold tracking-[0.16em] text-text-muted">
                     {item.board.abbreviation}
                   </p>
                 )}

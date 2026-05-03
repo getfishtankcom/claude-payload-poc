@@ -111,7 +111,7 @@ export function BoardNav({
           <option value="">{tFilters('allBoards')}</option>
           {boards.map((board) => (
             <option key={board.slug} value={board.slug}>
-              {board.name}
+              {board.abbreviation || board.name}
             </option>
           ))}
         </select>
