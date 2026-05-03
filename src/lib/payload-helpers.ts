@@ -253,6 +253,33 @@ export async function getAllBoards(locale: PayloadLocale = 'en'): Promise<Board[
 }
 
 /**
+ * Fetches the standards-setting boards/councils only — i.e. every board EXCEPT
+ * RASOC, the oversight council. Per CLAUDE.md "RASOC Rules", RASOC must not
+ * appear in board nav, the Active Projects sidebar, the open-consultations
+ * filter, or the boards [board-slug] static-params set.
+ *
+ * The exclusion runs at the data layer (Payload `where` filter on the
+ * non-localized `abbreviation` field) so it can't drift between locales —
+ * the previous in-component `b.slug !== 'rasoc'` filter was matching the
+ * EN slug literal and leaked RASOC into FR routes (#78).
+ */
+export async function getActiveBoards(locale: PayloadLocale = 'en'): Promise<Board[]> {
+  try {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'boards',
+      where: { abbreviation: { not_equals: 'RASOC' } },
+      limit: 100,
+      sort: 'name',
+      locale,
+    })
+    return result.docs as unknown as Board[]
+  } catch {
+    return []
+  }
+}
+
+/**
  * Fetches projects filtered by board, with populated relationships.
  */
 export async function getProjectsByBoard(boardId: number, limit = 20, locale: PayloadLocale = 'en'): Promise<Project[]> {

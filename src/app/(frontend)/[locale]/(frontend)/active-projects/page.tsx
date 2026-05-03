@@ -24,7 +24,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { FolderOpenIcon } from '@heroicons/react/24/outline'
 import {
   getAllActiveProjects,
-  getAllBoards,
+  getActiveBoards,
   getAllStandards,
   toPayloadLocale,
 } from '@/lib/payload-helpers'
@@ -48,19 +48,17 @@ export default async function ActiveProjectsPage({ params }: PageProps) {
   // Fetch data in parallel
   const [projects, boards, standards] = await Promise.all([
     getAllActiveProjects(toPayloadLocale(locale)),
-    getAllBoards(toPayloadLocale(locale)),
+    getActiveBoards(toPayloadLocale(locale)),
     getAllStandards(toPayloadLocale(locale)),
   ])
 
-  // Filter out RASOC from board nav
-  const navBoards = boards
-    .filter((b) => b.slug !== 'rasoc')
-    .map((b) => ({
-      id: String(b.id),
-      name: b.name,
-      slug: b.slug,
-      abbreviation: b.abbreviation,
-    }))
+  // RASOC is excluded at the data layer via getActiveBoards (#78).
+  const navBoards = boards.map((b) => ({
+    id: String(b.id),
+    name: b.name,
+    slug: b.slug,
+    abbreviation: b.abbreviation,
+  }))
 
   // Transform standards for filter dropdown
   const standardOptions = standards.map((s) => ({

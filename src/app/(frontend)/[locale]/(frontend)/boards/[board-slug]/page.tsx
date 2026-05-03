@@ -24,7 +24,7 @@ import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import {
   getBoardBySlug,
-  getAllBoards,
+  getActiveBoards,
   getProjectsByBoard,
   getNewsByBoard,
   getEventsByBoard,
@@ -38,12 +38,10 @@ type PageProps = {
   params: Promise<{ locale: string; 'board-slug': string }>
 }
 
-/** Pre-generate pages for 4 boards (excluding RASOC) */
+/** Pre-generate pages for 4 boards (excluding RASOC at the data layer per #78). */
 export async function generateStaticParams() {
-  const boards = await getAllBoards()
-  return boards
-    .filter((b) => b.slug !== 'rasoc')
-    .map((b) => ({ 'board-slug': b.slug }))
+  const boards = await getActiveBoards()
+  return boards.map((b) => ({ 'board-slug': b.slug }))
 }
 
 /** Dynamic metadata from board data */
