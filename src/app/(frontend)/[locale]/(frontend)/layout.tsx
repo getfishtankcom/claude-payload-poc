@@ -69,19 +69,26 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
     notFound()
   }
 
-  // Fetch navigation, footer, search config, and messages in parallel
+  // Fetch navigation, footer, search config, and messages in parallel.
+  // Pass `locale` explicitly to getMessages — the project doesn't call
+  // setRequestLocale anywhere, and without it next-intl's request context
+  // can fall through to the default locale on FR routes, which would feed
+  // the EN dictionary into NextIntlClientProvider and leak EN strings into
+  // every client component that reads from useTranslations. (#77)
   const [navigation, footer, searchConfig, messages] = await Promise.all([
     getNavigation(toPayloadLocale(locale)),
     getFooter(toPayloadLocale(locale)),
     getSearchConfig(toPayloadLocale(locale)),
-    getMessages(),
+    getMessages({ locale }),
   ])
 
   return (
     <html lang={locale} className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
         <ClerkProvider localization={RAS_CLERK_LOCALIZATION}>
-          <NextIntlClientProvider messages={messages}>
+          {/* Hand the locale to the client provider so useTranslations
+              picks the right dictionary in every descendant. */}
+          <NextIntlClientProvider locale={locale} messages={messages}>
             <SiteHeader
               navigation={navigation}
               popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined}

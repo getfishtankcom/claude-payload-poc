@@ -46,12 +46,16 @@ type PageProps = {
 
 export default async function ActiveProjectsPage({ params }: PageProps) {
   const { locale } = await params
-  // Fetch data + i18n strings in parallel
+  // Fetch data + i18n strings in parallel.
+  // We pass `locale` explicitly to getTranslations because the project does
+  // not call setRequestLocale anywhere, and without it next-intl's request
+  // context falls through to the default locale (en) on FR routes — leaking
+  // English copy into the FR page header. (#77)
   const [projects, boards, standards, tProjects] = await Promise.all([
     getAllActiveProjects(toPayloadLocale(locale)),
     getActiveBoards(toPayloadLocale(locale)),
     getAllStandards(toPayloadLocale(locale)),
-    getTranslations('projects'),
+    getTranslations({ locale, namespace: 'projects' }),
   ])
 
   // RASOC is excluded at the data layer via getActiveBoards (#78).
