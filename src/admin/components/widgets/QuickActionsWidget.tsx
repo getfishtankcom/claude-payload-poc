@@ -30,17 +30,18 @@ export const QuickActionsWidget: React.FC = () => {
               borderRadius: '4px',
               fontSize: '13px',
               fontWeight: 500,
-              color: 'var(--theme-elevation-800)',
-              background: 'var(--theme-elevation-50)',
-              border: '1px solid var(--theme-elevation-150)',
+              // Admin-shell tokens — known-passing contrast on white surfaces.
+              color: 'var(--text-primary)',
+              background: 'var(--surface-elevated)',
+              border: '1px solid var(--border-default)',
               textDecoration: 'none',
               transition: 'background-color 0.15s',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--theme-elevation-100)'
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-sunken)'
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--theme-elevation-50)'
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--surface-elevated)'
             }}
           >
             {action.label}

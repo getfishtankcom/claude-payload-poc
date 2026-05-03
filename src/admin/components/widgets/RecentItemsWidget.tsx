@@ -61,9 +61,9 @@ export const RecentItemsWidget: React.FC<RecentItemsWidgetProps> = ({ userId }) 
 
   return (
     <WidgetCard title="My Recent Items" testId="widget-recent-items">
-      {loading && <div style={{ color: 'var(--theme-elevation-400)', fontSize: '13px' }}>Loading...</div>}
+      {loading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
       {!loading && items.length === 0 && (
-        <div style={{ color: 'var(--theme-elevation-400)', fontSize: '13px' }}>No recent items</div>
+        <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No recent items</div>
       )}
       {!loading && items.map((item) => (
         <a
@@ -75,7 +75,7 @@ export const RecentItemsWidget: React.FC<RecentItemsWidgetProps> = ({ userId }) 
             alignItems: 'center',
             padding: '4px 0',
             fontSize: '13px',
-            color: 'var(--theme-elevation-800)',
+            color: 'var(--text-primary)',
             textDecoration: 'none',
           }}
         >
@@ -83,7 +83,7 @@ export const RecentItemsWidget: React.FC<RecentItemsWidgetProps> = ({ userId }) 
             {item.title || item.slug || item.id}
           </span>
           {item.updatedAt && (
-            <span style={{ color: 'var(--theme-elevation-400)', fontSize: '11px', marginLeft: '8px', flexShrink: 0 }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '11px', marginLeft: '8px', flexShrink: 0 }}>
               {relativeTime(item.updatedAt)}
             </span>
           )}

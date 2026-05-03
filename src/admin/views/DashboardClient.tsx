@@ -32,12 +32,17 @@ export const DashboardClient: React.FC = () => {
   const displayName = typedUser?.firstName || typedUser?.email || 'User'
 
   return (
-    <div
+    <main
       data-testid="admin-dashboard"
+      aria-label="Dashboard"
       style={{
         padding: '24px',
         maxWidth: '1200px',
         margin: '0 auto',
+        // Admin-shell text token (#1F1F1F on white = 16.1:1, AAA) so role
+        // captions and body copy inherit a known-passing contrast instead
+        // of Payload's `--theme-elevation-*` defaults (#100 / QA-030).
+        color: 'var(--text-primary)',
       }}
     >
       {/* Header */}
@@ -54,8 +59,9 @@ export const DashboardClient: React.FC = () => {
             fontSize: '12px',
             fontWeight: 600,
             textTransform: 'capitalize',
-            background: 'var(--theme-elevation-100)',
-            color: 'var(--theme-elevation-600)',
+            // --surface-sunken (#F0F0F0) + --text-secondary (#525252) ≈ 8.0:1 — AA pass.
+            background: 'var(--surface-sunken)',
+            color: 'var(--text-secondary)',
           }}>
             {typedUser.role}
           </span>
@@ -74,7 +80,7 @@ export const DashboardClient: React.FC = () => {
         {isEditorOrAdmin && <PublishingScheduleWidget />}
         <PinnedItemsWidget />
       </div>
-    </div>
+    </main>
   )
 }
 
