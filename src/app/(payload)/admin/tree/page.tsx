@@ -1,20 +1,22 @@
 /**
  * @description
  * `/admin/tree` — first custom route inside the new `<AdminShell>`.
- * Server-gates via `requireAdminUser()` (see #10) and exposes the
- * resolved user to client descendants via `<UserProvider>`. Placeholder
- * workspace until #6 lands the persistent left tree spine.
+ * Hard-gates via `requireAdminUser()` (redirects unauthenticated to
+ * /admin/login) and explicitly wraps the workspace with AdminShell +
+ * UserProvider + the persistent left tree spine.
  *
  * @notes
- * - Auth gate is opt-in per route (not layout-wide) so we don't break
- *   the unauthenticated entry to Payload's stock `/admin/login` page,
- *   which still resolves through the catch-all in this transitional
- *   period.
+ * - AdminShell is mounted at the page level (not the layout level)
+ *   during the v1↔v2 transitional period so Payload's stock chrome
+ *   isn't double-rendered alongside ours. Layer 8 promotes AdminShell
+ *   back to the layout once Payload's catch-all is retired.
  */
 
 import * as React from 'react'
 
+import { AdminShell } from '../../../../admin/components/shell/AdminShell'
 import { UserProvider } from '../../../../admin/components/shell/UserContext'
+import { TreeSpineDefault } from '../../../../admin/components/tree/TreeSpineDefault'
 import { requireAdminUser } from '../../../../admin/lib/auth-gate'
 
 const Page = async () => {
@@ -22,13 +24,15 @@ const Page = async () => {
 
   return (
     <UserProvider user={user}>
-      <div style={{ padding: 24, color: 'var(--text-primary)' }}>
-        <h1 style={{ marginTop: 0, fontSize: 22 }}>Content tree</h1>
-        <p style={{ color: 'var(--text-muted)' }}>
-          Signed in as <strong>{user.email}</strong>. The persistent left tree spine and inline
-          tree workspace land in #6.
-        </p>
-      </div>
+      <AdminShell leftRail={<TreeSpineDefault />}>
+        <div style={{ padding: 24, color: 'var(--text-primary)' }}>
+          <h1 style={{ marginTop: 0, fontSize: 22 }}>Content tree</h1>
+          <p style={{ color: 'var(--text-muted)' }}>
+            Signed in as <strong>{user.email}</strong>. The persistent left tree spine
+            is active in the rail. Native tree workspace lands in a follow-on.
+          </p>
+        </div>
+      </AdminShell>
     </UserProvider>
   )
 }
