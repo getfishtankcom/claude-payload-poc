@@ -89,13 +89,20 @@ export const WorkflowQueueWidget: React.FC<WorkflowQueueWidgetProps> = ({ userId
         <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No items awaiting action</div>
       )}
       {!loading && Object.entries(grouped).map(([state, stateItems]) => (
-        <div key={state} style={{ marginBottom: '12px' }}>
+        // Bumped section gap (12 → 18), header gap (4 → 8), header
+        // line-height + tracking, and row vertical padding (4 → 6) +
+        // line-height. The previous layout collapsed when 4-5 rows
+        // stacked under a section header — first row visually overlapped
+        // the header, subsequent rows ran into each other. (#161 / QA-113)
+        <div key={state} style={{ marginBottom: '18px' }}>
           <div style={{
             fontSize: '11px',
             fontWeight: 600,
             color: STATE_COLORS[state] || 'var(--text-muted)',
-            marginBottom: '4px',
+            marginBottom: '8px',
             textTransform: 'uppercase',
+            letterSpacing: '0.04em',
+            lineHeight: 1.4,
           }}>
             {STATE_LABELS[state] || state} ({stateItems.length})
           </div>
@@ -105,8 +112,9 @@ export const WorkflowQueueWidget: React.FC<WorkflowQueueWidgetProps> = ({ userId
               href={`/admin/collections/pages/${item.id}`}
               style={{
                 display: 'block',
-                padding: '4px 0',
+                padding: '6px 0',
                 fontSize: '13px',
+                lineHeight: 1.4,
                 color: 'var(--text-primary)',
                 textDecoration: 'none',
               }}
