@@ -20,6 +20,7 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 export type BoardNavItem = {
   id: string | number
@@ -44,16 +45,20 @@ export function BoardNav({
   onBoardSelect,
   className = '',
 }: BoardNavProps) {
+  const tBoards = useTranslations('boards')
+  const tNav = useTranslations('nav')
+  const tFilters = useTranslations('filters')
+
   return (
     <nav
       className={`${className}`.trim()}
       data-testid="board-nav"
-      aria-label="Filter by board"
+      aria-label={tBoards('boardNavLabel')}
     >
       {/* Desktop: vertical nav list (hidden below lg) */}
       <div className="hidden lg:block sticky top-8">
         <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-text-muted">
-          Boards
+          {tNav('boards')}
         </h2>
         <ul className="space-y-1" role="list">
           <li>
@@ -68,7 +73,7 @@ export function BoardNav({
               aria-current={activeBoard === null ? 'true' : undefined}
               data-testid="board-nav-all"
             >
-              All Boards
+              {tFilters('allBoards')}
             </button>
           </li>
           {boards.map((board) => (
@@ -94,7 +99,7 @@ export function BoardNav({
       {/* Mobile: dropdown selector (visible below lg) */}
       <div className="lg:hidden">
         <label htmlFor="board-select" className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
-          Filter by Board
+          {tBoards('filterByBoard')}
         </label>
         <select
           id="board-select"
@@ -103,7 +108,7 @@ export function BoardNav({
           className="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm text-text-primary focus:border-primary focus:ring-1 focus:ring-primary"
           data-testid="board-nav-mobile"
         >
-          <option value="">All Boards</option>
+          <option value="">{tFilters('allBoards')}</option>
           {boards.map((board) => (
             <option key={board.slug} value={board.slug}>
               {board.name}

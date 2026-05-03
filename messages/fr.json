@@ -1,7 +1,7 @@
 {
   "common": {
     "siteName": "NIFC Canada",
-    "siteDescription": "Normes d'information financiere et de certification",
+    "siteDescription": "Normes d'information et de certification du Canada",
     "loading": "Chargement...",
     "error": "Une erreur est survenue",
     "notFound": "Page non trouvee",
@@ -79,6 +79,9 @@
     "title": "Projets actifs",
     "subtitle": "Parcourez les projets de normalisation actifs de tous les conseils.",
     "noProjects": "Aucun projet actif trouve.",
+    "noProjectsForFilters": "Aucun projet ne correspond a vos filtres.",
+    "filterByName": "Filtrer les projets par nom...",
+    "filterByStandard": "Filtrer par norme",
     "currentStage": "Etape actuelle",
     "timeline": "Calendrier du projet",
     "summary": "Resume",
@@ -105,7 +108,9 @@
     "resources": "Ressources",
     "recentNews": "Nouvelles recentes",
     "viewAllNews": "Voir toutes les nouvelles",
-    "viewAllEvents": "Voir tous les evenements"
+    "viewAllEvents": "Voir tous les evenements",
+    "filterByBoard": "Filtrer par conseil",
+    "boardNavLabel": "Filtrer par conseil"
   },
   "news": {
     "title": "Nouvelles",
