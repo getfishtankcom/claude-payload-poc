@@ -52,7 +52,7 @@ import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin
 import { clearExpiredLock } from '@/admin/hooks/locking-hooks'
 import { templateOptions } from '@/admin/templates'
 
-const { afterChange: searchSyncAfterChange, afterDelete } = getSearchProvider().getSyncHooks({ indexName: 'pages' })
+const { afterChange: searchSyncAfterChange, afterDelete } = getSearchProvider().getSyncHooks({ indexName: 'pages', collectionSlug: 'pages' })
 
 export const Pages: CollectionConfig = {
   slug: 'pages',

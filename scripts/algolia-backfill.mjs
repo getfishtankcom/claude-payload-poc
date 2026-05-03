@@ -26,7 +26,18 @@ const argv = Object.fromEntries(
   }),
 )
 
-const COLLECTIONS = (argv.collections ? String(argv.collections).split(',') : ['news']).map((s) =>
+/** Default to all 8 searchable collections (Slice 3 expansion).
+    Override with `--collections=news,projects,...` to scope the run. */
+const DEFAULT_COLLECTIONS = [
+  'news',
+  'projects',
+  'consultations',
+  'documents',
+  'events',
+  'pages',
+  'resources',
+]
+const COLLECTIONS = (argv.collections ? String(argv.collections).split(',') : DEFAULT_COLLECTIONS).map((s) =>
   s.trim(),
 )
 const LOCALES = argv.locale ? [String(argv.locale)] : ['en', 'fr']
