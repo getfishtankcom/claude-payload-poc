@@ -18,7 +18,7 @@
  * - Server component — no client-side state
  * - Button styling matches dark purple fill from wireframe spec
  */
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 type DocumentRowData = {
   /** Document title */

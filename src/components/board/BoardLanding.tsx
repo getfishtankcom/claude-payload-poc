@@ -22,7 +22,7 @@
  *   caller has confirmed the slug is a non-RASOC board landing.
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 import { RichText } from '@/components/RichText'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'

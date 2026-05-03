@@ -20,7 +20,7 @@
  * - Used by hero links, CTA blocks, and content blocks
  */
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 import { Button } from '@/components/ui'
 

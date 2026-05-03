@@ -19,7 +19,32 @@
  *   instead of next/link or next/navigation for locale-aware behavior
  */
 import { createNavigation } from 'next-intl/navigation'
+import type { ComponentProps } from 'react'
 import { routing } from './routing'
 
-export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createNavigation(routing)
+const nav = createNavigation(routing)
+
+/**
+ * Typed Link for the typed-pathnames API. Accepts a strict union of
+ * known pathnames or `{ pathname, params }` objects.
+ */
+export const TypedLink = nav.Link
+
+/**
+ * Loose-typed Link wrapper.
+ *
+ * next-intl's typed pathnames enforce a strict union of known routes on
+ * `<Link href>`, which conflicts with our many dynamic template-string
+ * hrefs (`/news/${slug}`, `/${board}/about/members`, etc.). The runtime
+ * locale-prefix + FR pathname-alias behavior is independent of the
+ * compile-time check, so we re-export `Link` accepting any string href.
+ *
+ * Static aliased routes (`/active-projects` → `/fr/projets-actifs`) still
+ * resolve correctly at runtime via the `routing.pathnames` map.
+ */
+type LooseLinkProps = Omit<ComponentProps<typeof nav.Link>, 'href'> & {
+  href: string
+}
+export const Link = nav.Link as unknown as React.ComponentType<LooseLinkProps>
+
+export const { redirect, usePathname, useRouter, getPathname } = nav

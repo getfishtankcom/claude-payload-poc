@@ -20,7 +20,7 @@
 'use client'
 
 import React, { useRef, useCallback } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
@@ -31,6 +31,7 @@ export type MegaMenuItem = {
 }
 
 export type MegaMenuVariant = 'single-column' | 'multi-column'
+export type MegaMenuAlign = 'left' | 'right'
 
 type MegaMenuProps = {
   /** Trigger label text */
@@ -39,10 +40,23 @@ type MegaMenuProps = {
   items: MegaMenuItem[]
   /** Layout variant */
   variant?: MegaMenuVariant
+  /**
+   * Which edge of the trigger to anchor the panel to. Use 'right' for
+   * triggers near the right edge of the viewport (e.g. utility-bar items)
+   * so the panel grows leftward and can't push body horizontal scroll.
+   * Default 'left'.
+   */
+  align?: MegaMenuAlign
   className?: string
 }
 
-export function MegaMenu({ trigger, items, variant = 'single-column', className = '' }: MegaMenuProps) {
+export function MegaMenu({
+  trigger,
+  items,
+  variant = 'single-column',
+  align = 'left',
+  className = '',
+}: MegaMenuProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -85,13 +99,21 @@ export function MegaMenu({ trigger, items, variant = 'single-column', className 
 
           <PopoverPanel
             ref={panelRef}
-            className="absolute left-0 z-50 mt-2 w-max min-w-[200px] rounded-md bg-white shadow-lg ring-1 ring-black/5"
+            className={[
+              'absolute z-50 mt-2 rounded-md bg-white shadow-lg ring-1 ring-black/5',
+              align === 'right' ? 'right-0 left-auto' : 'left-0',
+              variant === 'multi-column'
+                ? // 4 cols × ~150px + padding; clamped so it can never push body overflow.
+                  'w-[min(680px,calc(100vw-2rem))]'
+                : // narrow flyout sized to content, still clamped to viewport.
+                  'w-max min-w-[200px] max-w-[calc(100vw-2rem)]',
+            ].join(' ')}
             data-testid={`mega-menu-panel-${trigger.toLowerCase().replace(/\s+/g, '-')}`}
           >
             {variant === 'multi-column' ? (
-              <div className="grid grid-cols-4 gap-0 p-4">
+              <div className="grid grid-cols-2 gap-0 p-4 sm:grid-cols-4">
                 {items.map((column) => (
-                  <div key={column.label} className="min-w-[180px] px-4">
+                  <div key={column.label} className="min-w-0 px-3">
                     <Link
                       href={column.href}
                       className="block text-sm font-bold text-primary hover:underline"

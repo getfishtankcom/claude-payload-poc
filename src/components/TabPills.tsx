@@ -20,7 +20,7 @@
  * - Used on Documents for Comment listing (Template 8) for Open/Closed toggle
  * - Mobile dropdown navigates via standard <a> redirect
  */
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 type TabPillOption = {
   /** Display label for the pill */

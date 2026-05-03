@@ -24,7 +24,7 @@
 
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { MagnifyingGlassIcon, Bars3Icon } from '@heroicons/react/24/outline'
 import { Container } from '@/components/ui'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -32,9 +32,18 @@ import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
 import type { Navigation } from '@/payload-types'
 
-/** Lazy-load interaction-triggered overlays to reduce initial bundle */
-const MobileMenu = dynamic(() => import('./MobileMenu').then((m) => ({ default: m.MobileMenu })), { ssr: false })
-const SearchModal = dynamic(() => import('@/components/SearchModal').then((m) => ({ default: m.SearchModal })), { ssr: false })
+/**
+ * Lazy-load interaction-triggered overlays to reduce initial bundle.
+ *
+ * `ssr: false` was previously set on these dynamic imports — that forced
+ * every page rendering `<SiteHeader/>` to bail out of SSR entirely
+ * ("Bail out to client-side rendering: next/dynamic"), shipping a blank
+ * shell to crawlers and breaking first-paint heading order. Both
+ * components are state-gated overlays that render `null` until opened,
+ * so letting them SSR is harmless and recovers full SSR for the page.
+ */
+const MobileMenu = dynamic(() => import('./MobileMenu').then((m) => ({ default: m.MobileMenu })))
+const SearchModal = dynamic(() => import('@/components/SearchModal').then((m) => ({ default: m.SearchModal })))
 
 type PopularTag = { label: string; query: string; id?: string }
 
@@ -117,6 +126,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
                       trigger={item.label}
                       items={items}
                       variant={isMultiColumn ? 'multi-column' : 'single-column'}
+                      align="right"
                     />
                   </React.Fragment>
                 )

@@ -37,29 +37,40 @@ npm run dev
 
 Three services run on `localhost` ports during dev:
 
-| Service       | Default port | Suggested Portless alias |
-|---------------|--------------|--------------------------|
-| Next dev      | `:3000`      | `https://fras.test`      |
-| PostgreSQL    | `:5433`      | (keep direct — native protocol) |
-| Meilisearch   | `:7700`      | `https://meili.fras.test` (optional) |
+| Service       | Default port | Suggested Portless host           |
+|---------------|--------------|-----------------------------------|
+| Next dev      | `:3000`      | `https://fras.localhost`          |
+| PostgreSQL    | `:5433`      | (keep direct — native protocol)   |
+| Meilisearch   | `:7700`      | (keep direct — internal only)     |
 
-[Portless](https://portless.dev/) is a Mac app that gives you memorable HTTPS subdomains for local services without editing `/etc/hosts`. Once installed:
+[Portless](https://github.com/vercel-labs/portless) is a Vercel-labs CLI (npm-installable, cross-platform) that wraps your dev script behind a stable named `*.localhost` URL with HTTPS. No `/etc/hosts` edits, no manual cert work.
 
-1. Open Portless and create an app:
-   - **Name:** `fras`
-   - **Subdomain:** `fras.test` (or `fras.lcl.host` on the public TLD)
-   - **Port:** `3000`
-2. Optionally add a second app for Meilisearch (`meili.fras.test` → `:7700`).
-3. Update `.env` so Next emits the matching `NEXT_PUBLIC_SERVER_URL`:
-   ```
-   NEXT_PUBLIC_SERVER_URL=https://fras.test
-   # NEXT_PUBLIC_MEILISEARCH_HOST=https://meili.fras.test  (only if you proxied Meili too)
-   ```
-4. Restart `npm run dev`. The browser bar now reads `https://fras.test/en` instead of `localhost:3000`.
+Setup:
 
-PostgreSQL stays as `localhost:5433` because the wire protocol isn't HTTP — Portless can't proxy it.
+```bash
+# 1. Install once, globally
+npm install -g portless
 
-**Not on Mac?** Use [Caddy](https://caddyserver.com/) with a similar reverse-proxy config — same idea, different toolchain.
+# 2. Run the dev server through portless instead of directly
+portless next dev
+# -> https://fras.localhost
+```
+
+Portless infers the app name from `package.json` (`"name": "fras"`) — no extra config needed. Add an optional `portless.json` only if you want a different name:
+
+```json
+{ "name": "fras" }
+```
+
+On first run it generates a local CA, trusts it, and binds port 443 (auto-elevates with sudo). It assigns a random child port via `$PORT`, which Next picks up automatically.
+
+If you want Next-emitted absolute URLs to match the proxied origin, also set:
+
+```
+NEXT_PUBLIC_SERVER_URL=https://fras.localhost
+```
+
+PostgreSQL stays on `localhost:5433` because the wire protocol isn't HTTP — Portless only proxies HTTP/HTTPS.
 
 ## Project Structure
 
