@@ -173,33 +173,42 @@ function AccordionSection({
 
       {isOpen && (
         <div className="px-4 pb-3 space-y-2">
-          {section.options.map((option) => (
-            <label
-              key={option.value}
-              className="flex items-center gap-2 text-sm text-text-primary cursor-pointer"
-            >
-              {section.type === 'checkbox' ? (
-                <input
-                  type="checkbox"
-                  checked={activeValues.includes(option.value)}
-                  onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
-                  className="h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary-bright"
-                />
-              ) : (
-                <input
-                  type="radio"
-                  name={section.id}
-                  checked={activeValues.includes(option.value)}
-                  onChange={() => handleRadioChange(option.value)}
-                  className="h-6 w-6 border-gray-300 text-primary focus:ring-primary-bright"
-                />
-              )}
-              <span className="min-w-0 break-words">{option.label}</span>
-              {option.count !== undefined && (
-                <span className="text-text-muted">({option.count})</span>
-              )}
-            </label>
-          ))}
+          {section.options.map((option) => {
+            const inputId = `filter-${section.id}-${option.value}`
+            return (
+              <label
+                key={option.value}
+                htmlFor={inputId}
+                className="flex items-center gap-2 text-sm text-text-primary cursor-pointer"
+              >
+                {section.type === 'checkbox' ? (
+                  <input
+                    id={inputId}
+                    name={`${section.id}[]`}
+                    value={option.value}
+                    type="checkbox"
+                    checked={activeValues.includes(option.value)}
+                    onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
+                    className="h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary-bright"
+                  />
+                ) : (
+                  <input
+                    id={inputId}
+                    name={section.id}
+                    value={option.value}
+                    type="radio"
+                    checked={activeValues.includes(option.value)}
+                    onChange={() => handleRadioChange(option.value)}
+                    className="h-6 w-6 border-gray-300 text-primary focus:ring-primary-bright"
+                  />
+                )}
+                <span className="min-w-0 break-words">{option.label}</span>
+                {option.count !== undefined && (
+                  <span className="text-text-muted">({option.count})</span>
+                )}
+              </label>
+            )
+          })}
         </div>
       )}
     </div>
