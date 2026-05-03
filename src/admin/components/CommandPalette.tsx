@@ -61,11 +61,17 @@ export function CommandPalette() {
 
   return (
     <div
+      data-testid="command-palette-backdrop"
       onClick={() => setOpen(false)}
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0,0,0,0.4)',
+        // Admin-shell overlay token (rgba(0,0,0,0.5)) — strong enough to
+        // visually own the viewport so dashboard widgets behind the
+        // palette read as inactive (#87 / QA-017).
+        background: 'var(--surface-overlay)',
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
         zIndex: 10001,
         display: 'flex',
         alignItems: 'flex-start',
@@ -74,11 +80,17 @@ export function CommandPalette() {
       }}
     >
       <div
+        data-testid="command-palette-panel"
         onClick={(e) => e.stopPropagation()}
         style={{
           width: '560px',
           maxWidth: '90vw',
-          background: 'var(--theme-elevation-0)',
+          // Opaque panel via admin-shell token so the surface stays solid
+          // even when Payload's `--theme-elevation-*` vars aren't in scope
+          // (e.g. on the bare /admin shell route).
+          background: 'var(--surface-page)',
+          color: 'var(--text-primary)',
+          border: '1px solid var(--border-default)',
           borderRadius: '8px',
           boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
           overflow: 'hidden',
@@ -96,17 +108,17 @@ export function CommandPalette() {
               width: '100%',
               padding: '14px 16px',
               border: 'none',
-              borderBottom: '1px solid var(--theme-elevation-150)',
+              borderBottom: '1px solid var(--border-default)',
               fontSize: '15px',
               outline: 'none',
               background: 'transparent',
-              color: 'var(--theme-elevation-800)',
+              color: 'var(--text-primary)',
             }}
           />
           <Command.List
             style={{ maxHeight: '400px', overflow: 'auto', padding: '8px 4px' }}
           >
-            <Command.Empty style={{ padding: '14px', color: 'var(--theme-elevation-500)', fontSize: '13px' }}>
+            <Command.Empty style={{ padding: '14px', color: 'var(--text-muted)', fontSize: '13px' }}>
               No results.
             </Command.Empty>
 
@@ -119,7 +131,7 @@ export function CommandPalette() {
                 >
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span style={{ fontSize: '11px', color: 'var(--theme-elevation-500)' }}>{item.badge}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{item.badge}</span>
                   )}
                 </Command.Item>
               ))}
@@ -134,7 +146,7 @@ export function CommandPalette() {
                     style={{ padding: '8px 12px', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                   >
                     <span>{fav.title}</span>
-                    <span style={{ fontSize: '11px', color: 'var(--theme-elevation-500)' }}>{fav.collection}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{fav.collection}</span>
                   </Command.Item>
                 ))}
               </Command.Group>
