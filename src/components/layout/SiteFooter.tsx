@@ -18,13 +18,14 @@
  * @notes
  * - Footer data comes from CMS `footer` global via props
  * - Empty state renders a minimal footer when no data exists
- * - Copyright text is UI chrome (acceptable hardcoded string)
+ * - Copyright org name is sourced from BRAND.fullName so the rebrand stays in lockstep
  * - Policy links are UI chrome (hardcoded structural links)
  */
 import React from 'react'
 import Link from 'next/link'
 import { Container } from '@/components/ui'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
+import { BRAND } from '@/config/brand'
 import type { Footer } from '@/payload-types'
 
 type SiteFooterProps = {
@@ -150,7 +151,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
         <Container>
           <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-text-muted">
-              &copy; {currentYear} Financial Reporting &amp; Assurance Standards Canada. All rights reserved.
+              &copy; {currentYear} {BRAND.fullName}. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <Link href="/privacy" className="text-xs text-text-muted hover:text-primary hover:underline">
