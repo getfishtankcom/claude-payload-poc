@@ -72,7 +72,10 @@ export default async function OpenConsultationsPage({ params }: PageProps) {
       slug: c.slug,
       type: c.type,
       deadline_date: c.deadline_date,
-      boardName: board?.name || 'Unknown Board',
+      // Render the brand-cased abbreviation (AcSB / AASB / etc.) — the
+      // rest of the UI uses abbreviations, so showing the full board
+      // name on consultation cards reads as inconsistent. (#158 / QA-110)
+      boardName: board?.abbreviation || board?.name || 'Unknown Board',
       boardSlug: board?.slug || '',
       standardName: standard?.name || null,
       description: null as string | null,

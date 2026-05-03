@@ -72,7 +72,11 @@ export function SectionNav({
       {/* Desktop: vertical nav list (hidden below lg) */}
       <div className="hidden lg:block sticky top-8">
         {boardName && (
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          // No `uppercase` utility — boardName comes in as a brand-cased
+          // abbreviation (AcSB / AASB / etc.) and CSS uppercase mangles
+          // it to ACSB. Use letter-spacing for the small-caps emphasis
+          // instead. (#158 / QA-110)
+          <p className="mb-3 text-xs font-bold tracking-[0.18em] text-text-muted">
             {boardName}
           </p>
         )}
@@ -103,7 +107,7 @@ export function SectionNav({
       {/* Mobile: dropdown selector (visible below lg) */}
       <div className="lg:hidden">
         {boardName && (
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <p className="mb-2 text-xs font-bold tracking-[0.18em] text-text-muted">
             {boardName}
           </p>
         )}
