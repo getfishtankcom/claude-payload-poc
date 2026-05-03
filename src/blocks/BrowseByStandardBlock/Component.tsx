@@ -51,7 +51,7 @@ function CategoryCard({ category }: { category: Category }) {
   if (!category.name && populatedLinks.length === 0) return null
 
   return (
-    <div className="rounded-md border border-gray-200 bg-white">
+    <div className="rounded-md border border-surface-card-border bg-surface-card shadow-card transition-shadow hover:shadow-card-hover">
       {/* Desktop: always visible */}
       <div className="hidden md:block p-6">
         {category.name && (

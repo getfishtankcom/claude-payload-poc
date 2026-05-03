@@ -57,7 +57,14 @@
   --color-text-on-dark-muted: rgba(255, 255, 255, 0.82);
 
   /* ── Semantic: Background ── */
-  --color-page: #FFFFFF;
+  /* Page surface is a hair cooler/darker than pure white so elevated
+     `--color-surface-card` containers visibly float against it. The
+     gap is intentionally subtle (~2% luminance) to avoid a "blue-grey
+     wash" feel — see QA-202 / .ai-reports/dogfood-2026-05-03-light-mode. */
+  --color-page: #F7F7F9;
+  --color-surface-card: #FFFFFF;
+  --color-surface-card-hover: #FBFBFC;
+  --color-surface-card-border: #E6E6EA;
   --color-footer: #EEEEEE;
   --color-alt: #F5F5F5;
   --color-surface-light: #F8F8F8;
@@ -137,6 +144,11 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  /* Card elevation — paired with --color-surface-card so widgets read
+     as floating against the cooler --color-page. Two stacked shadows:
+     a sharp 1px ambient + a softer 3px diffuse drop. (QA-202) */
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 12px rgba(15, 23, 42, 0.08);
 
   /* ── Breakpoints ── */
   --breakpoint-sm: 640px;
