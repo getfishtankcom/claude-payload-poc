@@ -22,7 +22,7 @@
  */
 'use client'
 
-import React, { useActionState, useRef, useEffect } from 'react'
+import React, { useActionState, useRef, useEffect, useTransition } from 'react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 
@@ -63,7 +63,9 @@ function validateField(name: string, value: string): string {
 }
 
 export function ContactForm({ action, getRecaptchaToken, ...props }: ContactFormProps) {
-  const [state, formAction, isPending] = useActionState(action, initialState)
+  const [state, formAction, isActionPending] = useActionState(action, initialState)
+  const [isTransitionPending, startTransition] = useTransition()
+  const isPending = isActionPending || isTransitionPending
   const [clientErrors, setClientErrors] = React.useState<Record<string, string>>({})
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -122,8 +124,10 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
       }
     }
 
-    // Submit via server action
-    formAction(formData)
+    // Submit via server action — must be inside a transition per React 19 useActionState contract
+    startTransition(() => {
+      formAction(formData)
+    })
   }
 
   // Merge client and server errors (client takes priority while interacting)
