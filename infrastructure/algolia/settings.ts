@@ -33,8 +33,67 @@ export const ALGOLIA_INDEX_SETTINGS: readonly AlgoliaCollectionSettings[] = [
       searchableAttributes: ['title', 'summary', 'excerpt', 'body'],
       // Faceted filters surfaced in `FilterSidebar`.
       filterableAttributes: ['board', 'standard', 'content_type', 'date', 'status'],
-      // Sort dropdown surfaces these.
+      sortableAttributes: ['date', 'updatedAt'],
+    },
+  },
+  {
+    collection: 'projects',
+    settings: {
+      // Projects: title + summary lead, key proposals supplement.
+      searchableAttributes: ['title', 'summary', 'key_proposals', 'body'],
+      filterableAttributes: ['board', 'standard', 'content_type', 'date', 'status'],
+      sortableAttributes: ['date', 'updatedAt'],
+    },
+  },
+  {
+    collection: 'consultations',
+    settings: {
+      searchableAttributes: ['title', 'summary', 'excerpt', 'body'],
+      filterableAttributes: ['board', 'standard', 'content_type', 'file_type', 'date', 'status'],
+      sortableAttributes: ['deadline_date', 'date', 'updatedAt'],
+    },
+  },
+  {
+    collection: 'documents',
+    settings: {
+      // Documents-for-comment / exposure drafts: title + body, plus
+      // extracted PDF text (populated by `extractDocumentText` hook).
+      searchableAttributes: ['title', 'summary', 'extracted_text', 'body'],
+      filterableAttributes: ['board', 'standard', 'content_type', 'file_type', 'date', 'status'],
+      sortableAttributes: ['date', 'updatedAt'],
+    },
+  },
+  {
+    collection: 'events',
+    settings: {
+      // Meetings / webinars / decision summaries — title + description
+      // are the search-relevant fields.
+      searchableAttributes: ['title', 'description', 'summary', 'body'],
+      filterableAttributes: ['board', 'standard', 'content_type', 'date', 'status', 'event_type'],
+      sortableAttributes: ['date', 'updatedAt'],
+    },
+  },
+  {
+    collection: 'pages',
+    settings: {
+      // CMS-authored pages — title + meta description, layout block content.
+      searchableAttributes: ['title', 'description', 'body'],
+      filterableAttributes: ['board', 'content_type', 'status'],
+      sortableAttributes: ['updatedAt'],
+    },
+  },
+  {
+    collection: 'resources',
+    settings: {
+      searchableAttributes: ['title', 'summary', 'body'],
+      filterableAttributes: ['board', 'standard', 'content_type', 'file_type', 'date', 'status'],
       sortableAttributes: ['date', 'updatedAt'],
     },
   },
 ]
+
+// `board-members` and `contacts` are intentionally excluded — staff
+// records are surfaced via dedicated UI, not faceted search. The
+// settings-presence test in `scripts/__tests__/algolia-settings.test.ts`
+// guards against a future regression that adds them.
+export const ALGOLIA_EXCLUDED_COLLECTIONS = ['board-members', 'contacts'] as const
