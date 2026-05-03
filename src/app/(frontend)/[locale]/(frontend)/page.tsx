@@ -26,13 +26,21 @@ import { getHomepage, toPayloadLocale } from '@/lib/payload-helpers'
 import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { OrganizationSchema } from '@/components/StructuredData'
+import { BRAND } from '@/config/brand'
+
+// Title pulls `BRAND.tagline` directly so the homepage tagline can never
+// drift from the canonical value in `src/config/brand.ts`. Previously
+// hardcoded "Canada's Official Hub for Financial Reporting Standards"
+// which mismatched `BRAND.tagline` ("Canada's Official Hub for Accounting
+// and Assurance Standards"). (paper-cut after PR #199)
+const HOMEPAGE_TITLE = `${BRAND.name} — ${BRAND.tagline}`
 
 export const metadata: Metadata = {
-  title: "RAS Canada — Canada's Official Hub for Financial Reporting Standards",
+  title: HOMEPAGE_TITLE,
   description:
     'RAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards. Home of AcSB, PSAB, AASB, and CSSB.',
   openGraph: {
-    title: "RAS Canada — Canada's Official Hub for Financial Reporting Standards",
+    title: HOMEPAGE_TITLE,
     description:
       'RAS provides resources and guidance to help professionals navigate Canadian accounting, auditing, and sustainability standards.',
     type: 'website',
