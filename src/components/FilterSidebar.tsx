@@ -197,7 +197,7 @@ function AccordionSection({
               <label
                 key={option.value}
                 htmlFor={inputId}
-                className="flex items-center gap-2 text-sm text-text-primary cursor-pointer"
+                className="flex items-center gap-3 text-sm text-text-primary cursor-pointer"
               >
                 {section.type === 'checkbox' ? (
                   <input
@@ -207,7 +207,9 @@ function AccordionSection({
                     type="checkbox"
                     checked={activeValues.includes(option.value)}
                     onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
-                    className="h-6 w-6 rounded border-gray-300 text-primary focus:ring-primary-bright"
+                    // 24px on mobile (touch target), 16px on desktop so the
+                    // box doesn't dwarf the 14px label text. (QA-206)
+                    className="h-6 w-6 lg:h-4 lg:w-4 rounded border-input-border text-primary focus:ring-primary-bright"
                   />
                 ) : (
                   <input
@@ -217,7 +219,7 @@ function AccordionSection({
                     type="radio"
                     checked={activeValues.includes(option.value)}
                     onChange={() => handleRadioChange(option.value)}
-                    className="h-6 w-6 border-gray-300 text-primary focus:ring-primary-bright"
+                    className="h-6 w-6 lg:h-4 lg:w-4 border-input-border text-primary focus:ring-primary-bright"
                   />
                 )}
                 <span className="min-w-0 break-words">{option.label}</span>
