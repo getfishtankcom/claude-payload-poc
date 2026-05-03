@@ -57,11 +57,18 @@ export default async function ContactUsPage() {
           {page?.title || 'Contact Us'}
         </h1>
 
-        {/* Intro Text */}
-        {page?.hero?.richText && (
+        {/* Intro Text — prefer CMS-authored richText, fall back to a default
+            so the page never jumps from the H1 straight into form fields. */}
+        {page?.hero?.richText ? (
           <div className="prose max-w-none text-text-secondary">
             <RichText content={page.hero.richText as unknown as Record<string, unknown>} />
           </div>
+        ) : (
+          <p className="text-base text-text-secondary md:text-lg">
+            Send us a question, comment, or media inquiry. Submissions are
+            routed to the relevant team and we typically respond within five
+            business days. For media inquiries, see the contact details below.
+          </p>
         )}
 
         {/* Contact Form with ReCaptcha */}

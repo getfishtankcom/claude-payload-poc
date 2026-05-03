@@ -230,7 +230,7 @@ export function ContactForm({ action, getRecaptchaToken, ...props }: ContactForm
         type="submit"
         variant="primary"
         size="lg"
-        className="w-full uppercase"
+        className="w-full sm:w-auto sm:max-w-xs uppercase"
         disabled={isPending}
         data-testid="contact-form-submit"
       >
