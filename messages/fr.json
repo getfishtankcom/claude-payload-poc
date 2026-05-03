@@ -110,7 +110,12 @@
     "viewAllNews": "Voir toutes les nouvelles",
     "viewAllEvents": "Voir tous les evenements",
     "filterByBoard": "Filtrer par conseil",
-    "boardNavLabel": "Filtrer par conseil"
+    "boardNavLabel": "Filtrer par conseil",
+    "about": "A propos",
+    "membersCommittees": "Membres et comites",
+    "annualReport": "Rapport annuel",
+    "meetingsEvents": "Reunions et evenements",
+    "documentsForComment": "Documents pour commentaires"
   },
   "news": {
     "title": "Nouvelles",

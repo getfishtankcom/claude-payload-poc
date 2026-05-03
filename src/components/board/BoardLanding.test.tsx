@@ -12,6 +12,13 @@ vi.mock('@/lib/payload-helpers', () => ({
   toPayloadLocale: (locale: string) => (locale === 'fr' ? 'fr' : 'en'),
 }))
 
+// next-intl's server helpers require a request context that's not available
+// in the jsdom unit-test environment. Return the key so existing assertions
+// (which match on EN copy) keep working.
+vi.mock('next-intl/server', () => ({
+  getTranslations: async () => (key: string) => key,
+}))
+
 import { BoardLanding } from './BoardLanding'
 import type { Board } from '@/payload-types'
 

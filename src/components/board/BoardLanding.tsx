@@ -22,6 +22,7 @@
  *   caller has confirmed the slug is a non-RASOC board landing.
  */
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 
 import { RichText } from '@/components/RichText'
@@ -76,9 +77,14 @@ function boardAccent(slug: string): { border: string; heading: string } {
 
 export async function BoardLanding({ board, locale }: BoardLandingProps) {
   const payloadLocale: PayloadLocale = toPayloadLocale(locale)
-  const [news, allProjects] = await Promise.all([
+  // Pass `locale` explicitly to getTranslations — without it, next-intl
+  // falls through to the default locale on FR routes (see PR #143).
+  const [news, allProjects, tBoards, tCommon, tProjects] = await Promise.all([
     getNewsByBoard(board.id, 5, payloadLocale),
     getProjectsByBoard(board.id, 20, payloadLocale),
+    getTranslations({ locale, namespace: 'boards' }),
+    getTranslations({ locale, namespace: 'common' }),
+    getTranslations({ locale, namespace: 'projects' }),
   ])
 
   const activeProjects = allProjects
@@ -134,12 +140,12 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
 
           <section data-testid="section-recent-news">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-xl font-bold text-text-heading">Recent News</h2>
+              <h2 className="text-xl font-bold text-text-heading">{tBoards('recentNews')}</h2>
               <Link
                 href={`/${board.slug}/news-listings`}
                 className="text-sm text-primary hover:underline"
               >
-                View all →
+                {tCommon('viewAll')} →
               </Link>
             </div>
             {news.length === 0 ? (
@@ -173,12 +179,12 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
 
           <section data-testid="section-active-projects">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-xl font-bold text-text-heading">Active Projects</h2>
+              <h2 className="text-xl font-bold text-text-heading">{tProjects('title')}</h2>
               <Link
                 href={`/active-projects?board=${board.slug}`}
                 className="text-sm text-primary hover:underline"
               >
-                View all →
+                {tCommon('viewAll')} →
               </Link>
             </div>
             {activeProjects.length === 0 ? (
@@ -230,7 +236,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
               id="board-section-links-heading"
               className="text-sm font-bold uppercase tracking-wide text-text-muted"
             >
-              About
+              {tBoards('about')}
             </h2>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
@@ -238,7 +244,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
                   href={`/${board.slug}/about/members`}
                   className="text-primary hover:underline"
                 >
-                  Members & committees
+                  {tBoards('membersCommittees')}
                 </Link>
               </li>
               <li>
@@ -246,7 +252,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
                   href={`/${board.slug}/about/annual-report`}
                   className="text-primary hover:underline"
                 >
-                  Annual report
+                  {tBoards('annualReport')}
                 </Link>
               </li>
               <li>
@@ -254,7 +260,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
                   href={`/${board.slug}/meetings-and-events`}
                   className="text-primary hover:underline"
                 >
-                  Meetings & events
+                  {tBoards('meetingsEvents')}
                 </Link>
               </li>
               <li>
@@ -262,7 +268,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
                   href={`/${board.slug}/documents`}
                   className="text-primary hover:underline"
                 >
-                  Documents for comment
+                  {tBoards('documentsForComment')}
                 </Link>
               </li>
             </ul>
