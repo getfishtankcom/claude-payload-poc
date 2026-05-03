@@ -61,10 +61,10 @@ function formatDate(dateString: string): string {
 }
 
 /** Map consultation type to Badge variant */
-function typeToBadgeVariant(type: string): 'standard' | 'webinar' | 'guidance' {
-  const mapping: Record<string, 'standard' | 'webinar' | 'guidance'> = {
+function typeToBadgeVariant(type: string): 'standard' | 'survey' | 'guidance' {
+  const mapping: Record<string, 'standard' | 'survey' | 'guidance'> = {
     'Exposure Draft': 'standard',
-    'Survey': 'webinar',
+    'Survey': 'survey',
     'Re-exposure Draft': 'guidance',
   }
   return mapping[type] || 'standard'

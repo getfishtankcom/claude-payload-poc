@@ -81,6 +81,10 @@
   --color-badge-decision: #243E90;
   --color-badge-deadline: #9F2528;
   --color-badge-resource: #8E3387;
+  /* Survey is conceptually closer to research/feedback than to a webinar.
+     Picked a deeper amber so it reads as distinct from resource (purple)
+     and webinar (teal) at card-row scan distance. */
+  --color-badge-survey: #B45309;
 
   /* ── Board-Specific Colors ── */
   --color-board-fras: #601F5B;
