@@ -28,7 +28,13 @@ const heroComponents = {
   lowImpact: LowImpactHero,
 }
 
-export const RenderHero: React.FC<Page['hero']> = (props) => {
+type RenderHeroProps = Page['hero'] & {
+  /** Forwarded by callers so server-side hero variants can read
+      locale-explicit translations. Optional for backwards-compat. */
+  locale?: string
+}
+
+export const RenderHero: React.FC<RenderHeroProps> = (props) => {
   const { type } = props || {}
 
   if (!type || type === 'none') return null

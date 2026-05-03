@@ -21,6 +21,7 @@
  * - data-testid attributes for self-test compatibility
  */
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 
 import type { Page } from '@/payload-types'
 
@@ -28,13 +29,24 @@ import { Container } from '@/components/ui'
 import { CMSLink } from '@/components/CMSLink'
 import { RichText } from '@/components/RichText'
 
-type HighImpactHeroProps = Page['hero']
+type HighImpactHeroProps = Page['hero'] & {
+  /** Forwarded by RenderHero so server-side translations resolve to the
+      request locale (see PR #143). Defaults to 'en' if a legacy caller
+      hasn't passed it through yet. */
+  locale?: string
+}
 
-export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
+export const HighImpactHero = async ({
   links,
   richText,
   search_enabled,
-}) => {
+  locale,
+}: HighImpactHeroProps) => {
+  const resolvedLocale = locale ?? 'en'
+  const [tHome, tSearch] = await Promise.all([
+    getTranslations({ locale: resolvedLocale, namespace: 'homepage' }),
+    getTranslations({ locale: resolvedLocale, namespace: 'search' }),
+  ])
   return (
     <section
       data-testid="hero-section"
@@ -64,13 +76,13 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
               <div
                 className="flex-1 rounded-l-sm border border-white/30 bg-white/10 px-4 py-3 text-left text-white/60 backdrop-blur-sm"
               >
-                Find an active project
+                {tHome('findActiveProject')}
               </div>
               <button
                 type="button"
                 className="rounded-r-sm bg-dark px-6 py-3 font-semibold text-white transition-colors hover:bg-gray-800"
               >
-                Search
+                {tSearch('searchButton')}
               </button>
             </div>
           )}
