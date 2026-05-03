@@ -33,6 +33,34 @@ docker compose up -d
 npm run dev
 ```
 
+## Local URLs (recommended Portless setup)
+
+Three services run on `localhost` ports during dev:
+
+| Service       | Default port | Suggested Portless alias |
+|---------------|--------------|--------------------------|
+| Next dev      | `:3000`      | `https://fras.test`      |
+| PostgreSQL    | `:5433`      | (keep direct — native protocol) |
+| Meilisearch   | `:7700`      | `https://meili.fras.test` (optional) |
+
+[Portless](https://portless.dev/) is a Mac app that gives you memorable HTTPS subdomains for local services without editing `/etc/hosts`. Once installed:
+
+1. Open Portless and create an app:
+   - **Name:** `fras`
+   - **Subdomain:** `fras.test` (or `fras.lcl.host` on the public TLD)
+   - **Port:** `3000`
+2. Optionally add a second app for Meilisearch (`meili.fras.test` → `:7700`).
+3. Update `.env` so Next emits the matching `NEXT_PUBLIC_SERVER_URL`:
+   ```
+   NEXT_PUBLIC_SERVER_URL=https://fras.test
+   # NEXT_PUBLIC_MEILISEARCH_HOST=https://meili.fras.test  (only if you proxied Meili too)
+   ```
+4. Restart `npm run dev`. The browser bar now reads `https://fras.test/en` instead of `localhost:3000`.
+
+PostgreSQL stays as `localhost:5433` because the wire protocol isn't HTTP — Portless can't proxy it.
+
+**Not on Mac?** Use [Caddy](https://caddyserver.com/) with a similar reverse-proxy config — same idea, different toolchain.
+
 ## Project Structure
 
 ```
