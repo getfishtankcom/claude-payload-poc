@@ -29,6 +29,12 @@ export type TreeSpineProps = {
   validChildren: ValidChildMap
   /** Optional callback for context menu actions. */
   onAction?: (node: TreeNode, action: TreeContextAction) => void
+  /**
+   * Optional slug → display-name overrides for the Insert submenu. Forwarded
+   * to `<TreeContextMenu>`. Defaults come from `collection-labels.ts` so
+   * callers usually don't need to provide this.
+   */
+  collectionLabels?: Readonly<Record<string, string>>
 }
 
 type FlatRow = { node: TreeNode; depth: number }
@@ -65,7 +71,12 @@ export const flattenTree = (
 
 const ROW_HEIGHT = 30
 
-export const TreeSpine: React.FC<TreeSpineProps> = ({ nodes, validChildren, onAction }) => {
+export const TreeSpine: React.FC<TreeSpineProps> = ({
+  nodes,
+  validChildren,
+  onAction,
+  collectionLabels,
+}) => {
   const router = useRouter()
   const { selectedId, expanded, query, scrollTop } = useTreeState()
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -191,6 +202,7 @@ export const TreeSpine: React.FC<TreeSpineProps> = ({ nodes, validChildren, onAc
           position={{ x: menu.x, y: menu.y }}
           onAction={(action) => onAction?.(menu.node, action)}
           onClose={() => setMenu(null)}
+          labels={collectionLabels}
         />
       )}
     </div>

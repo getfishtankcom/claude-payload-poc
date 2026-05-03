@@ -14,6 +14,7 @@
 
 import * as React from 'react'
 
+import { labelForCollection } from './collection-labels'
 import type { TreeNode, ValidChildMap } from './types'
 
 export type TreeContextAction =
@@ -28,6 +29,13 @@ export type TreeContextMenuProps = {
   position: { x: number; y: number }
   onAction: (action: TreeContextAction) => void
   onClose: () => void
+  /**
+   * Optional slug → display-name overrides for the Insert submenu. Falls
+   * back to the canonical map in `collection-labels.ts`, then a humanized
+   * version of the slug. Lets a parent inject live Payload
+   * `labels.singular` data without touching the defaults.
+   */
+  labels?: Readonly<Record<string, string>>
 }
 
 /**
@@ -64,6 +72,7 @@ export const TreeContextMenu: React.FC<TreeContextMenuProps> = ({
   position,
   onAction,
   onClose,
+  labels,
 }) => {
   const children = getValidChildren(node, validChildren)
   const ref = React.useRef<HTMLDivElement>(null)
@@ -119,7 +128,7 @@ export const TreeContextMenu: React.FC<TreeContextMenuProps> = ({
               style={itemStyle}
               onClick={() => fire({ kind: 'insert', childCollection: c })}
             >
-              New <strong>{c}</strong>
+              New <strong>{labelForCollection(c, labels)}</strong>
             </button>
           ))}
           <div style={{ height: 1, background: 'var(--border-default)', margin: '4px 0' }} />
