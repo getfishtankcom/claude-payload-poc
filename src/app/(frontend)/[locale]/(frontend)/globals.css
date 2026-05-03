@@ -71,6 +71,15 @@
   --color-input-border: #B8B8C0;
   --color-input-border-hover: #888892;
   --color-input-bg: #FFFFFF;
+  /* Project Timeline — separate semantic palette so completed/current
+     stages don't compete with brand purple CTAs + breadcrumb links.
+     Teal for "complete" (success-y but distinct from green/red), neutral
+     ring for "current" (calm not loud), gray for "future" (deferred).
+     (QA-208) */
+  --color-timeline-complete: #0F766E;
+  --color-timeline-complete-bg: #CCFBF1;
+  --color-timeline-current: #475569;
+  --color-timeline-future: #CBD5E1;
   --color-footer: #EEEEEE;
   --color-alt: #F5F5F5;
   --color-surface-light: #F8F8F8;
