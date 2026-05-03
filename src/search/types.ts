@@ -26,8 +26,13 @@ import type {
 /** Configuration handed to `getSyncHooks`. */
 export type SyncHooksConfig = {
   /** Logical index name (e.g. 'news', 'projects'). The provider may
-      append a locale suffix internally (Meilisearch: `news_en`). */
+      append a locale suffix internally (Meilisearch: `news_en`,
+      Algolia: `news_en` + `news_fr`). */
   indexName: string
+  /** Payload collection slug — required by per-locale providers
+      (Algolia) so the hook can re-fetch under each locale to detect
+      which locales have content. Defaults to `indexName`. */
+  collectionSlug?: string
   /** Optional transform from a populated Payload doc to the search
       record. Falls back to a provider-specific default. */
   transform?: (doc: Record<string, unknown>) => Record<string, unknown>

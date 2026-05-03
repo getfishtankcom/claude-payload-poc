@@ -9,11 +9,13 @@
  */
 import { describe, expect, it } from 'vitest'
 
+import { algoliaProvider } from '../algolia'
 import { meilisearchProvider } from '../meilisearch'
 import type { SearchProvider } from '../types'
 
 const PROVIDERS: Array<[string, SearchProvider]> = [
   ['meilisearch', meilisearchProvider],
+  ['algolia', algoliaProvider],
 ]
 
 describe.each(PROVIDERS)('SearchProvider conformance — %s', (_name, provider) => {
