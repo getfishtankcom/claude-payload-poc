@@ -117,6 +117,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
                       trigger={item.label}
                       items={items}
                       variant={isMultiColumn ? 'multi-column' : 'single-column'}
+                      align="right"
                     />
                   </React.Fragment>
                 )
