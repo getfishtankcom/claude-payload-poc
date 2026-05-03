@@ -70,16 +70,16 @@ export const PublishingScheduleWidget: React.FC = () => {
 
   return (
     <WidgetCard title="Publishing Schedule" testId="widget-publishing-schedule">
-      {loading && <div style={{ color: 'var(--theme-elevation-400)', fontSize: '13px' }}>Loading...</div>}
+      {loading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
       {!loading && items.length === 0 && (
-        <div style={{ color: 'var(--theme-elevation-400)', fontSize: '13px' }}>No scheduled publishes</div>
+        <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No scheduled publishes</div>
       )}
       {!loading && Object.entries(grouped).map(([day, dayItems]) => (
         <div key={day} style={{ marginBottom: '12px' }}>
           <div style={{
             fontSize: '11px',
             fontWeight: 600,
-            color: 'var(--theme-elevation-500)',
+            color: 'var(--text-secondary)',
             marginBottom: '4px',
           }}>
             {day}
@@ -94,13 +94,13 @@ export const PublishingScheduleWidget: React.FC = () => {
                 alignItems: 'center',
                 padding: '4px 0',
                 fontSize: '13px',
-                color: 'var(--theme-elevation-800)',
+                color: 'var(--text-primary)',
                 textDecoration: 'none',
               }}
             >
               <span>{item.title || item.slug || item.id}</span>
               {item.publishOn && (
-                <span style={{ color: 'var(--theme-elevation-400)', fontSize: '11px' }}>
+                <span style={{ color: 'var(--text-muted)', fontSize: '11px' }}>
                   {formatTime(item.publishOn)}
                 </span>
               )}

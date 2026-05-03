@@ -20,7 +20,7 @@ export function PinnedItemsWidget() {
         <p
           style={{
             fontSize: '13px',
-            color: 'var(--theme-elevation-500)',
+            color: 'var(--text-secondary)',
             margin: '12px 0',
           }}
         >
@@ -38,8 +38,8 @@ export function PinnedItemsWidget() {
                   fontSize: '10px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.4px',
-                  background: 'var(--theme-elevation-100)',
-                  color: 'var(--theme-elevation-600)',
+                  background: 'var(--surface-sunken)',
+                  color: 'var(--text-secondary)',
                   padding: '2px 6px',
                   borderRadius: '3px',
                   flexShrink: 0,
@@ -50,7 +50,7 @@ export function PinnedItemsWidget() {
               <a
                 href={item.path}
                 style={{
-                  color: 'var(--theme-elevation-800)',
+                  color: 'var(--text-primary)',
                   textDecoration: 'none',
                   flex: 1,
                   overflow: 'hidden',
@@ -69,7 +69,9 @@ export function PinnedItemsWidget() {
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  color: 'var(--theme-elevation-400)',
+                  // --text-muted (#696969 on white = 5.7:1) clears AA for the
+                  // 14px close glyph, where --theme-elevation-400 (~3:1) did not.
+                  color: 'var(--text-muted)',
                   fontSize: '14px',
                   padding: '0 4px',
                 }}
