@@ -99,11 +99,16 @@ export function SiteFooter({ footer }: SiteFooterProps) {
               </div>
             )}
 
-            {/* Quick Links column */}
+            {/* Legal / utility column — backed by the `quick_links` field
+                in the Footer global. Heading is "Legal" rather than
+                "Quick Links" so it doesn't collide with the CMS-driven
+                navigation column that already uses "Quick Links" (#91 /
+                QA-021). The field name stays `quick_links` to avoid a
+                destructive schema migration. */}
             {hasQuickLinks && (
               <div>
                 <p className="text-sm font-bold text-text-primary uppercase tracking-wide">
-                  Quick Links
+                  Legal
                 </p>
                 <ul className="mt-3 space-y-2">
                   {quickLinks.map((link, i) => (
