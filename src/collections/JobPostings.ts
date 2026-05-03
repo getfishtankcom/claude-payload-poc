@@ -33,6 +33,13 @@ export const JobPostings: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'department', 'workflowState', 'status', 'closingDate'],
+    components: {
+      edit: {
+        beforeDocumentControls: [
+          '/admin/components/WorkflowActionBarField',
+        ],
+      },
+    },
   },
   access: {
     read: contentRead,
