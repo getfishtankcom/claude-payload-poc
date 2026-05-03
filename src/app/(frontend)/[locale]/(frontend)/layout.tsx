@@ -43,6 +43,7 @@ import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { getNavigation, getFooter, getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
 import { routing } from '@/i18n/routing'
+import { BRAND } from '@/config/brand'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -51,8 +52,17 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+// Default metadata for any route under [locale] that doesn't export its
+// own `generateMetadata`. Pulls the brand string from BRAND so the
+// legacy "Financial Reporting & Assurance Standards" copy can never
+// sneak back in via a stale string. The `template` lets every page
+// that does export `generateMetadata` provide a leading title segment
+// that gets " — RAS Canada" appended automatically. (#149 / QA-101)
 export const metadata: Metadata = {
-  title: 'RAS Canada — Financial Reporting & Assurance Standards',
+  title: {
+    default: `${BRAND.name} — ${BRAND.tagline}`,
+    template: `%s — ${BRAND.name}`,
+  },
   description:
     'The standard-setting body for all accountants across Canada. Home of AcSB, PSAB, AASB, and CSSB.',
 }
