@@ -83,24 +83,26 @@ export function ProjectTimeline({ stages, currentStage, className = '' }: Projec
               {!isLast && (
                 <div
                   className={`absolute left-[19px] top-10 h-[calc(100%-24px)] w-0.5 ${
-                    status === 'complete' ? 'bg-primary' : 'bg-gray-200'
+                    status === 'complete' ? 'bg-timeline-complete' : 'bg-timeline-future'
                   }`}
                   aria-hidden="true"
                 />
               )}
 
-              {/* Stage indicator circle */}
+              {/* Stage indicator circle — uses the dedicated timeline
+                  palette so completed/current states don't read as
+                  primary CTAs (#187 / dogfood-2026-05-03). */}
               <div className="relative flex-shrink-0">
                 {status === 'complete' ? (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-timeline-complete">
                     <CheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
                   </div>
                 ) : status === 'current' ? (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-3 border-primary bg-white">
-                    <div className="h-3 w-3 rounded-full bg-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-[3px] border-timeline-current bg-white">
+                    <div className="h-3 w-3 rounded-full bg-timeline-current" />
                   </div>
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 bg-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-timeline-future bg-white">
                     <span className="text-xs font-medium text-text-muted">{stage.phase_number}</span>
                   </div>
                 )}
@@ -111,7 +113,11 @@ export function ProjectTimeline({ stages, currentStage, className = '' }: Projec
                 <div className="flex items-baseline gap-2">
                   <span
                     className={`text-xs font-semibold uppercase tracking-wider ${
-                      status === 'future' ? 'text-text-muted' : 'text-primary'
+                      status === 'future'
+                        ? 'text-text-muted'
+                        : status === 'complete'
+                          ? 'text-timeline-complete'
+                          : 'text-timeline-current'
                     }`}
                   >
                     {t('stage')} {stage.phase_number}
