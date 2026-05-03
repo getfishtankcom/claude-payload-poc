@@ -18,18 +18,30 @@ import config from '@payload-config'
 
 import type { AdminUser } from '../components/shell/UserContext'
 
-export const requireAdminUser = async (): Promise<AdminUser> => {
+/**
+ * Resolves the current admin user without redirecting. Returns null
+ * when the request is unauthenticated. Use this at the layout level
+ * where some children are public (e.g. /admin/login).
+ */
+export const getAdminUser = async (): Promise<AdminUser | null> => {
   const payload = await getPayload({ config })
   const headers = await nextHeaders()
   const { user } = await payload.auth({ headers })
-
-  if (!user) {
-    redirect('/admin/login')
-  }
-
+  if (!user) return null
   return {
     id: user.id,
     email: user.email ?? '',
     collection: user.collection,
   }
+}
+
+/**
+ * Hard-gate variant: redirects to /admin/login when the request is
+ * unauthenticated. Use this at the page level for routes that must
+ * never render to unauthenticated users.
+ */
+export const requireAdminUser = async (): Promise<AdminUser> => {
+  const user = await getAdminUser()
+  if (!user) redirect('/admin/login')
+  return user
 }
