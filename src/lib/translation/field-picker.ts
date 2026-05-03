@@ -23,6 +23,11 @@ export const SYSTEM_FIELDS = new Set([
   'updatedAt',
   '_status',
   'sortOrder',
+  // `boards.abbreviation` is a single non-localized column on the base
+  // table. Translating it overwrites the EN value with FR (e.g. AcSB →
+  // CNC), corrupting every render that uses the abbreviation. Keep it
+  // out of any future translation batch.
+  'abbreviation',
   'workflowState',
   'workflowHistory',
   'createdBy',
