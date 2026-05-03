@@ -38,6 +38,11 @@ export const BoardMembers: CollectionConfig = {
     defaultColumns: ['name', 'role', 'workflowState', 'board', 'termExpires'],
     components: {
       beforeListTable: ['/admin/components/BoardFilterBar'],
+      edit: {
+        beforeDocumentControls: [
+          '/admin/components/WorkflowActionBarField',
+        ],
+      },
     },
   },
   access: {
