@@ -15,6 +15,7 @@
  *
  * (#172 / Algolia migration Slice 1.)
  */
+import { algoliaProvider } from './algolia'
 import { meilisearchProvider } from './meilisearch'
 import {
   SEARCH_PROVIDER_ENV,
@@ -28,17 +29,7 @@ const cache = new Map<SearchProviderName, SearchProvider>()
 
 function resolveProviderName(): SearchProviderName {
   const raw = process.env[SEARCH_PROVIDER_ENV]?.toLowerCase().trim()
-  if (raw === 'algolia') {
-    // Slice 2+ ships the Algolia adapter behind a flag; until then,
-    // explicitly opting in falls through to the default + a warning so
-    // a misconfigured env doesn't silently disable search.
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn(
-        `[search] SEARCH_PROVIDER=algolia is reserved (see #173). Falling back to 'meilisearch'.`,
-      )
-    }
-    return 'meilisearch'
-  }
+  if (raw === 'algolia') return 'algolia'
   return 'meilisearch'
 }
 
@@ -46,11 +37,19 @@ export function getSearchProvider(): SearchProvider {
   const name = resolveProviderName()
   const cached = cache.get(name)
   if (cached) return cached
-  // Currently `meilisearch` is the only registered provider; Slice 2+
-  // will add an `algolia` case below. The factory uses the env-driven
-  // name as the cache key so a future `SEARCH_PROVIDER=algolia` flip
-  // doesn't recompute Meili's resilient client.
-  const provider: SearchProvider = meilisearchProvider
+  let provider: SearchProvider
+  switch (name) {
+    case 'meilisearch':
+      provider = meilisearchProvider
+      break
+    case 'algolia':
+      provider = algoliaProvider
+      break
+    default: {
+      const exhaustive: never = name
+      throw new Error(`Unknown SEARCH_PROVIDER: ${exhaustive as string}`)
+    }
+  }
   cache.set(name, provider)
   return provider
 }
