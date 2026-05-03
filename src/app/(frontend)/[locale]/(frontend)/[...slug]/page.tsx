@@ -25,19 +25,41 @@
  * - Staff contacts populated via relationship
  */
 import { notFound } from 'next/navigation'
-import { getPageByFullSlug, getLatestNews } from '@/lib/payload-helpers'
+import {
+  getPageByFullSlug,
+  getLatestNews,
+  getBoardBySlug,
+  toPayloadLocale,
+} from '@/lib/payload-helpers'
 import { StaffContactCard } from '@/components/StaffContactCard'
 import { SectionNavSidebar } from '@/components/SectionNavSidebar'
 import { SectionTabs } from '@/components/SectionTabs'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { BoardLanding } from '@/components/board/BoardLanding'
 
 type PageProps = {
-  params: Promise<{ slug: string[] }>
+  params: Promise<{ locale: string; slug: string[] }>
 }
 
+// RASOC is an oversight council, not a standards board — no board landing per
+// CLAUDE.md "RASOC Rules". Fall through to the pages-collection lookup so any
+// existing /en/rasoc Page (e.g. an "About RASOC" page) still renders.
+const RASOC_SLUGS = new Set(['rasoc'])
+
 export default async function CatchAllPage({ params }: PageProps) {
-  const { slug } = await params
+  const { locale, slug } = await params
+
+  // Single-segment URL → if it matches a non-RASOC board, render the
+  // dedicated Board Landing body. Otherwise fall through to the pages
+  // collection lookup below.
+  if (slug.length === 1 && !RASOC_SLUGS.has(slug[0])) {
+    const board = await getBoardBySlug(slug[0], toPayloadLocale(locale))
+    if (board) {
+      return <BoardLanding board={board} locale={locale} />
+    }
+  }
+
   const page = await getPageByFullSlug(slug)
 
   if (!page) {
