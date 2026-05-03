@@ -34,6 +34,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { ClerkProvider } from '@clerk/nextjs'
+import { RAS_CLERK_LOCALIZATION } from '@/lib/clerk-localization'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 
@@ -79,7 +80,7 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
   return (
     <html lang={locale} className={inter.variable}>
       <body className="bg-page text-text-primary font-sans antialiased">
-        <ClerkProvider>
+        <ClerkProvider localization={RAS_CLERK_LOCALIZATION}>
           <NextIntlClientProvider messages={messages}>
             <SiteHeader
               navigation={navigation}
