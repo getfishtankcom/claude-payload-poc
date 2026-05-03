@@ -196,7 +196,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
                 {activeProjects.map((project: Project) => (
                   <li
                     key={project.id}
-                    className="rounded-md border border-gray-200 p-4"
+                    className="rounded-md border border-surface-card-border bg-surface-card p-4 shadow-card transition-shadow hover:shadow-card-hover"
                     data-testid="active-project"
                   >
                     <Link
@@ -219,18 +219,20 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
 
         <aside className="space-y-6 lg:sticky lg:top-8 lg:self-start" data-testid="right-rail">
           {quickActions.length > 0 && (
-            <QuickActions
-              actions={quickActions.map((a) => ({
-                label: a.label,
-                url: a.url,
-                icon: a.icon,
-              }))}
-            />
+            <div className="rounded-md border border-surface-card-border bg-surface-card p-4 shadow-card">
+              <QuickActions
+                actions={quickActions.map((a) => ({
+                  label: a.label,
+                  url: a.url,
+                  icon: a.icon,
+                }))}
+              />
+            </div>
           )}
 
           <nav
             aria-labelledby="board-section-links-heading"
-            className="rounded-md border border-gray-200 p-4"
+            className="rounded-md border border-surface-card-border bg-surface-card p-4 shadow-card"
           >
             <h2
               id="board-section-links-heading"
