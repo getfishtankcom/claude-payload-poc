@@ -1,15 +1,34 @@
 /**
  * Version diff modal — compare two versions of a Payload doc side-by-side.
  *
- * Loads the version list from `/api/{collection}/{id}/versions`, then on
- * compare loads each version's payload from
- * `/api/{collection}/{id}/versions/{versionId}` and walks the field map
- * highlighting changes.
+ * Loads the version list from
+ * `/api/{collection}/versions?where[parent][equals]={id}`, then on compare
+ * loads each version's payload from `/api/{collection}/versions/{versionId}`
+ * and walks the field map highlighting changes. (Payload's REST surface puts
+ * `versions` at the collection root, not under the doc — issue #95.)
  */
 'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
 import { ModalOverlay, ModalButton } from './ui/Modal'
+
+/**
+ * Builds the Payload REST URL for listing versions of a single doc.
+ * Exported so the unit test can lock in the contract.
+ */
+export function buildVersionsListUrl(
+  collection: string,
+  docId: string | number,
+  limit = 20,
+): string {
+  const params = new URLSearchParams({
+    'where[parent][equals]': String(docId),
+    limit: String(limit),
+    depth: '0',
+    sort: '-updatedAt',
+  })
+  return `/api/${collection}/versions?${params.toString()}`
+}
 
 interface VersionMeta {
   id: string
@@ -78,7 +97,7 @@ export function VersionDiffModal({ collection, docId, onClose }: VersionDiffModa
     const ac = new AbortController()
     ;(async () => {
       try {
-        const res = await fetch(`/api/${collection}/${docId}/versions?limit=20&depth=0`, {
+        const res = await fetch(buildVersionsListUrl(collection, docId), {
           signal: ac.signal,
         })
         if (!res.ok) throw new Error(`Versions fetch failed: ${res.status}`)
