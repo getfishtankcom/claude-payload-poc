@@ -30,17 +30,20 @@ import { RichText } from '@/components/RichText'
 import { BlockquoteQuestion } from '@/components/BlockquoteQuestion'
 import { DarkPurpleCTA } from '@/components/DarkPurpleCTA'
 import { SupportMaterialsList } from '@/components/SupportMaterialsList'
-import { getDocumentDetailBySlug } from '@/lib/payload-helpers'
+import { Breadcrumb } from '@/components/layout/Breadcrumb'
+import { getDocumentDetailBySlug, getBoardBySlug, toPayloadLocale } from '@/lib/payload-helpers'
 
 type Props = {
-  params: Promise<{ board: string; docSlug: string }>
+  params: Promise<{ locale: string; board: string; docSlug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { docSlug } = await params
   const doc = await getDocumentDetailBySlug(docSlug) as Record<string, unknown> | null
+  // Title segment only — layout's `template` adds " — RAS Canada"
+  // (#149). Falls back to a generic label if the doc is missing.
   return {
-    title: doc ? `${doc.title} — RAS Canada` : 'Document Detail — RAS Canada',
+    title: doc ? String(doc.title) : 'Document Detail',
     description: 'Exposure draft detail page with comment questions and reply instructions.',
   }
 }
@@ -60,8 +63,14 @@ function formatDate(dateString: string): string {
 }
 
 export default async function DocumentDetailPage({ params }: Props) {
-  const { docSlug } = await params
-  const doc = await getDocumentDetailBySlug(docSlug) as Record<string, unknown> | null
+  const { locale, board: boardSlug, docSlug } = await params
+  // Fetch the document + the parent board in parallel so the breadcrumb
+  // can render the brand-cased abbreviation (#158) instead of the
+  // lowercased slug. (#159 / QA-111)
+  const [doc, board] = await Promise.all([
+    getDocumentDetailBySlug(docSlug) as Promise<Record<string, unknown> | null>,
+    getBoardBySlug(boardSlug, toPayloadLocale(locale)),
+  ])
 
   if (!doc) {
     notFound()
@@ -97,8 +106,20 @@ export default async function DocumentDetailPage({ params }: Props) {
     phone?: string
   }>
 
+  // Breadcrumb: Home (auto-prepended by Breadcrumb per #157) →
+  // <board abbreviation> → Documents for comment → <doc title>.
+  // The "Documents for comment" crumb links to the existing per-board
+  // documents listing route at /<board>/documents.
+  const boardLabel = board?.abbreviation || board?.name || boardSlug.toUpperCase()
+  const breadcrumbItems = [
+    { label: boardLabel, href: `/${boardSlug}` },
+    { label: 'Documents for comment', href: `/${boardSlug}/documents` },
+    { label: title },
+  ]
+
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-document-detail">
+      <Breadcrumb items={breadcrumbItems} className="mb-6" />
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Main content (~70%) */}
         <div className="lg:w-[70%]" data-testid="main-content">
