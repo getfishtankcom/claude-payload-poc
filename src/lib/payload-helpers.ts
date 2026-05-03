@@ -320,19 +320,58 @@ export async function getAllActiveProjects(locale: PayloadLocale = 'en'): Promis
 }
 
 /**
- * Fetches a project by board slug and project slug with full depth.
+ * Fetches a project by slug with full depth.
+ *
+ * Project slugs are localized (per-locale text), but FR slugs aren't
+ * fully seeded across the corpus yet (see #198 / QA-210). To stop FR
+ * project URLs from 404'ing while the slug backfill is pending:
+ *
+ * 1. Try the requested locale first (the common path).
+ * 2. If 0 docs and locale != 'en', re-query under EN to find the doc by
+ *    its EN slug, then refetch with the requested locale so the returned
+ *    record carries whichever localized strings DO exist (`fallback: true`
+ *    in payload.config covers GETs but not WHERE clauses).
+ * 3. If both queries fail, return null and let the page call notFound().
+ *
+ * Step 2 errors are swallowed defensively — the worst case is the same
+ * null we'd return without the fallback.
  */
 export async function getProjectBySlug(projectSlug: string, locale: PayloadLocale = 'en'): Promise<Project | null> {
   try {
     const payload = await getPayload({ config })
-    const result = await payload.find({
+    const primary = await payload.find({
       collection: 'projects',
       where: { slug: { equals: projectSlug } },
       limit: 1,
       depth: 3,
       locale,
     })
-    return (result.docs[0] as unknown as Project) || null
+    if (primary.docs[0]) return primary.docs[0] as unknown as Project
+
+    if (locale !== 'en') {
+      try {
+        const fallback = await payload.find({
+          collection: 'projects',
+          where: { slug: { equals: projectSlug } },
+          limit: 1,
+          depth: 0,
+          locale: 'en',
+        })
+        const fallbackDoc = fallback.docs[0]
+        if (fallbackDoc) {
+          const localized = await payload.findByID({
+            collection: 'projects',
+            id: fallbackDoc.id,
+            depth: 3,
+            locale,
+          })
+          return (localized as unknown as Project) ?? (fallbackDoc as unknown as Project)
+        }
+      } catch {
+        // Fallback path failed; fall through to null.
+      }
+    }
+    return null
   } catch {
     return null
   }
