@@ -110,7 +110,12 @@
     "viewAllNews": "View all news",
     "viewAllEvents": "View all events",
     "filterByBoard": "Filter by Board",
-    "boardNavLabel": "Filter by board"
+    "boardNavLabel": "Filter by board",
+    "about": "About",
+    "membersCommittees": "Members & committees",
+    "annualReport": "Annual report",
+    "meetingsEvents": "Meetings & events",
+    "documentsForComment": "Documents for comment"
   },
   "news": {
     "title": "News",
