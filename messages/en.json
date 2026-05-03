@@ -101,7 +101,8 @@
     "summary": "Summary",
     "keyProposals": "Key Proposals",
     "contacts": "Contacts",
-    "relatedDocuments": "Related Documents"
+    "relatedDocuments": "Related Documents",
+    "stage": "Stage"
   },
   "consultations": {
     "title": "Open Consultations",

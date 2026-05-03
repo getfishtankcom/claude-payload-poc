@@ -20,6 +20,7 @@
  * - News items display board abbreviation, title, date
  */
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 
 import { Container, Button } from '@/components/ui'
 import { getLatestNews } from '@/lib/payload-helpers'
@@ -31,6 +32,8 @@ type NewsGridBlockProps = {
   populateBy?: 'collection' | 'selection' | null
   selectedNews?: Array<{ id: string; title: string; slug: string; publishedDate?: string; board?: { abbreviation?: string } }> | null
   blockType: 'newsGrid'
+  /** Forwarded by RenderBlocks so server-side translations resolve to the request locale (see PR #143). */
+  locale?: string
 }
 
 export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = async ({
@@ -39,7 +42,11 @@ export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = async ({
   show_view_all,
   populateBy = 'collection',
   selectedNews,
+  locale,
 }) => {
+  // Defaults to 'en' if RenderBlocks didn't forward a locale (e.g. legacy
+  // call sites). Once every page wires `locale={locale}` this fallback is dead.
+  const t = await getTranslations({ locale: locale ?? 'en', namespace: 'common' })
   // For 'collection' mode, fetch latest news from CMS
   // For 'selection' mode, use the manually curated selectedNews
   let newsItems: Array<{ id: string; title: string; slug: string; publishedDate?: string; board?: { abbreviation?: string } }> = []
@@ -71,7 +78,7 @@ export const NewsGridBlockComponent: React.FC<NewsGridBlockProps> = async ({
           )}
           {show_view_all && (
             <Button variant="ghost" href="/news">
-              View All
+              {t('viewAll')}
             </Button>
           )}
         </div>

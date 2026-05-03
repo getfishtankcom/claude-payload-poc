@@ -130,7 +130,7 @@ export default async function CatchAllPage({ params }: PageProps) {
           {/* Page builder blocks */}
           {layout && layout.length > 0 && (
             <div className="prose prose-lg max-w-none prose-headings:text-primary prose-a:text-link">
-              <RenderBlocks blocks={layout as Array<{ blockType: string; [key: string]: unknown }>} />
+              <RenderBlocks blocks={layout as Array<{ blockType: string; [key: string]: unknown }>} locale={locale} />
             </div>
           )}
 

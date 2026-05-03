@@ -39,9 +39,12 @@ const blockComponents: Record<string, React.FC<Record<string, unknown>>> = {
 
 type RenderBlocksProps = {
   blocks: LayoutBlock[] | null | undefined
+  /** Forwarded to each block as `locale` so server-side blocks can read
+      locale-explicit translations without prop-drilling from every page. */
+  locale?: string
 }
 
-export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
+export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks, locale }) => {
   if (!blocks?.length) return null
 
   return (
@@ -55,7 +58,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
 
         return (
           <div className="my-16 first:mt-0" key={index}>
-            <BlockComponent {...(block as unknown as Record<string, unknown>)} />
+            <BlockComponent {...(block as unknown as Record<string, unknown>)} locale={locale} />
           </div>
         )
       })}
