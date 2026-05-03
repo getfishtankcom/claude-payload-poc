@@ -153,7 +153,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </aside>
 
         {/* Main content */}
-        <main className="space-y-10" data-testid="main-content">
+        <div className="space-y-10" data-testid="main-content">
           {/* Summary section */}
           {project.summary && (
             <section data-testid="section-summary">
@@ -220,7 +220,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </div>
             </section>
           )}
-        </main>
+        </div>
 
         {/* Right sidebar */}
         <aside className="space-y-8" data-testid="right-rail">

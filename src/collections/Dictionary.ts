@@ -6,13 +6,15 @@ import type { CollectionConfig } from 'payload'
 
 export const Dictionary: CollectionConfig = {
   slug: 'dictionary',
-  // Explicit labels keep the list-view H1 ("Dictionary entries") and the
-  // breadcrumb in sync. Without these, Payload's auto-pluralizer turned the
-  // singular slug "dictionary" into "Dictionaries" for the H1 while the
-  // breadcrumb resolved to "Dictionary" — see issue #93 (QA-023).
+  // QA-023: the slug is singular ('dictionary') so the breadcrumb renders
+  // "Dictionary", but Payload pluralises the slug for `labels.plural` and
+  // shows "Dictionaries" in the H1. Declare both forms explicitly so the
+  // list-view H1 + breadcrumb agree, and so the singular "Term" label
+  // surfaces on the Add button + edit-view breadcrumb (each row is a
+  // term/definition pair, not a whole dictionary).
   labels: {
-    singular: 'Dictionary entry',
-    plural: 'Dictionary entries',
+    singular: 'Term',
+    plural: 'Dictionary',
   },
   admin: {
     useAsTitle: 'term',

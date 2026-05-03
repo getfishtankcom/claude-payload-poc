@@ -53,7 +53,7 @@ const typeToVariant: Record<ContentType, React.ComponentProps<typeof Badge>['var
   'meeting-summary': 'meeting',
   guidance: 'guidance',
   'exposure-draft': 'consultation',
-  survey: 'resource',
+  survey: 'survey',
   're-exposure-draft': 'deadline',
   research: 'decision',
   'public-comment': 'standard',

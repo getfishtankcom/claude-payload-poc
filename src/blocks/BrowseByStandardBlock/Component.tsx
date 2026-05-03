@@ -43,15 +43,23 @@ type BrowseByStandardBlockProps = {
 
 function CategoryCard({ category }: { category: Category }) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const populatedLinks = (category.links || []).filter((l) => l.label && l.url)
+
+  // Don't render an empty card — the surrounding component already filters
+  // these out, but guard anyway so a partially-populated CMS row can't emit
+  // empty <h3> / <a> nodes that fail axe-core's empty-heading rule.
+  if (!category.name && populatedLinks.length === 0) return null
 
   return (
     <div className="rounded-md border border-gray-200 bg-white">
       {/* Desktop: always visible */}
       <div className="hidden md:block p-6">
-        <h3 className="mb-4 text-lg font-bold text-primary">{category.name}</h3>
-        {category.links && category.links.length > 0 && (
+        {category.name && (
+          <h3 className="mb-4 text-lg font-bold text-primary">{category.name}</h3>
+        )}
+        {populatedLinks.length > 0 && (
           <ul className="space-y-2">
-            {category.links.map((link, i) => (
+            {populatedLinks.map((link, i) => (
               <li key={link.id || i}>
                 <a
                   href={link.url}
@@ -73,7 +81,11 @@ function CategoryCard({ category }: { category: Category }) {
           className="flex w-full items-center justify-between p-4 text-left"
           aria-expanded={isExpanded}
         >
-          <h3 className="text-lg font-bold text-primary">{category.name}</h3>
+          {category.name ? (
+            <h3 className="text-lg font-bold text-primary">{category.name}</h3>
+          ) : (
+            <span className="text-lg font-bold text-primary">Standards</span>
+          )}
           <span
             className={`text-text-muted transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
             aria-hidden="true"
@@ -81,9 +93,9 @@ function CategoryCard({ category }: { category: Category }) {
             &#9660;
           </span>
         </button>
-        {isExpanded && category.links && category.links.length > 0 && (
+        {isExpanded && populatedLinks.length > 0 && (
           <ul className="space-y-2 px-4 pb-4">
-            {category.links.map((link, i) => (
+            {populatedLinks.map((link, i) => (
               <li key={link.id || i}>
                 <a
                   href={link.url}

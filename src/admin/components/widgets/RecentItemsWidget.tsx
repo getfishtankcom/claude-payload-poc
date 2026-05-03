@@ -79,7 +79,7 @@ export const RecentItemsWidget: React.FC<RecentItemsWidgetProps> = ({ userId }) 
             textDecoration: 'none',
           }}
         >
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>
             {item.title || item.slug || item.id}
           </span>
           {item.updatedAt && (

@@ -105,7 +105,7 @@ export function ActiveProjectsClient({
       </aside>
 
       {/* Main content */}
-      <main data-testid="main-content">
+      <div data-testid="main-content">
         {/* Filter bar */}
         <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center">
           <div className="relative flex-1">
@@ -178,7 +178,7 @@ export function ActiveProjectsClient({
             })}
           </div>
         )}
-      </main>
+      </div>
     </div>
   )
 }

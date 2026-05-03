@@ -101,7 +101,7 @@ export default async function DocumentDetailPage({ params }: Props) {
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-document-detail">
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Main content (~70%) */}
-        <main className="lg:w-[70%]" data-testid="main-content">
+        <div className="lg:w-[70%]" data-testid="main-content">
           {/* Title */}
           <h1 className="text-3xl font-bold text-primary">{title}</h1>
 
@@ -175,7 +175,7 @@ export default async function DocumentDetailPage({ params }: Props) {
               <SupportMaterialsList materials={supportMaterials} />
             </section>
           )}
-        </main>
+        </div>
 
         {/* Sidebar (~30%) */}
         <aside className="lg:w-[30%]" data-testid="right-rail">

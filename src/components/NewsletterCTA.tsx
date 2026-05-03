@@ -70,7 +70,9 @@ export function NewsletterCTA({
 
   return (
     <div className={`${className}`.trim()} data-testid="newsletter-cta">
-      <h2 className="text-2xl font-bold text-text-primary">{heading}</h2>
+      {heading && (
+        <h2 className="text-2xl font-bold text-text-primary">{heading}</h2>
+      )}
 
       {description && <p className="mt-2 text-base text-text-muted">{description}</p>}
 
