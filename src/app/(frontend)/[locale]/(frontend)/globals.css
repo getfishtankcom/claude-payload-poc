@@ -65,6 +65,12 @@
   --color-surface-card: #FFFFFF;
   --color-surface-card-hover: #FBFBFC;
   --color-surface-card-border: #E6E6EA;
+  /* Form input chrome — needs higher contrast than card borders so
+     fields read as interactive surfaces. ~3.4:1 against white passes
+     WCAG SC 1.4.11 (non-text contrast). (QA-203) */
+  --color-input-border: #B8B8C0;
+  --color-input-border-hover: #888892;
+  --color-input-bg: #FFFFFF;
   --color-footer: #EEEEEE;
   --color-alt: #F5F5F5;
   --color-surface-light: #F8F8F8;

@@ -33,8 +33,13 @@ type InputAsTextarea = InputBaseProps &
 
 type InputProps = InputAsInput | InputAsTextarea
 
+// Border uses --color-input-border (~3.4:1 vs white) so the field shape
+// is visible at a glance — passes WCAG SC 1.4.11 (non-text contrast).
+// Hover bumps it to --color-input-border-hover for a clearer interactive
+// cue. Focus paints a 2px brand-primary ring on top of the heavier border.
+// (QA-203 / dogfood-2026-05-03-light-mode)
 const baseInputClasses =
-  'w-full rounded-sm border border-gray-300 bg-white px-4 py-2.5 text-base text-text-primary placeholder:text-text-muted transition-colors duration-150 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30'
+  'w-full rounded-sm border border-input-border bg-input-bg px-4 py-2.5 text-base text-text-primary placeholder:text-text-muted transition-colors duration-150 hover:border-input-border-hover focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/40'
 
 const errorInputClasses =
   'border-red-500 focus:border-red-500 focus:ring-red-500/30'
