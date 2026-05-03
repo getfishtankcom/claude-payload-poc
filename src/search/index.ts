@@ -16,6 +16,7 @@
  * (#172 / Algolia migration Slice 1.)
  */
 import { algoliaProvider } from './algolia'
+import { buildDualWriteProvider, isDualWriteEnabled } from './dual-write'
 import { meilisearchProvider } from './meilisearch'
 import {
   SEARCH_PROVIDER_ENV,
@@ -35,22 +36,33 @@ function resolveProviderName(): SearchProviderName {
 
 export function getSearchProvider(): SearchProvider {
   const name = resolveProviderName()
-  const cached = cache.get(name)
+  const dualWrite = isDualWriteEnabled()
+  const cacheKey = `${name}${dualWrite ? '+dual' : ''}` as SearchProviderName
+  const cached = cache.get(cacheKey)
   if (cached) return cached
-  let provider: SearchProvider
+
+  let primary: SearchProvider
+  let secondary: SearchProvider | null = null
   switch (name) {
     case 'meilisearch':
-      provider = meilisearchProvider
+      primary = meilisearchProvider
+      if (dualWrite) secondary = algoliaProvider
       break
     case 'algolia':
-      provider = algoliaProvider
+      primary = algoliaProvider
+      if (dualWrite) secondary = meilisearchProvider
       break
     default: {
       const exhaustive: never = name
       throw new Error(`Unknown SEARCH_PROVIDER: ${exhaustive as string}`)
     }
   }
-  cache.set(name, provider)
+
+  // Dual-write composition (#176 / Slice 5) — every Payload write fans
+  // out to both providers; reads stay on the primary. Activated only by
+  // `SEARCH_DUAL_WRITE=true`, separate from `SEARCH_PROVIDER`.
+  const provider = secondary ? buildDualWriteProvider(primary, secondary) : primary
+  cache.set(cacheKey, provider)
   return provider
 }
 
