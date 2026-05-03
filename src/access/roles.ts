@@ -137,11 +137,19 @@ export const usersCreate: Access = ({ req: { user } }) => {
   return isAdmin(user as User)
 }
 
-/** Users collection: users can read their own profile, admins can read all */
+/**
+ * Users collection: any authenticated user can read other users.
+ *
+ * Admin views (Workbox, version history, audit trails) need to display the
+ * author of each item — without read access, populated `createdBy` relations
+ * resolve to `null` and every row shows "Author: Unknown" (QA-005, #75).
+ * Sensitive fields (password, hash, salt) are protected by Payload's auth
+ * collection internals; `role` is locked behind `adminOnlyField`. The
+ * remaining fields (firstName, lastName, email) are appropriate to expose
+ * to other authenticated CMS users.
+ */
 export const usersRead: Access = ({ req: { user } }) => {
-  if (!user) return false
-  if (isAdmin(user as User)) return true
-  return { id: { equals: getUserId(user as User) } }
+  return Boolean(user)
 }
 
 /** Users collection: users can update own profile, admins can update all */
