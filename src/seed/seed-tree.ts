@@ -25,6 +25,15 @@ import config from '../payload.config'
 type Payload = Awaited<ReturnType<typeof getPayload>>
 type ID = string | number
 
+/**
+ * Module-level handle for the admin user that owns the seed run. Set once
+ * at the top of `seedTree()` and read by `node()` so every created page
+ * carries a populated `createdBy` — keeps the Workbox AUTHOR column from
+ * reading "Unknown" for every row in dev (would be the real request user
+ * in production via Payload's auto-population).
+ */
+let seedAuthorId: number | null = null
+
 /** Helper to create a tree node (page) with tree-specific fields */
 async function node(
   payload: Payload,
@@ -50,6 +59,7 @@ async function node(
       sortOrder: data.sortOrder,
       board: (data.board || null) as number | null,
       workflowState: 'draft',
+      ...(seedAuthorId ? { createdBy: seedAuthorId } : {}),
     },
     context: { skipWorkflowValidation: true, skipWorkflowLogging: true },
   })
@@ -69,6 +79,28 @@ async function node(
 export async function seedTree() {
   const payload = await getPayload({ config })
   console.log('\n=== Seeding Realistic Content Tree (Sitecore-based) ===\n')
+
+  // Look up the admin test user once so every seeded page gets a populated
+  // createdBy. Without this the Workbox AUTHOR column reads "Unknown" for
+  // every row in dev. Falls back to null silently if the user isn't found
+  // (the seed still works, the column just stays "Unknown" until a real
+  // user creates content via the admin UI).
+  try {
+    const adminLookup = await payload.find({
+      collection: 'users',
+      where: { email: { equals: 'admin@test.com' } },
+      limit: 1,
+      depth: 0,
+    })
+    seedAuthorId = (adminLookup.docs[0]?.id as number) || null
+    if (seedAuthorId) {
+      console.log(`  Seed author: admin@test.com (id=${seedAuthorId})`)
+    } else {
+      console.log('  Seed author: admin@test.com not found — createdBy will be null')
+    }
+  } catch {
+    seedAuthorId = null
+  }
 
   // Look up existing boards for linking
   const boardsResult = await payload.find({ collection: 'boards', limit: 10, depth: 0 })
