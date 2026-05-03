@@ -27,6 +27,13 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({ title, badge, testId, ch
         background: 'var(--surface-page)',
         color: 'var(--text-primary)',
         overflow: 'hidden',
+        // Grid items default to `min-width: auto` (= intrinsic content width).
+        // When a widget contains `whiteSpace: nowrap` text the unwrapped
+        // length blows the grid track wider than its `1fr` share, which
+        // makes the next column visually overlap the previous one (#72 /
+        // QA-002). `min-width: 0` lets the section shrink so its children
+        // can ellipsis-truncate as designed.
+        minWidth: 0,
       }}
     >
       <div style={{
