@@ -2,21 +2,14 @@
  * @description
  * Provider-agnostic search interface for FRAS Canada.
  *
- * Two implementations live behind this:
- * - `MeilisearchProvider` (default, current production) — `src/search/meilisearch/`
- * - `AlgoliaProvider` (in-progress per #171) — `src/search/algolia/`
+ * Currently one implementation: `AlgoliaProvider` in `src/search/algolia/`.
+ * The interface is preserved (rather than inlined into algolia/) so a
+ * future swap or A/B doesn't require touching every collection +
+ * search-page caller.
  *
- * The `getSearchProvider()` factory in `./index.ts` reads `SEARCH_PROVIDER`
- * env var and dispatches to the right one. Code that synchronizes
- * Payload collections or hydrates a search client should depend on this
- * interface — never on a specific provider's exports.
- *
- * @notes
- * - Server-only: this file is imported from Payload collection configs
- *   (`afterChange` / `afterDelete` hooks) and from frontend client
- *   components (`getSearchClient` only). The factory checks the env at
- *   call time so flipping `SEARCH_PROVIDER` requires only a server
- *   restart, not a rebuild.
+ * Code that synchronizes Payload collections or hydrates a search client
+ * should depend on this interface via `getSearchProvider()` from
+ * `./index.ts` — never on a specific provider's exports.
  */
 import type {
   CollectionAfterChangeHook,
@@ -25,9 +18,8 @@ import type {
 
 /** Configuration handed to `getSyncHooks`. */
 export type SyncHooksConfig = {
-  /** Logical index name (e.g. 'news', 'projects'). The provider may
-      append a locale suffix internally (Meilisearch: `news_en`,
-      Algolia: `news_en` + `news_fr`). */
+  /** Logical index name (e.g. 'news', 'projects'). The provider appends
+      a per-locale suffix internally (Algolia: `news_en` + `news_fr`). */
   indexName: string
   /** Payload collection slug — required by per-locale providers
       (Algolia) so the hook can re-fetch under each locale to detect
@@ -52,10 +44,9 @@ export type IndexSettings = {
   sortableAttributes?: string[]
 }
 
-/** Minimal Algoliasearch-compatible client shape that
-    `react-instantsearch` accepts. Both Meilisearch (via
-    `@meilisearch/instant-meilisearch`) and Algolia (via `algoliasearch`)
-    return this same shape. */
+/** Minimal Algoliasearch-compatible client shape that `react-instantsearch`
+    accepts. The Algolia provider returns `algoliasearch/lite`'s `liteClient`
+    cast to this. */
 export type SearchClient = {
   search: (requests: unknown) => Promise<unknown>
   // Provider-specific extensions are allowed as additional properties.
@@ -67,8 +58,8 @@ export type ProviderLocale = 'en' | 'fr'
 
 /** The interface every search provider conforms to. */
 export interface SearchProvider {
-  /** Stable identifier for logs / metrics — e.g. 'meilisearch', 'algolia'. */
-  readonly name: 'meilisearch' | 'algolia'
+  /** Stable identifier for logs / metrics. */
+  readonly name: 'algolia'
 
   /** Build Payload `afterChange` + `afterDelete` hooks for a collection. */
   getSyncHooks(config: SyncHooksConfig): SyncHooks
@@ -81,12 +72,7 @@ export interface SearchProvider {
   applySettings(indexName: string, settings: IndexSettings): Promise<void>
 }
 
-/** Env-var key that selects the provider on the server. Default: `meilisearch`. */
-export const SEARCH_PROVIDER_ENV = 'SEARCH_PROVIDER'
-
-/** Same selector for client components (Next.js only inlines NEXT_PUBLIC_* into
-    client bundles). Must match SEARCH_PROVIDER server-side or reads/writes drift. */
-export const SEARCH_PROVIDER_PUBLIC_ENV = 'NEXT_PUBLIC_SEARCH_PROVIDER'
-
-/** Allowed values for `SEARCH_PROVIDER`. */
+/** Allowed values for the provider's `name` discriminator. Single-entry
+    after Meilisearch removal — kept as a typed alias so a future second
+    provider can re-expand the union without ripple changes. */
 export type SearchProviderName = SearchProvider['name']

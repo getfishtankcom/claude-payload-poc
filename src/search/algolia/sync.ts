@@ -5,10 +5,9 @@
  * a doc with only EN populated lands in `<index>_en` only, never in
  * `<index>_fr` (per User Story 18).
  *
- * Sister to `src/search/meilisearch/sync.ts` — both implementations
- * share the `SearchProvider` interface from `../types.ts`. Slice 2
- * (#173) wires this up for the `news` collection only as a POC; Slice 3
- * (#174) expands to the remaining 7 searchable collections.
+ * Implements the `SearchProvider` interface from `../types.ts`. Covers
+ * all 7 searchable collections (news, projects, consultations, documents,
+ * events, pages, resources) with per-locale routing.
  *
  * @notes
  * - Per-locale tokenization happens server-side in Algolia; the
@@ -48,8 +47,7 @@ const DEFAULT_SEARCHABLE_ATTRIBUTES = [
 const LOCALES: ProviderLocale[] = ['en', 'fr']
 
 /** Default transform — extracts common fields from a Payload document
-    into a flat Algolia record. Mirror of `meilisearch/sync.ts` so the
-    record shape is provider-agnostic. */
+    into a flat Algolia record. */
 function defaultTransform(doc: Record<string, unknown>): Record<string, unknown> {
   const board = doc.board as Record<string, unknown> | string | undefined
   const boardAbbreviation = typeof board === 'object' && board ? board.abbreviation : board

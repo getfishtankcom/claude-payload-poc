@@ -1,11 +1,11 @@
 /**
  * @description
- * Client-side search page component wired to Meilisearch via react-instantsearch.
+ * Client-side search page component wired to Algolia via react-instantsearch.
  * Renders the full search experience: search bar, filter sidebar, results list,
  * sort controls, and pagination.
  *
  * Key features:
- * - InstantSearch wrapper connected to Meilisearch via @meilisearch/instant-meilisearch
+ * - InstantSearch wrapper connected to Algolia via the `getSearchProvider()` factory
  * - Search bar pre-filled with URL query param
  * - 2-column layout: FilterSidebar (left) + results (right)
  * - Sort dropdown: Relevance, Date (newest first)
@@ -14,7 +14,7 @@
  *
  * @dependencies
  * - react-instantsearch: InstantSearch, useSearchBox, useHits, usePagination, useSortBy
- * - @meilisearch/instant-meilisearch: instantMeiliSearch connector
+ * - @/search (algoliaProvider): InstantSearch-compatible search client (algoliasearch/lite)
  * - FilterSidebar: Faceted filter accordion
  * - SearchResultCard: Individual result display
  * - TagChip: Pill chips for tags
@@ -22,9 +22,10 @@
  *
  * @notes
  * - Client component (react-instantsearch requires client-side rendering)
- * - Meilisearch host and search key come from NEXT_PUBLIC_ env vars
- * - Searches across all _en indexes via multi-index search
- * - Filter refinements are applied via Meilisearch filter syntax
+ * - Algolia search-only key + app id come from NEXT_PUBLIC_ALGOLIA_* env vars
+ * - Currently scoped to news_en (the indexName Configure prop) — locale-aware
+ *   index selection is a follow-up
+ * - Filter refinements are applied via Algolia filter syntax (`field:"value"`)
  */
 'use client'
 
@@ -385,15 +386,15 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
 export function SearchPageClient({ popularTags }: SearchPageClientProps) {
   const locale = useLocale() as ProviderLocale
 
-  // Dev-only console warning when the Meilisearch search key is missing
-  // (the active default provider). Once Slice 2+ ships Algolia behind a
-  // flag this check moves into the provider itself. (#160 / QA-112)
-  const meilisearchKey = process.env.NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY || ''
-  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !meilisearchKey) {
+  // Dev-only console warning when the Algolia search key is missing.
+  // The provider falls back to a stub returning empty results in that
+  // case, so the silent "0 results" state needs an explanatory log.
+  const algoliaKey = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY || ''
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !algoliaKey) {
     // eslint-disable-next-line no-console
     console.warn(
-      '[FRAS] NEXT_PUBLIC_MEILISEARCH_SEARCH_KEY is empty. Search will return 0 results. ' +
-        'Copy `.env.example` → `.env` (or fill in the existing key from .env.example) and restart.',
+      '[FRAS] NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY is empty. Search will return 0 results. ' +
+        'Copy `.env.example` → `.env` (Algolia section) and restart.',
     )
   }
 
