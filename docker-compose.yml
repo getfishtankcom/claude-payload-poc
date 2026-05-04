@@ -1,7 +1,7 @@
 ##
 # FRAS Canada — Local Development Services
 #
-# Starts PostgreSQL and Meilisearch for local dev.
+# Starts PostgreSQL for local dev. Search is hosted Algolia (no container).
 # The Next.js app runs on the host (not containerized) for fast HMR.
 #
 # Usage:
