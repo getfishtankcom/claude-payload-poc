@@ -201,7 +201,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
       {primaryNav.length > 0 && (
         <div className="hidden lg:block border-t border-gray-200" data-testid="primary-nav">
           <Container>
-            <nav className="flex items-center gap-6 py-3" aria-label="Primary navigation">
+            <nav className="flex items-center gap-6 py-3" aria-label={tNav('primaryNavLabel')}>
               {primaryNav.map((item, i) => {
                 const hasMegaMenu = megaMenu.some((m) => m.trigger_label === item.label)
 

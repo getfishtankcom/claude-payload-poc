@@ -28,6 +28,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { TagChip } from '@/components/TagChip'
 import { Button } from '@/components/ui'
@@ -78,6 +79,8 @@ function saveRecentSearch(query: string): void {
 }
 
 export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) {
+  const t = useTranslations('search')
+  const tCommon = useTranslations('common')
   const [query, setQuery] = useState('')
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
@@ -175,7 +178,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
       className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-24 sm:pt-32"
       role="dialog"
       aria-modal="true"
-      aria-label="Search"
+      aria-label={t('modalAriaLabel')}
       data-testid="search-modal"
       onClick={(e) => {
         // Close when clicking backdrop
@@ -193,7 +196,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
             type="button"
             onClick={onClose}
             className="rounded-sm p-1 text-text-muted hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-bright"
-            aria-label="Close search"
+            aria-label={t('closeAriaLabel')}
             data-testid="search-modal-close"
           >
             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -214,10 +217,10 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSearch()
             }}
-            placeholder="Projects, meetings, documents, and more."
+            placeholder={t('searchInputPlaceholder')}
             className="w-full rounded-sm border border-gray-300 bg-white py-3.5 pl-12 pr-4 text-lg placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30"
             data-testid="search-modal-input"
-            aria-label="Search query"
+            aria-label={t('queryLabel')}
           />
         </div>
 
@@ -226,7 +229,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
           {/* Recent searches */}
           {recentSearches.length > 0 && (
             <div data-testid="search-modal-recent">
-              <h3 className="mb-3 text-sm font-semibold text-text-heading">Recent</h3>
+              <h3 className="mb-3 text-sm font-semibold text-text-heading">{t('recentSearches')}</h3>
               <div className="flex flex-wrap gap-2">
                 {recentSearches.map((term) => (
                   <TagChip
@@ -242,7 +245,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
           {/* Popular tags from CMS */}
           {popularTags && popularTags.length > 0 && (
             <div data-testid="search-modal-popular">
-              <h3 className="mb-3 text-sm font-semibold text-text-heading">Popular</h3>
+              <h3 className="mb-3 text-sm font-semibold text-text-heading">{t('popularTags')}</h3>
               <div className="flex flex-wrap gap-2">
                 {popularTags.map((tag) => (
                   <TagChip
@@ -264,7 +267,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
             onClick={onClose}
             data-testid="search-modal-cancel"
           >
-            Cancel
+            {tCommon('cancel')}
           </Button>
           <Button
             variant="dark"
@@ -273,7 +276,7 @@ export function SearchModal({ isOpen, onClose, popularTags }: SearchModalProps) 
             disabled={!query.trim()}
             data-testid="search-modal-submit"
           >
-            Search
+            {t('searchButton')}
           </Button>
         </div>
       </div>
