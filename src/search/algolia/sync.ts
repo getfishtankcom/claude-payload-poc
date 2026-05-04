@@ -54,6 +54,15 @@ function defaultTransform(doc: Record<string, unknown>): Record<string, unknown>
   const board = doc.board as Record<string, unknown> | string | undefined
   const boardAbbreviation = typeof board === 'object' && board ? board.abbreviation : board
 
+  // Standards are populated relationships at depth>=1; pull `code` (e.g. "IFRS",
+  // "ASPE") which matches the FilterSidebar's option values. Fall back to
+  // `abbreviation` then `name` then the raw id.
+  const standard = doc.standard as Record<string, unknown> | string | undefined
+  const standardCode =
+    typeof standard === 'object' && standard
+      ? standard.code || standard.abbreviation || standard.name
+      : standard
+
   return {
     objectID: String(doc.id),
     title: doc.title || '',
@@ -61,9 +70,10 @@ function defaultTransform(doc: Record<string, unknown>): Record<string, unknown>
     summary: doc.summary || doc.excerpt || '',
     body: doc.content || doc.body || '',
     board: boardAbbreviation || '',
+    standard: standardCode || '',
     status: doc.status || '',
     date: doc.publishedDate || doc.date || doc.createdAt || '',
-    content_type: doc.type || '',
+    content_type: doc.type || doc.collection || '',
     updatedAt: doc.updatedAt || '',
   }
 }
