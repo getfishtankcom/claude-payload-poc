@@ -19,7 +19,6 @@ import { algoliaProvider } from './algolia'
 import { buildDualWriteProvider, isDualWriteEnabled } from './dual-write'
 import { meilisearchProvider } from './meilisearch'
 import {
-  SEARCH_PROVIDER_ENV,
   type SearchProvider,
   type SearchProviderName,
 } from './types'
@@ -29,7 +28,12 @@ import {
 const cache = new Map<SearchProviderName, SearchProvider>()
 
 function resolveProviderName(): SearchProviderName {
-  const raw = process.env[SEARCH_PROVIDER_ENV]?.toLowerCase().trim()
+  // Server reads SEARCH_PROVIDER; client bundles only see NEXT_PUBLIC_*.
+  // Both keys must be referenced via LITERAL property access — Next.js only
+  // inlines `process.env.NEXT_PUBLIC_X` at build time, not `process.env[var]`.
+  const raw = (process.env.SEARCH_PROVIDER ?? process.env.NEXT_PUBLIC_SEARCH_PROVIDER)
+    ?.toLowerCase()
+    .trim()
   if (raw === 'algolia') return 'algolia'
   return 'meilisearch'
 }

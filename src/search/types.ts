@@ -81,8 +81,12 @@ export interface SearchProvider {
   applySettings(indexName: string, settings: IndexSettings): Promise<void>
 }
 
-/** Env-var key that selects the provider. Default: `meilisearch`. */
+/** Env-var key that selects the provider on the server. Default: `meilisearch`. */
 export const SEARCH_PROVIDER_ENV = 'SEARCH_PROVIDER'
+
+/** Same selector for client components (Next.js only inlines NEXT_PUBLIC_* into
+    client bundles). Must match SEARCH_PROVIDER server-side or reads/writes drift. */
+export const SEARCH_PROVIDER_PUBLIC_ENV = 'NEXT_PUBLIC_SEARCH_PROVIDER'
 
 /** Allowed values for `SEARCH_PROVIDER`. */
 export type SearchProviderName = SearchProvider['name']
