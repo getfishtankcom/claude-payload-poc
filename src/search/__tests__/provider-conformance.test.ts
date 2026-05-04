@@ -1,22 +1,18 @@
 /**
  * @description
- * Parameterized conformance tests for every `SearchProvider`
- * implementation. Pins the interface contract so a new provider can't
- * land without satisfying the same shape.
+ * Conformance tests for the Algolia `SearchProvider` implementation.
+ * Pins the interface contract from `../types.ts`.
  *
- * Slice 1 (#172) registers only `meilisearchProvider`; the table below
- * grows when Slice 2 (#173) lands the Algolia provider.
+ * Was parameterized over both Meilisearch and Algolia until Meilisearch
+ * was removed (chore: remove Meilisearch). Kept as a single-provider
+ * table so a future second provider can re-expand without restructuring.
  */
 import { describe, expect, it } from 'vitest'
 
 import { algoliaProvider } from '../algolia'
-import { meilisearchProvider } from '../meilisearch'
 import type { SearchProvider } from '../types'
 
-const PROVIDERS: Array<[string, SearchProvider]> = [
-  ['meilisearch', meilisearchProvider],
-  ['algolia', algoliaProvider],
-]
+const PROVIDERS: Array<[string, SearchProvider]> = [['algolia', algoliaProvider]]
 
 describe.each(PROVIDERS)('SearchProvider conformance — %s', (_name, provider) => {
   it('exposes a stable string `name`', () => {
@@ -38,10 +34,9 @@ describe.each(PROVIDERS)('SearchProvider conformance — %s', (_name, provider) 
   })
 
   it('`applySettings` is awaitable and returns void', async () => {
-    // We don't have a live Meilisearch instance in unit tests; the
-    // provider's settings call is expected to no-op when the host is
-    // unreachable. This test pins the return contract, not the side
-    // effect — that's covered by integration tests at deploy time.
+    // Provider's settings call is expected to no-op when admin
+    // credentials aren't configured (unit tests don't hit live Algolia).
+    // This pins the return contract, not the side effect.
     const result = await provider.applySettings('unit-test-index', {
       filterableAttributes: ['board'],
     })
