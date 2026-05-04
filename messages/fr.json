@@ -66,7 +66,9 @@
     "sortBy": "Trier par :",
     "sortRelevance": "Pertinence",
     "sortDate": "Date (plus récent d'abord)",
-    "searchInputPlaceholder": "Projets, réunions, documents et plus."
+    "searchInputPlaceholder": "Projets, réunions, documents et plus.",
+    "closeAriaLabel": "Fermer la recherche",
+    "modalAriaLabel": "Recherche"
   },
   "filters": {
     "board": "Conseil",
@@ -152,12 +154,17 @@
   },
   "newsletter": {
     "heading": "Restez connecté",
+    "headingFallback": "Approuvé par plus de 3 000 professionnels au Canada",
     "description": "Abonnez-vous à notre bulletin pour les dernières mises à jour sur les normes canadiennes d'information financière.",
     "placeholder": "Entrez votre courriel",
+    "emailLabel": "Adresse courriel",
     "subscribe": "S'abonner",
+    "subscribing": "Inscription en cours…",
     "success": "Merci de votre abonnement !",
     "error": "L'abonnement a échoué. Veuillez réessayer.",
-    "invalidEmail": "Veuillez entrer une adresse courriel valide."
+    "unknownError": "Une erreur est survenue. Veuillez réessayer.",
+    "invalidEmail": "Veuillez entrer une adresse courriel valide.",
+    "linkedin": "Suivez-nous sur LinkedIn"
   },
   "footer": {
     "copyright": "© {year} NIFC Canada. Tous droits réservés.",
@@ -212,7 +219,8 @@
     "externalLink": "S'ouvre dans un nouvel onglet",
     "expandSection": "Développer la section",
     "collapseSection": "Réduire la section",
-    "switchLanguage": "Passer à {language}"
+    "switchLanguage": "Passer à {language}",
+    "onThisPage": "Sur cette page"
   },
   "errors": {
     "404": {

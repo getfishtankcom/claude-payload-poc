@@ -66,7 +66,9 @@
     "sortBy": "Sort by:",
     "sortRelevance": "Relevance",
     "sortDate": "Date (newest first)",
-    "searchInputPlaceholder": "Projects, meetings, documents, and more."
+    "searchInputPlaceholder": "Projects, meetings, documents, and more.",
+    "closeAriaLabel": "Close search",
+    "modalAriaLabel": "Search"
   },
   "filters": {
     "board": "Board",
@@ -152,12 +154,17 @@
   },
   "newsletter": {
     "heading": "Stay Connected",
+    "headingFallback": "Trusted by 3,000+ professionals across Canada",
     "description": "Subscribe to our newsletter for the latest updates on Canadian financial reporting standards.",
     "placeholder": "Enter your email",
+    "emailLabel": "Email address",
     "subscribe": "Subscribe",
+    "subscribing": "Subscribing…",
     "success": "Thank you for subscribing!",
     "error": "Subscription failed. Please try again.",
-    "invalidEmail": "Please enter a valid email address."
+    "unknownError": "Something went wrong. Please try again.",
+    "invalidEmail": "Please enter a valid email address.",
+    "linkedin": "Follow us on LinkedIn"
   },
   "footer": {
     "copyright": "\u00a9 {year} RAS Canada. All rights reserved.",
@@ -212,7 +219,8 @@
     "externalLink": "Opens in a new tab",
     "expandSection": "Expand section",
     "collapseSection": "Collapse section",
-    "switchLanguage": "Switch to {language}"
+    "switchLanguage": "Switch to {language}",
+    "onThisPage": "On this page"
   },
   "errors": {
     "404": {

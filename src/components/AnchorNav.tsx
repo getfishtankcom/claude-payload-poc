@@ -20,6 +20,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 
 export type AnchorNavItem = {
   label: string
@@ -32,8 +33,10 @@ export type AnchorNavProps = {
 }
 
 export function AnchorNav({ items }: AnchorNavProps) {
+  const t = useTranslations('a11y')
   const [activeId, setActiveId] = useState<string>(items[0]?.id || '')
   const [isExpanded, setIsExpanded] = useState(false)
+  const onThisPage = t('onThisPage')
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     // Find the first intersecting entry (topmost visible section)
@@ -64,10 +67,10 @@ export function AnchorNav({ items }: AnchorNavProps) {
   }
 
   return (
-    <nav data-testid="anchor-nav" aria-label="On this page">
+    <nav data-testid="anchor-nav" aria-label={onThisPage}>
       {/* Desktop: sticky sidebar */}
       <div className="hidden md:block sticky top-8">
-        <p className="mb-3 text-sm font-semibold text-text-primary">On this page</p>
+        <p className="mb-3 text-sm font-semibold text-text-primary">{onThisPage}</p>
         <hr className="mb-3 border-gray-200" />
         <ul className="space-y-1.5" role="list">
           {items.map((item) => (
@@ -97,7 +100,7 @@ export function AnchorNav({ items }: AnchorNavProps) {
           aria-expanded={isExpanded}
           data-testid="anchor-nav-toggle"
         >
-          <span>On this page</span>
+          <span>{onThisPage}</span>
           <svg
             className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             fill="none"
