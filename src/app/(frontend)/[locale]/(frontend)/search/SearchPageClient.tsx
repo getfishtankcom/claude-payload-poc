@@ -302,16 +302,18 @@ function SearchContent({ popularTags }: { popularTags?: PopularTag[] | null }) {
     setActiveFilters((prev) => ({ ...prev, [sectionId]: values }))
   }, [])
 
-  // Build Meilisearch filter string from active filters
+  // Build Algolia filter string from active filters.
+  // Syntax: `field:"value"` per facet; OR within a facet, AND across facets.
+  // (Meilisearch's `field = "value"` shape is NOT compatible.)
   const filterString = useMemo(() => {
     const parts: string[] = []
     for (const [key, values] of Object.entries(activeFilters)) {
       if (values.length === 0) continue
       if (key === 'date') {
-        // Date filters are handled differently — not a facet filter
+        // Date filters need a numeric range — not a string facet
         continue
       }
-      const conditions = values.map((v) => `${key} = "${v}"`).join(' OR ')
+      const conditions = values.map((v) => `${key}:"${v}"`).join(' OR ')
       parts.push(`(${conditions})`)
     }
     return parts.join(' AND ')
