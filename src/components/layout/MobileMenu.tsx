@@ -25,6 +25,7 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import {
@@ -94,6 +95,8 @@ function buildStaticLinks(navigation: Navigation | null | undefined): { label: s
 }
 
 export function MobileMenu({ isOpen, onClose, navigation }: MobileMenuProps) {
+  const tNav = useTranslations('nav')
+  const tSearch = useTranslations('search')
   const navSections = buildNavSections(navigation)
   const staticLinks = buildStaticLinks(navigation)
 
@@ -109,12 +112,12 @@ export function MobileMenu({ isOpen, onClose, navigation }: MobileMenuProps) {
         >
           {/* Header: close button */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <span className="text-lg font-semibold text-text-primary">Menu</span>
+            <span className="text-lg font-semibold text-text-primary">{tNav('menu')}</span>
             <button
               type="button"
               onClick={onClose}
               className="rounded-sm p-1 text-text-muted hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-bright cursor-pointer"
-              aria-label="Close menu"
+              aria-label={tNav('closeMenu')}
               data-testid="mobile-menu-close"
             >
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -130,7 +133,7 @@ export function MobileMenu({ isOpen, onClose, navigation }: MobileMenuProps) {
               />
               <input
                 type="search"
-                placeholder="Search projects, standards..."
+                placeholder={tSearch('mobilePlaceholder')}
                 className="w-full rounded-sm border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary-bright/30"
                 data-testid="mobile-menu-search"
               />
@@ -147,7 +150,7 @@ export function MobileMenu({ isOpen, onClose, navigation }: MobileMenuProps) {
           </div>
 
           {/* Navigation sections */}
-          <nav className="px-6 py-4" aria-label="Mobile navigation">
+          <nav className="px-6 py-4" aria-label={tNav('mobileNavLabel')}>
             {navSections.length > 0 && (
               <div className="space-y-1">
                 {navSections.map((section) => (
