@@ -235,6 +235,11 @@ function AccordionSection({
   )
 }
 
+/** Closed-set lookup for board abbreviations — Boards.abbreviation is
+    not localized at the data layer, so the EN value (CSSB/AcSB/...) gets
+    swapped to the locale-equivalent (CCNID/CNC/...) at render time. */
+const KNOWN_BOARDS = new Set(['acsb', 'psab', 'aasb', 'cssb', 'rasoc'])
+
 export function FilterSidebar({
   activeFilters = {},
   onFilterChange,
@@ -244,6 +249,26 @@ export function FilterSidebar({
   const tSearch = useTranslations('search')
   const tFilters = useTranslations('filters')
   const tCommon = useTranslations('common')
+  const tBoards = useTranslations('boards')
+
+  /** Translate facet option labels for known boards. Filter VALUES stay
+      EN — they're sent to Algolia's filter expression and need to match
+      the indexed `board` field (which is always EN per the sync transform).
+      Falls back to the raw label if the dictionary entry is missing
+      (next-intl returns the key path in that case — never leak it). */
+  const localizeSection = (section: FilterSection): FilterSection => {
+    if (section.id !== 'board') return section
+    return {
+      ...section,
+      options: section.options.map((opt) => {
+        const key = opt.value.toLowerCase()
+        if (!KNOWN_BOARDS.has(key)) return opt
+        const lookupKey = `abbreviations.${key}`
+        const value = tBoards(lookupKey)
+        return value && value !== lookupKey ? { ...opt, label: value } : opt
+      }),
+    }
+  }
 
   // Track which accordion sections are open (all open by default)
   const [openSections, setOpenSections] = useState<Set<string>>(
@@ -296,7 +321,7 @@ export function FilterSidebar({
       {DEFAULT_SECTIONS.map((section) => (
         <AccordionSection
           key={section.id}
-          section={section}
+          section={localizeSection(section)}
           activeValues={activeFilters[section.id] || []}
           isOpen={openSections.has(section.id)}
           onToggle={() => toggleSection(section.id)}
