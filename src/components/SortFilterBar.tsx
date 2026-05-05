@@ -19,6 +19,8 @@
  */
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 type SelectOption = {
   label: string
   value: string
@@ -70,6 +72,7 @@ export function SortFilterBar({
   onDateRangeChange,
   className = '',
 }: SortFilterBarProps) {
+  const t = useTranslations('listings')
   return (
     <div
       className={`flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end ${className}`.trim()}
@@ -78,7 +81,7 @@ export function SortFilterBar({
       {/* Sort By */}
       <div className="flex flex-col gap-1">
         <label htmlFor="sort-by" className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-          Sort By
+          {t('sortBy')}
         </label>
         <select
           id="sort-by"
@@ -98,7 +101,7 @@ export function SortFilterBar({
       {/* Items Per Page */}
       <div className="flex flex-col gap-1">
         <label htmlFor="items-per-page" className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-          Items Per Page
+          {t('itemsPerPage')}
         </label>
         <select
           id="items-per-page"
@@ -119,7 +122,7 @@ export function SortFilterBar({
       {typeFilterOptions && onTypeFilterChange && (
         <div className="flex flex-col gap-1">
           <label htmlFor="type-filter" className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-            Type
+            {t('type')}
           </label>
           <select
             id="type-filter"
@@ -142,7 +145,7 @@ export function SortFilterBar({
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:gap-2">
           <div className="flex flex-col gap-1">
             <label htmlFor="start-date" className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-              Start Date
+              {t('startDate')}
             </label>
             <input
               id="start-date"
@@ -155,7 +158,7 @@ export function SortFilterBar({
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="end-date" className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-              End Date
+              {t('endDate')}
             </label>
             <input
               id="end-date"

@@ -91,9 +91,22 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
     .filter((p) => (p as unknown as { status?: string }).status !== 'closed')
     .slice(0, 5)
 
+  // Boards collection's `abbreviation` field is NOT localized — it always
+  // returns the EN value ("AcSB"). For per-locale display we look up the
+  // localized equivalent ("CNC") via `boards.abbreviations.<key>` keyed on
+  // the lowercase EN abbreviation. The set of boards is closed (5) so the
+  // safe-key list is enumerated in code rather than discovered at runtime.
+  const KNOWN_BOARDS = new Set(['acsb', 'psab', 'aasb', 'cssb', 'rasoc'])
+  const abbrKey = (board.abbreviation || '').toLowerCase()
+  const localizedAbbreviation = KNOWN_BOARDS.has(abbrKey)
+    ? tBoards(`abbreviations.${abbrKey}`)
+    : board.abbreviation || board.name
+
+  // Breadcrumb prepends its own localized Home crumb — we only pass the
+  // board entry (the Breadcrumb component strips a literal `'Home'` first
+  // entry for legacy callers, but a localized entry would double-render).
   const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: board.abbreviation || board.name, href: `/${board.slug}` },
+    { label: localizedAbbreviation, href: `/${board.slug}` },
   ]
 
   const tabs = (board.tabs || []).filter(
@@ -115,7 +128,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
         data-board-accent={board.slug}
       >
         <h1 className={`text-3xl font-bold ${accent.heading} md:text-4xl`}>
-          {board.abbreviation ? `${board.abbreviation} — ${board.name}` : board.name}
+          {board.abbreviation ? `${localizedAbbreviation} — ${board.name}` : board.name}
         </h1>
         {board.description && (
           <p className="mt-3 max-w-3xl text-lg text-text-muted">{board.description}</p>
@@ -221,6 +234,7 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
           {quickActions.length > 0 && (
             <div className="rounded-md border border-surface-card-border bg-surface-card p-4 shadow-card">
               <QuickActions
+                heading={tBoards('quickActions')}
                 actions={quickActions.map((a) => ({
                   label: a.label,
                   url: a.url,

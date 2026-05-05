@@ -14,7 +14,8 @@
  */
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { CategoryPills } from '@/components/CategoryPills'
 import { SortFilterBar } from '@/components/SortFilterBar'
 import { ListingItem } from '@/components/ListingItem'
@@ -35,6 +36,11 @@ type ResourcesListingClientProps = {
   standardSlug: string
 }
 
+/** Resource-specific categories. The English value is what the API
+    filters by; only the displayed label is localized at render. The
+    `Article` / `Guidance` / `In Brief` / `Other` / `Webinar` strings
+    aren't yet covered by the dictionary — falls back to the English
+    label until they're added (separate follow-up). */
 const CATEGORY_OPTIONS = [
   'All Items', 'Article', 'Guidance', 'In Brief', 'Other', 'Webinar',
 ]
@@ -48,19 +54,8 @@ const TYPE_OPTIONS = [
   { label: 'Webpage', value: 'Webpage' },
 ]
 
-const SORT_OPTIONS = [
-  { label: 'Publication date: Newest', value: 'newest' },
-  { label: 'Publication date: Oldest', value: 'oldest' },
-]
-
-const ITEMS_PER_PAGE_OPTIONS = [
-  { label: '10', value: '10' },
-  { label: '20', value: '20' },
-  { label: '30', value: '30' },
-  { label: 'All', value: 'all' },
-]
-
 export function ResourcesListingClient({ standardSlug }: ResourcesListingClientProps) {
+  const t = useTranslations('listings')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('newest')
   const [itemsPerPage, setItemsPerPage] = useState('10')
@@ -71,6 +66,24 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
   const [docs, setDocs] = useState<ResourceDoc[]>([])
   const [totalDocs, setTotalDocs] = useState(0)
   const [loading, setLoading] = useState(true)
+
+  const sortOptions = useMemo(
+    () => [
+      { label: t('sortNewest'), value: 'newest' },
+      { label: t('sortOldest'), value: 'oldest' },
+    ],
+    [t],
+  )
+
+  const itemsPerPageOptions = useMemo(
+    () => [
+      { label: '10', value: '10' },
+      { label: '20', value: '20' },
+      { label: '30', value: '30' },
+      { label: t('allItems'), value: 'all' },
+    ],
+    [t],
+  )
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -110,7 +123,7 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
   }, [category, sort, itemsPerPage, typeFilter, startDate, endDate])
 
   const categoryPillOptions = CATEGORY_OPTIONS.map((cat) => ({
-    label: cat,
+    label: cat === 'All Items' ? t('allItems') : cat,
     value: cat === 'All Items' ? '' : cat,
     isActive: cat === 'All Items' ? category === '' : category === cat,
   }))
@@ -128,10 +141,10 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
       {/* Sort/filter bar */}
       <SortFilterBar
         className="mt-4"
-        sortOptions={SORT_OPTIONS}
+        sortOptions={sortOptions}
         sortValue={sort}
         onSortChange={setSort}
-        itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
+        itemsPerPageOptions={itemsPerPageOptions}
         itemsPerPageValue={itemsPerPage}
         onItemsPerPageChange={setItemsPerPage}
         typeFilterOptions={TYPE_OPTIONS}
@@ -146,9 +159,9 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
       {/* Results */}
       <div className="mt-6" data-testid="section-listing-results">
         {loading ? (
-          <div className="py-8 text-center text-text-muted">Loading resources...</div>
+          <div className="py-8 text-center text-text-muted">{t('loading')}</div>
         ) : docs.length === 0 ? (
-          <div className="py-8 text-center text-text-muted">No resources found</div>
+          <div className="py-8 text-center text-text-muted">{t('noResources')}</div>
         ) : (
           <div className="space-y-0">
             {docs.map((doc) => (
