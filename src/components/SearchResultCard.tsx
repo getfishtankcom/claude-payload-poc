@@ -88,8 +88,23 @@ export function SearchResultCard({
   className = '',
 }: SearchResultCardProps) {
   const t = useTranslations('search')
+  const tBoards = useTranslations('boards')
   const ctaText = t(ctaKeyMap[contentType] || 'readMore')
   const displayBadge = badgeLabel || t(`contentTypes.${contentType}`)
+
+  // Same KNOWN_BOARDS lookup pattern used in BoardLanding/BoardNav/FilterSidebar:
+  // the search index `board` field stores the EN abbreviation; swap to the
+  // locale-equivalent for display.
+  const KNOWN_BOARDS = new Set(['acsb', 'psab', 'aasb', 'cssb', 'rasoc'])
+  let boardLabel = board || ''
+  if (board) {
+    const k = board.toLowerCase()
+    if (KNOWN_BOARDS.has(k)) {
+      const lookup = `abbreviations.${k}`
+      const value = tBoards(lookup)
+      if (value && value !== lookup) boardLabel = value
+    }
+  }
 
   return (
     <article
@@ -99,8 +114,8 @@ export function SearchResultCard({
       {/* Top row: badge + board + date */}
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <Badge variant={contentType}>{displayBadge}</Badge>
-        {board && (
-          <span className="text-xs font-medium text-text-muted">{board}</span>
+        {boardLabel && (
+          <span className="text-xs font-medium text-text-muted">{boardLabel}</span>
         )}
         {date && (
           <>

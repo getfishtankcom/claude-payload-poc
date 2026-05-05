@@ -29,6 +29,25 @@ export type BoardNavItem = {
   abbreviation: string
 }
 
+/** Same closed-set lookup used by BoardLanding — the Boards collection's
+    `abbreviation` field isn't `localized: true`, so it always returns the
+    EN value. Maps EN abbreviation → i18n key under `boards.abbreviations.*`
+    so the displayed label is locale-aware. */
+const KNOWN_BOARDS = new Set(['acsb', 'psab', 'aasb', 'cssb', 'rasoc'])
+
+function localizedBoardLabel(
+  board: { abbreviation: string; name: string },
+  t: (key: string) => string,
+): string {
+  const key = (board.abbreviation || '').toLowerCase()
+  if (!KNOWN_BOARDS.has(key)) return board.abbreviation || board.name
+  // next-intl returns the key path when an entry is missing; never let
+  // `abbreviations.acsb` literal leak through to the UI.
+  const lookupKey = `abbreviations.${key}`
+  const value = t(lookupKey)
+  return value && value !== lookupKey ? value : board.abbreviation || board.name
+}
+
 type BoardNavProps = {
   /** Board items from CMS */
   boards: BoardNavItem[]
@@ -89,7 +108,7 @@ export function BoardNav({
                 aria-current={activeBoard === board.slug ? 'true' : undefined}
                 data-testid={`board-nav-${board.slug}`}
               >
-                {board.abbreviation || board.name}
+                {localizedBoardLabel(board, tBoards)}
               </button>
             </li>
           ))}

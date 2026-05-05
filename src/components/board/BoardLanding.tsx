@@ -96,11 +96,17 @@ export async function BoardLanding({ board, locale }: BoardLandingProps) {
   // localized equivalent ("CNC") via `boards.abbreviations.<key>` keyed on
   // the lowercase EN abbreviation. The set of boards is closed (5) so the
   // safe-key list is enumerated in code rather than discovered at runtime.
+  // Also guard against next-intl returning the unresolved key path when
+  // the dictionary entry is missing — fall back to the raw abbreviation
+  // so the page never renders `abbreviations.acsb` literally.
   const KNOWN_BOARDS = new Set(['acsb', 'psab', 'aasb', 'cssb', 'rasoc'])
   const abbrKey = (board.abbreviation || '').toLowerCase()
-  const localizedAbbreviation = KNOWN_BOARDS.has(abbrKey)
-    ? tBoards(`abbreviations.${abbrKey}`)
-    : board.abbreviation || board.name
+  const lookupKey = `abbreviations.${abbrKey}`
+  const lookupValue = KNOWN_BOARDS.has(abbrKey) ? tBoards(lookupKey) : ''
+  const localizedAbbreviation =
+    lookupValue && lookupValue !== lookupKey
+      ? lookupValue
+      : board.abbreviation || board.name
 
   // Breadcrumb prepends its own localized Home crumb — we only pass the
   // board entry (the Breadcrumb component strips a literal `'Home'` first
