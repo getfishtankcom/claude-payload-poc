@@ -63,8 +63,18 @@ const MEDIA_ITEMS: MediaSeed[] = [
   {
     sourcePath: path.join(FRAS_ASSETS, 'fras-footer-logo-en.png'),
     filename: 'fras-footer-logo-en.png',
-    alt: 'RAS Canada footer logo',
+    alt: 'RAS Canada',
     title: 'RAS Canada Footer Logo (English)',
+    folderName: 'Logos',
+    mimeType: 'image/png',
+  },
+  {
+    // FR variant of the dark wordmark used as the canonical logo on
+    // header / footer / admin login when the request locale is `fr`.
+    sourcePath: path.join(FRAS_ASSETS, 'fras-footer-logo-fr.png'),
+    filename: 'fras-footer-logo-fr.png',
+    alt: 'NIFC Canada',
+    title: 'RAS Canada Footer Logo (French)',
     folderName: 'Logos',
     mimeType: 'image/png',
   },
@@ -75,6 +85,15 @@ const MEDIA_ITEMS: MediaSeed[] = [
     filename: 'fras-banner-en.png',
     alt: 'RAS Canada homepage banner',
     title: 'Homepage Hero Banner (English)',
+    folderName: 'Heroes',
+    parentFolderName: 'Images',
+    mimeType: 'image/png',
+  },
+  {
+    sourcePath: path.join(FRAS_ASSETS, 'fras-banner-fr.png'),
+    filename: 'fras-banner-fr.png',
+    alt: 'Bannière de la page d’accueil NIFC Canada',
+    title: 'Homepage Hero Banner (French)',
     folderName: 'Heroes',
     parentFolderName: 'Images',
     mimeType: 'image/png',
