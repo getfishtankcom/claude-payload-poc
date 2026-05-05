@@ -23,6 +23,7 @@
  * - Description is truncated with line-clamp-2
  */
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui'
 
@@ -59,30 +60,19 @@ type SearchResultCardProps = {
   className?: string
 }
 
-/** Maps content type to CTA link text */
-const ctaTextMap: Record<ContentType, string> = {
-  standard: 'View Document',
-  news: 'Read More',
-  webinar: 'Watch Recording',
-  meeting: 'Read Summary',
-  guidance: 'View Document',
-  consultation: 'View Document',
-  decision: 'Read Summary',
-  deadline: 'View Details',
-  resource: 'Download Guide',
-}
-
-/** Maps content type to a human-readable badge label */
-const badgeLabelMap: Record<ContentType, string> = {
-  standard: 'Standard',
-  news: 'News',
-  webinar: 'Webinar',
-  meeting: 'Meeting Summary',
-  guidance: 'Guidance',
-  consultation: 'Document for Comment',
-  decision: 'Decision Summary',
-  deadline: 'Deadline',
-  resource: 'Resource',
+/** Maps content type to the translation KEY under `search.*` for the
+    CTA link text. Translations live in messages/{en,fr}.json — no
+    English literals here. */
+const ctaKeyMap: Record<ContentType, string> = {
+  standard: 'viewDocument',
+  news: 'readMore',
+  webinar: 'watchRecording',
+  meeting: 'readSummary',
+  guidance: 'viewDocument',
+  consultation: 'viewDocument',
+  decision: 'readSummary',
+  deadline: 'viewDetails',
+  resource: 'downloadGuide',
 }
 
 export function SearchResultCard({
@@ -97,8 +87,9 @@ export function SearchResultCard({
   fileSize,
   className = '',
 }: SearchResultCardProps) {
-  const ctaText = ctaTextMap[contentType] || 'Read More'
-  const displayBadge = badgeLabel || badgeLabelMap[contentType] || contentType
+  const t = useTranslations('search')
+  const ctaText = t(ctaKeyMap[contentType] || 'readMore')
+  const displayBadge = badgeLabel || t(`contentTypes.${contentType}`)
 
   return (
     <article

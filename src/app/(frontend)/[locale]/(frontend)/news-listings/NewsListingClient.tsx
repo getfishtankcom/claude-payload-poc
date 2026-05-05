@@ -18,7 +18,8 @@
  */
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { CategoryPills } from '@/components/CategoryPills'
 import { SortFilterBar } from '@/components/SortFilterBar'
 import { ListingItem } from '@/components/ListingItem'
@@ -43,25 +44,25 @@ type NewsListingClientProps = {
   isVolunteerMode?: boolean
 }
 
-const NEWS_CATEGORIES = [
-  'All Items', 'Document for Comment', 'International Activity', 'Meeting Summary', 'News', 'Resource',
+/** Category id → translation key under listings.newsCategories.
+    Display labels are pulled at render time so locale changes don't
+    require remounting. The category VALUE sent to the API matches the
+    raw English string the news collection is filtered by — only the
+    label is localized. */
+const NEWS_CATEGORY_DEFS: ReadonlyArray<{ id: string; apiValue: string }> = [
+  { id: 'allItems', apiValue: '' },
+  { id: 'documentForComment', apiValue: 'Document for Comment' },
+  { id: 'internationalActivity', apiValue: 'International Activity' },
+  { id: 'meetingSummary', apiValue: 'Meeting Summary' },
+  { id: 'news', apiValue: 'News' },
+  { id: 'resource', apiValue: 'Resource' },
 ]
 
 const BOARD_TABS = ['AASB', 'CSSB', 'PSAB', 'RASOC', 'AcSB']
 
-const SORT_OPTIONS = [
-  { label: 'Publication date: Newest', value: 'newest' },
-  { label: 'Publication date: Oldest', value: 'oldest' },
-]
-
-const ITEMS_PER_PAGE_OPTIONS = [
-  { label: '10', value: '10' },
-  { label: '20', value: '20' },
-  { label: '30', value: '30' },
-  { label: 'All', value: 'all' },
-]
-
 export function NewsListingClient({ boardSlug, isVolunteerMode }: NewsListingClientProps) {
+  const tListings = useTranslations('listings')
+  const tCategories = useTranslations('listings.newsCategories')
   const [category, setCategory] = useState('')
   const [volunteerBoard, setVolunteerBoard] = useState(BOARD_TABS[0].toLowerCase())
   const [sort, setSort] = useState('newest')
@@ -72,6 +73,24 @@ export function NewsListingClient({ boardSlug, isVolunteerMode }: NewsListingCli
   const [docs, setDocs] = useState<NewsDoc[]>([])
   const [totalDocs, setTotalDocs] = useState(0)
   const [loading, setLoading] = useState(true)
+
+  const sortOptions = useMemo(
+    () => [
+      { label: tListings('sortNewest'), value: 'newest' },
+      { label: tListings('sortOldest'), value: 'oldest' },
+    ],
+    [tListings],
+  )
+
+  const itemsPerPageOptions = useMemo(
+    () => [
+      { label: '10', value: '10' },
+      { label: '20', value: '20' },
+      { label: '30', value: '30' },
+      { label: tListings('allItems'), value: 'all' },
+    ],
+    [tListings],
+  )
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -134,10 +153,10 @@ export function NewsListingClient({ boardSlug, isVolunteerMode }: NewsListingCli
         />
       ) : (
         <CategoryPills
-          options={NEWS_CATEGORIES.map((cat) => ({
-            label: cat,
-            value: cat === 'All Items' ? '' : cat,
-            isActive: cat === 'All Items' ? category === '' : category === cat,
+          options={NEWS_CATEGORY_DEFS.map((def) => ({
+            label: def.id === 'allItems' ? tListings('allItems') : tCategories(def.id),
+            value: def.apiValue,
+            isActive: def.apiValue === '' ? category === '' : category === def.apiValue,
           }))}
           onChange={setCategory}
         />
@@ -146,10 +165,10 @@ export function NewsListingClient({ boardSlug, isVolunteerMode }: NewsListingCli
       {/* Sort/filter bar */}
       <SortFilterBar
         className="mt-4"
-        sortOptions={SORT_OPTIONS}
+        sortOptions={sortOptions}
         sortValue={sort}
         onSortChange={setSort}
-        itemsPerPageOptions={ITEMS_PER_PAGE_OPTIONS}
+        itemsPerPageOptions={itemsPerPageOptions}
         itemsPerPageValue={itemsPerPage}
         onItemsPerPageChange={setItemsPerPage}
         showDateRange
@@ -161,9 +180,9 @@ export function NewsListingClient({ boardSlug, isVolunteerMode }: NewsListingCli
       {/* Results */}
       <div className="mt-6" data-testid="section-listing-results">
         {loading ? (
-          <div className="py-8 text-center text-text-muted">Loading news...</div>
+          <div className="py-8 text-center text-text-muted">{tListings('loading')}</div>
         ) : docs.length === 0 ? (
-          <div className="py-8 text-center text-text-muted">No news items found</div>
+          <div className="py-8 text-center text-text-muted">{tListings('noNews')}</div>
         ) : (
           <div className="space-y-0">
             {docs.map((doc) => (

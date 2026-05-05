@@ -97,6 +97,7 @@ function buildFlatMenuItems(
 export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
   const tSearch = useTranslations('search')
   const tNav = useTranslations('nav')
+  const tCommon = useTranslations('common')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
 
@@ -152,7 +153,7 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
       <Container>
         <div className="flex items-center justify-between gap-4 py-4">
           <Link href="/" className="flex-shrink-0" data-testid="site-logo">
-            <span className="text-xl font-bold text-primary">RAS Canada</span>
+            <span className="text-xl font-bold text-primary">{tCommon('siteName')}</span>
           </Link>
 
           <div className="hidden lg:block flex-1 max-w-md ml-auto">

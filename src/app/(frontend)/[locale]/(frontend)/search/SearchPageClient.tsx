@@ -82,11 +82,12 @@ function inferContentType(
   return 'news'
 }
 
-/** Format a date string for display */
-function formatDate(dateStr: unknown): string {
+/** Format a date string for display in the active locale. */
+function formatDate(dateStr: unknown, locale: string): string {
   if (!dateStr || typeof dateStr !== 'string') return ''
   try {
-    return new Date(dateStr).toLocaleDateString('en-CA', {
+    const intlLocale = locale === 'fr' ? 'fr-CA' : 'en-CA'
+    return new Date(dateStr).toLocaleDateString(intlLocale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -190,6 +191,7 @@ function SortControl() {
 /** Hits list rendering */
 function HitsList() {
   const t = useTranslations('search')
+  const locale = useLocale()
   const { hits } = useHits()
 
   if (hits.length === 0) {
@@ -210,7 +212,7 @@ function HitsList() {
             key={hit.objectID}
             contentType={inferContentType(hitData)}
             board={(hitData.board as string) || ''}
-            date={formatDate(hitData.date || hitData.updatedAt)}
+            date={formatDate(hitData.date || hitData.updatedAt, locale)}
             title={(hitData.title as string) || 'Untitled'}
             href={`/${hitData.slug || hit.objectID}`}
             description={(hitData.summary as string) || (hitData.body as string)?.slice(0, 200) || ''}

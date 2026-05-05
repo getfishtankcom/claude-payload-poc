@@ -68,7 +68,25 @@
     "sortDate": "Date (plus récent d'abord)",
     "searchInputPlaceholder": "Projets, réunions, documents et plus.",
     "closeAriaLabel": "Fermer la recherche",
-    "modalAriaLabel": "Recherche"
+    "modalAriaLabel": "Recherche",
+    "readMore": "Lire la suite",
+    "viewDocument": "Voir le document",
+    "viewMore": "Voir plus",
+    "watchRecording": "Visionner l'enregistrement",
+    "readSummary": "Lire le résumé",
+    "viewDetails": "Voir les détails",
+    "downloadGuide": "Télécharger le guide",
+    "contentTypes": {
+      "standard": "Norme",
+      "news": "Nouvelles",
+      "webinar": "Webinaire",
+      "meeting": "Résumé de réunion",
+      "guidance": "Guide d'application",
+      "consultation": "Document à commenter",
+      "decision": "Résumé des décisions",
+      "deadline": "Date limite",
+      "resource": "Ressource"
+    }
   },
   "filters": {
     "board": "Conseil",
@@ -107,7 +125,36 @@
     "keyProposals": "Propositions clés",
     "contacts": "Personnes-ressources",
     "relatedDocuments": "Documents connexes",
-    "stage": "Étape"
+    "stage": "Étape",
+    "stageLabel": "Étape {n} : {name}",
+    "badges": {
+      "exposureDraft": "Exposé-sondage",
+      "publicComment": "Commentaires du public",
+      "survey": "Sondage",
+      "research": "Recherche",
+      "reExposureDraft": "Réexposé-sondage"
+    }
+  },
+  "listings": {
+    "sortBy": "Trier par",
+    "itemsPerPage": "Éléments par page",
+    "type": "Type",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "allItems": "Tous les éléments",
+    "loading": "Chargement…",
+    "noItems": "Aucun élément trouvé",
+    "noNews": "Aucune nouvelle trouvée",
+    "noResources": "Aucune ressource trouvée",
+    "sortNewest": "Date de publication : plus récent",
+    "sortOldest": "Date de publication : plus ancien",
+    "newsCategories": {
+      "documentForComment": "Document à commenter",
+      "internationalActivity": "Activité internationale",
+      "meetingSummary": "Résumé de réunion",
+      "news": "Nouvelles",
+      "resource": "Ressource"
+    }
   },
   "consultations": {
     "title": "Consultations ouvertes",
@@ -123,6 +170,13 @@
     "title": "Conseils",
     "overview": "Aperçu",
     "boardDetail": "{board} — NIFC Canada",
+    "abbreviations": {
+      "acsb": "CNC",
+      "psab": "CCSP",
+      "aasb": "CNAC",
+      "cssb": "CCNID",
+      "rasoc": "CSNIC"
+    },
     "quickActions": "Actions rapides",
     "upcomingEvents": "Événements à venir",
     "resources": "Ressources",

@@ -19,12 +19,24 @@
  * - Board slug needed for constructing detail URL: /active-projects/[board]/[project-slug]
  */
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui/Badge'
 
 type ProjectBadge = {
   badge_type?: string | null
   id?: string | null
+}
+
+/** Map English badge_type strings (the underlying enum value) to the
+    translation key under `projects.badges`. The value stays in EN for
+    API/database consistency; only the label is localized at render. */
+const BADGE_TYPE_TO_KEY: Record<string, string> = {
+  'Exposure Draft': 'exposureDraft',
+  'Public Comment': 'publicComment',
+  Survey: 'survey',
+  Research: 'research',
+  'Re-exposure Draft': 'reExposureDraft',
 }
 
 type ProjectCTA = {
@@ -67,7 +79,13 @@ function badgeTypeToVariant(
 }
 
 export function ProjectCard({ project, className = '' }: ProjectCardProps) {
+  const t = useTranslations('projects')
   const detailUrl = `/active-projects/${project.boardSlug}/${project.slug}`
+
+  function badgeLabel(badgeType: string): string {
+    const key = BADGE_TYPE_TO_KEY[badgeType]
+    return key ? t(`badges.${key}`) : badgeType
+  }
 
   return (
     <article
@@ -90,7 +108,7 @@ export function ProjectCard({ project, className = '' }: ProjectCardProps) {
           {project.badges.map((badge, i) => (
             badge.badge_type && (
               <Badge key={badge.id || i} variant={badgeTypeToVariant(badge.badge_type)}>
-                {badge.badge_type}
+                {badgeLabel(badge.badge_type)}
               </Badge>
             )
           ))}
@@ -111,7 +129,7 @@ export function ProjectCard({ project, className = '' }: ProjectCardProps) {
             {project.currentStage}
           </span>
           <span className="text-sm font-medium text-text-heading">
-            Stage {project.currentStage}: {project.currentStageName}
+            {t('stageLabel', { n: project.currentStage, name: project.currentStageName })}
           </span>
         </div>
       )}

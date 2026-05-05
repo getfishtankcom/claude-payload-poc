@@ -68,7 +68,25 @@
     "sortDate": "Date (newest first)",
     "searchInputPlaceholder": "Projects, meetings, documents, and more.",
     "closeAriaLabel": "Close search",
-    "modalAriaLabel": "Search"
+    "modalAriaLabel": "Search",
+    "readMore": "Read More",
+    "viewDocument": "View Document",
+    "viewMore": "View More",
+    "watchRecording": "Watch Recording",
+    "readSummary": "Read Summary",
+    "viewDetails": "View Details",
+    "downloadGuide": "Download Guide",
+    "contentTypes": {
+      "standard": "Standard",
+      "news": "News",
+      "webinar": "Webinar",
+      "meeting": "Meeting Summary",
+      "guidance": "Guidance",
+      "consultation": "Document for Comment",
+      "decision": "Decision Summary",
+      "deadline": "Deadline",
+      "resource": "Resource"
+    }
   },
   "filters": {
     "board": "Board",
@@ -107,7 +125,36 @@
     "keyProposals": "Key Proposals",
     "contacts": "Contacts",
     "relatedDocuments": "Related Documents",
-    "stage": "Stage"
+    "stage": "Stage",
+    "stageLabel": "Stage {n}: {name}",
+    "badges": {
+      "exposureDraft": "Exposure Draft",
+      "publicComment": "Public Comment",
+      "survey": "Survey",
+      "research": "Research",
+      "reExposureDraft": "Re-exposure Draft"
+    }
+  },
+  "listings": {
+    "sortBy": "Sort By",
+    "itemsPerPage": "Items Per Page",
+    "type": "Type",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "allItems": "All Items",
+    "loading": "Loading…",
+    "noItems": "No items found",
+    "noNews": "No news items found",
+    "noResources": "No resources found",
+    "sortNewest": "Publication date: Newest",
+    "sortOldest": "Publication date: Oldest",
+    "newsCategories": {
+      "documentForComment": "Document for Comment",
+      "internationalActivity": "International Activity",
+      "meetingSummary": "Meeting Summary",
+      "news": "News",
+      "resource": "Resource"
+    }
   },
   "consultations": {
     "title": "Open Consultations",
@@ -123,6 +170,13 @@
     "title": "Boards",
     "overview": "Overview",
     "boardDetail": "{board} — RAS Canada",
+    "abbreviations": {
+      "acsb": "AcSB",
+      "psab": "PSAB",
+      "aasb": "AASB",
+      "cssb": "CSSB",
+      "rasoc": "RASOC"
+    },
     "quickActions": "Quick Actions",
     "upcomingEvents": "Upcoming Events",
     "resources": "Resources",

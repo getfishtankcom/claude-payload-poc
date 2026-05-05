@@ -17,20 +17,35 @@
  * - Volunteer variant is a separate concern (see acceptance criteria)
  */
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { PageHeader } from '@/components/PageHeader'
 import { NewsListingClient } from './NewsListingClient'
 
-export const metadata: Metadata = {
-  title: 'News — RAS Canada',
-  description: 'Browse the latest news, meeting summaries, and announcements.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'news' })
+  return {
+    title: `${t('title')} — RAS Canada`,
+    description: t('latestNews'),
+  }
 }
 
 export const revalidate = 60
 
-export default function NewsListingPage() {
+export default async function NewsListingPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'news' })
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-testid="page-news-listing">
-      <PageHeader title="News" />
+      <PageHeader title={t('title')} />
       <NewsListingClient />
     </div>
   )
