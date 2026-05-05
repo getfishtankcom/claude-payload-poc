@@ -90,6 +90,29 @@ export async function getNavigation(locale: PayloadLocale = 'en'): Promise<Navig
 }
 
 /**
+ * Fetches the branding global (logo per locale + alt).
+ * Returns null when the global isn't populated — callers should fall
+ * back to the text wordmark in that case.
+ */
+export async function getBranding(locale: PayloadLocale = 'en'): Promise<{
+  logo?: { url?: string | null; alt?: string | null; width?: number | null; height?: number | null } | null
+} | null> {
+  try {
+    const payload = await getPayload({ config })
+    const branding = await payload.findGlobal({
+      slug: 'branding',
+      locale,
+      depth: 1,
+    })
+    return branding as unknown as {
+      logo?: { url?: string | null; alt?: string | null; width?: number | null; height?: number | null } | null
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
  * Fetches the footer global.
  * Returns null if not configured yet.
  */

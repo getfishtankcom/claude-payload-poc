@@ -41,7 +41,7 @@ import { getMessages } from 'next-intl/server'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
-import { getNavigation, getFooter, getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
+import { getNavigation, getFooter, getSearchConfig, getBranding, toPayloadLocale } from '@/lib/payload-helpers'
 import { routing } from '@/i18n/routing'
 import { BRAND } from '@/config/brand'
 
@@ -85,10 +85,11 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
   // can fall through to the default locale on FR routes, which would feed
   // the EN dictionary into NextIntlClientProvider and leak EN strings into
   // every client component that reads from useTranslations. (#77)
-  const [navigation, footer, searchConfig, messages] = await Promise.all([
+  const [navigation, footer, searchConfig, branding, messages] = await Promise.all([
     getNavigation(toPayloadLocale(locale)),
     getFooter(toPayloadLocale(locale)),
     getSearchConfig(toPayloadLocale(locale)),
+    getBranding(toPayloadLocale(locale)),
     getMessages({ locale }),
   ])
 
@@ -102,9 +103,10 @@ export default async function FrontendLayout({ children, params }: LayoutProps) 
             <SiteHeader
               navigation={navigation}
               popularTags={searchConfig?.popular_tags as { label: string; query: string; id?: string }[] | null | undefined}
+              logo={branding?.logo ?? null}
             />
             <main data-testid="main-content">{children}</main>
-            <SiteFooter footer={footer} locale={locale} />
+            <SiteFooter footer={footer} locale={locale} logo={branding?.logo ?? null} />
           </NextIntlClientProvider>
         </ClerkProvider>
       </body>

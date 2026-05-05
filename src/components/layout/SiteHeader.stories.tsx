@@ -54,3 +54,15 @@ export const EmptyNavigation: Story = {
     navigation: null,
   },
 }
+
+export const WithLogo: Story = {
+  args: {
+    navigation: mockNavigationData(),
+    logo: {
+      url: 'https://www.frascanada.ca/-/media/frascanada/global-images/banners/fras-banner-en.png',
+      alt: 'RAS Canada',
+      width: 304,
+      height: 75,
+    },
+  },
+}

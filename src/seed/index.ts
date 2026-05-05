@@ -1793,6 +1793,44 @@ export async function seed(_payload?: unknown) {
   console.log('    ✓ Auth config configured')
 
   // -------------------------------------------------------------------------
+  // 21b. BRANDING GLOBAL — site-wide logo
+  // -------------------------------------------------------------------------
+  // Links `fras-footer-logo-en.png` (the purple-on-white wordmark
+  // designed for light backgrounds — the `fras-banner-en.png` asset is
+  // a white wordmark intended for the FRAS dark-gradient hero, so it
+  // disappears on our white site header). Same asset for EN + FR until
+  // a true `fras-footer-logo-fr.png` is uploaded via CMS — at which
+  // point the FR locale picks it up automatically. Skips silently when
+  // seed-media hasn't been run yet — header / footer fall back to the
+  // text wordmark.
+  console.log('  Configuring branding...')
+  try {
+    const bannerLookup = await payload.find({
+      collection: 'media',
+      where: { filename: { equals: 'fras-footer-logo-en.png' } },
+      limit: 1,
+    })
+    const bannerId = bannerLookup.docs[0]?.id
+    if (bannerId) {
+      await payload.updateGlobal({
+        slug: 'branding',
+        data: { logo: bannerId },
+        locale: 'en',
+      })
+      await payload.updateGlobal({
+        slug: 'branding',
+        data: { logo: bannerId },
+        locale: 'fr',
+      })
+      console.log('    ✓ Branding logo set for EN + FR')
+    } else {
+      console.log('    ⏭  Skipped — fras-banner-en.png not in Media (run seed-media first)')
+    }
+  } catch (err) {
+    console.warn('    ⚠️  Branding seed failed:', err instanceof Error ? err.message : err)
+  }
+
+  // -------------------------------------------------------------------------
   // 22. DICTIONARY (glossary terms)
   // -------------------------------------------------------------------------
   console.log('  Seeding dictionary terms...')
