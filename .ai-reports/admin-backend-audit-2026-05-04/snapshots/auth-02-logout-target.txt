@@ -1,0 +1,5 @@
+- textbox "Email *" [ref=e1]
+- textbox "Password" [ref=e2]
+- link "Forgot password?" [ref=e3]
+- button "Login" [ref=e4]
+- button "Open Tanstack query devtools" [ref=e5]

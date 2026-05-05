@@ -1,0 +1,4 @@
+- button "Collapse navigation" [ref=e1] [expanded]: ≡
+- searchbox "Filter tree" [ref=e2]
+- treeitem "Published Home" [ref=e3]
+- button "Open Tanstack query devtools" [ref=e4]

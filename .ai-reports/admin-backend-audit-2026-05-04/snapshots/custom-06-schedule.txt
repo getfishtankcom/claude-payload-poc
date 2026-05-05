@@ -1,0 +1,4 @@
+- button "Today" [ref=e1]
+- button "This Week" [ref=e2]
+- button "This Month" [ref=e3] [pressed]
+- button "Open Tanstack query devtools" [ref=e4]
