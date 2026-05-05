@@ -36,26 +36,33 @@ type ResourcesListingClientProps = {
   standardSlug: string
 }
 
-/** Resource-specific categories. The English value is what the API
-    filters by; only the displayed label is localized at render. The
-    `Article` / `Guidance` / `In Brief` / `Other` / `Webinar` strings
-    aren't yet covered by the dictionary — falls back to the English
-    label until they're added (separate follow-up). */
-const CATEGORY_OPTIONS = [
-  'All Items', 'Article', 'Guidance', 'In Brief', 'Other', 'Webinar',
+/** Resource-specific categories. The `apiValue` is what the API filters
+    by (must stay EN to match the indexed value); the displayed label is
+    looked up via `listings.resourceCategories.<key>` at render. */
+const CATEGORY_DEFS: ReadonlyArray<{ key: string; apiValue: string }> = [
+  { key: 'all', apiValue: '' },
+  { key: 'article', apiValue: 'Article' },
+  { key: 'guidance', apiValue: 'Guidance' },
+  { key: 'inBrief', apiValue: 'In Brief' },
+  { key: 'other', apiValue: 'Other' },
+  { key: 'webinar', apiValue: 'Webinar' },
 ]
 
-const TYPE_OPTIONS = [
-  { label: 'All Types', value: '' },
-  { label: 'Audio', value: 'Audio' },
-  { label: 'External Link', value: 'External Link' },
-  { label: 'PDF', value: 'PDF' },
-  { label: 'Video', value: 'Video' },
-  { label: 'Webpage', value: 'Webpage' },
+/** Resource-type filter — same value/label split. Translated via
+    `listings.resourceTypes.<key>`. */
+const TYPE_DEFS: ReadonlyArray<{ key: string; apiValue: string }> = [
+  { key: 'all', apiValue: '' },
+  { key: 'audio', apiValue: 'Audio' },
+  { key: 'externalLink', apiValue: 'External Link' },
+  { key: 'pdf', apiValue: 'PDF' },
+  { key: 'video', apiValue: 'Video' },
+  { key: 'webpage', apiValue: 'Webpage' },
 ]
 
 export function ResourcesListingClient({ standardSlug }: ResourcesListingClientProps) {
   const t = useTranslations('listings')
+  const tCats = useTranslations('listings.resourceCategories')
+  const tTypes = useTranslations('listings.resourceTypes')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('newest')
   const [itemsPerPage, setItemsPerPage] = useState('10')
@@ -122,10 +129,15 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
     setPage(1)
   }, [category, sort, itemsPerPage, typeFilter, startDate, endDate])
 
-  const categoryPillOptions = CATEGORY_OPTIONS.map((cat) => ({
-    label: cat === 'All Items' ? t('allItems') : cat,
-    value: cat === 'All Items' ? '' : cat,
-    isActive: cat === 'All Items' ? category === '' : category === cat,
+  const categoryPillOptions = CATEGORY_DEFS.map((def) => ({
+    label: def.key === 'all' ? t('allItems') : tCats(def.key),
+    value: def.apiValue,
+    isActive: def.apiValue === '' ? category === '' : category === def.apiValue,
+  }))
+
+  const typeFilterOptions = TYPE_DEFS.map((def) => ({
+    label: def.key === 'all' ? tTypes('all') : tTypes(def.key),
+    value: def.apiValue,
   }))
 
   const currentLimit = itemsPerPage === 'all' ? 500 : Number(itemsPerPage)
@@ -147,7 +159,7 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
         itemsPerPageOptions={itemsPerPageOptions}
         itemsPerPageValue={itemsPerPage}
         onItemsPerPageChange={setItemsPerPage}
-        typeFilterOptions={TYPE_OPTIONS}
+        typeFilterOptions={typeFilterOptions}
         typeFilterValue={typeFilter}
         onTypeFilterChange={setTypeFilter}
         showDateRange

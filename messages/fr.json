@@ -154,6 +154,21 @@
       "meetingSummary": "Résumé de réunion",
       "news": "Nouvelles",
       "resource": "Ressource"
+    },
+    "resourceCategories": {
+      "article": "Article",
+      "guidance": "Guide d'application",
+      "inBrief": "En bref",
+      "other": "Autre",
+      "webinar": "Webinaire"
+    },
+    "resourceTypes": {
+      "all": "Tous les types",
+      "audio": "Audio",
+      "externalLink": "Lien externe",
+      "pdf": "PDF",
+      "video": "Vidéo",
+      "webpage": "Page web"
     }
   },
   "consultations": {

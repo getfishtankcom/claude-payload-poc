@@ -154,6 +154,21 @@
       "meetingSummary": "Meeting Summary",
       "news": "News",
       "resource": "Resource"
+    },
+    "resourceCategories": {
+      "article": "Article",
+      "guidance": "Guidance",
+      "inBrief": "In Brief",
+      "other": "Other",
+      "webinar": "Webinar"
+    },
+    "resourceTypes": {
+      "all": "All Types",
+      "audio": "Audio",
+      "externalLink": "External Link",
+      "pdf": "PDF",
+      "video": "Video",
+      "webpage": "Webpage"
     }
   },
   "consultations": {
