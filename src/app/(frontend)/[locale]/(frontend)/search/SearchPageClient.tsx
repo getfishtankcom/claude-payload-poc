@@ -154,13 +154,16 @@ function ResultsStats() {
 /** Sort dropdown — hidden when there are no hits, since sort is a no-op against an empty result set */
 function SortControl() {
   const t = useTranslations('search')
+  const locale = useLocale()
   const { nbHits } = useStats()
   // Sort option labels rebuild from translations on every render so they
-  // re-evaluate on locale change; values stay stable (Meilisearch index keys).
+  // re-evaluate on locale change. Sort `value`s reference the active
+  // per-locale Algolia index — Algolia replicas are keyed by index name.
+  const indexName = `news_${locale}`
   const { currentRefinement, options, refine } = useSortBy({
     items: [
-      { label: t('sortRelevance'), value: 'news_en' },
-      { label: t('sortDate'), value: 'news_en:date:desc' },
+      { label: t('sortRelevance'), value: indexName },
+      { label: t('sortDate'), value: `${indexName}:date:desc` },
     ],
   })
 
@@ -412,13 +415,19 @@ export function SearchPageClient({ popularTags }: SearchPageClientProps) {
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get('q') || ''
 
+  // Per-locale Algolia index — the sync transform pushes EN content to
+  // `news_en` and FR content to `news_fr`. Hardcoding `news_en` (the
+  // pre-Slice 3 placeholder) caused /fr/recherche to return 0 hits for
+  // FR queries because they hit the wrong index.
+  const indexName = `news_${locale}`
+
   return (
     <InstantSearch
-      indexName="news_en"
+      indexName={indexName}
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       searchClient={searchClient as any}
       initialUiState={{
-        news_en: { query: initialQuery },
+        [indexName]: { query: initialQuery },
       }}
     >
       <SearchContent popularTags={popularTags} />
