@@ -23,6 +23,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
@@ -32,6 +33,18 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { MegaMenu } from './MegaMenu'
 import type { MegaMenuItem } from './MegaMenu'
 import type { Navigation } from '@/payload-types'
+
+/** Subset of the Branding global's `logo` upload that the header needs.
+    `width`/`height` come straight from the Media doc — Payload populates
+    them on upload via sharp, and `next/image` uses them to reserve
+    space (zero CLS). When the global is empty we fall back to the text
+    wordmark, which is already locale-aware via `tCommon('siteName')`. */
+type HeaderLogo = {
+  url?: string | null
+  alt?: string | null
+  width?: number | null
+  height?: number | null
+} | null
 
 /**
  * Lazy-load interaction-triggered overlays to reduce initial bundle.
@@ -51,6 +64,7 @@ type PopularTag = { label: string; query: string; id?: string }
 type SiteHeaderProps = {
   navigation?: Navigation | null
   popularTags?: PopularTag[] | null
+  logo?: HeaderLogo
 }
 
 /**
@@ -94,7 +108,7 @@ function buildFlatMenuItems(
   )
 }
 
-export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
+export function SiteHeader({ navigation, popularTags, logo }: SiteHeaderProps) {
   const tSearch = useTranslations('search')
   const tNav = useTranslations('nav')
   const tCommon = useTranslations('common')
@@ -152,8 +166,24 @@ export function SiteHeader({ navigation, popularTags }: SiteHeaderProps) {
       {/* Row 2: Logo + Search */}
       <Container>
         <div className="flex items-center justify-between gap-4 py-4">
-          <Link href="/" className="flex-shrink-0" data-testid="site-logo">
-            <span className="text-xl font-bold text-primary">{tCommon('siteName')}</span>
+          <Link
+            href="/"
+            className="flex-shrink-0"
+            data-testid="site-logo"
+            aria-label={tCommon('siteName')}
+          >
+            {logo?.url ? (
+              <Image
+                src={logo.url}
+                alt={logo.alt || tCommon('siteName')}
+                width={logo.width || 304}
+                height={logo.height || 75}
+                priority
+                className="h-12 w-auto"
+              />
+            ) : (
+              <span className="text-xl font-bold text-primary">{tCommon('siteName')}</span>
+            )}
           </Link>
 
           <div className="hidden lg:block flex-1 max-w-md ml-auto">

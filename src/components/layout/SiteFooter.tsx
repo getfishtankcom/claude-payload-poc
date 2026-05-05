@@ -22,6 +22,7 @@
  * - Policy links are UI chrome (hardcoded structural links)
  */
 import React from 'react'
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { Container } from '@/components/ui'
@@ -29,20 +30,32 @@ import { NewsletterCTA } from '@/components/NewsletterCTA'
 import { BRAND } from '@/config/brand'
 import type { Footer } from '@/payload-types'
 
+/** Same shape as `HeaderLogo` in SiteHeader — kept inline rather than
+    sharing a type since this is a server component and we don't want to
+    pull a client module just for a structural type. */
+type FooterLogo = {
+  url?: string | null
+  alt?: string | null
+  width?: number | null
+  height?: number | null
+} | null
+
 type SiteFooterProps = {
   footer?: Footer | null
   /** Forwarded by the layout so server-side translations resolve to the
       request locale (see PR #143). Defaults to 'en' if a legacy caller
       hasn't passed it through yet. */
   locale?: string
+  logo?: FooterLogo
 }
 
-export async function SiteFooter({ footer, locale }: SiteFooterProps) {
+export async function SiteFooter({ footer, locale, logo }: SiteFooterProps) {
   const currentYear = new Date().getFullYear()
   const resolvedLocale = locale ?? 'en'
-  const [tFooter, tNav] = await Promise.all([
+  const [tFooter, tNav, tCommon] = await Promise.all([
     getTranslations({ locale: resolvedLocale, namespace: 'footer' }),
     getTranslations({ locale: resolvedLocale, namespace: 'nav' }),
+    getTranslations({ locale: resolvedLocale, namespace: 'common' }),
   ])
 
   const columns = footer?.columns || []
@@ -59,6 +72,26 @@ export async function SiteFooter({ footer, locale }: SiteFooterProps) {
 
   return (
     <footer className="bg-footer" data-testid="site-footer">
+      {/* Logo strip — only renders when the Branding global has a logo
+          uploaded for this locale. Sits above the columns rather than
+          inside one so it stays visually anchored even when the column
+          layout reflows on smaller breakpoints. */}
+      {logo?.url && (
+        <Container>
+          <div className="pt-10" data-testid="footer-logo">
+            <Link href="/" aria-label={tCommon('siteName')} className="inline-block">
+              <Image
+                src={logo.url}
+                alt={logo.alt || tCommon('siteName')}
+                width={logo.width || 304}
+                height={logo.height || 75}
+                className="h-16 w-auto"
+              />
+            </Link>
+          </div>
+        </Container>
+      )}
+
       {/* Main footer content */}
       {hasAnyContent && (
         <Container>

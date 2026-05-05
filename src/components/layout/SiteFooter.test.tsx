@@ -29,6 +29,19 @@ describe('<SiteFooter>', () => {
     expect(screen.getByTestId('footer-copyright')).toHaveTextContent(year)
   })
 
+  it('renders the logo strip when a Branding logo is supplied', async () => {
+    const logo = { url: '/media/fras-banner-en.png', alt: 'RAS Canada', width: 304, height: 75 }
+    render(await SiteFooter({ footer: null, logo }))
+    const strip = screen.getByTestId('footer-logo')
+    const img = within(strip).getByRole('img', { name: 'RAS Canada' }) as HTMLImageElement
+    expect(img.getAttribute('src')).toContain('fras-banner-en.png')
+  })
+
+  it('omits the logo strip when no logo is supplied (text wordmark fallback path)', async () => {
+    render(await SiteFooter({ footer: null }))
+    expect(screen.queryByTestId('footer-logo')).toBeNull()
+  })
+
   it('does not render the "Quick Links" heading twice when both nav + legal are populated (#91)', async () => {
     // QA-021 regression: column 2 (CMS-driven nav shortcuts) and column 4
     // (the `quick_links` legal column) both used to show "Quick Links" as

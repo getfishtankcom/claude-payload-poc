@@ -23,6 +23,13 @@ import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  // Public read so the front-end can serve uploaded assets (logo, banners,
+  // content images) without authenticating. Mutations stay authenticated
+  // by Payload's default. Same posture as a public CDN bucket — the file
+  // is the published artefact, not sensitive data.
+  access: {
+    read: () => true,
+  },
   admin: {
     useAsTitle: 'filename',
     defaultColumns: ['filename', 'alt', 'folder', 'mimeType', 'filesize'],
