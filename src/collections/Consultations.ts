@@ -1,188 +1,106 @@
 /**
- * @description
- * Consultations collection (canonical name: document-for-comment in Phase 2).
- * Tracks exposure drafts, surveys, and re-exposure drafts with comment periods.
- * Includes countdown timer support via deadline_date and comment period fields.
- *
- * Key features:
- * - Comment period start/end dates for open/closed status logic
- * - Action documents array for downloadable consultation materials
- * - Relationships to boards, standards, and projects
- * - Virtual days_remaining computed from deadline_date (frontend utility)
- * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
- * - RBAC: role-based access control (author/editor/admin)
- *
- * @dependencies
- * - Boards collection (relationship)
- * - Standards collection (relationship)
- * - Projects collection (relationship)
- * - workflow fields from @/fields/workflow
- * - access/roles for RBAC
- * - admin/hooks/workflow-hooks for transition validation
+ * Consultations collection — exposure drafts, surveys, and re-exposure drafts
+ * with comment periods. Workflow + search-sync chrome via `withWorkflow`.
  *
  * @notes
- * - days_remaining is NOT a stored field — computed at query time or on frontend
- * - commentPeriodEnd determines open/closed status for the countdown timer
+ * - `days_remaining` is computed at query time, not stored
+ * - `commentPeriodEnd` drives the countdown timer + open/closed status
  * - frasIdNumber is the Sitecore FRAS ID for migration/workflow reference
- * - Epic 22: workflow, RBAC added
  */
 import type { CollectionConfig } from 'payload'
 
-import { getSearchProvider } from '@/search'
-import { workflowFields } from '@/fields/workflow'
-import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
-import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
+import { withWorkflow } from './_lib/with-workflow'
 
-const { afterChange: searchSyncAfterChange, afterDelete } = getSearchProvider().getSyncHooks({ indexName: 'consultations', collectionSlug: 'consultations' })
-
-export const Consultations: CollectionConfig = {
-  slug: 'consultations',
-  admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'workflowState', 'deadline_date', 'board'],
-    components: {
-      edit: {
-        beforeDocumentControls: [
-          '/admin/components/WorkflowActionBarField',
-          '/admin/components/TranslateButton',
+export const Consultations: CollectionConfig = withWorkflow(
+  {
+    slug: 'consultations',
+    admin: {
+      useAsTitle: 'title',
+      defaultColumns: ['title', 'type', 'workflowState', 'deadline_date', 'board'],
+    },
+    fields: [
+      { name: 'title', type: 'text', required: true, localized: true, label: 'Consultation Title' },
+      {
+        name: 'slug',
+        type: 'text',
+        localized: true,
+        required: true,
+        unique: true,
+        label: 'Slug',
+        admin: { position: 'sidebar' },
+      },
+      {
+        name: 'type',
+        type: 'select',
+        required: true,
+        label: 'Consultation Type',
+        options: [
+          { label: 'Exposure Draft', value: 'Exposure Draft' },
+          { label: 'Survey', value: 'Survey' },
+          { label: 'Re-exposure Draft', value: 'Re-exposure Draft' },
         ],
       },
-    },
-  },
-  access: {
-    read: contentRead,
-    create: contentCreate,
-    update: contentUpdate,
-    delete: contentDelete,
-  },
-  hooks: {
-    beforeChange: [validateWorkflowTransition],
-    afterChange: [createLogWorkflowTransition('consultations'), searchSyncAfterChange],
-    afterDelete: [afterDelete],
-  },
-  fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true,
-      label: 'Consultation Title',
-    },
-    {
-      name: 'slug',
-      type: 'text',
-      localized: true,
-      required: true,
-      unique: true,
-      label: 'Slug',
-      admin: {
-        position: 'sidebar',
+      {
+        name: 'deadline_date',
+        type: 'date',
+        required: true,
+        label: 'Deadline Date',
+        admin: { description: 'Primary deadline for the consultation' },
       },
-    },
-    {
-      name: 'type',
-      type: 'select',
-      required: true,
-      label: 'Consultation Type',
-      options: [
-        { label: 'Exposure Draft', value: 'Exposure Draft' },
-        { label: 'Survey', value: 'Survey' },
-        { label: 'Re-exposure Draft', value: 'Re-exposure Draft' },
-      ],
-    },
-    {
-      name: 'deadline_date',
-      type: 'date',
-      required: true,
-      label: 'Deadline Date',
-      admin: {
-        description: 'Primary deadline for the consultation',
+      {
+        name: 'commentPeriodStart',
+        type: 'date',
+        label: 'Comment Period Start',
+        admin: { description: 'Start of the public comment window' },
       },
-    },
-    {
-      name: 'commentPeriodStart',
-      type: 'date',
-      label: 'Comment Period Start',
-      admin: {
-        description: 'Start of the public comment window',
-      },
-    },
-    {
-      name: 'commentPeriodEnd',
-      type: 'date',
-      label: 'Comment Period End',
-      admin: {
-        description: 'End of comment period — used for countdown timer and open/closed status',
-      },
-    },
-    {
-      name: 'description',
-      type: 'richText',
-      localized: true,
-      label: 'Description',
-    },
-    {
-      name: 'action_documents',
-      type: 'array',
-      label: 'Action Documents',
-      admin: {
-        description: 'Downloadable documents related to this consultation',
-      },
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          localized: true,
-          label: 'Label',
+      {
+        name: 'commentPeriodEnd',
+        type: 'date',
+        label: 'Comment Period End',
+        admin: {
+          description: 'End of comment period — used for countdown timer and open/closed status',
         },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-          label: 'URL',
-        },
-        {
-          name: 'type',
-          type: 'select',
-          label: 'Document Type',
-          options: [
-            { label: 'PDF', value: 'pdf' },
-            { label: 'Word', value: 'word' },
-            { label: 'Link', value: 'link' },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'frasIdNumber',
-      type: 'text',
-      label: 'FRAS ID Number',
-      admin: {
-        position: 'sidebar',
-        description: 'Sitecore FRAS ID for migration/workflow reference',
       },
-    },
-    {
-      name: 'board',
-      type: 'relationship',
-      relationTo: 'boards',
-      required: true,
-      label: 'Board',
-    },
-    {
-      name: 'standard',
-      type: 'relationship',
-      relationTo: 'standards',
-      label: 'Standard',
-    },
-    {
-      name: 'project',
-      type: 'relationship',
-      relationTo: 'projects',
-      label: 'Related Project',
-    },
-    // --- Workflow fields (Epic 22) ---
-    ...workflowFields,
-  ],
-}
+      { name: 'description', type: 'richText', localized: true, label: 'Description' },
+      {
+        name: 'action_documents',
+        type: 'array',
+        label: 'Action Documents',
+        admin: { description: 'Downloadable documents related to this consultation' },
+        fields: [
+          { name: 'label', type: 'text', required: true, localized: true, label: 'Label' },
+          { name: 'url', type: 'text', required: true, label: 'URL' },
+          {
+            name: 'type',
+            type: 'select',
+            label: 'Document Type',
+            options: [
+              { label: 'PDF', value: 'pdf' },
+              { label: 'Word', value: 'word' },
+              { label: 'Link', value: 'link' },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'frasIdNumber',
+        type: 'text',
+        label: 'FRAS ID Number',
+        admin: {
+          position: 'sidebar',
+          description: 'Sitecore FRAS ID for migration/workflow reference',
+        },
+      },
+      {
+        name: 'board',
+        type: 'relationship',
+        relationTo: 'boards',
+        required: true,
+        label: 'Board',
+      },
+      { name: 'standard', type: 'relationship', relationTo: 'standards', label: 'Standard' },
+      { name: 'project', type: 'relationship', relationTo: 'projects', label: 'Related Project' },
+    ],
+  },
+  { searchable: true },
+)

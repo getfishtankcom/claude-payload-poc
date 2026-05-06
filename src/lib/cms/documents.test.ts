@@ -10,7 +10,7 @@ vi.mock('payload', () => ({
 
 vi.mock('@payload-config', () => ({ default: {} }))
 
-import { getDocumentDetailBySlug } from './payload-helpers'
+import { getDocumentDetailBySlug } from './documents'
 
 describe('getDocumentDetailBySlug', () => {
   beforeEach(() => {

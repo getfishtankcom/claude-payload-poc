@@ -2,14 +2,14 @@
 
 /**
  * @description
- * Visual showcase of <LanguageSwitcher> in EN + FR states and
+ * Visual showcase of <ShellLocaleToggle> in EN + FR states and
  * <MissingLocaleBanner> hidden + visible. To be wrapped as Storybook
  * stories when Storybook lands.
  */
 
 import * as React from 'react'
 
-import { LanguageSwitcher, MissingLocaleBanner, type Locale } from './LanguageSwitcher'
+import { ShellLocaleToggle, MissingLocaleBanner, type Locale } from './ShellLocaleToggle'
 
 const Card: React.FC<React.PropsWithChildren<{ title: string }>> = ({ title, children }) => (
   <section
@@ -34,7 +34,7 @@ const Card: React.FC<React.PropsWithChildren<{ title: string }>> = ({ title, chi
   </section>
 )
 
-export const LanguageSwitcherShowcase: React.FC = () => {
+export const ShellLocaleToggleShowcase: React.FC = () => {
   const [locale, setLocale] = React.useState<Locale>('en')
 
   return (
@@ -50,7 +50,7 @@ export const LanguageSwitcherShowcase: React.FC = () => {
       }}
     >
       <Card title="Switcher (interactive)">
-        <LanguageSwitcher locale={locale} onChange={setLocale} />
+        <ShellLocaleToggle locale={locale} onChange={setLocale} />
         <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
           Active: {locale}
         </p>
@@ -74,4 +74,4 @@ export const LanguageSwitcherShowcase: React.FC = () => {
   )
 }
 
-export default LanguageSwitcherShowcase
+export default ShellLocaleToggleShowcase

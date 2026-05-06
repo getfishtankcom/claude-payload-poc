@@ -2,9 +2,14 @@
 
 /**
  * @description
- * Right-click context menu for tree rows. The "Insert" submenu is
- * filtered to valid child collection types per `validChildren` so authors
- * cannot create an invalid hierarchy.
+ * Right-click context menu for the persistent left tree spine in
+ * `<AdminShell>`. Lightweight by design — anchored to a screen position,
+ * single discriminated-union action callback, no RBAC/lock/depth logic.
+ * The full Content Tree page uses the heavier `TreeContextMenu` from
+ * `src/admin/components/TreeContextMenu.tsx` instead.
+ *
+ * The "Insert" submenu is filtered to valid child collection types per
+ * `validChildren` so authors cannot create an invalid hierarchy.
  *
  * @notes
  * - Anchored to a screen position; the parent owns visibility state.
@@ -17,17 +22,17 @@ import * as React from 'react'
 import { labelForCollection } from './collection-labels'
 import type { TreeNode, ValidChildMap } from './types'
 
-export type TreeContextAction =
+export type SpineContextAction =
   | { kind: 'insert'; childCollection: string }
   | { kind: 'rename' }
   | { kind: 'delete' }
   | { kind: 'duplicate' }
 
-export type TreeContextMenuProps = {
+export type SpineContextMenuProps = {
   node: TreeNode
   validChildren: ValidChildMap
   position: { x: number; y: number }
-  onAction: (action: TreeContextAction) => void
+  onAction: (action: SpineContextAction) => void
   onClose: () => void
   /**
    * Optional slug → display-name overrides for the Insert submenu. Falls
@@ -66,7 +71,7 @@ const sectionStyle: React.CSSProperties = {
   color: 'var(--text-muted)',
 }
 
-export const TreeContextMenu: React.FC<TreeContextMenuProps> = ({
+export const SpineContextMenu: React.FC<SpineContextMenuProps> = ({
   node,
   validChildren,
   position,
@@ -92,7 +97,7 @@ export const TreeContextMenu: React.FC<TreeContextMenuProps> = ({
     }
   }, [onClose])
 
-  const fire = (action: TreeContextAction) => {
+  const fire = (action: SpineContextAction) => {
     onAction(action)
     onClose()
   }

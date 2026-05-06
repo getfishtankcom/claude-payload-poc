@@ -2,7 +2,7 @@
 
 /**
  * @description
- * <LanguageSwitcher> — EN/FR toggle for the AdminShell top header.
+ * <ShellLocaleToggle> — EN/FR toggle for the AdminShell top header.
  * Locale state syncs to the `?locale=` URL query parameter.
  *
  * @notes
@@ -36,14 +36,14 @@ const buttonStyle = (active: boolean): React.CSSProperties => ({
   fontFamily: 'inherit',
 })
 
-export type LanguageSwitcherProps = {
+export type ShellLocaleToggleProps = {
   /** Current locale. */
   locale: Locale
   /** Called when the user picks a new locale. */
   onChange: (locale: Locale) => void
 }
 
-export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ locale, onChange }) => (
+export const ShellLocaleToggle: React.FC<ShellLocaleToggleProps> = ({ locale, onChange }) => (
   <div role="group" aria-label="Locale" style={{ display: 'inline-flex', gap: 4 }}>
     {LOCALES.map(({ code, label, long }) => (
       <button

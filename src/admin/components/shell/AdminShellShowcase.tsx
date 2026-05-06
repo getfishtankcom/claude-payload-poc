@@ -37,7 +37,7 @@ export const AdminShellShowcase: React.FC<{ defaultCollapsed?: boolean }> = ({
 }) => (
   <AdminShell
     defaultCollapsed={defaultCollapsed}
-    languageSwitcher={<Placeholder label="LanguageSwitcher" />}
+    languageSwitcher={<Placeholder label="ShellLocaleToggle" />}
     commandPaletteTrigger={<Placeholder label="⌘K" />}
     notificationBell={<Placeholder label="🔔" />}
     userMenu={<Placeholder label="UserMenu" />}

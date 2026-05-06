@@ -22,7 +22,7 @@
  * - Empty state is the default/expected state
  */
 import type { Metadata } from 'next'
-import { getPageBySlug } from '@/lib/payload-helpers'
+import { getPageBySlug } from '@/lib/cms'
 import { JobListings } from '@/components/JobListings'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 

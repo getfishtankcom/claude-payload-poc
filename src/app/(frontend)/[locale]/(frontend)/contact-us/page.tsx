@@ -30,7 +30,7 @@ import { ContactFormWrapper } from '@/components/ContactFormWrapper'
 import { MediaInquiriesBlock } from '@/components/MediaInquiriesBlock'
 import { RichText } from '@/components/RichText'
 import { submitContactForm } from '@/actions/contact'
-import { getPageBySlug } from '@/lib/payload-helpers'
+import { getPageBySlug } from '@/lib/cms'
 
 type PageProps = {
   params: Promise<{ locale: string }>

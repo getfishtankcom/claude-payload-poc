@@ -8,7 +8,7 @@
  * - Returns { docs, totalDocs, totalPages, page }
  */
 import { NextRequest, NextResponse } from 'next/server'
-import { getNewsListing } from '@/lib/payload-helpers'
+import { getNewsListing } from '@/lib/cms'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl

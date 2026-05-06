@@ -1,12 +1,12 @@
 /**
- * @description
- * Publishing Schedule dashboard widget.
- * Shows upcoming scheduled publishes grouped by day.
- * Editor/Admin only (hidden from Authors in the Dashboard parent).
+ * Publishing Schedule dashboard widget. Upcoming scheduled publishes
+ * grouped by day. Editor/Admin only (hidden from Authors in the parent).
+ * Refetches on window focus.
  */
 'use client'
 
-import React, { useEffect, useState, useCallback } from 'react'
+import React from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { WidgetCard } from './WidgetCard'
 
 interface ScheduledItem {
@@ -31,33 +31,22 @@ function formatTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' })
 }
 
+async function fetchScheduledItems(): Promise<ScheduledItem[]> {
+  const now = new Date().toISOString()
+  const res = await fetch(
+    `/api/pages?where[workflowState][equals]=approved&where[publishOn][greater_than]=${now}&sort=publishOn&limit=20`,
+  )
+  if (!res.ok) return []
+  const data = await res.json()
+  return (data.docs as ScheduledItem[]) ?? []
+}
+
 export const PublishingScheduleWidget: React.FC = () => {
-  const [items, setItems] = useState<ScheduledItem[]>([])
-  const [loading, setLoading] = useState(true)
-
-  const fetchItems = useCallback(async () => {
-    try {
-      const now = new Date().toISOString()
-      const res = await fetch(
-        `/api/pages?where[workflowState][equals]=approved&where[publishOn][greater_than]=${now}&sort=publishOn&limit=20`,
-      )
-      if (res.ok) {
-        const data = await res.json()
-        setItems(data.docs || [])
-      }
-    } catch {
-      // Non-critical
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchItems()
-    const handleFocus = () => fetchItems()
-    window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
-  }, [fetchItems])
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ['widget', 'publishing-schedule'],
+    queryFn: fetchScheduledItems,
+    refetchOnWindowFocus: true,
+  })
 
   // Group by day
   const grouped = items.reduce<Record<string, ScheduledItem[]>>((acc, item) => {
@@ -70,44 +59,47 @@ export const PublishingScheduleWidget: React.FC = () => {
 
   return (
     <WidgetCard title="Publishing Schedule" testId="widget-publishing-schedule">
-      {loading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
-      {!loading && items.length === 0 && (
+      {isLoading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
+      {!isLoading && items.length === 0 && (
         <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No scheduled publishes</div>
       )}
-      {!loading && Object.entries(grouped).map(([day, dayItems]) => (
-        <div key={day} style={{ marginBottom: '12px' }}>
-          <div style={{
-            fontSize: '11px',
-            fontWeight: 600,
-            color: 'var(--text-secondary)',
-            marginBottom: '4px',
-          }}>
-            {day}
-          </div>
-          {dayItems.map((item) => (
-            <a
-              key={item.id}
-              href={`/admin/collections/pages/${item.id}`}
+      {!isLoading &&
+        Object.entries(grouped).map(([day, dayItems]) => (
+          <div key={day} style={{ marginBottom: '12px' }}>
+            <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '4px 0',
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                textDecoration: 'none',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: 'var(--text-secondary)',
+                marginBottom: '4px',
               }}
             >
-              <span>{item.title || item.slug || item.id}</span>
-              {item.publishOn && (
-                <span style={{ color: 'var(--text-muted)', fontSize: '11px' }}>
-                  {formatTime(item.publishOn)}
-                </span>
-              )}
-            </a>
-          ))}
-        </div>
-      ))}
+              {day}
+            </div>
+            {dayItems.map((item) => (
+              <a
+                key={item.id}
+                href={`/admin/collections/pages/${item.id}`}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '4px 0',
+                  fontSize: '13px',
+                  color: 'var(--text-primary)',
+                  textDecoration: 'none',
+                }}
+              >
+                <span>{item.title || item.slug || item.id}</span>
+                {item.publishOn && (
+                  <span style={{ color: 'var(--text-muted)', fontSize: '11px' }}>
+                    {formatTime(item.publishOn)}
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+        ))}
     </WidgetCard>
   )
 }

@@ -20,7 +20,7 @@
  */
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { getSearchConfig, toPayloadLocale } from '@/lib/payload-helpers'
+import { getSearchConfig, toPayloadLocale } from '@/lib/cms'
 import { SearchPageClient } from './SearchPageClient'
 
 export const metadata: Metadata = {

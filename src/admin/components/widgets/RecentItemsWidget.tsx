@@ -1,11 +1,11 @@
 /**
- * @description
- * My Recent Items dashboard widget.
- * Shows last 10 items the current user edited with relative timestamps.
+ * My Recent Items dashboard widget. Shows last 10 pages the current user
+ * has access to, with relative timestamps. Refetches on window focus.
  */
 'use client'
 
-import React, { useEffect, useState, useCallback } from 'react'
+import React from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { WidgetCard } from './WidgetCard'
 
 interface RecentItem {
@@ -32,63 +32,67 @@ function relativeTime(dateStr: string): string {
   return `${diffDays}d ago`
 }
 
+async function fetchRecentItems(): Promise<RecentItem[]> {
+  const res = await fetch('/api/pages?sort=-updatedAt&limit=10')
+  if (!res.ok) return []
+  const data = await res.json()
+  return (data.docs as RecentItem[]) ?? []
+}
+
 export const RecentItemsWidget: React.FC<RecentItemsWidgetProps> = ({ userId }) => {
-  const [items, setItems] = useState<RecentItem[]>([])
-  const [loading, setLoading] = useState(true)
-
-  const fetchItems = useCallback(async () => {
-    if (!userId) return
-    try {
-      // Fetch recent pages edited by this user
-      const res = await fetch(`/api/pages?sort=-updatedAt&limit=10`)
-      if (res.ok) {
-        const data = await res.json()
-        setItems(data.docs || [])
-      }
-    } catch {
-      // Non-critical
-    } finally {
-      setLoading(false)
-    }
-  }, [userId])
-
-  useEffect(() => {
-    fetchItems()
-    const handleFocus = () => fetchItems()
-    window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
-  }, [fetchItems])
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ['widget', 'recent-items', userId],
+    queryFn: fetchRecentItems,
+    enabled: Boolean(userId),
+    refetchOnWindowFocus: true,
+  })
 
   return (
     <WidgetCard title="My Recent Items" testId="widget-recent-items">
-      {loading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
-      {!loading && items.length === 0 && (
+      {isLoading && <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Loading...</div>}
+      {!isLoading && items.length === 0 && (
         <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No recent items</div>
       )}
-      {!loading && items.map((item) => (
-        <a
-          key={item.id}
-          href={`/admin/collections/pages/${item.id}`}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '4px 0',
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            textDecoration: 'none',
-          }}
-        >
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>
-            {item.title || item.slug || item.id}
-          </span>
-          {item.updatedAt && (
-            <span style={{ color: 'var(--text-muted)', fontSize: '11px', marginLeft: '8px', flexShrink: 0 }}>
-              {relativeTime(item.updatedAt)}
+      {!isLoading &&
+        items.map((item) => (
+          <a
+            key={item.id}
+            href={`/admin/collections/pages/${item.id}`}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '4px 0',
+              fontSize: '13px',
+              color: 'var(--text-primary)',
+              textDecoration: 'none',
+            }}
+          >
+            <span
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                flex: 1,
+                minWidth: 0,
+              }}
+            >
+              {item.title || item.slug || item.id}
             </span>
-          )}
-        </a>
-      ))}
+            {item.updatedAt && (
+              <span
+                style={{
+                  color: 'var(--text-muted)',
+                  fontSize: '11px',
+                  marginLeft: '8px',
+                  flexShrink: 0,
+                }}
+              >
+                {relativeTime(item.updatedAt)}
+              </span>
+            )}
+          </a>
+        ))}
     </WidgetCard>
   )
 }

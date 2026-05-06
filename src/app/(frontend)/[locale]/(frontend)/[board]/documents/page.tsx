@@ -27,7 +27,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { TabPills } from '@/components/TabPills'
 import { GroupedTable } from '@/components/GroupedTable'
 import { DocumentRow } from '@/components/DocumentRow'
-import { getDocumentsForComment, getAllStandardsSlugs } from '@/lib/payload-helpers'
+import { getDocumentsForComment, getAllStandardsSlugs } from '@/lib/cms'
 
 type Props = {
   params: Promise<{ board: string }>

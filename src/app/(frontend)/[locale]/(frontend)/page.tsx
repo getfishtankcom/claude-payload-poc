@@ -22,7 +22,7 @@
  * - If homepage global is not configured, renders empty state
  */
 import type { Metadata } from 'next'
-import { getHomepage, toPayloadLocale } from '@/lib/payload-helpers'
+import { getHomepage, toPayloadLocale } from '@/lib/cms'
 import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { OrganizationSchema } from '@/components/StructuredData'

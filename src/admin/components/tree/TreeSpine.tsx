@@ -18,7 +18,7 @@ import * as React from 'react'
 import { useRouter } from 'next/navigation'
 
 import { Gutter } from './GutterIcons'
-import { TreeContextMenu, type TreeContextAction } from './TreeContextMenu'
+import { SpineContextMenu, type SpineContextAction } from './SpineContextMenu'
 import { treeActions, useTreeState } from './tree-store'
 import type { TreeNode, ValidChildMap } from './types'
 
@@ -28,10 +28,10 @@ export type TreeSpineProps = {
   /** Map of parent collection → valid child collections. */
   validChildren: ValidChildMap
   /** Optional callback for context menu actions. */
-  onAction?: (node: TreeNode, action: TreeContextAction) => void
+  onAction?: (node: TreeNode, action: SpineContextAction) => void
   /**
    * Optional slug → display-name overrides for the Insert submenu. Forwarded
-   * to `<TreeContextMenu>`. Defaults come from `collection-labels.ts` so
+   * to `<SpineContextMenu>`. Defaults come from `collection-labels.ts` so
    * callers usually don't need to provide this.
    */
   collectionLabels?: Readonly<Record<string, string>>
@@ -196,7 +196,7 @@ export const TreeSpine: React.FC<TreeSpineProps> = ({
       </div>
 
       {menu && (
-        <TreeContextMenu
+        <SpineContextMenu
           node={menu.node}
           validChildren={validChildren}
           position={{ x: menu.x, y: menu.y }}

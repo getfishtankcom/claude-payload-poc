@@ -24,8 +24,8 @@ import { notFound } from 'next/navigation'
 import {
   getCommitteesByBoardSlug,
   getBoardBySlug,
-  getAllBoards,
-} from '@/lib/payload-helpers'
+  getActiveBoards,
+} from '@/lib/cms'
 import { AnchorNav } from '@/components/AnchorNav'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -36,8 +36,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { board: boardSlug } = await params
   const board = await getBoardBySlug(boardSlug)
-  const boardData = board as unknown as Record<string, unknown> | null
-  const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
+  const boardAbbr = board?.abbreviation || boardSlug.toUpperCase()
   return {
     title: `${boardAbbr} Committees — RAS Canada`,
     description: `Advisory and standing committees of the ${boardAbbr}. Browse committee mandates and members.`,
@@ -45,16 +44,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  const boards = await getAllBoards()
-  return boards
-    .filter((b) => {
-      const board = b as unknown as Record<string, unknown>
-      return !(board.isOversight || (board.slug as string) === 'rasoc')
-    })
-    .map((b) => {
-      const board = b as unknown as Record<string, unknown>
-      return { board: board.slug as string }
-    })
+  // RASOC excluded at the data layer — see #78 / boards.test.ts.
+  const boards = await getActiveBoards()
+  return boards.map((b) => ({ board: b.slug }))
 }
 
 export default async function CommitteesPage({ params }: PageProps) {
@@ -68,13 +60,12 @@ export default async function CommitteesPage({ params }: PageProps) {
     notFound()
   }
 
-  const boardData = board as unknown as Record<string, unknown>
-  const boardAbbr = boardData.abbreviation as string
+  const boardAbbr = board.abbreviation
 
   // Build anchor nav items from committee data
-  const anchorItems = committees.map((c: Record<string, unknown>) => ({
-    label: c.name as string,
-    id: c.slug as string,
+  const anchorItems = committees.map((c) => ({
+    label: c.name,
+    id: c.slug,
   }))
 
   const breadcrumbs = [
@@ -97,21 +88,15 @@ export default async function CommitteesPage({ params }: PageProps) {
             <p className="text-sm italic text-text-muted">No committees found for this board.</p>
           ) : (
             <div className="space-y-10">
-              {committees.map((committee: Record<string, unknown>) => {
-                const slug = committee.slug as string
-                const name = committee.name as string
-                const description = committee.description as Record<string, unknown> | string | undefined
-                const detailUrl = committee.detailPageUrl as string | undefined
+              {committees.map((committee) => {
+                const { slug, name, description, detailPageUrl: detailUrl } = committee
 
-                // Handle rich text — if it's a Lexical object, we'd serialize it.
-                // For now, support string HTML or extract root text
-                let descriptionHtml = ''
-                if (typeof description === 'string') {
-                  descriptionHtml = description
-                } else if (description && typeof description === 'object') {
-                  // Lexical rich text — render as JSON placeholder
-                  descriptionHtml = '<p>Committee description available in CMS.</p>'
-                }
+                // description is a Lexical rich-text object on this collection.
+                // Until we render it via @payloadcms/richtext-lexical, show
+                // a placeholder so the section isn't empty.
+                const descriptionHtml = description
+                  ? '<p>Committee description available in CMS.</p>'
+                  : ''
 
                 return (
                   <section key={slug} id={slug} data-testid={`section-${slug}`}>

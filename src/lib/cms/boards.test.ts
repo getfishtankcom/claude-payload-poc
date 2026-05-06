@@ -10,7 +10,7 @@ vi.mock('payload', () => ({
 
 vi.mock('@payload-config', () => ({ default: {} }))
 
-import { getActiveBoards } from './payload-helpers'
+import { getActiveBoards } from './boards'
 
 describe('getActiveBoards', () => {
   beforeEach(() => {

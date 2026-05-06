@@ -37,7 +37,7 @@ import {
   getAllActiveProjects,
   getEventsByBoard,
   toPayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import type { Board as BoardType, Contact as ContactType, Event as EventType } from '@/payload-types'
 
 type PageProps = {

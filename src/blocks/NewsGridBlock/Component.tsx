@@ -23,7 +23,7 @@ import React from 'react'
 import { getTranslations } from 'next-intl/server'
 
 import { Container, Button } from '@/components/ui'
-import { getLatestNews } from '@/lib/payload-helpers'
+import { getLatestNews } from '@/lib/cms'
 
 type NewsGridBlockProps = {
   heading?: string | null

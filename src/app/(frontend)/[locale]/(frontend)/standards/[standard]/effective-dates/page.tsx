@@ -24,8 +24,13 @@ import {
   getEffectiveDatesByStandard,
   getStandardsSectionBySlug,
   getAllStandardsSections,
-} from '@/lib/payload-helpers'
-import { EffectiveDatesTable } from '@/components/EffectiveDatesTable'
+} from '@/lib/cms'
+import type { Board } from '@/payload-types'
+import {
+  EffectiveDatesTable,
+  type EffectiveDateFootnote,
+  type EffectiveDateSection,
+} from '@/components/EffectiveDatesTable'
 import { SectionTabs } from '@/components/SectionTabs'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -36,7 +41,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { standard: standardSlug } = await params
   const section = await getStandardsSectionBySlug(standardSlug)
-  const sectionTitle = section ? (section.title as string) : standardSlug.toUpperCase()
+  const sectionTitle = section ? section.title : standardSlug.toUpperCase()
   return {
     title: `Effective Dates — ${sectionTitle} — RAS Canada`,
     description: `Effective dates for ${sectionTitle} standards, amendments, and interpretations.`,
@@ -45,9 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export async function generateStaticParams() {
   const sections = await getAllStandardsSections()
-  return sections.map((s) => ({
-    standard: s.slug as string,
-  }))
+  return sections.map((s) => ({ standard: s.slug }))
 }
 
 export default async function EffectiveDatesPage({ params }: PageProps) {
@@ -64,34 +67,36 @@ export default async function EffectiveDatesPage({ params }: PageProps) {
   }
 
   // Tabs — mark "Effective Dates" as active
-  const tabs = (section.tabs as Array<{ label: string; href: string }>) || []
-  const sectionTabs = tabs.map((tab) => ({
+  const sectionTabs = section.tabs.map((tab) => ({
     label: tab.label,
     href: tab.href,
     isActive: tab.label.toLowerCase().includes('effective'),
   }))
 
-  // Board info for breadcrumbs
-  const board = section.board as Record<string, unknown> | undefined
-  const boardAbbr = (board?.abbreviation as string) || ''
-  const sectionTitle = section.title as string
+  // Board info for breadcrumbs (populated when query has depth ≥1)
+  const populatedBoard =
+    typeof section.board === 'object' && section.board !== null ? (section.board as Board) : null
+  const boardAbbr = populatedBoard?.abbreviation ?? ''
+  const sectionTitle = section.title
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
-    ...(boardAbbr ? [{ label: boardAbbr, href: `/boards/${board?.slug as string}` }] : []),
+    ...(populatedBoard
+      ? [{ label: boardAbbr, href: `/boards/${populatedBoard.slug}` }]
+      : []),
     { label: sectionTitle, href: `/standards/${standardSlug}` },
     { label: 'Effective Dates' },
   ]
 
-  // Parse effective dates data
-  const edData = effectiveDates as Record<string, unknown> | null
-  const introText = (edData?.introText as string) || undefined
-  const sections = (edData?.sections as Array<{
-    headerLabel: string
-    headerDate?: string
-    rows: Array<{ application: string; pronouncement?: string; footnoteRef?: string }>
-  }>) || []
-  const footnotes = (edData?.footnotes as Array<{ marker: string; text: string }>) || []
+  // Parse effective dates data.
+  // KNOWN ISSUE: introText / row.application / footnote.text are typed as
+  // Lexical objects but EffectiveDatesTable consumes them as raw HTML strings.
+  // Seed data currently populates them as strings (types and DB are out of
+  // sync). When we wire @payloadcms/richtext-lexical to render the actual
+  // Lexical AST, drop the casts below and pass the typed objects through.
+  const introText = (effectiveDates?.introText as unknown as string) || undefined
+  const sections = (effectiveDates?.sections as unknown as EffectiveDateSection[]) || []
+  const footnotes = (effectiveDates?.footnotes as unknown as EffectiveDateFootnote[]) || []
 
   return (
     <div data-testid="page-effective-dates" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
