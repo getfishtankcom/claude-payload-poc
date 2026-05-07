@@ -15,7 +15,7 @@
  */
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
-import { getAllBoards } from '@/lib/payload-helpers'
+import { getAllBoards } from '@/lib/cms'
 import { NewsListingClient } from '../../news-listings/NewsListingClient'
 
 type Props = {

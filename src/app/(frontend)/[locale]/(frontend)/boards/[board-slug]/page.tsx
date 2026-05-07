@@ -29,7 +29,7 @@ import {
   getNewsByBoard,
   getEventsByBoard,
   toPayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import { BoardDetailClient } from './BoardDetailClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
 import type { Event as EventType, News as NewsType } from '@/payload-types'

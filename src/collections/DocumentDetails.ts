@@ -1,68 +1,22 @@
 /**
- * @description
- * Document Details collection for full exposure draft/consultation paper detail pages.
- * Contains the rich content, comment questions, reply instructions, and support materials.
+ * Document Details collection — full page content for exposure drafts and
+ * consultation papers (highlights, body, comment questions, how-to-reply,
+ * support materials). Listing data lives in `documents-for-comment`.
  *
- * Key features:
- * - Highlights rich text for key points summary
- * - Comment questions array with numbered questions
- * - howToReply group with contact info and CTA
- * - Support materials array for downloadable files
- * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
- * - RBAC: role-based access control (author/editor/admin)
- *
- * @dependencies
- * - Standards collection (relationship)
- * - Boards collection (relationship)
- * - Contacts collection (relationship, hasMany for staff contacts)
- * - workflow fields from @/fields/workflow
- * - access/roles for RBAC
- * - admin/hooks/workflow-hooks for transition validation
- *
- * @notes
- * - This is the full page content; documents-for-comment has the listing data
- * - Comment questions are numbered and displayed as an ordered list
- * - howToReply group contains all the "How to Reply" sidebar/section content
- * - Epic 22: workflow, RBAC added
+ * Workflow chrome via `withWorkflow`.
  */
 import type { CollectionConfig } from 'payload'
 
-import { workflowFields } from '@/fields/workflow'
-import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
-import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
+import { withWorkflow } from './_lib/with-workflow'
 
-export const DocumentDetails: CollectionConfig = {
+export const DocumentDetails: CollectionConfig = withWorkflow({
   slug: 'document-details',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'workflowState', 'board', 'replyDeadline'],
-    components: {
-      edit: {
-        beforeDocumentControls: [
-          '/admin/components/WorkflowActionBarField',
-          '/admin/components/TranslateButton',
-        ],
-      },
-    },
-  },
-  access: {
-    read: contentRead,
-    create: contentCreate,
-    update: contentUpdate,
-    delete: contentDelete,
-  },
-  hooks: {
-    beforeChange: [validateWorkflowTransition],
-    afterChange: [createLogWorkflowTransition('document-details')],
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true,
-      label: 'Title',
-    },
+    { name: 'title', type: 'text', required: true, localized: true, label: 'Title' },
     {
       name: 'slug',
       type: 'text',
@@ -80,33 +34,22 @@ export const DocumentDetails: CollectionConfig = {
       type: 'richText',
       localized: true,
       label: 'Highlights',
-      admin: {
-        description: 'Key points summary displayed at the top of the detail page',
-      },
+      admin: { description: 'Key points summary displayed at the top of the detail page' },
     },
     {
       name: 'bodyContent',
       type: 'richText',
       localized: true,
       label: 'Body Content',
-      admin: {
-        description: 'Main body content of the document detail page',
-      },
+      admin: { description: 'Main body content of the document detail page' },
     },
     {
       name: 'commentQuestions',
       type: 'array',
       label: 'Comment Questions',
-      admin: {
-        description: 'Numbered questions for public comment',
-      },
+      admin: { description: 'Numbered questions for public comment' },
       fields: [
-        {
-          name: 'questionNumber',
-          type: 'number',
-          required: true,
-          label: 'Question Number',
-        },
+        { name: 'questionNumber', type: 'number', required: true, label: 'Question Number' },
         {
           name: 'questionText',
           type: 'richText',
@@ -120,9 +63,7 @@ export const DocumentDetails: CollectionConfig = {
       name: 'replyDeadline',
       type: 'date',
       label: 'Reply Deadline',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     {
       name: 'howToReply',
@@ -136,69 +77,23 @@ export const DocumentDetails: CollectionConfig = {
           label: 'Heading',
           defaultValue: 'How to Reply',
         },
-        {
-          name: 'body',
-          type: 'richText',
-          localized: true,
-          label: 'Body',
-        },
-        {
-          name: 'ctaLabel',
-          type: 'text',
-          localized: true,
-          label: 'CTA Button Label',
-        },
-        {
-          name: 'ctaHref',
-          type: 'text',
-          label: 'CTA Button URL',
-        },
-        {
-          name: 'contactName',
-          type: 'text',
-          localized: true,
-          label: 'Contact Name',
-        },
-        {
-          name: 'contactTitle',
-          type: 'text',
-          localized: true,
-          label: 'Contact Title',
-        },
-        {
-          name: 'contactAddress',
-          type: 'richText',
-          localized: true,
-          label: 'Contact Address',
-        },
-        {
-          name: 'contactEmail',
-          type: 'email',
-          label: 'Contact Email',
-        },
+        { name: 'body', type: 'richText', localized: true, label: 'Body' },
+        { name: 'ctaLabel', type: 'text', localized: true, label: 'CTA Button Label' },
+        { name: 'ctaHref', type: 'text', label: 'CTA Button URL' },
+        { name: 'contactName', type: 'text', localized: true, label: 'Contact Name' },
+        { name: 'contactTitle', type: 'text', localized: true, label: 'Contact Title' },
+        { name: 'contactAddress', type: 'richText', localized: true, label: 'Contact Address' },
+        { name: 'contactEmail', type: 'email', label: 'Contact Email' },
       ],
     },
     {
       name: 'supportMaterials',
       type: 'array',
       label: 'Support Materials',
-      admin: {
-        description: 'Downloadable supporting documents and resources',
-      },
+      admin: { description: 'Downloadable supporting documents and resources' },
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          localized: true,
-          label: 'Label',
-        },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-          label: 'URL',
-        },
+        { name: 'label', type: 'text', required: true, localized: true, label: 'Label' },
+        { name: 'url', type: 'text', required: true, label: 'URL' },
         {
           name: 'fileType',
           type: 'select',
@@ -232,7 +127,5 @@ export const DocumentDetails: CollectionConfig = {
       hasMany: true,
       label: 'Staff Contacts',
     },
-    // --- Workflow fields (Epic 22) ---
-    ...workflowFields,
   ],
-}
+})

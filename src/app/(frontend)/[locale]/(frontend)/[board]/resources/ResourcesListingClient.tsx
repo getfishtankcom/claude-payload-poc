@@ -1,25 +1,19 @@
 /**
- * @description
- * Client component for the Resources listing page.
- * Handles interactive filtering, sorting, and pagination via API route.
- *
- * @dependencies
- * - CategoryPills, SortFilterBar, ListingItem, Pagination
- * - API: GET /api/resources
- *
- * @notes
- * - Fetches data on mount and when filters change
- * - Category pills for content type filtering
- * - Sort/filter bar with type filter and date range
+ * Client component for the Resources listing page. Fetch loop + pagination
+ * state are owned by `usePaginatedListing` — this file is rendering only.
+ * Category and type filters localize their labels via the
+ * `listings.resourceCategories.*` / `listings.resourceTypes.*` keys; the
+ * `apiValue` stays EN to match the indexed value.
  */
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { CategoryPills } from '@/components/CategoryPills'
 import { SortFilterBar } from '@/components/SortFilterBar'
 import { ListingItem } from '@/components/ListingItem'
 import { Pagination } from '@/components/Pagination'
+import { usePaginatedListing } from '@/hooks/usePaginatedListing'
 
 type ResourceDoc = {
   id: string
@@ -65,14 +59,24 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
   const tTypes = useTranslations('listings.resourceTypes')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('newest')
-  const [itemsPerPage, setItemsPerPage] = useState('10')
   const [typeFilter, setTypeFilter] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [page, setPage] = useState(1)
-  const [docs, setDocs] = useState<ResourceDoc[]>([])
-  const [totalDocs, setTotalDocs] = useState(0)
-  const [loading, setLoading] = useState(true)
+
+  const {
+    docs,
+    totalDocs,
+    loading,
+    page,
+    setPage,
+    itemsPerPage,
+    setItemsPerPage,
+    currentLimit,
+    showPagination,
+  } = usePaginatedListing<ResourceDoc>({
+    endpoint: '/api/resources',
+    filters: { category, type: typeFilter, sort, startDate, endDate },
+  })
 
   const sortOptions = useMemo(
     () => [
@@ -92,43 +96,6 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
     [t],
   )
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    const params = new URLSearchParams()
-    if (category) params.set('category', category)
-    if (typeFilter) params.set('type', typeFilter)
-    if (sort) params.set('sort', sort)
-    if (startDate) params.set('startDate', startDate)
-    if (endDate) params.set('endDate', endDate)
-    if (itemsPerPage !== 'all') {
-      params.set('limit', itemsPerPage)
-      params.set('page', String(page))
-    } else {
-      params.set('limit', '500')
-    }
-
-    try {
-      const res = await fetch(`/api/resources?${params.toString()}`)
-      const data = await res.json()
-      setDocs(data.docs || [])
-      setTotalDocs(data.totalDocs || 0)
-    } catch {
-      setDocs([])
-      setTotalDocs(0)
-    } finally {
-      setLoading(false)
-    }
-  }, [category, sort, itemsPerPage, typeFilter, startDate, endDate, page])
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
-  // Reset page when filters change
-  useEffect(() => {
-    setPage(1)
-  }, [category, sort, itemsPerPage, typeFilter, startDate, endDate])
-
   const categoryPillOptions = CATEGORY_DEFS.map((def) => ({
     label: def.key === 'all' ? t('allItems') : tCats(def.key),
     value: def.apiValue,
@@ -140,17 +107,10 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
     value: def.apiValue,
   }))
 
-  const currentLimit = itemsPerPage === 'all' ? 500 : Number(itemsPerPage)
-
   return (
     <div className="mt-6">
-      {/* Category pills */}
-      <CategoryPills
-        options={categoryPillOptions}
-        onChange={(val) => setCategory(val)}
-      />
+      <CategoryPills options={categoryPillOptions} onChange={(val) => setCategory(val)} />
 
-      {/* Sort/filter bar */}
       <SortFilterBar
         className="mt-4"
         sortOptions={sortOptions}
@@ -165,10 +125,12 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
         showDateRange
         startDate={startDate}
         endDate={endDate}
-        onDateRangeChange={(s, e) => { setStartDate(s); setEndDate(e) }}
+        onDateRangeChange={(s, e) => {
+          setStartDate(s)
+          setEndDate(e)
+        }}
       />
 
-      {/* Results */}
       <div className="mt-6" data-testid="section-listing-results">
         {loading ? (
           <div className="py-8 text-center text-text-muted">{t('loading')}</div>
@@ -192,8 +154,7 @@ export function ResourcesListingClient({ standardSlug }: ResourcesListingClientP
           </div>
         )}
 
-        {/* Pagination */}
-        {totalDocs > 0 && itemsPerPage !== 'all' && (
+        {showPagination && (
           <Pagination
             className="mt-6"
             totalItems={totalDocs}

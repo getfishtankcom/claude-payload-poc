@@ -27,7 +27,7 @@ import { Link } from '@/i18n/navigation'
 import { Container } from '@/components/ui/Container'
 import { RichText } from '@/components/RichText'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
-import { getPageBySlug, getBoardBySlug } from '@/lib/payload-helpers'
+import { getPageBySlug, getBoardBySlug } from '@/lib/cms'
 
 type PageProps = {
   params: Promise<{ board: string }>

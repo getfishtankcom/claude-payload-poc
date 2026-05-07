@@ -27,7 +27,8 @@ import {
   getStandardsSectionBySlug,
   getAllStandardsSections,
   getLatestNews,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
+import type { Board, Media, Project } from '@/payload-types'
 import { BoardLogoHero } from '@/components/BoardLogoHero'
 import { SectionTabs } from '@/components/SectionTabs'
 import { ActiveProjectsTable } from '@/components/ActiveProjectsTable'
@@ -41,7 +42,7 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { standard: standardSlug } = await params
   const section = await getStandardsSectionBySlug(standardSlug)
-  const title = section ? (section.title as string) : standardSlug.toUpperCase()
+  const title = section ? section.title : standardSlug.toUpperCase()
   return {
     title: `${title} — RAS Canada`,
     description: `Overview of ${title} standards including active projects, effective dates, and resources.`,
@@ -50,9 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export async function generateStaticParams() {
   const sections = await getAllStandardsSections()
-  return sections.map((s) => ({
-    standard: s.slug as string,
-  }))
+  return sections.map((s) => ({ standard: s.slug }))
 }
 
 export default async function StandardsOverviewPage({ params }: PageProps) {
@@ -63,14 +62,15 @@ export default async function StandardsOverviewPage({ params }: PageProps) {
     notFound()
   }
 
-  const title = section.title as string
-  const boardName = (section.boardName as string) || ''
-  const boardLogo = section.boardLogo as Record<string, unknown> | undefined
-  const logoUrl = boardLogo?.url as string | undefined
+  const { title } = section
+  const boardName = section.boardName ?? ''
+  const logoUrl =
+    typeof section.boardLogo === 'object' && section.boardLogo !== null
+      ? ((section.boardLogo as Media).url ?? undefined)
+      : undefined
 
   // Tabs — mark "Overview" as active
-  const tabs = (section.tabs as Array<{ label: string; href: string; isActive?: boolean }>) || []
-  const sectionTabs = tabs.map((tab) => ({
+  const sectionTabs = section.tabs.map((tab) => ({
     label: tab.label,
     href: tab.href,
     isActive: tab.href === `/${standardSlug}` || tab.href === `/${standardSlug}/`,
@@ -80,34 +80,43 @@ export default async function StandardsOverviewPage({ params }: PageProps) {
     sectionTabs[0].isActive = true
   }
 
-  // Active projects
-  const activeProjects = (section.activeProjects as Array<Record<string, unknown>>) || []
-  const projectRows = activeProjects.map((p) => ({
-    name: (p.title as string) || (p.name as string) || '',
-    href: `/active-projects/${(p.board as Record<string, unknown>)?.slug || 'acsb'}/${p.slug as string}`,
-    description: (p.summary as string) || (p.description as string) || '',
-  }))
+  // Active projects — only the populated (non-ID) entries are renderable.
+  const populatedProjects = (section.activeProjects ?? []).filter(
+    (p): p is Project => typeof p === 'object' && p !== null,
+  )
+  const projectRows = populatedProjects.map((p) => {
+    const projectBoardSlug =
+      typeof p.board === 'object' && p.board !== null ? (p.board as Board).slug : 'acsb'
+    return {
+      name: p.title ?? '',
+      href: `/active-projects/${projectBoardSlug}/${p.slug}`,
+      description: '',
+    }
+  })
 
-  // Feature CTAs
-  const featureCTAs = (section.featureCTAs as Array<{
-    heading: string
-    description: string
-    buttonLabel: string
-    buttonHref: string
-    variant: 'light' | 'dark-purple'
-  }>) || []
+  // Feature CTAs — coerce Payload's optional shape to the FeatureCTABlock prop.
+  const featureCTAs = (section.featureCTAs ?? []).map((c) => ({
+    heading: c.heading,
+    description: c.description ?? '',
+    buttonLabel: c.buttonLabel ?? '',
+    buttonHref: c.buttonHref ?? '',
+    variant: (c.variant ?? 'light') as 'light' | 'dark-purple',
+  }))
 
   // News (3 items)
   const newsItems = await getLatestNews(3)
 
-  // Board relationship for color
-  const board = section.board as Record<string, unknown> | undefined
-  const boardColor = (board?.color as string) || '#601F5B'
-  const boardAbbr = (board?.abbreviation as string) || ''
+  // Board relationship — populated when the section was queried with depth ≥1.
+  const populatedBoard =
+    typeof section.board === 'object' && section.board !== null ? (section.board as Board) : null
+  const boardColor = '#601F5B'
+  const boardAbbr = populatedBoard?.abbreviation ?? ''
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
-    ...(boardAbbr ? [{ label: boardAbbr, href: `/boards/${board?.slug as string}` }] : []),
+    ...(boardAbbr && populatedBoard
+      ? [{ label: boardAbbr, href: `/boards/${populatedBoard.slug}` }]
+      : []),
     { label: title },
   ]
 
@@ -148,42 +157,37 @@ export default async function StandardsOverviewPage({ params }: PageProps) {
           <hr className="mb-6 border-gray-200" />
           {newsItems.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {newsItems.map((item) => {
-                const news = item as unknown as Record<string, unknown>
-                return (
-                  <div
-                    key={news.id as string}
-                    className="rounded-md border border-gray-200 p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+              {newsItems.map((news) => (
+                <div
+                  key={news.id}
+                  className="rounded-md border border-gray-200 p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <p className="mb-2 text-xs text-text-muted">
+                    {new Date(news.date).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </p>
+                  <h3 className="mb-3 text-sm font-semibold text-text-primary">{news.title}</h3>
+                  <a
+                    href={`/news/${news.slug}`}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-link hover:underline"
                   >
-                    <p className="mb-2 text-xs text-text-muted">
-                      {new Date(news.publishedDate as string).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </p>
-                    <h3 className="mb-3 text-sm font-semibold text-text-primary">
-                      {news.title as string}
-                    </h3>
-                    <a
-                      href={`/news/${news.slug as string}`}
-                      className="inline-flex items-center gap-1 text-sm font-semibold text-link hover:underline"
+                    Read More
+                    <svg
+                      className="h-3 w-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      aria-hidden="true"
                     >
-                      Read More
-                      <svg
-                        className="h-3 w-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                      </svg>
-                    </a>
-                  </div>
-                )
-              })}
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                  </a>
+                </div>
+              ))}
             </div>
           ) : (
             <p className="text-sm italic text-text-muted">No recent news items.</p>

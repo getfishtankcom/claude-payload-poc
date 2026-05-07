@@ -10,7 +10,7 @@
  * - Returns { docs, totalDocs, totalPages, page }
  */
 import { NextRequest, NextResponse } from 'next/server'
-import { getMeetingsListing } from '@/lib/payload-helpers'
+import { getMeetingsListing } from '@/lib/cms'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl

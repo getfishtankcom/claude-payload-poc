@@ -1,52 +1,30 @@
 /**
- * @description
- * Boards collection for RAS Canada's organizational structure.
- * Represents the 5 boards/councils: AcSB, PSAB, AASB, CSSB, RASOC.
- * Each board has configurable tabs, quick action links, and resource files.
- *
- * Key features:
- * - Tabs array for board detail page content sections
- * - Quick actions sidebar links
- * - Resources array for downloadable files
- *
- * @dependencies
- * - None (top-level collection, referenced by others)
+ * Boards collection — RAS Canada's organizational structure: AcSB, PSAB,
+ * AASB, CSSB, RASOC. Translation-only chrome via `withTranslationOnly`.
  *
  * @notes
- * - RASOC is an oversight council, not a standards board
- * - Abbreviation field stores short codes like "AcSB", "CSSB"
- * - Slug is used for URL routing (e.g., /boards/acsb)
+ * - RASOC is an oversight council, not a standards board (see CLAUDE.md
+ *   "RASOC Rules")
+ * - Abbreviation stores short codes ("AcSB", "CSSB"); slug drives URL
  */
 import type { CollectionConfig } from 'payload'
-import { translationStatusField } from '@/fields/workflow'
 
-export const Boards: CollectionConfig = {
+import { withTranslationOnly } from './_lib/with-translation-only'
+
+export const Boards: CollectionConfig = withTranslationOnly({
   slug: 'boards',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'abbreviation', 'slug'],
-    components: {
-      edit: {
-        beforeDocumentControls: ['/admin/components/TranslateButton'],
-      },
-    },
   },
   fields: [
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-      localized: true,
-      label: 'Board Name',
-    },
+    { name: 'name', type: 'text', required: true, localized: true, label: 'Board Name' },
     {
       name: 'abbreviation',
       type: 'text',
       required: true,
       label: 'Abbreviation',
-      admin: {
-        description: 'Short code (e.g., "AcSB", "CSSB", "RASOC")',
-      },
+      admin: { description: 'Short code (e.g., "AcSB", "CSSB", "RASOC")' },
     },
     {
       name: 'slug',
@@ -55,73 +33,33 @@ export const Boards: CollectionConfig = {
       required: true,
       unique: true,
       label: 'Slug',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
-    {
-      name: 'description',
-      type: 'textarea',
-      localized: true,
-      label: 'Description',
-    },
+    { name: 'description', type: 'textarea', localized: true, label: 'Description' },
     {
       name: 'tabs',
       type: 'array',
       label: 'Tabs',
-      admin: {
-        description: 'Content tabs displayed on the board detail page',
-      },
+      admin: { description: 'Content tabs displayed on the board detail page' },
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          localized: true,
-          label: 'Tab Label',
-        },
-        {
-          name: 'slug',
-          type: 'text',
-          required: true,
-          label: 'Tab Slug',
-        },
-        {
-          name: 'content',
-          type: 'richText',
-          localized: true,
-          label: 'Tab Content',
-        },
+        { name: 'label', type: 'text', required: true, localized: true, label: 'Tab Label' },
+        { name: 'slug', type: 'text', required: true, label: 'Tab Slug' },
+        { name: 'content', type: 'richText', localized: true, label: 'Tab Content' },
       ],
     },
     {
       name: 'quick_actions',
       type: 'array',
       label: 'Quick Actions',
-      admin: {
-        description: 'Sidebar action links on the board detail page',
-      },
+      admin: { description: 'Sidebar action links on the board detail page' },
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          localized: true,
-          label: 'Label',
-        },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-          label: 'URL',
-        },
+        { name: 'label', type: 'text', required: true, localized: true, label: 'Label' },
+        { name: 'url', type: 'text', required: true, label: 'URL' },
         {
           name: 'icon',
           type: 'text',
           label: 'Icon',
-          admin: {
-            description: 'Icon identifier (e.g., Heroicon name)',
-          },
+          admin: { description: 'Icon identifier (e.g., Heroicon name)' },
         },
       ],
     },
@@ -129,22 +67,10 @@ export const Boards: CollectionConfig = {
       name: 'resources',
       type: 'array',
       label: 'Resources',
-      admin: {
-        description: 'Downloadable resources shown on the board detail page',
-      },
+      admin: { description: 'Downloadable resources shown on the board detail page' },
       fields: [
-        {
-          name: 'title',
-          type: 'text',
-          required: true,
-          label: 'Title',
-        },
-        {
-          name: 'file_url',
-          type: 'text',
-          required: true,
-          label: 'File URL',
-        },
+        { name: 'title', type: 'text', required: true, label: 'Title' },
+        { name: 'file_url', type: 'text', required: true, label: 'File URL' },
         {
           name: 'type',
           type: 'select',
@@ -158,6 +84,5 @@ export const Boards: CollectionConfig = {
         },
       ],
     },
-    translationStatusField,
   ],
-}
+})

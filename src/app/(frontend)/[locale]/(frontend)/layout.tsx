@@ -41,7 +41,7 @@ import { getMessages } from 'next-intl/server'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
-import { getNavigation, getFooter, getSearchConfig, getBranding, toPayloadLocale } from '@/lib/payload-helpers'
+import { getNavigation, getFooter, getSearchConfig, getBranding, toPayloadLocale } from '@/lib/cms'
 import { routing } from '@/i18n/routing'
 import { BRAND } from '@/config/brand'
 

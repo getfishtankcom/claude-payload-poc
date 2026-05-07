@@ -17,7 +17,7 @@
  * - Each URL includes alternates for both EN and FR locales
  */
 import type { MetadataRoute } from 'next'
-import { getActiveBoards, getAllActiveProjects, getAllStandardsSections } from '@/lib/payload-helpers'
+import { getActiveBoards, getAllActiveProjects, getAllStandardsSections } from '@/lib/cms'
 import { locales } from '@/i18n/routing'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'https://frascanada.ca'

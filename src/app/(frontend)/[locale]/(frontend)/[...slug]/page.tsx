@@ -31,7 +31,7 @@ import {
   getLatestNews,
   getBoardBySlug,
   toPayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import { StaffContactCard } from '@/components/StaffContactCard'
 import { SectionNavSidebar } from '@/components/SectionNavSidebar'
 import { SectionTabs } from '@/components/SectionTabs'

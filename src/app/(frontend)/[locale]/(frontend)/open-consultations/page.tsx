@@ -28,7 +28,7 @@ import {
   getActiveBoards,
   getAllStandards,
   toPayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import { OpenConsultationsClient } from './OpenConsultationsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
 

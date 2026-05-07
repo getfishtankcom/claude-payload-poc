@@ -33,7 +33,7 @@ import {
   getProjectsByBoard,
   toPayloadLocale,
   type PayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import type { Board, News, Project } from '@/payload-types'
 
 type BoardLandingProps = {

@@ -20,7 +20,7 @@
 import * as React from 'react'
 
 import { BRAND } from '@/config/brand'
-import { getBranding } from '@/lib/payload-helpers'
+import { getBranding } from '@/lib/cms'
 
 export type BrandLogoData = {
   url?: string | null

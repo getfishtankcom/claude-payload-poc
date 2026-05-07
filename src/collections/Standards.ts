@@ -1,43 +1,24 @@
 /**
- * @description
- * Standards collection for RAS Canada's accounting/reporting standards.
- * Represents the 11 standards sections organized by category.
- * Each standard belongs to a board and may have sub-parts (for Accounting standards).
- *
- * Key features:
- * - Category enum for grouping (Sustainability, Accounting, Public Sector, Assurance)
- * - Parts array for multi-part standards (e.g., "Part I - IFRS Accounting Standards")
- * - Relationship to boards collection
- *
- * @dependencies
- * - Boards collection (relationship)
+ * Standards collection — the 11 standards sections grouped by category
+ * (Sustainability, Accounting, Public Sector, Assurance). Translation-only
+ * chrome via `withTranslationOnly`.
  *
  * @notes
  * - 11 standards sections total (not 12)
  * - Parts are primarily used by Accounting category standards
  */
 import type { CollectionConfig } from 'payload'
-import { translationStatusField } from '@/fields/workflow'
 
-export const Standards: CollectionConfig = {
+import { withTranslationOnly } from './_lib/with-translation-only'
+
+export const Standards: CollectionConfig = withTranslationOnly({
   slug: 'standards',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'board'],
-    components: {
-      edit: {
-        beforeDocumentControls: ['/admin/components/TranslateButton'],
-      },
-    },
   },
   fields: [
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-      localized: true,
-      label: 'Standard Name',
-    },
+    { name: 'name', type: 'text', required: true, localized: true, label: 'Standard Name' },
     {
       name: 'slug',
       type: 'text',
@@ -45,9 +26,7 @@ export const Standards: CollectionConfig = {
       required: true,
       unique: true,
       label: 'Slug',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     {
       name: 'category',
@@ -65,23 +44,10 @@ export const Standards: CollectionConfig = {
       name: 'parts',
       type: 'array',
       label: 'Parts',
-      admin: {
-        description: 'Sub-parts for multi-part standards (e.g., Accounting standards)',
-      },
+      admin: { description: 'Sub-parts for multi-part standards (e.g., Accounting standards)' },
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          localized: true,
-          label: 'Part Label',
-        },
-        {
-          name: 'slug',
-          type: 'text',
-          required: true,
-          label: 'Part Slug',
-        },
+        { name: 'label', type: 'text', required: true, localized: true, label: 'Part Label' },
+        { name: 'slug', type: 'text', required: true, label: 'Part Slug' },
       ],
     },
     {
@@ -91,6 +57,5 @@ export const Standards: CollectionConfig = {
       required: true,
       label: 'Board',
     },
-    translationStatusField,
   ],
-}
+})

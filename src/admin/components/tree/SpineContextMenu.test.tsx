@@ -10,7 +10,7 @@ import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { TreeContextMenu } from './TreeContextMenu'
+import { SpineContextMenu } from './SpineContextMenu'
 import type { TreeNode, ValidChildMap } from './types'
 
 const HOME_NODE: TreeNode = {
@@ -34,9 +34,9 @@ const baseProps = {
   onClose: () => {},
 }
 
-describe('<TreeContextMenu> Insert submenu', () => {
+describe('<SpineContextMenu> Insert submenu', () => {
   it('renders canonical display names instead of raw slugs', () => {
-    render(<TreeContextMenu {...baseProps} />)
+    render(<SpineContextMenu {...baseProps} />)
     // Names that should appear:
     expect(screen.getByText('Page')).toBeInTheDocument()
     expect(screen.getByText('News article')).toBeInTheDocument()
@@ -50,13 +50,13 @@ describe('<TreeContextMenu> Insert submenu', () => {
   })
 
   it('humanizes unknown collection slugs as a fallback', () => {
-    render(<TreeContextMenu {...baseProps} />)
+    render(<SpineContextMenu {...baseProps} />)
     expect(screen.getByText('Mystery Meat')).toBeInTheDocument()
   })
 
   it('lets a parent override labels via the labels prop', () => {
     render(
-      <TreeContextMenu
+      <SpineContextMenu
         {...baseProps}
         labels={{ news: 'Story', 'board-detail': 'Board landing page' }}
       />,
@@ -68,7 +68,7 @@ describe('<TreeContextMenu> Insert submenu', () => {
 
   it('omits the Insert submenu when no valid children are configured', () => {
     render(
-      <TreeContextMenu
+      <SpineContextMenu
         {...baseProps}
         node={{ ...HOME_NODE, collection: 'leaf-only' }}
       />,

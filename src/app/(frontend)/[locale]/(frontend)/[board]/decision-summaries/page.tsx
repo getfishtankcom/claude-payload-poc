@@ -26,7 +26,7 @@ import config from '@payload-config'
 
 import { Container } from '@/components/ui/Container'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
-import { getBoardBySlug } from '@/lib/payload-helpers'
+import { getBoardBySlug } from '@/lib/cms'
 import { DecisionSummariesClient } from './DecisionSummariesClient'
 
 type PageProps = {

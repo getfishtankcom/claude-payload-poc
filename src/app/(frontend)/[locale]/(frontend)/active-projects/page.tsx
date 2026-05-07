@@ -28,7 +28,7 @@ import {
   getActiveBoards,
   getAllStandards,
   toPayloadLocale,
-} from '@/lib/payload-helpers'
+} from '@/lib/cms'
 import { ActiveProjectsClient } from './ActiveProjectsClient'
 import { BreadcrumbSchema } from '@/components/StructuredData'
 

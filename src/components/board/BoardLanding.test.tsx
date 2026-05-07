@@ -6,7 +6,7 @@ const { getNewsByBoardMock, getProjectsByBoardMock } = vi.hoisted(() => ({
   getProjectsByBoardMock: vi.fn(),
 }))
 
-vi.mock('@/lib/payload-helpers', () => ({
+vi.mock('@/lib/cms', () => ({
   getNewsByBoard: getNewsByBoardMock,
   getProjectsByBoard: getProjectsByBoardMock,
   toPayloadLocale: (locale: string) => (locale === 'fr' ? 'fr' : 'en'),

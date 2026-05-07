@@ -1,67 +1,24 @@
 /**
- * @description
- * Documents for Comment collection (canonical name replacing "consultations" from Phase 1).
- * Tracks exposure drafts, consultation papers, and similar documents open for public comment.
- *
- * Key features:
- * - Group enum for document type classification
- * - Open/closed status for filtering active comment periods
- * - Comment period date range for countdown timer support
- * - URLs for document, comment submission, and comments PDF
- * - Workflow: 5-state with workflowState, workflowHistory, publishOn/unpublishOn
- * - RBAC: role-based access control (author/editor/admin)
- *
- * @dependencies
- * - Standards collection (relationship)
- * - Boards collection (relationship)
- * - workflow fields from @/fields/workflow
- * - access/roles for RBAC
- * - admin/hooks/workflow-hooks for transition validation
+ * Documents for Comment — listing data for exposure drafts and consultation
+ * papers (canonical name; replaces "consultations" from Phase 1). Full page
+ * content lives in `document-details`.
  *
  * @notes
- * - frasIdNumber is used in workflow email subjects (Sitecore migration reference)
- * - commentPeriodStart/End from Sitecore dump analysis
- * - This collection is for listing data; document-details has the full page content
- * - Epic 22: workflow, RBAC added
+ * - frasIdNumber is used in workflow email subjects (Sitecore migration ref)
+ * - commentPeriodStart/End drive the countdown timer and open/closed status
  */
 import type { CollectionConfig } from 'payload'
 
-import { workflowFields } from '@/fields/workflow'
-import { contentRead, contentCreate, contentUpdate, contentDelete } from '@/access/roles'
-import { validateWorkflowTransition, createLogWorkflowTransition } from '@/admin/hooks/workflow-hooks'
+import { withWorkflow } from './_lib/with-workflow'
 
-export const DocumentsForComment: CollectionConfig = {
+export const DocumentsForComment: CollectionConfig = withWorkflow({
   slug: 'documents-for-comment',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'group', 'workflowState', 'status', 'board', 'publishedDate'],
-    components: {
-      edit: {
-        beforeDocumentControls: [
-          '/admin/components/WorkflowActionBarField',
-          '/admin/components/TranslateButton',
-        ],
-      },
-    },
-  },
-  access: {
-    read: contentRead,
-    create: contentCreate,
-    update: contentUpdate,
-    delete: contentDelete,
-  },
-  hooks: {
-    beforeChange: [validateWorkflowTransition],
-    afterChange: [createLogWorkflowTransition('documents-for-comment')],
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true,
-      label: 'Title',
-    },
+    { name: 'title', type: 'text', required: true, localized: true, label: 'Title' },
     {
       name: 'slug',
       type: 'text',
@@ -105,58 +62,44 @@ export const DocumentsForComment: CollectionConfig = {
         { label: 'Open', value: 'open' },
         { label: 'Closed', value: 'closed' },
       ],
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     {
       name: 'documentUrl',
       type: 'text',
       label: 'Document URL',
-      admin: {
-        description: 'Link to the downloadable document',
-      },
+      admin: { description: 'Link to the downloadable document' },
     },
     {
       name: 'commentSubmitUrl',
       type: 'text',
       label: 'Comment Submit URL',
-      admin: {
-        description: 'Link to the comment submission form/page',
-      },
+      admin: { description: 'Link to the comment submission form/page' },
     },
     {
       name: 'commentsPdfUrl',
       type: 'text',
       label: 'Comments PDF URL',
-      admin: {
-        description: 'Link to the PDF of submitted comments (for closed documents)',
-      },
+      admin: { description: 'Link to the PDF of submitted comments (for closed documents)' },
     },
     {
       name: 'sortOrder',
       type: 'number',
       label: 'Sort Order',
       defaultValue: 0,
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     {
       name: 'publishedDate',
       type: 'date',
       label: 'Published Date',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     {
       name: 'commentPeriodStart',
       type: 'date',
       label: 'Comment Period Start',
-      admin: {
-        description: 'Start of the public comment window',
-      },
+      admin: { description: 'Start of the public comment window' },
     },
     {
       name: 'commentPeriodEnd',
@@ -179,7 +122,5 @@ export const DocumentsForComment: CollectionConfig = {
       required: true,
       label: 'Board',
     },
-    // --- Workflow fields (Epic 22) ---
-    ...workflowFields,
   ],
-}
+})

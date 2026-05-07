@@ -31,7 +31,7 @@ import { BlockquoteQuestion } from '@/components/BlockquoteQuestion'
 import { DarkPurpleCTA } from '@/components/DarkPurpleCTA'
 import { SupportMaterialsList } from '@/components/SupportMaterialsList'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
-import { getDocumentDetailBySlug, getBoardBySlug, toPayloadLocale } from '@/lib/payload-helpers'
+import { getDocumentDetailBySlug, getBoardBySlug, toPayloadLocale } from '@/lib/cms'
 
 type Props = {
   params: Promise<{ locale: string; board: string; docSlug: string }>

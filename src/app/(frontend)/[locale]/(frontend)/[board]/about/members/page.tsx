@@ -25,8 +25,9 @@ import { notFound } from 'next/navigation'
 import {
   getBoardMembersByBoardSlug,
   getBoardBySlug,
-  getAllBoards,
-} from '@/lib/payload-helpers'
+  getActiveBoards,
+} from '@/lib/cms'
+import type { Media, Page } from '@/payload-types'
 import { MemberCard } from '@/components/MemberCard'
 import { SectionNavSidebar } from '@/components/SectionNavSidebar'
 import { SectionTabs } from '@/components/SectionTabs'
@@ -55,8 +56,7 @@ const ROLE_LABELS: Record<string, string> = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { board: boardSlug } = await params
   const board = await getBoardBySlug(boardSlug)
-  const boardData = board as unknown as Record<string, unknown> | null
-  const boardAbbr = (boardData?.abbreviation as string) || boardSlug.toUpperCase()
+  const boardAbbr = board?.abbreviation || boardSlug.toUpperCase()
   return {
     title: `${boardAbbr} Members — RAS Canada`,
     description: `Current board members of the ${boardAbbr}. View chairs, vice-chairs, and voting members.`,
@@ -64,16 +64,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export async function generateStaticParams() {
-  const boards = await getAllBoards()
-  return boards
-    .filter((b) => {
-      const board = b as unknown as Record<string, unknown>
-      return !(board.isOversight || (board.slug as string) === 'rasoc')
-    })
-    .map((b) => {
-      const board = b as unknown as Record<string, unknown>
-      return { board: board.slug as string }
-    })
+  // `getActiveBoards` excludes RASOC at the data layer (filter on the
+  // non-localized `abbreviation` field), so RASOC can't leak into FR
+  // routes — see #78 / boards.test.ts.
+  const boards = await getActiveBoards()
+  return boards.map((b) => ({ board: b.slug }))
 }
 
 export default async function MembersPage({ params }: PageProps) {
@@ -87,18 +82,17 @@ export default async function MembersPage({ params }: PageProps) {
     notFound()
   }
 
-  const boardData = board as unknown as Record<string, unknown>
-  const boardAbbr = boardData.abbreviation as string
+  const boardAbbr = board.abbreviation
 
   // Sort members by role priority, then sortOrder, then name
   const sortedMembers = [...members].sort((a, b) => {
-    const roleA = ROLE_PRIORITY[a.role as string] ?? 99
-    const roleB = ROLE_PRIORITY[b.role as string] ?? 99
+    const roleA = ROLE_PRIORITY[a.role] ?? 99
+    const roleB = ROLE_PRIORITY[b.role] ?? 99
     if (roleA !== roleB) return roleA - roleB
-    const sortA = (a.sortOrder as number) || 0
-    const sortB = (b.sortOrder as number) || 0
+    const sortA = a.sortOrder ?? 0
+    const sortB = b.sortOrder ?? 0
     if (sortA !== sortB) return sortA - sortB
-    return ((a.name as string) || '').localeCompare((b.name as string) || '')
+    return a.name.localeCompare(b.name)
   })
 
   // Group by role
@@ -116,8 +110,7 @@ export default async function MembersPage({ params }: PageProps) {
   }
 
   // Board section tabs
-  const tabs = (boardData.tabs as Array<{ label: string; slug: string }>) || []
-  const sectionTabs = tabs.map((tab) => ({
+  const sectionTabs = (board.tabs ?? []).map((tab) => ({
     label: tab.label,
     href: `/boards/${boardSlug}/${tab.slug === 'overview' ? '' : tab.slug}`,
     isActive: tab.slug === 'about',
@@ -166,20 +159,30 @@ export default async function MembersPage({ params }: PageProps) {
                 {/* 2-column grid */}
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                   {group.members.map((member) => {
-                    const photo = member.photo as Record<string, unknown> | undefined
-                    const bioPage = member.bioPage as Record<string, unknown> | undefined
+                    // photo and bioPage are `(number | null) | T`; only the
+                    // populated object form has the URL/slug we render.
+                    const photo =
+                      typeof member.photo === 'object' && member.photo !== null
+                        ? (member.photo as Media)
+                        : undefined
+                    const bioPage =
+                      typeof member.bioPage === 'object' && member.bioPage !== null
+                        ? (member.bioPage as Page)
+                        : undefined
                     return (
                       <MemberCard
-                        key={member.id as string}
+                        key={member.id}
                         member={{
-                          name: member.name as string,
-                          credentials: (member.credentials as string) || undefined,
-                          photo: photo?.url ? (photo.url as string) : undefined,
-                          role: member.role as string,
-                          roleLabel: (member.roleLabel as string) || undefined,
-                          appointedDate: (member.appointedDate as string) || undefined,
-                          termExpires: (member.termExpires as string) || undefined,
-                          bioPageUrl: bioPage?.slug ? `/${boardSlug}/about/members/${bioPage.slug as string}` : undefined,
+                          name: member.name,
+                          credentials: member.credentials ?? undefined,
+                          photo: photo?.url ?? undefined,
+                          role: member.role,
+                          roleLabel: member.roleLabel ?? undefined,
+                          appointedDate: member.appointedDate ?? undefined,
+                          termExpires: member.termExpires ?? undefined,
+                          bioPageUrl: bioPage?.slug
+                            ? `/${boardSlug}/about/members/${bioPage.slug}`
+                            : undefined,
                         }}
                       />
                     )

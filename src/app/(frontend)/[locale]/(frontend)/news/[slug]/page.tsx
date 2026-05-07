@@ -23,7 +23,7 @@ import { Link } from '@/i18n/navigation'
 import { notFound } from 'next/navigation'
 
 import { withLocaleMetadata } from '@/lib/i18n-metadata'
-import { getNewsBySlug, toPayloadLocale, getLatestNews } from '@/lib/payload-helpers'
+import { getNewsBySlug, toPayloadLocale, getLatestNews } from '@/lib/cms'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { RichText } from '@/components/RichText'
 import type { Media as MediaType } from '@/payload-types'

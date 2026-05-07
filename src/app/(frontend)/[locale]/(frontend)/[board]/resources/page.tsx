@@ -20,7 +20,7 @@
  */
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/PageHeader'
-import { getAllStandardsSlugs } from '@/lib/payload-helpers'
+import { getAllStandardsSlugs } from '@/lib/cms'
 import { ResourcesListingClient } from './ResourcesListingClient'
 
 type Props = {
